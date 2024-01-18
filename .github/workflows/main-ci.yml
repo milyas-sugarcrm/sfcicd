@@ -166,7 +166,7 @@ jobs:
       # Create scratch org
       - name: "Create scratch org"
         run: |
-          sf org create scratch --edition developer --target-dev-hub ${{env.DEVHUB_SFDX_JWT_ALIAS}} --wait 10 --duration-days 1 --definition-file config/project-scratch-def.json --alias ${{env.DEVHUB_SFDX_JWT_ALIAS}} --json -s
+          sf org create scratch --edition developer --target-dev-hub ${{env.DEVHUB_SFDX_JWT_ALIAS}} --wait 10 --duration-days 1 --definition-file config/project-scratch-def.json --set-default --alias ${{env.DEVHUB_SFDX_JWT_ALIAS}} --json
           scratch_org_username=$(jq -r '.result[].value' <<< $(sf config get target-org --json))
           if [ -z "$scratch_org_username" ]; then
               echo "Scratch org name is empty."

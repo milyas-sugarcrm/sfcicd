@@ -5,7 +5,8 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd"
 >   
-   <description>PMD Source Code Rules</description>
+<!-- https://docs.pmd-code.org/latest/pmd_rules_apex_design.html -->
+<description>PMD Source Code Rules</description>
 
    <rule
     ref="category/apex/bestpractices.xml/ApexAssertionsShouldIncludeMessage"
