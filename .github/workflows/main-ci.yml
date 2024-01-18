@@ -143,7 +143,7 @@ jobs:
           limit_name="DailyScratchOrgs"
           cmd="sfdx force:limits:api:display --target-org ${{ env.DEVHUB_SFDX_JWT_ALIAS }} --json" && (echo $cmd >&2)
           limits=$($cmd) && (echo $limits | jq '.' >&2)
-          limit=$(jq -r '.result[] | select(.name == $limit_name)' <<< $limits)
+          limit=$(jq -r --arg limit_name "$limit_name" '.result[] | select(.name == $limit_name)' <<< "$limits")
 
           # If a limit was found, then check if we are within it
           if [ -n "$limit" ]; then
