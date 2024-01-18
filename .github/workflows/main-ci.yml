@@ -130,7 +130,7 @@ jobs:
       # Install JQ
       - name: "Install JQ"
         run:
-          apt-get update && apt-get -y install jq
+          sudo apt-get update && sudo apt-get -y install jq
 
           # Authenticate dev hub via jwt
       - name: "Authenticate Dev Hub via JWT"
