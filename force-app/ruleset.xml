@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ruleset
+  name="Apex Rules"
+  xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd"
+>
+<!-- https://docs.pmd-code.org/latest/pmd_rules_apex.html -->
+   
+   <description>PMD Source Code Rules</description>
+
+   <rule
+    ref="category/apex/bestpractices.xml/ApexAssertionsShouldIncludeMessage"
+  />
+   <rule
+    ref="category/apex/bestpractices.xml/ApexUnitTestClassShouldHaveAsserts"
+  />
+   <rule
+    ref="category/apex/bestpractices.xml/ApexUnitTestClassShouldHaveRunAs"
+  />
+   <rule
+    ref="category/apex/bestpractices.xml/ApexUnitTestMethodShouldHaveIsTestAnnotation"
+  />
+   <rule
+    ref="category/apex/bestpractices.xml/ApexUnitTestShouldNotUseSeeAllDataTrue"
+  />
+   <rule ref="category/apex/bestpractices.xml/AvoidGlobalModifier" />
+   <rule ref="category/apex/bestpractices.xml/AvoidLogicInTrigger" />
+   <rule ref="category/apex/bestpractices.xml/DebugsShouldUseLoggingLevel" />
+   <rule ref="category/apex/bestpractices.xml/UnusedLocalVariable" />
+   <rule ref="category/apex/codestyle.xml/ClassNamingConventions">
+      <properties>
+          <property name="testClassPattern" value="[A-Z][a-zA-Z0-9_]*" />
+          <property name="abstractClassPattern" value="[A-Z][a-zA-Z0-9_]*" />
+          <property name="classPattern" value="[A-Z][a-zA-Z0-9_]*" />
+          <property name="interfacePattern" value="[A-Z][a-zA-Z0-9_]*" />
+          <property name="enumPattern" value="[A-Z][a-zA-Z0-9_]*" />
+      </properties>
+  </rule>
+  <rule ref="category/apex/codestyle.xml/FieldDeclarationsShouldBeAtStart" />
+  <rule ref="category/apex/codestyle.xml/FieldNamingConventions">
+      <properties>
+         <property name="enumConstantPattern" value="[A-Z][A-Z0-9_]*" />
+         <property name="constantPattern" value="[A-Z][A-Z0-9_]*" />
+         <property name="finalPattern" value="[a-z][a-zA-Z0-9]*" />
+         <property name="staticPattern" value="[a-z][a-zA-Z0-9]*" />
+         <property name="instancePattern" value="[a-z][a-zA-Z0-9]*" />
+      </properties>
+   </rule>
+   <rule ref="category/apex/codestyle.xml/ForLoopsMustUseBraces" />
+   <rule ref="category/apex/codestyle.xml/FormalParameterNamingConventions">
+      <properties>
+          <property
+        name="finalMethodParameterPattern"
+        value="[a-z][a-zA-Z0-9]*"
+      />
+          <property name="methodParameterPattern" value="[a-z][a-zA-Z0-9]*" />
+      </properties>
+  </rule>
+  <rule ref="category/apex/codestyle.xml/IfElseStmtsMustUseBraces" />
+  <rule ref="category/apex/codestyle.xml/IfStmtsMustUseBraces" />
+  <rule ref="category/apex/codestyle.xml/LocalVariableNamingConventions">
+      <properties>
+         <property name="finalLocalPattern" value="[a-z][a-zA-Z0-9]*" />
+         <property name="localPattern" value="[a-z][a-zA-Z0-9]*" />
+      </properties>
+   </rule>
+   <rule ref="category/apex/codestyle.xml/MethodNamingConventions">
+      <properties>
+          <property name="testPattern" value="[a-z][a-zA-Z0-9]*" />
+          <property name="staticPattern" value="[a-z][a-zA-Z0-9]*" />
+          <property name="instancePattern" value="[a-z][a-zA-Z0-9]*" />
+      </properties>
+  </rule>
+  <rule ref="category/apex/codestyle.xml/OneDeclarationPerLine">
+      <properties>
+         <property name="strictMode" value="false" />
+         <property name="reportInForLoopInitializer" value="true" />
+      </properties>
+   </rule>
+   <rule ref="category/apex/codestyle.xml/PropertyNamingConventions">
+      <properties>
+          <property name="staticPattern" value="[a-z][a-zA-Z0-9]*" />
+          <property name="instancePattern" value="[a-z][a-zA-Z0-9]*" />
+      </properties>
+  </rule>
+  <rule ref="category/apex/codestyle.xml/WhileLoopsMustUseBraces" />
+  <rule ref="category/apex/design.xml/AvoidDeeplyNestedIfStmts">
+      <properties>
+            <property name="problemDepth" value="3" />
+      </properties>
+   </rule>
+   <rule ref="category/apex/design.xml/CognitiveComplexity">
+      <properties>
+          <property name="classReportLevel" value="50" />
+          <property name="methodReportLevel" value="15" />
+      </properties>
+  </rule>
+  <rule ref="category/apex/design.xml/CyclomaticComplexity">
+      <properties>
+         <property name="classReportLevel" value="40" />
+         <property name="methodReportLevel" value="10" />
+      </properties>
+   </rule>
+   <rule ref="category/apex/design.xml/ExcessiveClassLength">
+      <properties>
+          <property name="minimum" value="1000" />
+      </properties>
+  </rule>
+  <rule ref="category/apex/design.xml/ExcessiveParameterList">
+      <properties>
+         <property name="minimum" value="4" />
+      </properties>
+   </rule>
+   <rule ref="category/apex/design.xml/ExcessivePublicCount">
+      <properties>
+          <property name="minimum" value="20" />
+      </properties>
+  </rule>
+  <rule ref="category/apex/design.xml/NcssConstructorCount">
+      <properties>
+         <property name="minimum" value="20" />
+      </properties>
+   </rule>
+   <rule ref="category/apex/design.xml/NcssMethodCount">
+      <properties>
+          <property name="minimum" value="40" />
+      </properties>
+  </rule>
+  <rule ref="category/apex/design.xml/NcssTypeCount">
+      <properties>
+         <property name="minimum" value="500" />
+      </properties>
+   </rule>
+   <rule ref="category/apex/design.xml/StdCyclomaticComplexity">
+      <properties>
+          <property name="reportLevel" value="10" />
+          <property name="showClassesComplexity" value="true" />
+          <property name="showMethodsComplexity" value="true" />
+      </properties>
+  </rule>
+  <rule ref="category/apex/design.xml/TooManyFields">
+      <properties>
+         <property name="maxfields" value="15" />
+      </properties>
+   </rule>
+   <rule ref="category/apex/design.xml/UnusedMethod" />
+   <rule ref="category/apex/documentation.xml/ApexDoc">
+      <properties>
+          <property name="reportPrivate" value="false" />
+          <property name="reportProtected" value="false" />
+          <property name="reportMissingDescription" value="true" />
+          <property name="reportProperty" value="true" />
+      </properties>
+  </rule>
+  <rule ref="category/apex/errorprone.xml/ApexCSRF" />
+  <rule ref="category/apex/errorprone.xml/AvoidDirectAccessTriggerMap" />
+  <rule ref="category/apex/errorprone.xml/AvoidHardcodingId" />
+  <rule ref="category/apex/errorprone.xml/AvoidNonExistentAnnotations" />
+  <rule ref="category/apex/errorprone.xml/EmptyCatchBlock">
+      <properties>
+         <property name="allowCommentedBlocks" value="false" />
+         <property
+        name="allowExceptionNameRegex"
+        value="^(ignored|expected)$"
+      />
+      </properties>
+   </rule>
+   <rule ref="category/apex/errorprone.xml/EmptyIfStmt" />
+   <rule ref="category/apex/errorprone.xml/EmptyStatementBlock">
+      <properties>
+          <property name="reportEmptyPrivateNoArgConstructor" value="true" />
+          <property name="reportEmptyVirtualMethod" value="true" />
+      </properties>
+  </rule>
+  <rule ref="category/apex/errorprone.xml/EmptyTryOrFinallyBlock" />
+  <rule ref="category/apex/errorprone.xml/EmptyWhileStmt" />
+  <rule ref="category/apex/errorprone.xml/InaccessibleAuraEnabledGetter" />
+  <rule ref="category/apex/errorprone.xml/MethodWithSameNameAsEnclosingClass" />
+  <rule ref="category/apex/errorprone.xml/OverrideBothEqualsAndHashcode" />
+  <rule ref="category/apex/errorprone.xml/TestMethodsMustBeInTestClasses" />
+  <rule ref="category/apex/performance.xml/AvoidDebugStatements" />
+  <rule ref="category/apex/performance.xml/EagerlyLoadedDescribeSObjectResult">
+      <properties>
+            <property name="noDefault" value="false" />
+      </properties>
+   </rule>
+   <rule ref="category/apex/performance.xml/OperationWithLimitsInLoop" />
+   <rule ref="category/apex/security.xml/ApexBadCrypto" />
+   <rule ref="category/apex/security.xml/ApexCRUDViolation">
+      <properties>
+          <property name="readAuthMethodPattern" value="" />
+          <property name="readAuthMethodTypeParamIndex" value="0" />
+          <property name="mergeAuthMethodPattern" value="" />
+          <property name="mergeAuthMethodTypeParamIndex" value="0" />
+          <property name="updateAuthMethodPattern" value="" />
+          <property name="updateAuthMethodTypeParamIndex" value="0" />
+          <property name="createAuthMethodPattern" value="" />
+          <property name="createAuthMethodTypeParamIndex" value="0" />
+          <property name="deleteAuthMethodPattern" value="" />
+          <property name="deleteAuthMethodTypeParamIndex" value="0" />
+          <property name="undeleteAuthMethodPattern" value="" />
+          <property name="undeleteAuthMethodTypeParamIndex" value="0" />
+      </properties>
+  </rule>  
+  <rule ref="category/apex/security.xml/ApexDangerousMethods" />
+  <rule ref="category/apex/security.xml/ApexInsecureEndpoint" />
+  <rule ref="category/apex/security.xml/ApexOpenRedirect" />
+  <rule ref="category/apex/security.xml/ApexSharingViolations" />
+  <rule ref="category/apex/security.xml/ApexSOQLInjection" />
+  <rule ref="category/apex/security.xml/ApexSuggestUsingNamedCred" />
+  <rule ref="category/apex/security.xml/ApexXSSFromEscapeFalse" />
+  <rule ref="category/apex/security.xml/ApexXSSFromURLParam" />  
+</ruleset>
