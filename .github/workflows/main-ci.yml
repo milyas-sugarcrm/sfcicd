@@ -140,16 +140,16 @@ jobs:
       - name: "Check Daily Scratch Org Limit"
         shell: bash
         run: |
-          local limit_name="DailyScratchOrgs"
-          local cmd="sfdx force:limits:api:display --target-org ${{ env.DEVHUB_SFDX_JWT_ALIAS }} --json" && (echo $cmd >&2)
-          local limits=$($cmd) && (echo $limits | jq '.' >&2)
-          local limit=$(jq -r '.result[] | select(.name == env.limit_name)' <<< $limits)
+          limit_name="DailyScratchOrgs"
+          cmd="sfdx force:limits:api:display --target-org ${{ env.DEVHUB_SFDX_JWT_ALIAS }} --json" && (echo $cmd >&2)
+          limits=$($cmd) && (echo $limits | jq '.' >&2)
+          limit=$(jq -r '.result[] | select(.name == env.limit_name)' <<< $limits)
 
           # If a limit was found, then check if we are within it
           if [ -n "$limit" ]; then
 
-            local limit_max=$(jq -r '.max' <<< $limit)
-            local limit_rem=$(jq -r '.remaining' <<< $limit)
+            limit_max=$(jq -r '.max' <<< $limit)
+            limit_rem=$(jq -r '.remaining' <<< $limit)
 
             if [[ ( -z "$limit_rem" ) || ( $limit_rem == null ) || ( $limit_rem -le 0 ) ]]; then
               echo "ERROR Max of $limit_max reached for limit $limit_name" >&2
