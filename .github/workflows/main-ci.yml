@@ -129,10 +129,16 @@ jobs:
           sf --version
       # Install JQ
       - name: "Install JQ"
-        run:
-          sudo apt-get update && sudo apt-get -y install jq
+        run: sudo apt-get update && sudo apt-get -y install jq
 
-          # Authenticate dev hub via jwt
+      # setup the LWC test
+      - name: "Setup the LWC Test"
+        run: |
+          cmd="sf force lightning lwc test setup" && (echo $cmd >&2)
+          output=$($cmd)
+          echo $output
+
+      # Authenticate dev hub via jwt
       - name: "Authenticate Dev Hub via JWT"
         run: sf org login jwt --client-id ${{ env.DEVHUB_SFDX_CLIENT_ID }} --jwt-key-file ${{ env.DEVHUB_SFDX_JWT_SERVER_KEY }} --username ${{ env.DEVHUB_SFDX_JWT_USERNAME }} --instance-url ${{ env.DEVHUB_SFDX_JWT_INSTANCE_URL }} --alias ${{ env.DEVHUB_SFDX_JWT_ALIAS }}
 
@@ -174,13 +180,6 @@ jobs:
           else
             sf config set target-org=$scratch_org_username
           fi
-
-      # setup the LWC test environment
-      - name: "Setup the LWC Test"
-        run: |
-          cmd="sf force lightning lwc test setup" && (echo $cmd >&2)
-          output=$($cmd)
-          echo $output
 
       # Deploy source to scratch org
       - name: "Push source to scratch org"
