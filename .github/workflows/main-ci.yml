@@ -175,9 +175,15 @@ jobs:
             sf config set target-org=$scratch_org_username
           fi
 
+      # setup the LWC test environment
+      - name: "Setup the LWC Test"
+        run: |
+          cmd="sf force lightning lwc test setup" && (echo $cmd >&2)
+          output=$($cmd)
+          echo $output
+
       # Deploy source to scratch org
       - name: "Push source to scratch org"
-        # run: sf project deploy start
         run: npm run scratch:deploy
 
       # Run Apex tests in scratch org
