@@ -2,9 +2,9 @@ name: Validate PR
 
 # Definition when the workflow should run
 on:
-    workflow_dispatch:
-    pull_request:
-        types: [opened, edited, synchronize, reopened]
+  workflow_dispatch:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
 
 # Workflow environment variables
 env:
@@ -16,204 +16,205 @@ env:
 
 # Jobs to be executed
 jobs:
-    # Formatting and linting only runs on human-submitted PRs
-    format-lint-lwc-tests:
-        if: github.actor != 'dependabot[bot]'
-        runs-on: ubuntu-latest
-        steps:
-            # Checkout the source code
-            - name: 'Checkout source code'
-              uses: actions/checkout@v3
+  # Formatting and linting only runs on human-submitted PRs
+  format-lint-lwc-tests:
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the source code
+      - name: "Checkout source code"
+        uses: actions/checkout@v3
 
-            # Install Volta to enforce proper node and package manager versions
-            - name: 'Install Volta'
-              uses: volta-cli/action@v4
+      # Install Volta to enforce proper node and package manager versions
+      - name: "Install Volta"
+        uses: volta-cli/action@v4
 
-            # Cache node_modules to speed up the process
-            - name: 'Restore node_modules cache'
-              id: cache-npm
-              uses: actions/cache@v3
-              with:
-                  path: node_modules
-                  key: npm-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      npm-${{ env.cache-name }}-
-                      npm-
-                      # Install npm dependencies for Prettier, Jest and others
-            - name: 'Install npm dependencies'
-              if: steps.cache-npm.outputs.cache-hit != 'true'
-              run: |
-                  if [ ! -f "package.json.lock" ]; then
-                      npm install
-                  else
-                      HUSKY=0 npm ci
-                  fi
+      # Cache node_modules to speed up the process
+      - name: "Restore node_modules cache"
+        id: cache-npm
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-${{ env.cache-name }}-
+            npm-
+            # Install npm dependencies for Prettier, Jest and others
+      - name: "Install npm dependencies"
+        if: steps.cache-npm.outputs.cache-hit != 'true'
+        run: |
+          if [ ! -f "package.json.lock" ]; then
+              npm install
+          else
+              HUSKY=0 npm ci
+          fi
 
-            # Prettier formatting
-            - name: 'Code formatting verification with Prettier'
-              run: npm run prettier:verify
+      # Prettier formatting
+      - name: "Code formatting verification with Prettier"
+        run: npm run prettier:verify
 
-            # Lint LWC / Aura
-            - name: 'Lint Lightning Web Components / Aura Components'
-              run: npm run lint
+      # Lint LWC / Aura
+      - name: "Lint Lightning Web Components / Aura Components"
+        run: npm run lint
 
-            # LWC unit tests
-            - name: 'Unit test Lightning Web Components'
-              run: npm run test:unit:coverage
+      # LWC unit tests
+      - name: "Unit test Lightning Web Components"
+        run: npm run test:unit:coverage
 
-            # Upload code coverage data
-            - name: 'Upload code coverage for LWC to Codecov.io'
-              uses: codecov/codecov-action@v3
-              with:
-                  flags: LWC
-    scratch-org-test:
-        runs-on: ubuntu-latest
-        needs: format-lint-lwc-tests
-        if: github.actor != 'dependabot[bot]'
-        steps:
-            - name: Check Secrets
-              shell: bash
-              run: |
-                # Check if SECRETS are set and have data
-                if [ -z "${{ env.DEVHUB_SFDX_CLIENT_ID }}" ]; then
-                  echo "Error: DEVHUB_SFDX_CLIENT_ID is not set or has no data."
-                  exit 1
-                fi
-        
-                if [ -z "${{ env.DEVHUB_SFDX_JWT_SERVER_KEY }}" ]; then
-                  echo "Error: DEVHUB_SFDX_JWT_SERVER_KEY is not set or has no data."
-                  exit 1
-                fi
+      # Upload code coverage data
+      - name: "Upload code coverage for LWC to Codecov.io"
+        uses: codecov/codecov-action@v3
+        with:
+          flags: LWC
+  scratch-org-test:
+    runs-on: ubuntu-latest
+    needs: format-lint-lwc-tests
+    if: github.actor != 'dependabot[bot]'
+    steps:
+      - name: Check Secrets
+        shell: bash
+        run: |
+          # Check if SECRETS are set and have data
+          if [ -z "${{ env.DEVHUB_SFDX_CLIENT_ID }}" ]; then
+            echo "Error: DEVHUB_SFDX_CLIENT_ID is not set or has no data."
+            exit 1
+          fi
 
-                if [ -z "${{ env.DEVHUB_SFDX_JWT_USERNAME }}" ]; then
-                  echo "Error: DEVHUB_SFDX_JWT_SERVER_KEY is not set or has no data."
-                  exit 1
-                fi
+          if [ -z "${{ env.DEVHUB_SFDX_JWT_SERVER_KEY }}" ]; then
+            echo "Error: DEVHUB_SFDX_JWT_SERVER_KEY is not set or has no data."
+            exit 1
+          fi
 
-                if [ -z "${{ env.DEVHUB_SFDX_JWT_INSTANCE_URL }}" ]; then
-                  echo "Error: DEVHUB_SFDX_JWT_SERVER_KEY is not set or has no data."
-                  exit 1
-                fi
+          if [ -z "${{ env.DEVHUB_SFDX_JWT_USERNAME }}" ]; then
+            echo "Error: DEVHUB_SFDX_JWT_SERVER_KEY is not set or has no data."
+            exit 1
+          fi
 
-                if [ -z "${{ env.DEVHUB_SFDX_JWT_ALIAS }}" ]; then
-                  echo "Error: DEVHUB_SFDX_JWT_SERVER_KEY is not set or has no data."
-                  exit 1
-                fi
-                echo "All secrets are set and have data."
-              
-            # Checkout the source code
-            - name: 'Checkout source code'
-              uses: actions/checkout@v3
+          if [ -z "${{ env.DEVHUB_SFDX_JWT_INSTANCE_URL }}" ]; then
+            echo "Error: DEVHUB_SFDX_JWT_SERVER_KEY is not set or has no data."
+            exit 1
+          fi
 
-            # Run PMD scan
-            - name: 'Run PMD scan'
-              uses: pmd/pmd-github-action@v1.4.0
-              id: pmd
-              with:
-                  version: '6.55.0'
-                  sourcePath: 'force-app'
-                  rulesets: 'ruleset.xml'
+          if [ -z "${{ env.DEVHUB_SFDX_JWT_ALIAS }}" ]; then
+            echo "Error: DEVHUB_SFDX_JWT_SERVER_KEY is not set or has no data."
+            exit 1
+          fi
+          echo "All secrets are set and have data."
 
-            # Check for PMD violations
-            - name: 'Check for PMD violations'
-              if: steps.pmd.outputs.violations != 0
-              run: exit 1
+      # Checkout the source code
+      - name: "Checkout source code"
+        uses: actions/checkout@v3
 
-            # Install Salesforce CLI
-            - name: 'Install Salesforce CLI'
-              run: |
-                  npm install @salesforce/cli --location=global
-                  nodeInstallPath=$(npm config get prefix)
-                  echo "$nodeInstallPath/bin" >> $GITHUB_PATH
-                  sf --version
-            # Install JQ
-            - name: 'Install JQ'
-              run: apt update && apt -y install jq
+      # Run PMD scan
+      - name: "Run PMD scan"
+        uses: pmd/pmd-github-action@v1.4.0
+        id: pmd
+        with:
+          version: "6.55.0"
+          sourcePath: "force-app"
+          rulesets: "ruleset.xml"
 
-                          # Authenticate dev hub via jwt
-            - name: 'Authenticate Dev Hub via JWT'
-              run: sf org login jwt --client-id ${{ secrets.DEVHUB_SFDX_CLIENT_ID }} --jwt-key-file ${{ secrets.DEVHUB_SFDX_JWT_SERVER_KEY }} --username ${{ secrets.DEVHUB_SFDX_JWT_USERNAME }} --instance-url ${{ secrets.DEVHUB_SFDX_JWT_INSTANCE_URL }} --alias ${{ secrets.DEVHUB_SFDX_JWT_ALIAS }}
+      # Check for PMD violations
+      - name: "Check for PMD violations"
+        if: steps.pmd.outputs.violations != 0
+        run: exit 1
 
-            # Check Daily Scratch Org Limit
-            - name: 'Check Daily Scratch Org Limit'
-              shell: bash
-              run: |
-                  local limit_name="DailyScratchOrgs"
-                  local cmd="sfdx force:limits:api:display --target-org ${{ env.DEVHUB_SFDX_JWT_ALIAS }} --json" && (echo $cmd >&2)
-                  local limits=$($cmd) && (echo $limits | jq '.' >&2)
-                  local limit=$(jq -r '.result[] | select(.name == env.limit_name)' <<< $limits)
-              
-                  # If a limit was found, then check if we are within it
-                  if [ -n "$limit" ]; then
-              
-                    local limit_max=$(jq -r '.max' <<< $limit)
-                    local limit_rem=$(jq -r '.remaining' <<< $limit)
-              
-                    if [[ ( -z "$limit_rem" ) || ( $limit_rem == null ) || ( $limit_rem -le 0 ) ]]; then
-                      echo "ERROR Max of $limit_max reached for limit $limit_name" >&2
-                      exit 1
-                    else
-                      echo "$limit_rem of $limit_max remaining for limit $limit_name" >&2
-                    fi
-              
-                  else
-                    echo "No limits found for name $limit_name" >&2
-                    exit 1
-                  fi
-            
-            # Create scratch org
-            - name: 'Create scratch org'
-              run: sf org create scratch --edition developer --target-dev-hub ${{env.DEVHUB_SFDX_JWT_ALIAS}} --wait 10 --duration-days 1 --definition-file config/project-scratch-def.json --alias ${{env.DEVHUB_SFDX_JWT_ALIAS}} --json 
+      # Install Salesforce CLI
+      - name: "Install Salesforce CLI"
+        run: |
+          npm install @salesforce/cli --location=global
+          nodeInstallPath=$(npm config get prefix)
+          echo "$nodeInstallPath/bin" >> $GITHUB_PATH
+          sf --version
+      # Install JQ
+      - name: "Install JQ"
+        run:
+          apt update && apt -y install jq
 
-            # Deploy source to scratch org
-            - name: 'Push source to scratch org'
-              # run: sf project deploy start
-              run: npm run scratch:deploy
+          # Authenticate dev hub via jwt
+      - name: "Authenticate Dev Hub via JWT"
+        run: sf org login jwt --client-id ${{ secrets.DEVHUB_SFDX_CLIENT_ID }} --jwt-key-file ${{ secrets.DEVHUB_SFDX_JWT_SERVER_KEY }} --username ${{ secrets.DEVHUB_SFDX_JWT_USERNAME }} --instance-url ${{ secrets.DEVHUB_SFDX_JWT_INSTANCE_URL }} --alias ${{ secrets.DEVHUB_SFDX_JWT_ALIAS }}
 
-            # Run Apex tests in scratch org
-            - name: 'Run Apex tests'
-              run: npm run test:scratch
+      # Check Daily Scratch Org Limit
+      - name: "Check Daily Scratch Org Limit"
+        shell: bash
+        run: |
+          local limit_name="DailyScratchOrgs"
+          local cmd="sfdx force:limits:api:display --target-org ${{ env.DEVHUB_SFDX_JWT_ALIAS }} --json" && (echo $cmd >&2)
+          local limits=$($cmd) && (echo $limits | jq '.' >&2)
+          local limit=$(jq -r '.result[] | select(.name == env.limit_name)' <<< $limits)
 
-            # Authenticate dev hub via jwt
-            - name: 'Authenticate Dev Hub via JWT'
-              run: sf org login jwt --client-id ${{ secrets.DEVHUB_SFDX_CLIENT_ID }} --jwt-key-file ${{ secrets.DEVHUB_SFDX_JWT_SERVER_KEY }} --username ${{ secrets.DEVHUB_SFDX_JWT_USERNAME }} --instance-url ${{ secrets.DEVHUB_SFDX_JWT_INSTANCE_URL }} --alias ${{ secrets.DEVHUB_SFDX_JWT_ALIAS }}
+          # If a limit was found, then check if we are within it
+          if [ -n "$limit" ]; then
 
-            # Check Daily Scratch Org Limit
-            - name: 'Check Daily Scratch Org Limit'
-              shell: bash
-              run: |
-                  local limit_name="DailyScratchOrgs"
-                  local cmd="sfdx force:limits:api:display --target-org ${{ env.DEVHUB_SFDX_JWT_ALIAS }} --json" && (echo $cmd >&2)
-                  local limits=$($cmd) && (echo $limits | jq '.' >&2)
-                  local limit=$(jq -r '.result[] | select(.name == env.limit_name)' <<< $limits)
-              
-                  # If a limit was found, then check if we are within it
-                  if [ -n "$limit" ]; then
-              
-                    local limit_max=$(jq -r '.max' <<< $limit)
-                    local limit_rem=$(jq -r '.remaining' <<< $limit)
-              
-                    if [[ ( -z "$limit_rem" ) || ( $limit_rem == null ) || ( $limit_rem -le 0 ) ]]; then
-                      echo "ERROR Max of $limit_max reached for limit $limit_name" >&2
-                      exit 1
-                    else
-                      echo "$limit_rem of $limit_max remaining for limit $limit_name" >&2
-                    fi
-              
-                  else
-                    echo "No limits found for name $limit_name" >&2
-                    exit 1
-                  fi
-            
-            # Create scratch org
-            - name: 'Create scratch org'
-              run: sf org create scratch --edition developer --target-dev-hub ${{env.DEVHUB_SFDX_JWT_ALIAS}} --wait 10 --duration-days 1 --definition-file config/project-scratch-def.json --alias ${{env.DEVHUB_SFDX_JWT_ALIAS}} --json 
+            local limit_max=$(jq -r '.max' <<< $limit)
+            local limit_rem=$(jq -r '.remaining' <<< $limit)
 
-            # Deploy source to scratch org
-            - name: 'Push source to scratch org'
-              # run: sf project deploy start
-              run: npm run scratch:deploy
+            if [[ ( -z "$limit_rem" ) || ( $limit_rem == null ) || ( $limit_rem -le 0 ) ]]; then
+              echo "ERROR Max of $limit_max reached for limit $limit_name" >&2
+              exit 1
+            else
+              echo "$limit_rem of $limit_max remaining for limit $limit_name" >&2
+            fi
 
-            # Run Apex tests in scratch org
-            - name: 'Run Apex tests'
-              run: npm run test:scratch
+          else
+            echo "No limits found for name $limit_name" >&2
+            exit 1
+          fi
+
+      # Create scratch org
+      - name: "Create scratch org"
+        run: sf org create scratch --edition developer --target-dev-hub ${{env.DEVHUB_SFDX_JWT_ALIAS}} --wait 10 --duration-days 1 --definition-file config/project-scratch-def.json --alias ${{env.DEVHUB_SFDX_JWT_ALIAS}} --json
+
+      # Deploy source to scratch org
+      - name: "Push source to scratch org"
+        # run: sf project deploy start
+        run: npm run scratch:deploy
+
+      # Run Apex tests in scratch org
+      - name: "Run Apex tests"
+        run: npm run test:scratch
+
+      # Authenticate dev hub via jwt
+      - name: "Authenticate Dev Hub via JWT"
+        run: sf org login jwt --client-id ${{ secrets.DEVHUB_SFDX_CLIENT_ID }} --jwt-key-file ${{ secrets.DEVHUB_SFDX_JWT_SERVER_KEY }} --username ${{ secrets.DEVHUB_SFDX_JWT_USERNAME }} --instance-url ${{ secrets.DEVHUB_SFDX_JWT_INSTANCE_URL }} --alias ${{ secrets.DEVHUB_SFDX_JWT_ALIAS }}
+
+      # Check Daily Scratch Org Limit
+      - name: "Check Daily Scratch Org Limit"
+        shell: bash
+        run: |
+          local limit_name="DailyScratchOrgs"
+          local cmd="sfdx force:limits:api:display --target-org ${{ env.DEVHUB_SFDX_JWT_ALIAS }} --json" && (echo $cmd >&2)
+          local limits=$($cmd) && (echo $limits | jq '.' >&2)
+          local limit=$(jq -r '.result[] | select(.name == env.limit_name)' <<< $limits)
+
+          # If a limit was found, then check if we are within it
+          if [ -n "$limit" ]; then
+
+            local limit_max=$(jq -r '.max' <<< $limit)
+            local limit_rem=$(jq -r '.remaining' <<< $limit)
+
+            if [[ ( -z "$limit_rem" ) || ( $limit_rem == null ) || ( $limit_rem -le 0 ) ]]; then
+              echo "ERROR Max of $limit_max reached for limit $limit_name" >&2
+              exit 1
+            else
+              echo "$limit_rem of $limit_max remaining for limit $limit_name" >&2
+            fi
+
+          else
+            echo "No limits found for name $limit_name" >&2
+            exit 1
+          fi
+
+      # Create scratch org
+      - name: "Create scratch org"
+        run: sf org create scratch --edition developer --target-dev-hub ${{env.DEVHUB_SFDX_JWT_ALIAS}} --wait 10 --duration-days 1 --definition-file config/project-scratch-def.json --alias ${{env.DEVHUB_SFDX_JWT_ALIAS}} --json
+
+      # Deploy source to scratch org
+      - name: "Push source to scratch org"
+        # run: sf project deploy start
+        run: npm run scratch:deploy
+
+      # Run Apex tests in scratch org
+      - name: "Run Apex tests"
+        run: npm run test:scratch
