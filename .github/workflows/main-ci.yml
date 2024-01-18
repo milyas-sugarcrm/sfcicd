@@ -39,7 +39,7 @@ jobs:
           restore-keys: |
             npm-${{ env.cache-name }}-
             npm-
-            # Install npm dependencies for Prettier, Jest and others
+      # Install npm dependencies for Prettier, Jest and others
       - name: "Install npm dependencies"
         if: steps.cache-npm.outputs.cache-hit != 'true'
         run: |
@@ -64,6 +64,8 @@ jobs:
       # Upload code coverage data
       - name: "Upload code coverage for LWC to Codecov.io"
         uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}      
         with:
           flags: LWC
   scratch-org-test:
