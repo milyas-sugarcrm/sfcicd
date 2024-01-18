@@ -130,11 +130,11 @@ jobs:
       # Install JQ
       - name: "Install JQ"
         run:
-          apt update && apt -y install jq
+          apt-get update && apt-get -y install jq
 
           # Authenticate dev hub via jwt
       - name: "Authenticate Dev Hub via JWT"
-        run: sf org login jwt --client-id ${{ secrets.DEVHUB_SFDX_CLIENT_ID }} --jwt-key-file ${{ secrets.DEVHUB_SFDX_JWT_SERVER_KEY }} --username ${{ secrets.DEVHUB_SFDX_JWT_USERNAME }} --instance-url ${{ secrets.DEVHUB_SFDX_JWT_INSTANCE_URL }} --alias ${{ secrets.DEVHUB_SFDX_JWT_ALIAS }}
+        run: sf org login jwt --client-id ${{ env.DEVHUB_SFDX_CLIENT_ID }} --jwt-key-file ${{ env.DEVHUB_SFDX_JWT_SERVER_KEY }} --username ${{ env.DEVHUB_SFDX_JWT_USERNAME }} --instance-url ${{ env.DEVHUB_SFDX_JWT_INSTANCE_URL }} --alias ${{ env.DEVHUB_SFDX_JWT_ALIAS }}
 
       # Check Daily Scratch Org Limit
       - name: "Check Daily Scratch Org Limit"
