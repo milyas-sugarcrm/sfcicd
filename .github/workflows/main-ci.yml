@@ -189,46 +189,15 @@ jobs:
       - name: "Run Apex tests"
         run: npm run test:scratch
 
-      # Authenticate dev hub via jwt
-      - name: "Authenticate Dev Hub via JWT"
-        run: sf org login jwt --client-id ${{ secrets.DEVHUB_SFDX_CLIENT_ID }} --jwt-key-file ${{ secrets.DEVHUB_SFDX_JWT_SERVER_KEY }} --username ${{ secrets.DEVHUB_SFDX_JWT_USERNAME }} --instance-url ${{ secrets.DEVHUB_SFDX_JWT_INSTANCE_URL }} --alias ${{ secrets.DEVHUB_SFDX_JWT_ALIAS }}
+      # Upload code coverage data
+      - name: "Upload code coverage for Apex to Codecov.io"
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          flags: Apex
 
-      # Check Daily Scratch Org Limit
-      - name: "Check Daily Scratch Org Limit"
-        shell: bash
-        run: |
-          local limit_name="DailyScratchOrgs"
-          local cmd="sfdx force:limits:api:display --target-org ${{ env.DEVHUB_SFDX_JWT_ALIAS }} --json" && (echo $cmd >&2)
-          local limits=$($cmd) && (echo $limits | jq '.' >&2)
-          local limit=$(jq -r '.result[] | select(.name == env.limit_name)' <<< $limits)
-
-          # If a limit was found, then check if we are within it
-          if [ -n "$limit" ]; then
-
-            local limit_max=$(jq -r '.max' <<< $limit)
-            local limit_rem=$(jq -r '.remaining' <<< $limit)
-
-            if [[ ( -z "$limit_rem" ) || ( $limit_rem == null ) || ( $limit_rem -le 0 ) ]]; then
-              echo "ERROR Max of $limit_max reached for limit $limit_name" >&2
-              exit 1
-            else
-              echo "$limit_rem of $limit_max remaining for limit $limit_name" >&2
-            fi
-
-          else
-            echo "No limits found for name $limit_name" >&2
-            exit 1
-          fi
-
-      # Create scratch org
-      - name: "Create scratch org"
-        run: sf org create scratch --edition developer --target-dev-hub ${{env.DEVHUB_SFDX_JWT_ALIAS}} --wait 10 --duration-days 1 --definition-file config/project-scratch-def.json --alias ${{env.DEVHUB_SFDX_JWT_ALIAS}} --json
-
-      # Deploy source to scratch org
-      - name: "Push source to scratch org"
-        # run: sf project deploy start
-        run: npm run scratch:deploy
-
-      # Run Apex tests in scratch org
-      - name: "Run Apex tests"
-        run: npm run test:scratch
+      # Housekeeping
+      - name: "Delete scratch org"
+        if: always()
+        run: sf org delete scratch -p -o scratch-org
