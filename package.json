@@ -4,13 +4,16 @@
   "scripts": {
     "lint": "eslint **/{lwc,aura}/**/*.js",
     "test": "npm run test:unit",
-    "test:unit": "sfdx-lwc-jest",
-    "test:unit:watch": "sfdx-lwc-jest --watch",
-    "test:unit:debug": "sfdx-lwc-jest --debug",
-    "test:unit:coverage": "sfdx-lwc-jest --coverage",
-    "test:scratch": "sf apex run test --test-level RunAllTestsInOrg --code-coverage --detailed-coverage --result-format human --wait 10 --output-dir ./tests/apex",
+    "test:unit": "sfdx-lwc-jest --skipApiVersionCheck",
+    "test:unit:watch": "sfdx-lwc-jest --watch --skipApiVersionCheck",
+    "test:unit:debug": "sfdx-lwc-jest --debug --skipApiVersionCheck",
+    "test:unit:coverage": "sfdx-lwc-jest --coverage --skipApiVersionCheck",
+    "test:scratch": "sf apex run test --test-level RunAllTestsInOrg --code-coverage --detailed-coverage --result-format human --wait 20 --output-dir ./tests/apex",
     "scratch:deploy": "sf project deploy start --manifest manifest/package.xml",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "prettier": "prettier --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
+    "prettier:verify": "prettier --check \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
+    "postinstall": "husky install"
   },
   "lint-staged": {
     "**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
@@ -40,5 +43,8 @@
     "lint-staged": "^15.2.0",
     "prettier": "^3.1.1",
     "prettier-plugin-apex": "^2.0.1"
+  },
+  "volta": {
+    "node": "20.11.0"
   }
 }
