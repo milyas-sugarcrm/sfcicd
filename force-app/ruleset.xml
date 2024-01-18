@@ -144,7 +144,7 @@
          <property name="maxfields" value="15" />
       </properties>
    </rule>
-   <rule ref="category/apex/design.xml/UnusedMethod" />
+   <!-- <rule ref="category/apex/design.xml/UnusedMethod" /> -->
    <rule ref="category/apex/documentation.xml/ApexDoc">
       <properties>
           <property name="reportPrivate" value="false" />
