@@ -226,11 +226,11 @@ jobs:
         run: |
           target=76
           coverage=$(sf data query --query "SELECT PercentCovered FROM ApexOrgWideCoverage" --use-tooling-api --json | jq -r '.result.records[0].PercentCovered')
-          if [[ -n $coverage ]] && [[ $coverage < $target ]]; then
-            echo "Current apex code coverage is $coverage %."
+          if [ "$coverage" -lt "$target" ]; then
+            echo "Failed: Current apex code coverage is $coverage% and it must be min 75%."
             exit 1
           else
-            echo "Apex code coverage is $coverage %."
+            echo "Passed: Apex code coverage is $coverage%."
           fi
 
       # Housekeeping
