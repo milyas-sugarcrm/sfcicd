@@ -108,17 +108,25 @@ jobs:
         uses: actions/checkout@v3
 
       # Run PMD scan
-      # - name: "Run PMD scan"
-      #   uses: pmd/pmd-github-action@v1.4.1
-      #   id: pmd
-      #   with:
-      #     sourcePath: "force-app"
-      #     rulesets: "ruleset.xml"
+      - name: "Run PMD scan"
+        uses: pmd/pmd-github-action@v1.4.1
+        id: pmd
+        with:
+          sourcePath: "force-app"
+          rulesets: "ruleset.xml"
+
+      # Upload the PMD Reports in artifacts
+      - name: Upload PMD test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pmd-report
+          path: ${{ steps.pmd.outputs.reportPath }}
 
       # # Check for PMD violations
-      # - name: "Check for PMD violations"
-      #   if: steps.pmd.outputs.violations != 0
-      #   run: exit 1
+      - name: "Check for PMD violations"
+        if: steps.pmd.outputs.violations != 0
+        run: exit 1
 
       # Install Salesforce CLI
       - name: "Install Salesforce CLI"
@@ -127,6 +135,7 @@ jobs:
           nodeInstallPath=$(npm config get prefix)
           echo "$nodeInstallPath/bin" >> $GITHUB_PATH
           sf --version
+
       # Install JQ
       - name: "Install JQ"
         run: sudo apt-get update && sudo apt-get -y install jq
@@ -197,6 +206,18 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           flags: Apex
+
+      # Check Code coverage
+      - name: Enforce Apex Code Coverage - Min 75%
+        run: |
+          target=76
+          coverage=$(sf data query --query "SELECT PercentCovered FROM ApexOrgWideCoverage" --use-tooling-api --json | jq -r '.result.records[0].PercentCovered')
+          if [[ -n $coverage ]] && [[ $coverage < $target ]]; then
+            echo "Current apex code coverage is $coverage %."
+            exit 1
+          else
+            echo "Apex code coverage is $coverage %."
+          fi
 
       # Housekeeping
       - name: "Delete scratch org"
