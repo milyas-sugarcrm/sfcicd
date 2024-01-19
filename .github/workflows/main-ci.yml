@@ -182,6 +182,14 @@ jobs:
       - name: "Run Apex tests"
         run: npm run test:scratch
 
+      # Upload the Apex Test Reports in artifacts
+      - name: Upload Apex test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: apex-test-results
+          path: ./tests/apex
+
       # Upload code coverage data
       - name: "Upload code coverage for Apex to Codecov.io"
         uses: codecov/codecov-action@v3
