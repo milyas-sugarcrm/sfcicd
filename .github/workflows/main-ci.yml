@@ -131,13 +131,6 @@ jobs:
       - name: "Install JQ"
         run: sudo apt-get update && sudo apt-get -y install jq
 
-      # setup the LWC test
-      - name: "Setup the LWC Test"
-        run: |
-          cmd="sf force lightning lwc test setup" && (echo $cmd >&2)
-          output=$($cmd)
-          echo $output
-
       # Authenticate dev hub via jwt
       - name: "Authenticate Dev Hub via JWT"
         run: sf org login jwt --client-id ${{ env.DEVHUB_SFDX_CLIENT_ID }} --jwt-key-file ${{ env.DEVHUB_SFDX_JWT_SERVER_KEY }} --username ${{ env.DEVHUB_SFDX_JWT_USERNAME }} --instance-url ${{ env.DEVHUB_SFDX_JWT_INSTANCE_URL }} --alias ${{ env.DEVHUB_SFDX_JWT_ALIAS }}
@@ -200,4 +193,4 @@ jobs:
       # Housekeeping
       - name: "Delete scratch org"
         if: always()
-        run: sf org delete scratch -p -o scratch-org
+        run: sf org delete scratch -p
