@@ -68,6 +68,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           flags: LWC
+
   scratch-org-test:
     runs-on: ubuntu-latest
     needs: format-lint-lwc-tests
@@ -114,14 +115,6 @@ jobs:
         with:
           sourcePath: "force-app"
           rulesets: "ruleset.xml"
-
-      # Upload the PMD Reports in artifacts
-      - name: Upload PMD test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: pmd-report
-          path: ${{ steps.pmd.outputs.reportPath }}
 
       # # Check for PMD violations
       - name: "Check for PMD violations"
@@ -222,4 +215,9 @@ jobs:
       # Housekeeping
       - name: "Delete scratch org"
         if: always()
-        run: sf org delete scratch -p
+        run: |
+          if command -v sf &> /dev/null; then
+            sf org delete scratch -p
+          else
+            echo "Salesforce CLI is not installed."
+          fi
