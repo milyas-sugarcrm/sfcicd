@@ -180,6 +180,27 @@ jobs:
       - name: "Push source to scratch org"
         run: npm run scratch:deploy
 
+      # Install sfdx scanner
+      - name: Install Salesforce Scanner
+        run: |
+          if command -v sf &> /dev/null; then
+            sf plugins install @salesforce/sfdx-scanner
+          else
+            echo "Salesforce CLI is not installed."
+          fi
+
+      # Run Salesforce scanner
+      - name: "Run Salesforce Scanner"
+        run: npm run scanner
+
+      # Uploaad the Salesforce Scanner Results
+      - name: Upload Scanner results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scanner-results
+          path: ./.scanner/
+
       # Run Apex tests in scratch org
       - name: "Run Apex tests"
         run: npm run test:scratch
@@ -190,7 +211,7 @@ jobs:
         if: always()
         with:
           name: apex-test-results
-          path: ./tests/apex
+          path: ./.tests/apex
 
       # Upload code coverage data
       - name: "Upload code coverage for Apex to Codecov.io"

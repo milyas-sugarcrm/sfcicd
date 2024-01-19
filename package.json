@@ -8,8 +8,9 @@
     "test:unit:watch": "sfdx-lwc-jest --watch --skipApiVersionCheck",
     "test:unit:debug": "sfdx-lwc-jest --debug --skipApiVersionCheck",
     "test:unit:coverage": "sfdx-lwc-jest --coverage --skipApiVersionCheck",
-    "test:scratch": "sf apex run test --test-level RunLocalTests --code-coverage --detailed-coverage --result-format human --wait 20 --output-dir ./tests/apex",
+    "test:scratch": "sf apex run test --test-level RunLocalTests --code-coverage --detailed-coverage --result-format human --wait 20 --output-dir ./.tests/apex",
     "scratch:deploy": "sf project deploy start --manifest manifest/package.xml",
+    "scanner": "sf scanner run --target './force-app/main' --format csv --normalize-severity --outfile './scanner/sfdx-scanner.csv'",
     "precommit": "lint-staged",
     "prettier": "prettier --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
     "prettier:verify": "prettier --check \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@lwc/eslint-plugin-lwc": "^1.7.0",
+    "@salesforce/sfdx-scanner": "^3.20.0",
     "@lwc/jest-preset": "^14.3.0",
     "@prettier/plugin-xml": "^3.2.2",
     "@sa11y/jest": "^6.2.2",
