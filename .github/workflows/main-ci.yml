@@ -205,12 +205,14 @@ jobs:
         id: get_test_classes
         run: |
           test_classes=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -rl --include='*.cls' '@isTest' * | xargs -n 1 basename | paste -sd "," || true)
-          echo "::set-output name=test_classes::${test_classes}"
+          run: echo "TEST_CLASSES=${test_classes}" >> "$GITHUB_OUTPUT"
 
       # Run Apex tests in scratch org
       - name: Run Specific Apex Tests
+        env:
+          TEST_CLASSES: ${{ steps.get_test_classes.outputs.TEST_CLASSES }}
         run: |
-          sf apex run test --test-level RunSpecifiedTests  --class-names "${{ steps.get_test_classes.outputs.test_classes }}" --code-coverage --detailed-coverage --result-format human --wait 20 --output-dir ./.tests/apex
+          sf apex run test --test-level RunSpecifiedTests  --class-names $TEST_CLASSES --code-coverage --detailed-coverage --result-format human --wait 20 --output-dir ./.tests/apex
 
       # Run Apex tests in scratch org
       # - name: "Run Apex tests"
