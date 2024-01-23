@@ -201,9 +201,20 @@ jobs:
           name: scanner-results
           path: ./.scanner/
 
+      - name: Get Changed Apex Classes
+        id: get_test_classes
+        run: |
+          test_classes=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -rl --include='*.cls' '@isTest' * | xargs -n 1 basename | paste -sd "," || true)
+          echo "::set-output name=test_classes::${test_classes}"
+
       # Run Apex tests in scratch org
-      - name: "Run Apex tests"
-        run: npm run test:scratch
+      - name: Run Specific Apex Tests
+        run: |
+          sf apex run test --test-level RunSpecifiedTests  --class-names "${{ steps.get_test_classes.outputs.test_classes }}" --code-coverage --detailed-coverage --result-format human --wait 20 --output-dir ./.tests/apex
+
+      # Run Apex tests in scratch org
+      # - name: "Run Apex tests"
+      #   run: npm run test:scratch
 
       # Upload the Apex Test Reports in artifacts
       - name: Upload Apex test results
