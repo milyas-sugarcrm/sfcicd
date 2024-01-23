@@ -205,7 +205,7 @@ jobs:
         id: get_test_classes
         run: |
           test_classes=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -rl --include='*.cls' '@isTest' * | xargs -n 1 basename | paste -sd "," || true)
-          run: echo "TEST_CLASSES=${test_classes}" >> "$GITHUB_OUTPUT"
+          echo "TEST_CLASSES=${test_classes}" >> "$GITHUB_OUTPUT"
 
       # Run Apex tests in scratch org
       - name: Run Specific Apex Tests
