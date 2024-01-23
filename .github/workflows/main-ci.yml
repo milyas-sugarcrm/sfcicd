@@ -204,7 +204,7 @@ jobs:
       - name: Get Changed Apex Classes
         id: get_test_classes
         run: |
-          test_classes=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -rl --include='*.cls' '@isTest' * | xargs -n 1 basename | paste -sd "," || true)
+          test_classes=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -rl --include='*.cls' '@isTest' * | xargs grep -H -m 1 'class ' | sed -e 's/.*class \([[:alnum:]]\+\).*/\1/' | paste -sd "," || true)
           echo "TEST_CLASSES=${test_classes}" >> "$GITHUB_OUTPUT"
 
       # Run Apex tests in scratch org
@@ -214,7 +214,7 @@ jobs:
           TEST_CLASSES: ${{ steps.get_test_classes.outputs.TEST_CLASSES }}
         run: |
           echo "Test Classes are: $TEST_CLASSES"
-          sf apex run test --test-level RunSpecifiedTests  --class-names $TEST_CLASSES --code-coverage --detailed-coverage --result-format human --wait 20 --output-dir ./.tests/apex
+          sf apex run test --test-level RunSpecifiedTests --class-names $TEST_CLASSES --code-coverage --detailed-coverage --result-format human --wait 20 --output-dir ./.tests/apex
 
       # Run Apex tests in scratch org
       # - name: "Run Apex tests"
