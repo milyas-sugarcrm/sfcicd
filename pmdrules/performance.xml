@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ruleset
+  name="Apex Rules"
+  xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd"
+>
+<!-- https://docs.pmd-code.org/latest/pmd_rules_apex_performance.html -->
+<description>PMD Source Code Rules</description>
+  <rule ref="category/apex/performance.xml/AvoidDebugStatements" />
+  <rule ref="category/apex/performance.xml/EagerlyLoadedDescribeSObjectResult">
+      <properties>
+            <property name="noDefault" value="false" />
+      </properties>
+   </rule>
+   <rule ref="category/apex/performance.xml/OperationWithLimitsInLoop" />
+</ruleset>

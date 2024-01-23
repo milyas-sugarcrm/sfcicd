@@ -39,6 +39,7 @@ jobs:
           restore-keys: |
             npm-${{ env.cache-name }}-
             npm-
+
       # Install npm dependencies for Prettier, Jest and others
       - name: "Install npm dependencies"
         if: steps.cache-npm.outputs.cache-hit != 'true'
@@ -89,17 +90,17 @@ jobs:
           fi
 
           if [ -z "${{ env.DEVHUB_SFDX_JWT_USERNAME }}" ]; then
-            echo "Error: DEVHUB_SFDX_JWT_SERVER_KEY is not set or has no data."
+            echo "Error: DEVHUB_SFDX_JWT_USERNAME is not set or has no data."
             exit 1
           fi
 
           if [ -z "${{ env.DEVHUB_SFDX_JWT_INSTANCE_URL }}" ]; then
-            echo "Error: DEVHUB_SFDX_JWT_SERVER_KEY is not set or has no data."
+            echo "Error: DEVHUB_SFDX_JWT_INSTANCE_URL is not set or has no data."
             exit 1
           fi
 
           if [ -z "${{ env.DEVHUB_SFDX_JWT_ALIAS }}" ]; then
-            echo "Error: DEVHUB_SFDX_JWT_SERVER_KEY is not set or has no data."
+            echo "Error: DEVHUB_SFDX_JWT_ALIAS is not set or has no data."
             exit 1
           fi
           echo "All secrets are set and have data."
@@ -107,19 +108,72 @@ jobs:
       # Checkout the source code
       - name: "Checkout source code"
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # Set up Rulesets for PMD
+      - name: Set up Rulesets for PMD
+        id: set-rulesets
+        env:
+          PMD_RULE_BESTPRACTICES: ${{ secrets.PMD_RULE_BESTPRACTICES }}
+          PMD_RULE_CODESTYLE: ${{ secrets.PMD_RULE_CODESTYLE }}
+          PMD_RULE_DESIGN: ${{ secrets.PMD_RULE_DESIGN }}
+          PMD_RULE_DOCUMENTATION: ${{ secrets.PMD_RULE_DOCUMENTATION }}
+          PMD_RULE_ERRORPRONE: ${{ secrets.PMD_RULE_ERRORPRONE }}
+          PMD_RULE_PERFORMANCE: ${{ secrets.PMD_RULE_PERFORMANCE }}
+          PMD_RULE_SECURITY: ${{ secrets.PMD_RULE_SECURITY }}
+        run: |
+          RULESETS=""
+
+          if [ "$PMD_RULE_BESTPRACTICES" == "true" ]; then
+            RULESETS+="pmdrules/bestpractices.xml,"
+          fi
+
+          if [ "$PMD_RULE_CODESTYLE" == "true" ]; then
+            RULESETS+="pmdrules/codestyle.xml,"
+          fi
+
+          if [ "$PMD_RULE_DESIGN" == "true" ]; then
+            RULESETS+="pmdrules/design.xml,"
+          fi
+
+          if [ "$PMD_RULE_DOCUMENTATION" == "true" ]; then
+            RULESETS+="pmdrules/documentation.xml,"
+          fi
+
+          if [ "$PMD_RULE_ERRORPRONE" == "true" ]; then
+            RULESETS+="pmdrules/errorprone.xml,"
+          fi
+
+          if [ "$PMD_RULE_PERFORMANCE" == "true" ]; then
+            RULESETS+="pmdrules/performance.xml,"
+          fi
+
+          if [ "$PMD_RULE_SECURITY" == "true" ]; then
+            RULESETS+="pmdrules/security.xml,"
+          fi
+                 
+          if [ -z "$RULESETS" ]; then
+            # If RULESETS is empty, set a default value or indicator
+            DEFAULT_RULESET="pmdrules/default.xml"
+            RULESETS="$DEFAULT_RULESET"
+          fi
+
+          echo "PMD_RULESETS=$(echo $RULESETS | sed 's/,$//')" >> "$GITHUB_OUTPUT"
+          echo "RULESET $RULESETS"
 
       # Run PMD scan
-      # - name: "Run PMD scan"
-      #   uses: pmd/pmd-github-action@v1.4.1
-      #   id: pmd
-      #   with:
-      #     sourcePath: "force-app"
-      #     rulesets: "ruleset.xml"
+      - name: "Run PMD scan"
+        uses: pmd/pmd-github-action@v1.4.1
+        id: pmd
+        with:
+          sourcePath: "force-app"
+          rulesets: "${{ steps.set-rulesets.outputs.PMD_RULESETS }}"
 
-      # # # Check for PMD violations
-      # - name: "Check for PMD violations"
-      #   if: steps.pmd.outputs.violations != 0
-      #   run: exit 1
+      # Check for PMD violations
+      - name: "Check for PMD violations"
+        if: steps.pmd.outputs.violations != 0
+        run: exit 1
 
       # Install Salesforce CLI
       - name: "Install Salesforce CLI"
@@ -135,7 +189,12 @@ jobs:
 
       # Authenticate dev hub via jwt
       - name: "Authenticate Dev Hub via JWT"
-        run: sf org login jwt --client-id ${{ env.DEVHUB_SFDX_CLIENT_ID }} --jwt-key-file ${{ env.DEVHUB_SFDX_JWT_SERVER_KEY }} --username ${{ env.DEVHUB_SFDX_JWT_USERNAME }} --instance-url ${{ env.DEVHUB_SFDX_JWT_INSTANCE_URL }} --alias ${{ env.DEVHUB_SFDX_JWT_ALIAS }}
+        env:
+          SECRET: ${{env.DEVHUB_SFDX_JWT_SERVER_KEY}}
+        run: |
+          echo "${SECRET}" > $HOME/server.key
+          chmod 600 $HOME/server.key
+          sf org login jwt --client-id ${{ env.DEVHUB_SFDX_CLIENT_ID }} --jwt-key-file $HOME/server.key --username ${{ env.DEVHUB_SFDX_JWT_USERNAME }} --instance-url ${{ env.DEVHUB_SFDX_JWT_INSTANCE_URL }} --alias ${{ env.DEVHUB_SFDX_JWT_ALIAS }}
 
       # Check Daily Scratch Org Limit
       - name: "Check Daily Scratch Org Limit"
@@ -201,17 +260,19 @@ jobs:
           name: scanner-results
           path: ./.scanner/
 
-      - name: Get Changed Apex Classes
-        id: get_test_classes
+      - name: Get Apex Test Classes
+        id: get-test-classes
         run: |
-          test_classes=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -rl --include='*.cls' '@isTest' * | xargs grep -H -m 1 'class ' | sed -e 's/.*class \([[:alnum:]]\+\).*/\1/' | paste -sd "," || true)
+          git fetch --all
+          echo "Base branch: ${GITHUB_BASE_REF}"
+          echo "Feature branch: ${GITHUB_HEAD_REF}"
+          test_classes=$(grep -rl --include='*.cls' '@isTest' $(git diff --name-only --diff-filter ACMRTUXB "origin/${GITHUB_BASE_REF}...origin/${GITHUB_HEAD_REF}") | xargs grep -H -m 1 'class ' | sed -e 's/.*class \([[:alnum:]]\+\).*/\1/' | paste -sd "," || true)
           echo "TEST_CLASSES=${test_classes}" >> "$GITHUB_OUTPUT"
 
       # Run Apex tests in scratch org
       - name: Run Specific Apex Tests
-        id: running_apex_tests
         env:
-          TEST_CLASSES: ${{ steps.get_test_classes.outputs.TEST_CLASSES }}
+          TEST_CLASSES: ${{ steps.get-test-classes.outputs.TEST_CLASSES }}
         run: |
           echo "Test Classes are: $TEST_CLASSES"
           sf apex run test --test-level RunSpecifiedTests --class-names $TEST_CLASSES --code-coverage --detailed-coverage --result-format human --wait 20 --output-dir ./.tests/apex
@@ -248,7 +309,7 @@ jobs:
             echo "Passed: Apex code coverage is $coverage%."
           fi
 
-      # Housekeeping
+      # Delete the Scratch Org
       - name: "Delete scratch org"
         if: always()
         run: |

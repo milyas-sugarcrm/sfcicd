@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ruleset
+  name="Apex Rules"
+  xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd"
+>
+<!-- https://docs.pmd-code.org/latest/pmd_rules_apex_bestpractices.html -->
+<description>PMD Source Code Rules</description>
+   <rule
+    ref="category/apex/bestpractices.xml/ApexAssertionsShouldIncludeMessage"
+  />
+   <rule
+    ref="category/apex/bestpractices.xml/ApexUnitTestClassShouldHaveAsserts"
+  />
+   <rule
+    ref="category/apex/bestpractices.xml/ApexUnitTestClassShouldHaveRunAs"
+  />
+   <rule
+    ref="category/apex/bestpractices.xml/ApexUnitTestMethodShouldHaveIsTestAnnotation"
+  />
+   <rule
+    ref="category/apex/bestpractices.xml/ApexUnitTestShouldNotUseSeeAllDataTrue"
+  />
+   <rule ref="category/apex/bestpractices.xml/AvoidGlobalModifier" />
+   <rule ref="category/apex/bestpractices.xml/AvoidLogicInTrigger" />
+   <rule ref="category/apex/bestpractices.xml/DebugsShouldUseLoggingLevel" />
+   <rule ref="category/apex/bestpractices.xml/UnusedLocalVariable" />
+</ruleset>
