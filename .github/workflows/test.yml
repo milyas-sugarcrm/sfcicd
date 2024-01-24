@@ -34,4 +34,4 @@ jobs:
         run: |
           echo $SECRET >> $HOME/server.key
           sudo chmod 600 $HOME/server.key
-          sf org login jwt --client-id ${{ env.DEVHUB_SFDX_CLIENT_ID }} --jwt-key-file $SECRET --username ${{ env.DEVHUB_SFDX_JWT_USERNAME }} --instance-url ${{ env.DEVHUB_SFDX_JWT_INSTANCE_URL }} --alias ${{ env.DEVHUB_SFDX_JWT_ALIAS }}
+          sf org login jwt --client-id ${{ env.DEVHUB_SFDX_CLIENT_ID }} --jwt-key-file $HOME/server.key --username ${{ env.DEVHUB_SFDX_JWT_USERNAME }} --instance-url ${{ env.DEVHUB_SFDX_JWT_INSTANCE_URL }} --alias ${{ env.DEVHUB_SFDX_JWT_ALIAS }}
