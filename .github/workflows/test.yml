@@ -1,4 +1,4 @@
-name: Validate PR - CI
+name: TEST
 
 # Definition when the workflow should run
 on:
@@ -22,6 +22,12 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
+      - name: "Install Salesforce CLI"
+        run: |
+          npm install @salesforce/cli --location=global
+          nodeInstallPath=$(npm config get prefix)
+          echo "$nodeInstallPath/bin" >> $GITHUB_PATH
+          sf --version
       - name: "Authenticate Dev Hub via JWT"
         env:
           SECRET: ${{env.DEVHUB_SFDX_JWT_SERVER_KEY1}}
