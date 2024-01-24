@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ruleset
+  name="Apex Rules"
+  xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd"
+>
+<!-- https://docs.pmd-code.org/latest/pmd_rules_apex_security.html -->
+<description>PMD Source Code Rules</description>
+   <rule ref="category/apex/security.xml/ApexBadCrypto" />
+   <rule ref="category/apex/security.xml/ApexCRUDViolation">
+      <properties>
+          <property name="readAuthMethodPattern" value="" />
+          <property name="readAuthMethodTypeParamIndex" value="0" />
+          <property name="mergeAuthMethodPattern" value="" />
+          <property name="mergeAuthMethodTypeParamIndex" value="0" />
+          <property name="updateAuthMethodPattern" value="" />
+          <property name="updateAuthMethodTypeParamIndex" value="0" />
+          <property name="createAuthMethodPattern" value="" />
+          <property name="createAuthMethodTypeParamIndex" value="0" />
+          <property name="deleteAuthMethodPattern" value="" />
+          <property name="deleteAuthMethodTypeParamIndex" value="0" />
+          <property name="undeleteAuthMethodPattern" value="" />
+          <property name="undeleteAuthMethodTypeParamIndex" value="0" />
+      </properties>
+  </rule>  
+  <rule ref="category/apex/security.xml/ApexDangerousMethods" />
+  <rule ref="category/apex/security.xml/ApexInsecureEndpoint" />
+  <rule ref="category/apex/security.xml/ApexOpenRedirect" />
+  <rule ref="category/apex/security.xml/ApexSharingViolations" />
+  <rule ref="category/apex/security.xml/ApexSOQLInjection" />
+  <rule ref="category/apex/security.xml/ApexSuggestUsingNamedCred" />
+  <rule ref="category/apex/security.xml/ApexXSSFromEscapeFalse" />
+  <rule ref="category/apex/security.xml/ApexXSSFromURLParam" />  
+</ruleset>
