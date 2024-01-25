@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>sp1Payment_Alert_to_Billing_Contact</name>
+        <label>Order.Payment_Alert_to_Billing_Contact</label>
+        <locationX>308</locationX>
+        <locationY>276</locationY>
+        <actionName>Order.Payment_Alert_to_Billing_Contact</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Order.Payment_Alert_to_Billing_Contact</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>59.0</apiVersion>
+    <description
+  >Migrated from the: Email Alert to Billing Contact if Balance is due workflow rule
+Workflow rule description: Send Email alert to Billing Contact if balance is due 15 days after invoice due date.&quot;</description>
+    <environments>Default</environments>
+    <label>Email Alert to Billing Contact if Balance is due_2</label>
+    <migratedFromWorkflowRuleName
+  >Email Alert to Billing Contact if Balance is due</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <doesRequireRecordChangedToMeetCriteria
+    >true</doesRequireRecordChangedToMeetCriteria>
+        <filterFormula
+    >AND(OR(ISBLANK({!$Record.Invoice_Ship_Via__c}),ISBLANK( {!$Record.Invoice_Tracking_Number__c} )),{!$Record.Balance_Due__c} &lt;&gt; 0)</filterFormula>
+        <object>Order</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <scheduledPaths>
+            <name>ScheduledPath1</name>
+            <connector>
+                <targetReference
+        >sp1Payment_Alert_to_Billing_Contact</targetReference>
+            </connector>
+            <label>ScheduledPath1</label>
+            <offsetNumber>15</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <recordField>Invoice_Due_Date__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

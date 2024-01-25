@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>WO 12 hours after order moved to 01 - waiting for payment</name>
+    <style>none</style>
+    <subject
+  >CRITICAL Work Order {!Order.OrderNumber} - 12 hours since moved to 01 - Waiting for Payment</subject>
+    <textOnly>Hello Phunions,
+
+THIS WORK ORDER IS MARKED AS CRITICAL.
+
+It&apos;s been 12 hours since Invoice {!Order.Invoice_Number__c} was sent to the customer and we haven&apos;t received payment. Please follow up with {!Order.WOAccountLink__c} immediately. Delays in payment will delay the order and may cause the due date to not be met.
+
+{!Order.WONameLink__c}
+
+Thanks,
+
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

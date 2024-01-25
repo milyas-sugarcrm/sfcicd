@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>12 hours have passed since WO on 8.2 On Shelf to ship to client</name>
+    <style>none</style>
+    <subject
+  >Work Order {!Order.OrderNumber} - 12 hours passed since WO was changed to &quot;On Shelf to Ship to Client&quot;</subject>
+    <textOnly>Operations Team,
+
+{!Order.OrderNumber} for {!Order.WOAccountLink__c} has been in &quot;8.2 On Shelf to Ship to Client&quot; for 12 hours. Locate the order, verify that it is ready to ship and coordinate shipment immediately.
+
+{!Order.WONameLink__c}
+
+Thanks,
+
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

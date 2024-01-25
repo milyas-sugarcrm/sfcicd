@@ -1,0 +1,10 @@
+</!DOCTYPE html>
+<html>
+<head>
+</head>
+<p>Hello Operations Team:</p><p>12 Hours has passed since {!PurchaseOrder_LineItem__c.PONameLink__c} has been sent, and it has not yet been confirmed by {!PurchaseOrder_LineItem__c.SupplierNameLink__c}. Please reach out to {!PurchaseOrder_LineItem__c.SupplierNameLink__c} for confirmation that the PO is received and all details listed below are accurate:</p><ul><li>Product code and decoration description are confirmed to be accurate</li><li>Quantity is confirmed to be in stock and available to fulfill this order</li><li>Estimated ship date is confirmed to be accurate with no additional rush fees</li><li>All pricing is confirmed to be accurate</li><li>Ship method and carrier is confirmed with no additional handling charges
+</li><li>Supplied artwork is confirmed to be formatted for production</li></ul><p>Upon confirmation, please fill in the appropriate fields on the PO to move to the In Production Status.</p>
+{!PurchaseOrder_LineItem__c.PONameLink__c}<br/>
+<p>Thanks,<br/>Ralph the Rooster</p>
+</body>
+</html>

@@ -1,0 +1,18 @@
+</!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+Hi,
+<br/><br/> {!User.Name} has requested to update the credits in bank against  <a href='{!baseurl}/lightning/r/Opportunity/{!Opportunity.Id}/view'>{!Opportunity.Name}</a> opportunity. User is trying to use {usingCredits} credits.  
+  	<p>It has already  {!User.Design_Bank__c} credits in the bank. </p>   <br/>
+<div  style="display:flex;padding-left:260px">
+<div align='center' style='width: 10rem;height: 2rem;border: none;color: #fff;background-color: #5cb85c;border-color: #4cae4c;border-radius: 10px;padding-top:15px'>
+	   <a href='{!baseurl}/apex/UpdateCredits?Id={!User.Id}&status=true&estimate={!Estimate__c.Id}' style='color: white;text-decoration: none;'>Update Credits</a> 
+</div>
+<div align='center' style=' margin-left: 15px;width: 10rem;height: 2rem;border: none;color: #fff;background-color: red;border-color: #4cae4c;border-radius: 10px;padding-top:15px'>
+<a href='{!baseurl}/apex/UpdateCredits?Id={!User.Id}&status=false&estimate={!Estimate__c.Id}' style='color: white;text-decoration: none;'>Reject Request</a>
+      </div>
+</div>
+    </body>
+</html>

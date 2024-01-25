@@ -1,0 +1,1982 @@
+<apex:page Controller="ESPSearchDetailsVFpageController">
+  <apex:includeLightning />
+  <script>
+    var previousOnload = window.onload;
+    window.onload = function () {
+      var count = "{!Search.Rating}";
+
+      if (previousOnload) {
+        previousOnload();
+      }
+
+      if (count == 1) {
+        createStars(0, 1, 4);
+      } else if (count == 2) {
+        createStars(1, 0, 4);
+      } else if (count == 3) {
+        createStars(1, 1, 3);
+      } else if (count == 4) {
+        createStars(2, 0, 3);
+      } else if (count == 5) {
+        createStars(2, 1, 2);
+      } else if (count == 6) {
+        createStars(3, 0, 2);
+      } else if (count == 7) {
+        createStars(3, 1, 1);
+      } else if (count == 8) {
+        createStars(4, 0, 1);
+      } else if (count == 9) {
+        createStars(4, 1, 0);
+      } else if (count == 10) {
+        createStars(5, 0, 0);
+      } else {
+        var ratingLabel = document.createElement("label");
+        ratingLabel.innerText = "Not Rated";
+        ratingLabel.style = "font-size: 1rem;";
+        document.getElementById("RatingStatus").appendChild(ratingLabel);
+        var ratingLabel2 = document.createElement("label");
+        ratingLabel2.innerText = "Not Rated";
+        ratingLabel2.style = "font-size: 1rem;";
+        document.getElementById("RatingStatus2").appendChild(ratingLabel2);
+      }
+    };
+    function createStars(fillStar, halfStar, emptyStar) {
+      for (var j = 0; j < fillStar; j++) {
+        var img = document.createElement("img");
+        img.src = "{!$Resource.fillStar}";
+        img.style.width = "25px";
+        document.getElementById("RatingStatus").appendChild(img);
+        var img2 = document.createElement("img");
+        img2.src = "{!$Resource.fillStar}";
+        img2.style.width = "25px";
+        document.getElementById("RatingStatus2").appendChild(img2);
+      }
+      for (var j = 0; j < halfStar; j++) {
+        var img = document.createElement("img");
+        img.src = "{!$Resource.halfStar}";
+        img.style.width = "25px";
+        document.getElementById("RatingStatus").appendChild(img);
+        var img2 = document.createElement("img");
+        img2.src = "{!$Resource.halfStar}";
+        img2.style.width = "25px";
+        document.getElementById("RatingStatus2").appendChild(img2);
+      }
+      for (var j = 0; j < emptyStar; j++) {
+        var img = document.createElement("img");
+        img.src = "{!$Resource.grayStar}";
+        img.style.width = "25px";
+        document.getElementById("RatingStatus").appendChild(img);
+        var img2 = document.createElement("img");
+        img2.src = "{!$Resource.grayStar}";
+        img2.style.width = "25px";
+        document.getElementById("RatingStatus2").appendChild(img2);
+      }
+      if ("{!Search.RatingCount}" != null && "{!Search.RatingCount}" != 0) {
+        var ratingLabel = document.createElement("label");
+        ratingLabel.innerText = " ({!Search.RatingCount})";
+        ratingLabel.style = "font-size: 18px;vertical-align: bottom";
+        document.getElementById("RatingStatus").appendChild(ratingLabel);
+        var ratingLabel2 = document.createElement("label");
+        ratingLabel2.innerText = " ({!Search.RatingCount})";
+        //ratingLabel2.style.fontSize="18px";
+        ratingLabel2.style = "font-size: 18px;vertical-align: bottom";
+        document.getElementById("RatingStatus2").appendChild(ratingLabel2);
+      }
+    }
+    function changeImage(img) {
+      var currentImage = document.getElementById("mainImage");
+      currentImage.src = img;
+    }
+    function addProduct(prodId) {
+      console.log("prodId: " + prodId);
+      document.getElementById("lite_box_loading_overlay").style.display =
+        "block";
+      CallAddProductMethod(prodId);
+    }
+    function addSingleProduct() {
+      document.getElementById("lite_box_loading_overlay").style.display =
+        "block";
+      CallAddSingleProductMethod();
+    }
+    function displayMessage(message) {
+      if (message == true) {
+        document.getElementById("status_message").style.display = "block";
+      } else {
+        document.getElementById("error_message").style.display = "block";
+      }
+      document.getElementById("lite_box_loading_overlay").style.display =
+        "none";
+      setTimeout(function () {
+        document.getElementById("status_message").style.display = "none";
+        document.getElementById("error_message").style.display = "none";
+      }, 2000);
+
+      console.log("Message: " + message);
+    }
+  </script>
+
+  <apex:form>
+    <apex:actionFunction
+      name="CallAddProductMethod"
+      action="{!addProduct}"
+      oncomplete="displayMessage({!valueReturned})"
+      reRender=""
+    >
+      <apex:param name="recId" value="" assignTo="{!recId}" />
+    </apex:actionFunction>
+    <apex:actionFunction
+      name="CallAddSingleProductMethod"
+      action="{!addSingleProduct}"
+      oncomplete="displayMessage({!valueReturned})"
+      reRender=""
+    >
+    </apex:actionFunction>
+  </apex:form>
+
+  <div
+    id="lite_box_loading_overlay"
+    style="
+      position: fixed;
+      display: none;
+      background-color: rgba(0, 0, 0, 0.7);
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 9999999 !important;
+    "
+  >
+    <div
+      id="lite_box_loading_overlay_inner"
+      style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 9999 !important;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        border-radius: 0;
+        -webkit-margin-before: -2%;
+      "
+    >
+      <img width="60px" src="{!$Resource.loading}" />
+    </div>
+  </div>
+  <div
+    style="
+      padding-top: 10px;
+      max-width: 100%;
+      height: 100%;
+      right: 0;
+      left: 0;
+      position: absolute;
+      box-sizing: border-box;
+      padding: 15px;
+    "
+  >
+    <div
+      id="status_message"
+      class="status_message"
+      style="
+        background: #00ad00;
+        display: none;
+        position: fixed;
+        left: 50%;
+        font-size: 16px;
+        z-index: 999999999999;
+        padding: 16px 20px;
+        border-radius: 5px;
+        min-width: 200px;
+        width: auto;
+        text-align: center;
+        color: #ffffff;
+        transform: translate(-50%, 0px);
+        display: none;
+      "
+    >
+      The Product has been added successfully.
+    </div>
+    <div
+      id="error_message"
+      style="
+        background: #ff0000;
+        display: block;
+        position: fixed;
+        left: 50%;
+        font-size: 16px;
+        z-index: 999999999999;
+        padding: 16px 20px;
+        border-radius: 5px;
+        min-width: 200px;
+        width: auto;
+        text-align: center;
+        color: #ffffff;
+        transform: translate(-50%, 0px);
+        display: none;
+      "
+    >
+      Some parsing error occured while adding the product.
+    </div>
+    <div
+      style="
+        padding-left: 0.9375rem;
+        background: #fff;
+        padding-right: 0.9375rem;
+        width: 97.5%;
+        background: #fbfbfb;
+        display: inline-block;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-width: 1.5px;
+        border-style: hidden;
+      "
+    >
+      <h1
+        style="
+          color: #283799;
+          line-height: 1.4;
+          font-size: 1.3rem;
+          font-weight: 400;
+          margin-bottom: 0.5rem;
+        "
+      >
+        {!Search.Name}
+      </h1>
+      <br />
+      <div style="display: flex">
+        <label
+          style="
+            color: darkslategray;
+            font-size: 1rem;
+            line-height: 1.15rem;
+            margin-bottom: 0.5rem;
+            width: 14%;
+          "
+        >
+          Product # : {!Search.Number_Z}
+          <apex:outputPanel rendered="{!if(!Search.isConfirmed, false ,true)}">
+            <img
+              title="Confirmed"
+              style="width: 6%"
+              src="{!$Resource.isConfirmed}"
+            />
+          </apex:outputPanel>
+        </label>
+        <apex:outputPanel rendered="{!if(!Search.lastDateExist, false ,true)}">
+          <label
+            style="
+              color: #55656d;
+              font-size: 1rem;
+              line-height: 1.15rem;
+              margin-bottom: 0.5rem;
+            "
+          >
+            Last Update By Supplier : {!Search.updateDate}
+          </label>
+        </apex:outputPanel>
+      </div>
+      <!--  <apex:outputPanel rendered="{!if(!Search.idExist, false ,true)}">
+<H1 style="font-weight:bold;font-style:italic;font-size: 1rem; line-height: 1.15rem; margin-bottom: .5rem;">
+CPN-{!Search.Id}
+</H1>
+</apex:outputPanel>
+-->
+
+      <div>
+        <div
+          style="
+            background: #fff;
+            float: left;
+            margin-top: 5px;
+            margin-bottom: 15px !important;
+            padding-right: 0;
+            text-align: center;
+            border-radius: 3px;
+            border: 1px solid #f2f0f0;
+            width: 25%;
+          "
+        >
+          <table>
+            <tr>
+              <apex:outputPanel
+                rendered="{!if(!Search.imageExits, false ,true)}"
+              >
+                <img
+                  id="mainImage"
+                  style="width: 85%"
+                  src="{!Search.ImageUrl}"
+                />
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.imageExits, true ,false)}"
+              >
+                <img style="width: 85%" src="{!$Resource.No_Image_Available}" />
+              </apex:outputPanel>
+            </tr>
+            <tr sytle="width: 80%">
+              <apex:repeat value="{!Search.variantImages}" var="images">
+                <th>
+                  <img
+                    style="cursor: pointer"
+                    src="{!images}"
+                    width="45"
+                    height="45"
+                    onclick="changeImage('{!images}')"
+                  />
+                </th>
+              </apex:repeat>
+            </tr>
+          </table>
+        </div>
+
+        <div style="padding-left: 20px; padding: 0; width: 74%; float: right">
+          <div>
+            <apex:outputPanel
+              rendered="{!if(!Search.hasRushService, false ,true)}"
+            >
+              <label
+                style="font-style: italic; color: #55656d; font-size: 1rem"
+              >
+                Rush Service Avalialbe
+              </label>
+            </apex:outputPanel>
+          </div>
+          <div style="padding-bottom: 10px; padding-top: 2px">
+            <apex:outputPanel
+              rendered="{!if(!Search.shortDescriptionExist, false ,true)}"
+            >
+              <label
+                style="
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                {!Search.ShortDescription} </label
+              ><br />
+            </apex:outputPanel>
+          </div>
+
+          <apex:outputPanel rendered="{!if(!Search.priceExist, false ,true)}">
+            <div>
+              <label
+                style="
+                  font-weight: bold;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                Price:
+              </label>
+              <label
+                style="
+                  color: #283799;
+                  font-weight: bold;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                ${!Search.lowestPrice} - ${!Search.highestPrice}
+              </label>
+            </div>
+          </apex:outputPanel>
+          <apex:outputPanel rendered="{!if(!Search.priceExist, true ,false)}">
+            <div>
+              <label
+                style="
+                  font-weight: bold;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                Price:
+              </label>
+              <label
+                style="
+                  color: #283799;
+                  font-weight: bold;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                QUR
+              </label>
+            </div>
+          </apex:outputPanel>
+          <table style="width: 100%">
+            <tbody>
+              <tr style="background: lightgray">
+                <td colspan="2"></td>
+              </tr>
+              <tr>
+                <td style="width: 70%">
+                  <apex:outputPanel
+                    rendered="{!if(!Search.colorsExist, false ,true)}"
+                  >
+                    <div>
+                      <div
+                        style="
+                          color: #55656d;
+                          font-size: 1rem;
+                          line-height: 1.15rem;
+                          margin-top: 20px;
+                        "
+                      >
+                        Colors
+                      </div>
+                      <label style="color: #283799; font-size: 1rem">
+                        {!Search.Colors}
+                      </label>
+                    </div>
+                  </apex:outputPanel>
+                  <apex:outputPanel
+                    rendered="{!if(!Search.sizeExist, false ,true)}"
+                  >
+                    <div
+                      style="
+                        color: #55656d;
+                        font-size: 1rem;
+                        line-height: 1.15rem;
+                        margin-top: 20px;
+                      "
+                    >
+                      Sizes
+                    </div>
+                    <label style="font-size: 1rem"> {!Search.Sizes} </label>
+                  </apex:outputPanel>
+                  <apex:outputPanel
+                    rendered="{!if(!Search.imprintMethodsExist, false ,true)}"
+                  >
+                    <div
+                      style="
+                        color: #55656d;
+                        font-size: 1rem;
+                        line-height: 1.15rem;
+                        margin-top: 20px;
+                      "
+                    >
+                      Imprint Methods
+                    </div>
+                    <label style="font-size: 1rem">
+                      {!Search.ImprintMethod}
+                    </label>
+                  </apex:outputPanel>
+                  <apex:outputPanel
+                    rendered="{!if(!Search.prodTimeExist, false ,true)}"
+                  >
+                    <div
+                      style="
+                        color: #55656d;
+                        font-size: 1rem;
+                        line-height: 1.15rem;
+                        margin-top: 20px;
+                      "
+                    >
+                      Production Time
+                    </div>
+                    <label style="font-size: 1rem">
+                      {!Search.productionTime}
+                    </label>
+                    <br />
+                  </apex:outputPanel>
+
+                  <apex:outputPanel
+                    rendered="{!if(!Search.materialExist, false ,true)}"
+                  >
+                    <div
+                      style="
+                        color: #55656d;
+                        font-size: 1rem;
+                        line-height: 1.15rem;
+                        margin-top: 20px;
+                      "
+                    >
+                      Materials
+                    </div>
+                    <label style="font-size: 1rem"> {!Search.materials} </label>
+                  </apex:outputPanel>
+                  <apex:outputPanel
+                    rendered="{!if(!Search.fobShippingPointExist, false ,true)}"
+                  >
+                    <div
+                      style="
+                        color: #55656d;
+                        font-size: 1rem;
+                        line-height: 1.15rem;
+                        margin-top: 20px;
+                      "
+                    >
+                      FOB/Shipping Point
+                    </div>
+                    <label style="font-size: 1rem">{!Search.fobPoints} </label>
+                  </apex:outputPanel>
+                </td>
+                <td style="padding-top: 25px; vertical-align: top">
+                  <div
+                    style="
+                      v-align: top;
+                      padding: 10px;
+                      background-color: #f4f4f4;
+                    "
+                  >
+                    <apex:outputPanel
+                      rendered="{!if(!Search.supplierNameExist, false ,true)}"
+                    >
+                      <label style="font-size: 1rem; color: #283799">
+                        {!Search.SupplierName} </label
+                      ><br />
+                    </apex:outputPanel>
+                    <apex:outputPanel
+                      rendered="{!if(!Search.supplierCodeExist, false ,true)}"
+                    >
+                      <a
+                        style="
+                          font-size: 1rem;
+                          color: #283799;
+                          font-style: italic;
+                          pointer-events: none;
+                        "
+                      >
+                        asi/{!Search.AsiNumber}</a
+                      >
+                      <br />
+                    </apex:outputPanel>
+                    <div id="RatingStatus"></div>
+                    <apex:outputPanel
+                      rendered="{!if(!Search.phoneExist, false ,true)}"
+                    >
+                      <label style="font-size: 1rem; font-weight: bold">
+                        {!Search.Work} </label
+                      ><br />
+                    </apex:outputPanel>
+                    <apex:outputPanel
+                      rendered="{!if(!Search.emailExist, false ,true)}"
+                    >
+                      <a
+                        href="mailto:{!Search.Email}"
+                        style="
+                          color: #283799;
+                          font-size: 1rem;
+                          font-weight: bold;
+                          font-size: 14px;
+                        "
+                      >
+                        Email
+                      </a>
+                      <br />
+                    </apex:outputPanel>
+                    <apex:outputPanel
+                      rendered="{!if(!Search.websiteExist, false ,true)}"
+                    >
+                      <a
+                        target="_blank"
+                        href=" {!Search.Website}"
+                        style="
+                          color: #283799;
+                          font-size: 1rem;
+                          font-weight: bold;
+                        "
+                      >
+                        Website
+                      </a>
+                    </apex:outputPanel>
+                    <apex:outputPanel
+                      rendered="{!if(!Search.catalogExist, false ,true)}"
+                    >
+                      <p
+                        style="
+                          color: #55656d;
+                          font-size: 1rem;
+                          line-height: 1.15rem;
+                          margin-bottom: 0.5rem;
+                        "
+                      >
+                        Catalogs
+                      </p>
+                      <a
+                        style="
+                          pointer-events: none;
+                          color: #283799;
+                          font-size: 1rem;
+                          font-weight: bold;
+                        "
+                      >
+                        {!Search.catalogs}
+                      </a>
+                      <br />
+                    </apex:outputPanel>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div
+      style="
+        padding-left: 0.9375rem;
+        background: #fff;
+        padding-right: 0.9375rem;
+        width: 97.5%;
+        background: #fbfbfb;
+        display: inline-block;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-width: 1.5px;
+        border-style: hidden;
+      "
+    >
+      <table style="width: 100%">
+        <tbody>
+          <apex:outputPanel rendered="{!if(!Search.pricingExist, false ,true)}">
+            <tr style="background: lightgray">
+              <td></td>
+            </tr>
+            <tr>
+              <td style="background: #283799; padding: 5px; color: white">
+                <h1 style="font-size: 18px">Pricing</h1>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <table
+                  style="
+                    font-size: 0.9rem;
+                    width: 50%;
+                    border: 1px solid;
+                    border-color: #dcdad9;
+                    border-collapse: collapse;
+                  "
+                >
+                  <thead>
+                    <tr style="background: #f4f9ff">
+                      <th
+                        style="
+                          border: 1px solid;
+                          border-color: #dcdad9;
+                          border-collapse: collapse;
+                        "
+                      >
+                        Quantity
+                      </th>
+                      <th
+                        style="
+                          border: 1px solid;
+                          border-color: #dcdad9;
+                          border-collapse: collapse;
+                        "
+                      >
+                        Catalog Price
+                      </th>
+                      <th
+                        style="
+                          border: 1px solid;
+                          border-color: #dcdad9;
+                          border-collapse: collapse;
+                        "
+                      >
+                        Net Cost
+                      </th>
+                      <th
+                        style="
+                          border: 1px solid;
+                          border-color: #dcdad9;
+                          border-collapse: collapse;
+                        "
+                      >
+                        Profit
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <apex:repeat value="{!Search.prices}" var="price">
+                      <tr>
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                            font-weight: 500;
+                          "
+                        >
+                          {!price.quantity}
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                            font-weight: 500;
+                          "
+                        >
+                          ${!price.price}
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                            font-weight: 500;
+                          "
+                        >
+                          ${!price.cost}
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                            font-weight: 500;
+                          "
+                        >
+                          <apex:outputText value="{0, number,$###,##.##}">
+                            <apex:param value="{!price.profit}" />
+                          </apex:outputText>
+                        </th>
+                      </tr>
+                    </apex:repeat>
+                  </tbody>
+                </table>
+                <br />
+                <apex:outputPanel
+                  rendered="{!if(!Search.PriceIncludesExist, false ,true)}"
+                >
+                  <label style="font-size: 1rem; font-weight: bold">
+                    Price Includes:</label
+                  >
+                  <label style="font-size: 1rem">
+                    {!Search.PriceIncludes} </label
+                  ><br />
+                </apex:outputPanel>
+                <apex:outputPanel
+                  rendered="{!if(!Search.priceDiscountCodeExist, false ,true)}"
+                >
+                  <label style="font-size: 1rem; font-weight: bold">
+                    {!Search.priceDiscountCode}</label
+                  >
+                  <label style="font-size: 1rem">
+                    Price subject to change without notice, please verify with
+                    Supplier. </label
+                  ><br /> </apex:outputPanel
+                ><!--disabled="{if({!$CurrentPage.Parameters.isEspProduct}),true, false)}"  -->
+
+                <apex:outputPanel
+                  rendered="{!if(!Search.addProdType, true ,false)}"
+                >
+                  <button
+                    onclick="addSingleProduct();"
+                    style="
+                      font-size: 0.8rem;
+                      margin-top: 5px;
+                      cursor: pointer;
+                      padding: 7px;
+                      background: #283799;
+                      color: white;
+                    "
+                    title="Add Product"
+                  >
+                    Add Product
+                  </button>
+                </apex:outputPanel>
+
+                <br /><br />
+              </td>
+            </tr>
+          </apex:outputPanel>
+          <apex:outputPanel
+            rendered="{!if(!Search.variantInfoExist, false ,true)}"
+          >
+            <tr style="background: lightgray">
+              <td></td>
+            </tr>
+            <tr>
+              <td style="background: #283799; padding: 5px; color: white">
+                <h1 style="font-size: 18px">Pricing</h1>
+              </td>
+            </tr>
+            <apex:repeat value="{!Search.variantInfo}" var="variantInfo">
+              <tr>
+                <td>
+                  <div
+                    style="
+                      font-weight: bold;
+                      font-size: 1rem;
+                      line-height: 1.15rem;
+                      margin-top: 20px;
+                    "
+                  >
+                    {!variantInfo.Name}
+                  </div>
+                  <label style="font-size: 1rem">
+                    {!variantInfo.Description}
+                  </label>
+                  <table
+                    style="
+                      border: 1px solid;
+                      border-color: #dcdad9;
+                      border-collapse: collapse;
+                      font-size: 0.9rem;
+                      width: 50%;
+                    "
+                  >
+                    <thead>
+                      <tr style="background: #f4f9ff">
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                          "
+                        >
+                          Quantity
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                          "
+                        >
+                          Catalog Price
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                          "
+                        >
+                          Net Cost
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                          "
+                        >
+                          Profit
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <apex:repeat value="{!variantInfo.Prices}" var="price">
+                        <tr>
+                          <th
+                            style="
+                              border: 1px solid;
+                              border-color: #dcdad9;
+                              border-collapse: collapse;
+                              font-weight: 500;
+                            "
+                          >
+                            {!price.quantity}
+                          </th>
+                          <th
+                            style="
+                              border: 1px solid;
+                              border-color: #dcdad9;
+                              border-collapse: collapse;
+                              font-weight: 500;
+                            "
+                          >
+                            ${!price.price}
+                          </th>
+                          <th
+                            style="
+                              border: 1px solid;
+                              border-color: #dcdad9;
+                              border-collapse: collapse;
+                              font-weight: 500;
+                            "
+                          >
+                            ${!price.cost}
+                          </th>
+                          <th
+                            style="
+                              border: 1px solid;
+                              border-collapse: collapse;
+                              border-color: #dcdad9;
+                              font-weight: 500;
+                            "
+                          >
+                            <apex:outputText value="{0, number,$###,##0.##}">
+                              <apex:param value="{!price.profit}" />
+                            </apex:outputText>
+                          </th>
+                        </tr>
+                      </apex:repeat>
+                      <apex:outputPanel
+                        rendered="{!if(!variantInfo.variantPrices, true ,false)}"
+                      >
+                        <tr>
+                          <th
+                            style="
+                              border: 1px solid;
+                              border-color: #dcdad9;
+                              border-collapse: collapse;
+                              font-weight: 500;
+                            "
+                          ></th>
+                          <th
+                            style="
+                              border: 1px solid;
+                              border-color: #dcdad9;
+                              border-collapse: collapse;
+                              font-weight: 500;
+                            "
+                          >
+                            QUR
+                          </th>
+                          <th
+                            style="
+                              border: 1px solid;
+                              border-color: #dcdad9;
+                              border-collapse: collapse;
+                              font-weight: 500;
+                            "
+                          >
+                            QUR
+                          </th>
+                          <th
+                            style="
+                              border: 1px solid;
+                              border-collapse: collapse;
+                              border-color: #dcdad9;
+                              font-weight: 500;
+                            "
+                          >
+                            N/A
+                          </th>
+                        </tr>
+                      </apex:outputPanel>
+                    </tbody>
+                  </table>
+                  <apex:outputPanel
+                    rendered="{!if(!variantInfo.PriceIncludesExist, false ,true)}"
+                  >
+                    <label style="font-size: 1rem; font-weight: bold">
+                      Price Includes:</label
+                    >
+                    <label style="font-size: 1rem">
+                      {!variantInfo.PriceIncludes} </label
+                    ><br />
+                  </apex:outputPanel>
+                  <apex:outputPanel
+                    rendered="{!if(!variantInfo.priceDiscountCodeExist, false ,true)}"
+                  >
+                    <label style="font-size: 1rem; font-weight: bold">
+                      {!variantInfo.priceDiscountCode}
+                    </label>
+                  </apex:outputPanel>
+                  <apex:outputPanel
+                    rendered="{!if(!variantInfo.multiplePriceDiscountsExist, false ,true)}"
+                  >
+                    <label style="font-size: 1rem; font-weight: bold">
+                      {!variantInfo.multiplePriceDiscounts}
+                    </label>
+                  </apex:outputPanel>
+                  <label style="font-size: 1rem">
+                    Price subject to change without notice, please verify with
+                    Supplier. </label
+                  ><br />
+
+                  <apex:outputPanel
+                    rendered="{!if(!Search.addProdType, true ,false)}"
+                  >
+                    <button
+                      disabled="{if(!$CurrentPage.Parameters.isEspProduct==true,true, false)}"
+                      id="{!variantInfo.Id}"
+                      onclick="addProduct('{!variantInfo.Id}')"
+                      style="
+                        font-size: 0.8rem;
+                        margin-top: 5px;
+                        cursor: pointer;
+                        padding: 7px;
+                        background: #283799;
+                        color: white;
+                      "
+                      title="Add Product"
+                    >
+                      Add Product
+                    </button>
+                  </apex:outputPanel>
+                  <br /><br />
+                </td>
+              </tr>
+            </apex:repeat>
+          </apex:outputPanel>
+          <apex:outputPanel rendered="{!if(!Search.pricingExist, true ,false)}">
+            <apex:outputPanel
+              rendered="{!if(!Search.variantInfoExist, true ,false)}"
+            >
+              <tr style="background: lightgray">
+                <td></td>
+              </tr>
+              <tr>
+                <td style="background: #283799; padding: 5px; color: white">
+                  <h1 style="font-size: 18px">Pricing</h1>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <table
+                    style="
+                      font-size: 0.9rem;
+                      width: 50%;
+                      border: 1px solid;
+                      border-color: #dcdad9;
+                      border-collapse: collapse;
+                    "
+                  >
+                    <thead>
+                      <tr style="background: #f4f9ff">
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                          "
+                        >
+                          Quantity
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                          "
+                        >
+                          Catalog Price
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                          "
+                        >
+                          Net Cost
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                          "
+                        >
+                          Profit
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                            font-weight: 500;
+                          "
+                        ></th>
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                            font-weight: 500;
+                          "
+                        >
+                          QUR
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                            font-weight: 500;
+                          "
+                        >
+                          QUR
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid;
+                            border-color: #dcdad9;
+                            border-collapse: collapse;
+                            font-weight: 500;
+                          "
+                        >
+                          N/A
+                        </th>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <label style="font-size: 1rem">
+                    Price subject to change without notice, please verify with
+                    Supplier. </label
+                  ><br />
+                  <apex:outputPanel
+                    rendered="{!if(!Search.addProdType, true ,false)}"
+                  >
+                    <button
+                      onclick="addSingleProduct();"
+                      style="
+                        font-size: 0.8rem;
+                        margin-top: 5px;
+                        cursor: pointer;
+                        padding: 7px;
+                        background: #283799;
+                        color: white;
+                      "
+                      title="Add Product"
+                    >
+                      Add Product
+                    </button>
+                  </apex:outputPanel>
+                  <br /><br />
+                </td>
+              </tr>
+            </apex:outputPanel>
+          </apex:outputPanel>
+          <tr style="background: lightgray">
+            <td></td>
+          </tr>
+          <tr>
+            <td style="background: #283799; padding: 5px; color: white">
+              <h1 style="font-size: 18px">Imprint Information</h1>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <apex:outputPanel
+                rendered="{!if(!Search.imprintMethodsExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Imprint Methods
+                </div>
+                <label style="font-size: 1rem"> {!Search.ImprintMethod} </label
+                ><br /><br />
+              </apex:outputPanel>
+              <apex:repeat value="{!Search.imprintDetails}" var="sample">
+                <label style="font-size: 1rem">{!sample.name} Charges: </label
+                ><br />
+                <label style="font-size: 1rem; color: #55656d"
+                  >{!sample.imprintType} ({!sample.usageLevel}) -
+                  {!sample.description}:
+                </label>
+                <label style="font-size: 1rem"
+                  >Price: {!sample.quantity}@${!sample.price}
+                  ({!sample.DiscountCode})
+                  Cost{!sample.quantity}@${!sample.cost}</label
+                >
+                <br />
+              </apex:repeat>
+              <apex:outputPanel
+                rendered="{!if(!Search.imprintColorExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Imprint Colors
+                </div>
+                <label style="font-size: 1rem"> {!Search.imprintColors} </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.imprintSizeExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Imprint Sizes
+                </div>
+                <label style="font-size: 1rem"> {!Search.imprintSizes} </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.locationsExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Imprint Locations
+                </div>
+                <apex:repeat value="{!Search.imprintLocations}" var="location">
+                  <label style="font-size: 1rem"> {!location} </label><br />
+                </apex:repeat>
+              </apex:outputPanel>
+
+              <apex:repeat value="{!Search.imprintOptions}" var="imprintOption">
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  {!imprintOption.Name}
+                </div>
+                <apex:repeat value="{!imprintOption.Values}" var="Value">
+                  <label style="font-size: 1rem"> {!Value} </label><br />
+                </apex:repeat>
+              </apex:repeat>
+
+              <apex:repeat
+                value="{!Search.imprintOptionGroups}"
+                var="imprintOption"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  {!imprintOption.Name}
+                </div>
+                <apex:repeat value="{!imprintOption.Values}" var="Value">
+                  <label style="font-size: 1rem"> {!Value} </label><br />
+                </apex:repeat>
+              </apex:repeat>
+
+              <div
+                style="
+                  font-weight: bold;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-top: 20px;
+                "
+              >
+                Full Color Process
+              </div>
+              <apex:outputPanel
+                rendered="{!if(!Search.fullColorProcess, true ,false)}"
+              >
+                <label style="font-size: 1rem"> No </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.fullColorProcess, false ,true)}"
+              >
+                <label style="font-size: 1rem"> Yes </label>
+              </apex:outputPanel>
+              <div
+                style="
+                  font-weight: bold;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-top: 20px;
+                "
+              >
+                Personalization
+              </div>
+              <apex:outputPanel
+                rendered="{!if(!Search.personalization, true ,false)}"
+              >
+                <label style="font-size: 1rem"> No </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.personalization, false ,true)}"
+              >
+                <label style="font-size: 1rem"> Yes </label>
+              </apex:outputPanel>
+              <div
+                style="
+                  font-weight: bold;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-top: 20px;
+                "
+              >
+                Sold Unimprinted
+              </div>
+              <apex:outputPanel
+                rendered="{!if(!Search.soldUnImprinted, false ,true)}"
+              >
+                <label style="font-size: 1rem"> Yes </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.soldUnImprinted, true ,false)}"
+              >
+                <label style="font-size: 1rem"> No </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.additionalInfoExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Additional Information
+                </div>
+                <label style="font-size: 1rem">
+                  {!Search.additionalInfo}
+                </label>
+              </apex:outputPanel>
+
+              <apex:outputPanel
+                rendered="{!if(!Search.artworkProofsExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                    margin-bottom: 10px;
+                  "
+                >
+                  Artwork And Proofs
+                </div>
+                <apex:repeat
+                  value="{!Search.artworkProofs}"
+                  var="artworkProofs"
+                >
+                  <div style="margin-bottom: 5px">
+                    <label style="color: #55656d; font-size: 1rem">
+                      {!artworkProofs.name}:
+                    </label>
+                    <label style="font-size: 1rem">
+                      {!artworkProofs.description}
+                    </label>
+                    <br />
+                  </div>
+                </apex:repeat>
+              </apex:outputPanel>
+              <br /><br />
+            </td>
+          </tr>
+          <tr style="background: lightgray">
+            <td></td>
+          </tr>
+          <tr>
+            <td style="background: #283799; padding: 5px; color: white">
+              <h1 style="font-size: 18px">Product Information</h1>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <apex:outputPanel
+                rendered="{!if(!Search.descriptionExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Description
+                </div>
+                <label style="font-size: 1rem"> {!Search.Description} </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.catagoriesExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Categories
+                </div>
+                <a
+                  style="
+                    pointer-events: none;
+                    color: #283799;
+                    font-size: 1rem;
+                    font-weight: bold;
+                  "
+                >
+                  {!Search.catagories}
+                </a>
+                <br />
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.additionalInformationExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Additional Information
+                </div>
+                <label style="font-size: 1rem">
+                  {!Search.additionalInformation}
+                </label>
+                <br />
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.tradeNamesExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Trade Names
+                </div>
+                <label style="font-size: 1rem"> {!Search.tradeNames} </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.distributorCommentsExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Distributor Comments
+                </div>
+                <label style="font-size: 1rem">
+                  {!Search.DistributorComments}
+                </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.colorsExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Colors
+                </div>
+                <label style="font-size: 1rem"> {!Search.Colors} </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.sizeExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Sizes
+                </div>
+                <label style="font-size: 1rem"> {!Search.Sizes} </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.materialExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15re;
+                    margin-top: 20px;
+                  "
+                >
+                  Materials
+                </div>
+                <label style="font-size: 1rem"> {!Search.materials} </label>
+              </apex:outputPanel>
+
+              <apex:outputPanel
+                rendered="{!if(!Search.productWeightExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Weight
+                </div>
+                <label style="font-size: 1rem"> {!Search.productWeight} </label>
+              </apex:outputPanel>
+              <div
+                style="
+                  font-weight: bold;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-top: 20px;
+                "
+              >
+                Requires Assembly
+              </div>
+              <apex:outputPanel
+                rendered="{!if(!Search.isAssembeled, false ,true)}"
+              >
+                <label style="font-size: 1rem"> Yes </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.isAssembeled, true ,false)}"
+              >
+                <label style="font-size: 1rem"> Unspecified </label>
+              </apex:outputPanel>
+              <apex:repeat value="{!Search.productOptions}" var="rt">
+                <div
+                  style="
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  {!rt.Name}
+                </div>
+                <apex:outputText
+                  style="font-size: 1rem"
+                  escape="false"
+                  value="{!rt.Description}"
+                ></apex:outputText>
+              </apex:repeat>
+              <apex:outputPanel
+                rendered="{!if(!Search.prodSamplesExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Samples
+                </div>
+                <apex:repeat value="{!Search.Samples}" var="sample">
+                  <label style="font-size: 1rem; font-weight: bold"
+                    >{!sample.name}:
+                  </label>
+                  <label style="font-size: 1rem">{!sample.description}</label
+                  ><br />
+                </apex:repeat>
+              </apex:outputPanel>
+              <br /><br />
+            </td>
+          </tr>
+
+          <tr style="background: lightgray">
+            <td></td>
+          </tr>
+          <tr>
+            <td style="background: #283799; padding: 5px; color: white">
+              <h1 style="font-size: 18px">Production and Shipping</h1>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div
+                style="
+                  font-weight: bold;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-top: 20px;
+                "
+              >
+                Rush Service
+              </div>
+              <apex:outputPanel
+                rendered="{!if(!Search.hasRushService, false ,true)}"
+              >
+                <label style="font-size: 1rem"> Yes </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.hasRushService, true ,false)}"
+              >
+                <label style="font-size: 1rem"> No </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.rushTimeExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Rush Time
+                </div>
+                <apex:repeat value="{!Search.rushTime}" var="rt">
+                  <label style="font-size: 1rem; font-weight: bold"
+                    >{!rt.name}:
+                  </label>
+                  <label style="font-size: 1rem">{!rt.description}</label>
+                  <br />
+                </apex:repeat>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.prodTimeExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Production Time
+                </div>
+                <apex:repeat value="{!Search.prodTime}" var="rt">
+                  <label style="font-size: 1rem; font-weight: bold"
+                    >{!rt.name}
+                  </label>
+                  <label style="font-size: 1rem">{!rt.description}</label>
+                  <br />
+                </apex:repeat>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.packagingExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Packaging
+                </div>
+                <apex:repeat value="{!Search.packaging}" var="packaging">
+                  <label style="font-size: 1rem"> * {!packaging} </label> <br />
+                </apex:repeat>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.countryOfOriginExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Country of Origin
+                </div>
+                <label style="font-size: 1rem"
+                  >{!Search.countryOfOrigin}
+                </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.fobShippingPointExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  FOB/Shipping Point
+                </div>
+                <label style="font-size: 1rem">{!Search.fobPoints} </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.shippingWeightExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Shipping Weight
+                </div>
+                <label style="font-size: 1rem">{!Search.shippingWeight} </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.shipingEstimateExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Shipping Estimate
+                </div>
+                <label style="font-size: 1rem"
+                  >{!Search.ItemsPerPackage} Per Case
+                </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.shippingOptionsExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Shipping Options
+                </div>
+                <apex:repeat
+                  value="{!Search.shippingOptions}"
+                  var="shippingOption"
+                >
+                  <label style="font-size: 1rem">{!shippingOption.name} </label>
+                  <br />
+                </apex:repeat>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.shippingDimensions, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Shipping Dimensions
+                </div>
+                <label style="font-size: 1rem">{!Search.Dimensions} </label>
+              </apex:outputPanel>
+              <div
+                style="
+                  font-weight: bold;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-top: 20px;
+                "
+              >
+                Can be Shipped in a Plain Box
+              </div>
+              <apex:outputPanel
+                rendered="{!if(!Search.PackageInPlainBox, false ,true)}"
+              >
+                <label style="font-size: 1rem"> Yes </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.PackageInPlainBox, true ,false)}"
+              >
+                <label style="font-size: 1rem"> No </label><br />
+              </apex:outputPanel>
+              <div
+                style="
+                  font-weight: bold;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-top: 20px;
+                "
+              >
+                Made in USA
+              </div>
+              <apex:outputPanel
+                rendered="{!if(!Search.madeInUSA, false ,true)}"
+              >
+                <label style="font-size: 1rem"> Yes </label>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.madeInUSA, true ,false)}"
+              >
+                <label style="font-size: 1rem">
+                  Supplier has not specified
+                </label>
+              </apex:outputPanel>
+              <br /><br />
+            </td>
+          </tr>
+          <tr style="background: lightgray">
+            <td></td>
+          </tr>
+          <tr>
+            <td style="background: #283799; padding: 5px; color: white">
+              <h1 style="font-size: 18px">Safety and Compliance</h1>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <apex:outputPanel
+                rendered="{!if(!Search.certificatesExist, false ,true)}"
+              >
+                <div
+                  style="
+                    font-weight: bold;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-top: 20px;
+                  "
+                >
+                  Compliance And Certifications
+                </div>
+                <apex:repeat value="{!Search.certifications}" var="cr">
+                  <label style="font-size: 1rem"> {!cr} </label>
+                  <br />
+                </apex:repeat>
+              </apex:outputPanel>
+              <div
+                style="
+                  font-weight: bold;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-top: 20px;
+                "
+              >
+                Safety
+              </div>
+              <apex:outputPanel
+                rendered="{!if(!Search.warningExist, false ,true)}"
+              >
+                <apex:repeat value="{!Search.warnings}" var="warning">
+                  <label style="font-size: 1rem"> {!warning} </label><br />
+                </apex:repeat>
+              </apex:outputPanel>
+              <apex:outputPanel
+                rendered="{!if(!Search.warningExist, true ,false)}"
+              >
+                <label style="font-size: 1rem">
+                  No safety warnings for this product
+                </label> </apex:outputPanel
+              ><br /><br />
+            </td>
+          </tr>
+          <tr style="background: lightgray">
+            <td></td>
+          </tr>
+          <tr>
+            <td style="background: #283799; padding: 5px; color: white">
+              <h1 style="font-size: 18px">Supplier Information</h1>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div
+                style="
+                  display: flex;
+                  v-align: top;
+                  padding: 10px;
+                  background-color: #f4f4f4;
+                "
+              >
+                <div style="width: 50%">
+                  <apex:outputPanel
+                    rendered="{!if(!Search.supplierNameExist, false ,true)}"
+                  >
+                    <label style="font-size: 1rem; color: #283799">
+                      {!Search.SupplierName} </label
+                    ><br />
+                  </apex:outputPanel>
+                  <apex:outputPanel
+                    rendered="{!if(!Search.supplierCodeExist, false ,true)}"
+                  >
+                    <a
+                      style="
+                        font-size: 1rem;
+                        color: #283799;
+                        font-style: italic;
+                        pointer-events: none;
+                      "
+                    >
+                      asi/{!Search.AsiNumber}</a
+                    >
+                  </apex:outputPanel>
+                </div>
+                <div style="width: 50%; float: right; text-align: right">
+                  <div id="RatingStatus2"></div>
+                  <apex:outputPanel
+                    rendered="{!if(!Search.phoneExist, false ,true)}"
+                  >
+                    <label style="font-size: 1rem; font-weight: bold">
+                      {!Search.Work} </label
+                    ><br />
+                  </apex:outputPanel>
+                  <apex:outputPanel
+                    rendered="{!if(!Search.emailExist, false ,true)}"
+                  >
+                    <a
+                      href="mailto:{!Search.Email}"
+                      style="color: #283799; font-size: 1rem; font-weight: bold"
+                    >
+                      Email
+                    </a>
+                    <br />
+                  </apex:outputPanel>
+                  <apex:outputPanel
+                    rendered="{!if(!Search.websiteExist, false ,true)}"
+                  >
+                    <a
+                      target="_blank"
+                      href=" {!Search.Website}"
+                      style="color: #283799; font-size: 1rem; font-weight: bold"
+                    >
+                      Website </a
+                    ><br />
+                  </apex:outputPanel>
+                  <apex:outputPanel
+                    rendered="{!if(!Search.supplierFaxExist, false ,true)}"
+                  >
+                    <label style="font-size: 1rem; font-weight: bold"
+                      >Fax:
+                    </label>
+                    <label style="font-size: 1rem">{!Search.supplierFax}</label>
+                    <br />
+                  </apex:outputPanel>
+                </div>
+              </div>
+
+              <br /><br />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</apex:page>

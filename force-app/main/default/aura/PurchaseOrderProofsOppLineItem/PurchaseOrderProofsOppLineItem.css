@@ -1,0 +1,9 @@
+.THIS .slds-carousel__content {
+  display: none;
+}
+.THIS .hideCom {
+  display: none;
+}
+.THIS .showDetails {
+  display: block;
+}

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>ORDER_NUMBER</field>
+    </columns>
+    <columns>
+        <field>Order.Account_Name__c</field>
+    </columns>
+    <columns>
+        <field>Order.Client_Due_Date__c</field>
+    </columns>
+    <columns>
+        <field>ORDER_OWNER</field>
+    </columns>
+    <columns>
+        <field>field_key</field>
+    </columns>
+    <columns>
+        <field>OLDVAL</field>
+    </columns>
+    <columns>
+        <field>NEWVAL</field>
+    </columns>
+    <columns>
+        <field>CREATED</field>
+    </columns>
+    <columns>
+        <field>CREATED_DATE</field>
+    </columns>
+    <description
+  >Report showing all the Work Order&apos;s that changed status today</description>
+    <filter>
+        <criteriaItems>
+            <column>ORDER_STATUS</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value
+      >04_-_Order_Blanks-Approved/Deposit,05_-_Waiting_for_Blanks/Patches/Etc,06_-_In_Process-OTHER,07.2 - Shipping to Team Phun,07.3_-_Shipped_Direct_to_Client,08.1_-_On_Shelf_for_Local_Delivery/Pickup,08.2 - On Shelf to Ship to Client,09_-_Complete</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>field_key</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Status</value>
+        </criteriaItems>
+    </filter>
+    <format>Tabular</format>
+    <name>Today&apos;s Work Order Status Changes</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>OrderAuditHistory</reportType>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>ORDER_OWNER</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATE</dateColumn>
+        <interval>INTERVAL_TODAY</interval>
+    </timeFrameFilter>
+</Report>

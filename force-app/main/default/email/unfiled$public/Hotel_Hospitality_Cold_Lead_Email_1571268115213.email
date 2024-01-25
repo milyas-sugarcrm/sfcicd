@@ -1,0 +1,20 @@
+<html style="overflow-y: hidden;">
+<head>
+	<title></title>
+</head>
+<body style="height: auto; min-height: auto;">Hello&nbsp;{{{Recipient.FirstName}}}:<br />
+<br />
+I am one of three owners at Team Phun, and would love to assist with any branding needs you have at the {{{Recipient.Company}}}. We support a wide variety of hospitality clients&nbsp;around the country, offering promotional items and gift items for their sales, events, and marketing staff, as well as offering uniform programs for operations teams. Please keep me in mind for anything you think would assist you in standing out.<br />
+<br />
+We also prepare custom gifts, kitting alcohol with various packaging types and drinking accessories, if you have&nbsp;clients&nbsp;that might appreciate something higher end.&nbsp;You can see a few of our&nbsp;<a href="https://www.instagram.com/teamphun/">projects on our&nbsp;Instagram&nbsp;account</a>, and some of our&nbsp;<a href="https://www.teamphun.com/clients-case-studies">clients&nbsp;here</a>. Let me know if anything catches your eye for&nbsp;{{{Recipient.Company}}} sales and marketing campaigns, or an upcoming project or event.&nbsp;<br />
+<br />
+Cheers and have a great day,<br />
+<br />
+Sean Burns<br />
+VP of Business Development<br />
+Team Phun<br />
+683 Turquoise St.<br />
+La Jolla, CA 92037<br />
+USA<br />
+(858) 598-5563 x1</body>
+</html>

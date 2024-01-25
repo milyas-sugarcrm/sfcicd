@@ -1,0 +1,287 @@
+<aura:component
+  controller="relatedListOppotunityLineItem"
+  implements="force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global"
+>
+  <aura:attribute name="recordId" type="Id" />
+  <aura:attribute name="deleteId" type="Id" />
+  <aura:attribute name="deletePopup" type="boolean" default="false" />
+
+  <aura:attribute name="isDeletable" type="boolean" default="true" />
+  <aura:attribute
+    name="RelatedOpportunityLineItems"
+    type="OpportunityLineItem__c[]"
+  />
+  <aura:attribute name="SelectedContact" type="sObject" default="{}" />
+  <aura:attribute name="SelectedOrganisation" type="sObject" default="{}" />
+  <aura:attribute name="SelectedOrgRole" type="sObject" default="{}" />
+  <aura:attribute name="selectedOrgRecord" type="id" default="{}" />
+  <aura:attribute name="isOpen" type="boolean" default="false" />
+  <aura:attribute name="isDelDialogOpen" type="boolean" default="false" />
+  <aura:attribute name="Spinner" type="boolean" default="false" />
+  <aura:attribute name="errors" type="List" />
+  <aura:attribute name="isNew" type="boolean" />
+  <aura:attribute name="Error" type="String" />
+  <aura:attribute name="DirectorshipId" type="String" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <!--   ////////////                 Show List View Component ATtributes                     //////////                  -->
+
+  <aura:attribute name="Size" type="String" default="0" />
+
+  <!--loading spinner start... style=Brand Medium (blue dots)-->
+  <aura:if isTrue="{!v.Spinner}">
+    <div class="slds-p-horizontal--small slds-size--1-of-1">
+      <div class="slds-p-horizontal--small slds-size--1-of-1 isActivityLoading">
+        <lightning:spinner variant="brand" size="small" />
+      </div>
+    </div>
+  </aura:if>
+
+  <!-- //Show Other Directorship List view Lightning Component -->
+
+  <article class="slds-card slds-card_boundary">
+    <div class="slds-card__header slds-grid">
+      <header class="slds-media slds-media_center slds-has-flexi-truncate">
+        <div class="slds-media__figure">
+          <span
+            class="slds-icon_container slds-icon-standard-contact"
+            title="Organisation Status"
+          >
+            <lightning:icon iconName="standard:account" size="small" />
+          </span>
+        </div>
+        <div class="slds-media__body">
+          <h2>
+            <a
+              href="javascript:void(0)"
+              class="slds-card__header-link slds-truncate"
+            >
+              <span class="slds-text-heading_small" title="Other Directorships"
+                >Opportunity Line Items</span
+              >
+              <aura:if isTrue="{!greaterthan(v.Size,6)}">
+                <span
+                  class="slds-text-heading--small slds-shrink-none slds-m-right--xx-small"
+                  title="Other Directorships"
+                >
+                  ({!v.Size})</span
+                >
+                <aura:set attribute="else"
+                  ><span
+                    class="slds-text-heading--small slds-shrink-none slds-m-right--xx-small"
+                    title="Opportunity Line Items"
+                  >
+                    ({!v.Size})</span
+                  >
+                </aura:set>
+              </aura:if>
+            </a>
+          </h2>
+        </div>
+      </header>
+      <div class="slds-no-flex">
+        <lightning:button onclick="{!c.newButton}">New</lightning:button>
+      </div>
+    </div>
+
+    <aura:if isTrue="{!not(empty(v.RelatedOpportunityLineItems))}">
+      <div class="slds-card__body">
+        <table
+          class="slds-table slds-table_fixed-layout slds-no-row-hover slds-table_cell-buffer"
+        >
+          <thead>
+            <tr class="slds-text-title_caps">
+              <th scope="col">
+                <div class="slds-truncate" title="Name">NAME</div>
+              </th>
+              <th scope="col">
+                <div class="slds-truncate" title="Product Name">
+                  Product Name
+                </div>
+              </th>
+
+              <th scope="col" style="width: 100px">
+                <div class="slds-truncate" title="Action">Action</div>
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <aura:iteration
+              items="{!v.RelatedOpportunityLineItems}"
+              var="product"
+            >
+              <tr class="slds-text-title_caps">
+                <td>
+                  <div class="slds-col">
+                    <div title="ProductLine Item">
+                      <label
+                        class="txt"
+                        data-crudaction="Edit"
+                        style="color: #006dcc; cursor: pointer"
+                        data-value="{!product.Id}"
+                        onclick="{!c.editOpportunityProductLineItem}"
+                        >{!product.Name}</label
+                      >
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="slds-col">
+                    <div title="Product Name">
+                      <p>
+                        <lightning:formattedUrl
+                          value="{!'/lightning/r/Product2/'+product.Product__c+'/view'}"
+                          tooltip="Go to https://my/path"
+                          label="{!product.Product__r.Name}"
+                          target="_blank"
+                        />
+                      </p>
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <td style="padding: 0.5rem 0.5rem">
+                    <div class="slds-no-flex">
+                      <div class="slds-shrink-none">
+                        <ui:menu>
+                          <ui:menuTriggerLink aura:id="trigger">
+                            <a
+                              class="slds-button slds-button--icon-x-small slds-button--icon-border-filled CIcon"
+                              role="button"
+                              title="Show one more action"
+                              href="javascript:void(0);"
+                            >
+                              <span
+                                class="slds-icon_container slds-icon-utility-down slds-button__icon forceIcon"
+                                data-aura-class="forceIcon"
+                              >
+                                <span
+                                  class="lightningPrimitiveIcon"
+                                  data-aura-class="lightningPrimitiveIcon"
+                                >
+                                  <lightning:icon
+                                    iconName="utility:down"
+                                    size="xx-small"
+                                  />
+                                </span>
+                                <span class="slds-assistive-text"
+                                  >Show more actions</span
+                                >
+                              </span>
+                            </a>
+                          </ui:menuTriggerLink>
+                          <ui:menuList
+                            class="actionMenu CMenu"
+                            aura:id="actionMenu"
+                            autoPosition="true"
+                          >
+                            <span
+                              class="uiMenuItem"
+                              data-crudaction="Delete"
+                              data-value="{!product.Id}"
+                              onclick="{!c.openDeletePopup}"
+                              ><a style="color: rgb(0, 112, 210)"
+                                >Delete</a
+                              ></span
+                            >
+                            <span
+                              class="uiMenuItem"
+                              data-crudaction="Edit"
+                              data-value="{!product.Id}"
+                              onclick="{!c.editOpportunityLineItem}"
+                              ><a style="color: rgb(0, 112, 210)">Edit</a></span
+                            >
+                          </ui:menuList>
+                        </ui:menu>
+                      </div>
+                    </div>
+                  </td>
+                </td>
+              </tr>
+            </aura:iteration>
+          </tbody>
+        </table>
+      </div>
+    </aura:if>
+  </article>
+
+  <!-- DELETE POPUP  -->
+
+  <div class="slds-m-around--xx-large" style="margin: 0px !important">
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.deletePopup}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="height: 110% !important"
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Delete OpportunityLineItem
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeDeletePopup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+          <aura:if isTrue="{! v.Error != null}">
+            <div class="slds-modal__content slds-p-around_medium">
+              <p style="color: red">{!v.Error}</p>
+            </div>
+          </aura:if>
+          <div class="slds-modal__content slds-p-around--medium">
+            <form class="slds-form--stacked">
+              <div class="slds">
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col--padded slds-medium-size--1-of-2">
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        Are you sure you want to delete this record?
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closeDeletePopup}"
+              >Cancel</lightning:button
+            >
+            <lightning:button
+              class="slds-button slds-button--brand customb"
+              onclick="{!c.deleteOpportunityLineItem}"
+              >Delete</lightning:button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+</aura:component>

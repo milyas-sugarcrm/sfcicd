@@ -1,0 +1,562 @@
+<apex:page
+  controller="OpportunityLineItemExtension"
+  title="Presentation Preview"
+>
+  <script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"
+  ></script>
+  <script type="text/javascript">
+    function setFocusOnLoad() {}
+    function confirmation(recordId) {
+      var comm = document.getElementById("comment" + recordId).value;
+      if (comm == "") {
+        alert("Please enter a comment before adding it!");
+      } else {
+        document.getElementById("popup" + recordId).style.display = "block";
+      }
+    }
+    function saveComment(recordId) {
+      var comm = document.getElementById("comment" + recordId).value;
+      var uName = document.getElementById("username" + recordId).value;
+      if (uName == "") {
+        document.getElementById("popup" + recordId).style.display = "none";
+        alert("Please enter a your name before commenting!");
+      } else {
+        CallAddCommentMethod(recordId);
+        document.getElementById("comment" + recordId).value = "";
+      }
+      document.getElementById("popup" + recordId).style.display = "none";
+      document.getElementById("username" + recordId).value = "";
+    }
+    function hidePopup(recordId) {
+      document.getElementById("username" + recordId).value = "";
+      document.getElementById("popup" + recordId).style.display = "none";
+    }
+    function changeImage(img, imgPreview, recordId) {
+      console.log("link" + img);
+      var currentImage = document.getElementById(recordId);
+      currentImage.src = img;
+      document.getElementById("img" + recordId).href = imgPreview;
+    }
+  </script>
+  <style></style>
+  <apex:slds />
+  <center>
+    <table
+      class="slds-table slds-table_fixed-layout slds-no-row-hover slds-table_cell-buffer"
+    >
+      <tr>
+        <th scope="col" width="10%" style="background-color: #f0f0f0"></th>
+        <th
+          scope="col"
+          width="80%"
+          style="padding-left: 0px; padding-right: 0px"
+        >
+          <apex:form id="block11">
+            <div id="ParentImage" style="position: relative">
+              <div style="height: 200px">
+                <!-- <apex:image style="width:100%; height:100%;"  url="https://cdn1.commonsku.com/images/resku-header-1.jpg"/>  -->
+                <apex:image
+                  style="width: 100%; height: 100%"
+                  url="{!$Resource.HeaderImage2}"
+                />
+                <div
+                  id="childImage"
+                  style="position: absolute; left: 30px; top: 30px"
+                >
+                  <!--    <apex:image width="50%" height="50%" url="https://files.commonsku.com/medium/2b8192b7-af36-4476-bd9a-b124fd03870b"/>   -->
+                  <apex:image
+                    width="50%"
+                    height="50%"
+                    url="{!$Resource.TPLogo}"
+                  />
+                </div>
+                <div
+                  id="tableInfo"
+                  style="position: absolute; left: 200px; top: 50px"
+                >
+                  <apex:outputText
+                    style="
+                      font-family: sans serif;
+                      font-size: 2rem;
+                      color: #000000;
+                    "
+                    value="Team Phun"
+                  /><br />
+                  <a style="color: gray" href="{!OppLink}">
+                    <apex:outputText
+                      style="font-size: 20px; color: #000000"
+                      value="PRESENTATION for {!opp.name}"
+                    /><br />
+                  </a>
+                </div>
+              </div>
+              <apex:repeat value="{!LineItemsList}" var="lineItem">
+                <table
+                  class="slds-table slds-table_fixed-layout slds-no-row-hover slds-table_cell-buffer"
+                >
+                  <tbody>
+                    <tr style="background-color: #f0f0f0">
+                      <th width="30%"></th>
+                      <th width="70%"></th>
+                    </tr>
+                    <tr style="background-color: #f0f0f0">
+                      <th width="30%"></th>
+                      <th width="70%"></th>
+                    </tr>
+                    <tr>
+                      <apex:repeat value="{!lineItem}" var="item">
+                        <td
+                          scope="col"
+                          valign="top"
+                          width="30%"
+                          style="padding-top: 20px"
+                        >
+                          <div class="slds-truncate" style="text-align: center">
+                            <table class="slds-table">
+                              <tr>
+                                <apex:outputPanel
+                                  rendered="{!if(!item.imageExits, false ,true)}"
+                                >
+                                  <a
+                                    id="img{!item.id}"
+                                    href="{!item.activeImagePreviewLink}"
+                                  >
+                                    <img
+                                      id="{!item.id}"
+                                      src="{!item.activeImage}"
+                                      width="100%"
+                                      height="100%"
+                                    />
+                                  </a>
+                                </apex:outputPanel>
+                                <apex:outputPanel
+                                  rendered="{!if(!item.imageExits, true ,false)}"
+                                >
+                                  <img
+                                    id="{!item.id}"
+                                    src="{!$Resource.No_Image_Available}"
+                                    width="100%"
+                                    height="100%"
+                                  />
+                                </apex:outputPanel>
+                              </tr>
+                              <br />
+                              <!-- <tr sytle="width: 80%"> 
+<apex:repeat value="{!item.filesDownloadURL}" var="images">
+<th>
+<img src="{!images.imageDownloadLink}"  width="75" height="75" onclick="changeImage('{!images.imageDownloadLink}','{!images.imagePreviewLink}','{!item.id}')"  />
+</th>
+</apex:repeat>
+</tr>  -->
+                            </table>
+                          </div>
+                        </td>
+
+                        <td scope="col" width="70%" style="padding-top: 15px">
+                          <div class="slds-scope">
+                            <apex:outputText
+                              style="font-weight: bold; font-size: 20px"
+                              value="{!item.name}"
+                            /><br />
+                            <div
+                              style="
+                                white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+                                white-space: -pre-wrap; /* Opera 4-6 */
+                                white-space: -o-pre-wrap; /* Opera 7 */
+                                white-space: pre-wrap; /* css-3 */
+                                word-wrap: break-word; /* Internet Explorer 5.5+ */
+                                white-space: -webkit-pre-wrap; /* Newer versions of Chrome/Safari*/
+                                word-break: break-all;
+                                white-space: normal;
+                              "
+                            >
+                              {!item.description}
+                            </div>
+                            <apex:outputPanel
+                              rendered="{!if(!item.pricingSize, false ,true)}"
+                            >
+                              <br /><br />
+                              <apex:outputText
+                                style="font-weight: bold; font-size: 20px"
+                                value="Pricing"
+                              /><br />
+                              <table
+                                style="border: 1px solid #f0f0f0; padding: 10px"
+                              >
+                                <tr>
+                                  <th width="10%" style="font-weight: bold">
+                                    QTY
+                                  </th>
+                                  <apex:repeat
+                                    value="{!item.lineItemPricing}"
+                                    var="prices"
+                                  >
+                                    <td width="18%" style="text-align: right">
+                                      <apex:outputText
+                                        value="{!prices.Quantity__c}"
+                                      />
+                                    </td>
+                                  </apex:repeat>
+                                </tr>
+                                <tr>
+                                  <th width="10%" style="font-weight: bold">
+                                    $
+                                  </th>
+                                  <apex:repeat
+                                    value="{!item.lineItemPricing}"
+                                    var="prices"
+                                  >
+                                    <td style="text-align: right" width="18%">
+                                      <apex:outputText
+                                        value="{0, number, ###,##0.000}"
+                                      >
+                                        <apex:param
+                                          value="{!prices.Price_Per_Unit__c}"
+                                        />
+                                      </apex:outputText>
+                                    </td>
+                                  </apex:repeat>
+                                </tr>
+                              </table>
+                            </apex:outputPanel>
+                            <br /><apex:outputText
+                              escape="false"
+                              style="font-weight: bold; font-size: 20px"
+                              rendered="{!NOT(!item.fixedChargesSize)}"
+                              value="Fixed Charges<br/>"
+                            />
+                            <table>
+                              <apex:repeat
+                                value="{!item.lineItemFixedCharges}"
+                                var="fixedCharges"
+                              >
+                                <tr>
+                                  <th width="70%" style="font-weight: bold">
+                                    {!fixedCharges.Title__c}
+                                  </th>
+                                  <td
+                                    width="30%"
+                                    style="color: #5b6a71; text-align: right"
+                                  >
+                                    <apex:outputText
+                                      value="{0, number, ###,##0.000}"
+                                    >
+                                      <apex:param
+                                        value="{!fixedCharges.Retail_Price__c}"
+                                      />
+                                    </apex:outputText>
+                                  </td>
+                                </tr>
+                              </apex:repeat>
+                            </table>
+                            <br />
+                            <apex:outputPanel
+                              rendered="{!if(!item.runChargesSize, false ,true)}"
+                            >
+                              <br /><br />
+                              <apex:outputText
+                                style="font-weight: bold; font-size: 20px"
+                                value="Run Charges"
+                              /><br />
+                              <table
+                                style="border: 1px solid #f0f0f0; padding: 10px"
+                              >
+                                <tr>
+                                  <th width="10%" style="font-weight: bold">
+                                    QTY
+                                  </th>
+                                  <apex:repeat
+                                    value="{!item.lineItemPricing}"
+                                    var="prices"
+                                  >
+                                    <td width="18%" style="text-align: right">
+                                      <apex:outputText
+                                        value="{!prices.Quantity__c}"
+                                      />
+                                    </td>
+                                  </apex:repeat>
+                                </tr>
+                                <apex:repeat
+                                  value="{!item.lineItemRunCharges}"
+                                  var="runcharges"
+                                >
+                                  <tr>
+                                    <th width="10%" style="font-weight: bold">
+                                      {!runcharges.Title__c}
+                                    </th>
+                                    <apex:variable
+                                      var="v"
+                                      value=""
+                                      rendered="{!IF(runcharges.Value_1_show__c == false ,false,true)}"
+                                    >
+                                      <td style="text-align: right" width="18%">
+                                        <apex:outputText
+                                          value="{0, number, ###,##0.000}"
+                                        >
+                                          <apex:param
+                                            value="{!runcharges.Value1__c}"
+                                          />
+                                        </apex:outputText>
+                                      </td>
+                                    </apex:variable>
+                                    <apex:variable
+                                      var="v"
+                                      value=""
+                                      rendered="{!IF(runcharges.Value_2_show__c == false ,false,true)}"
+                                    >
+                                      <td style="text-align: right" width="18%">
+                                        <apex:outputText
+                                          value="{0, number, ###,##0.000}"
+                                        >
+                                          <apex:param
+                                            value="{!runcharges.Value2__c}"
+                                          />
+                                        </apex:outputText>
+                                      </td>
+                                    </apex:variable>
+                                    <apex:variable
+                                      var="v"
+                                      value=""
+                                      rendered="{!IF(runcharges.Value_3_show__c == false ,false,true)}"
+                                    >
+                                      <td style="text-align: right" width="18%">
+                                        <apex:outputText
+                                          value="{0, number, ###,##0.000}"
+                                        >
+                                          <apex:param
+                                            value="{!runcharges.Value3__c}"
+                                          />
+                                        </apex:outputText>
+                                      </td>
+                                    </apex:variable>
+                                    <apex:variable
+                                      var="v"
+                                      value=""
+                                      rendered="{!IF(runcharges.Value_4_show__c == false ,false,true)}"
+                                    >
+                                      <td style="text-align: right" width="18%">
+                                        <apex:outputText
+                                          value="{0, number, ###,##0.000}"
+                                        >
+                                          <apex:param
+                                            value="{!runcharges.Value4__c}"
+                                          />
+                                        </apex:outputText>
+                                      </td>
+                                    </apex:variable>
+                                    <apex:variable
+                                      var="v"
+                                      value=""
+                                      rendered="{!IF(runcharges.Value_5_show__c == false ,false,true)}"
+                                    >
+                                      <td style="text-align: right" width="18%">
+                                        <apex:outputText
+                                          value="{0, number, ###,##0.000}"
+                                        >
+                                          <apex:param
+                                            value="{!runcharges.Value5__c}"
+                                          />
+                                        </apex:outputText>
+                                      </td>
+                                    </apex:variable>
+                                  </tr>
+                                </apex:repeat>
+                              </table>
+                            </apex:outputPanel>
+                            <apex:outputText
+                              escape="false"
+                              style="font-weight: bold; font-size: 20px"
+                              rendered="{!NOT(!item.colorSize)}"
+                              value="Colors<br/>"
+                            />
+                            <div class="slds-truncate">
+                              <apex:repeat
+                                value="{!item.lineItemColors}"
+                                var="colors"
+                              >
+                                <apex:outputText
+                                  escape="false"
+                                  style="text-align: right; color: #5b6a71"
+                                  value="{!colors}"
+                                />
+                              </apex:repeat>
+                            </div>
+                            <apex:outputText
+                              escape="false"
+                              style="font-weight: bold; font-size: 20px"
+                              rendered="{!NOT(!item.sizesSize)}"
+                              value="Sizes<br/>"
+                            />
+                            <apex:repeat
+                              value="{!item.lineItemSizes}"
+                              var="sizes"
+                            >
+                              <apex:outputText
+                                escape="false"
+                                style="text-align: right; color: #5b6a71"
+                                value="{!sizes}"
+                              />
+                            </apex:repeat>
+
+                            <apex:outputPanel id="allComments">
+                              <apex:repeat
+                                value="{!item.lineItemComments}"
+                                var="comments"
+                              >
+                                <apex:outputText
+                                  style="font-weight: bold"
+                                  value="{!comments.User__c}: "
+                                />
+                                <apex:outputText
+                                  value="{!comments.Comment__c}"
+                                /><br />
+                                <apex:outputText
+                                  style="text-align: right; color: #5b6a71"
+                                  value="{!comments.Date__c} "
+                                /><br /><br /> </apex:repeat
+                            ></apex:outputPanel>
+
+                            <input
+                              type="text"
+                              id="comment{!item.id}"
+                              name="comment{!item.id}"
+                              style="width: 100%"
+                              placeholder="Comment on this item..."
+                            /><br /><br />
+                            <apex:commandButton
+                              rerender="none"
+                              onclick="confirmation('{!item.id}')"
+                              styleClass="slds-button slds-button_brand"
+                              style="
+                                color: white;
+                                padding-right: 5px;
+                                padding-left: 5px;
+                              "
+                              value="Add Comment"
+                            >
+                            </apex:commandButton
+                            ><br /><br />
+
+                            <div
+                              id="popup{!item.id}"
+                              style="
+                                display: none;
+                                background-color: #f0f0f0;
+                                border-color: gray;
+                                border-radius: 5px;
+                                border-style: solid;
+                                border-width: 0.5px;
+                                left: 50%;
+                                padding: 10px;
+                                position: absolute;
+                                z-index: 9999;
+                                width: 500px;
+                                margin-left: -250px;
+                                top: 60%;
+                              "
+                            >
+                              <label>Please enter your name</label><br />
+                              <input
+                                type="text"
+                                id="username{!item.id}"
+                                name="username{!item.id}"
+                                style="
+                                  margin-bottom: 10px;
+                                  margin-top: 5px;
+                                  width: 100%;
+                                "
+                              /><br />
+                              <apex:commandButton
+                                rerender="none"
+                                onclick="hidePopup('{!item.id}')"
+                                styleClass="slds-button  slds-button_brand"
+                                style="
+                                  margin-left: 5px;
+                                  float: right;
+                                  width: 60px;
+                                "
+                                value="Cancel"
+                              >
+                              </apex:commandButton>
+                              <apex:commandButton
+                                rerender="none"
+                                onclick="saveComment('{!item.id}')"
+                                styleClass="slds-button  slds-button_brand"
+                                style="float: right; width: 60px"
+                                value="Ok"
+                              >
+                              </apex:commandButton>
+                            </div>
+                          </div>
+                        </td>
+                      </apex:repeat>
+                    </tr>
+                  </tbody>
+                </table>
+              </apex:repeat>
+
+              <table
+                class="slds-table slds-table_fixed-layout slds-no-row-hover slds-table_cell-buffer"
+              >
+                <tbody>
+                  <tr style="background-color: #f0f0f0">
+                    <th width="30%"></th>
+                    <th width="70%"></th>
+                  </tr>
+                  <tr style="background-color: #f0f0f0">
+                    <th width="30%"></th>
+                    <th width="70%"></th>
+                  </tr>
+                  <tr>
+                    <div>
+                      <th>
+                        <div style="display: inline-block">
+                          <p style="color: #55656d; font-size: 1rem">
+                            {!opp.Owner.Name}<br />{!Opp.Owner.Email}
+                          </p>
+                        </div>
+                      </th>
+                      <th>
+                        <div
+                          style="
+                            display: inline-block;
+                            line-height: 1.15rem;
+                            float: right;
+                            margin-bottom: 20px;
+                            margin-top: 20px;
+                          "
+                        >
+                          <p style="color: #55656d; font-size: 1rem">
+                            TEAM PHUN<br />5026 Cass St #B<br /> San Diego, CA
+                            92109<br />
+                          </p>
+                        </div>
+                      </th>
+                    </div>
+                  </tr>
+                  <tr style="background-color: #f0f0f0">
+                    <th width="30%"></th>
+                    <th width="70%"></th>
+                  </tr>
+                  <tr style="background-color: #f0f0f0">
+                    <th width="30%"></th>
+                    <th width="70%"></th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <apex:actionFunction
+              name="CallAddCommentMethod"
+              action="{!addComment}"
+              rerender="allComments"
+            >
+              <apex:param name="recId" value="" assignTo="{!recId}" />
+            </apex:actionFunction>
+          </apex:form>
+        </th>
+        <th scope="col" width="10%" style="background-color: #f0f0f0"></th>
+      </tr>
+    </table>
+  </center>
+</apex:page>

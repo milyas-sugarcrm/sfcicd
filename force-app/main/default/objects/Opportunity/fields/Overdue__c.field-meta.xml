@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Overdue__c</fullName>
+    <description>Indicates whether the opportunity is overdue.
+Overdue is classified as &apos;Open and Close date is in the past&apos;</description>
+    <externalId>false</externalId>
+    <formula
+  >IF( IsClosed = FALSE &amp;&amp; CloseDate &lt; TODAY(), TRUE, FALSE )</formula>
+    <inlineHelpText
+  >Indicates whether the opportunity is overdue</inlineHelpText>
+    <label>Overdue?</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <assignments>
+        <description
+    >If varUserId did not retrieve an active match, then assign to Sales Queue</description>
+        <name>Assign_Lead_to_Sales_Queue</name>
+        <label>Assign Lead to Sales Queue</label>
+        <locationX>204</locationX>
+        <locationY>345</locationY>
+        <assignmentItems>
+            <assignToReference>varUserId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>00Gf4000003Uz2XEAS</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Owner_Id</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>If varUserId</description>
+        <name>User_Found</name>
+        <label>User Found?</label>
+        <locationX>196</locationX>
+        <locationY>176</locationY>
+        <defaultConnector>
+            <targetReference>Assign_Lead_to_Sales_Queue</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No user found</defaultConnectorLabel>
+        <rules>
+            <name>Decision_UserFound</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varUserId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Owner_Id</targetReference>
+            </connector>
+            <label>User Found!</label>
+        </rules>
+    </decisions>
+    <description
+  >Get &amp; Assign the Lead Owner based on Seamless Owner Assignment
+If the user is inactive, or no match is found, assign to Sales Queue</description>
+    <interviewLabel
+  >Lead Owner Assignment {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Seamless - Lead Owner Assignment</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description
+    >Find a Salesforce User Id who matches the Seamless Owner Assignment (Text field) and is Active.
+- No Username match OR An inactive user, will cause a null value.</description>
+        <name>Get_SF_UserId</name>
+        <label>Get SF User Id</label>
+        <locationX>203</locationX>
+        <locationY>49</locationY>
+        <assignNullValuesIfNoRecordsFound
+    >true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>User_Found</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Username</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varUsername</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputAssignments>
+            <assignToReference>varUserId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordUpdates>
+        <description
+    >Updates the Lead Owner to active user found in Seamless Owner Assignment</description>
+        <name>Update_Owner_Id</name>
+        <label>Update Owner Id</label>
+        <locationX>375</locationX>
+        <locationY>176</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varLeadId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>varUserId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Lead</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Get_SF_UserId</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>varLeadId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Salesforce User ID for a matched varUsername</description>
+        <name>varUserId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description
+    >Username specified in Seamless Owner Assignment</description>
+        <name>varUsername</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

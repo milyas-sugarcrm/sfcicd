@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>WO 00 - On Hold Email</name>
+    <style>none</style>
+    <subject>Work Order {!Order.OrderNumber} move to 00 - On Hold</subject>
+    <textOnly>Hello Phunions,
+
+Work Order {!Order.WONameLink__c} for {!Order.WOAccountLink__c} has been moved to ON HOLD. Please coordinate as a team to make sure all parties understand why the order is on hold and who will be following up to make sure it moves forward in a timely manner.
+
+Thanks,
+
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

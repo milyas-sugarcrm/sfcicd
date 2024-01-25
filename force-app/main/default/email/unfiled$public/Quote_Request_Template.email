@@ -1,0 +1,8 @@
+Dear Support Team,
+<br><br>
+
+A new quote request <b>{!Quote_Request__c.Name} </b>
+has been submitted for the opportunity: {!Quote_Request__c.Opportunity_Name__c.Name}
+<br>
+Please review the request and take appropriate action.<br>
+Quote Request Link: {!Quote_Request__c.Quote_Request_Link__c}

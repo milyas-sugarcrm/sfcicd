@@ -1,0 +1,76 @@
+<aura:component
+  controller="OppLineItemNavController"
+  implements="force:lightningQuickActionWithoutHeader,force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+  access="global"
+>
+  <aura:attribute name="estimateId" type="Id" />
+  <aura:attribute name="regeneratePopup" type="boolean" default="false" />
+  <aura:attribute name="opportunityName" type="String" default="" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="Spinner" type="Boolean" default="false" />
+  <aura:registerEvent
+    name="RefreshPurchaseOrderProducts"
+    type="c:RefreshPurchaseOrderProducts"
+  />
+  <aura:registerEvent
+    name="RefreshPurchaseOrderProofs"
+    type="c:RefreshPurchaseOrderProofs"
+  />
+  <aura:if isTrue="{!v.Spinner}">
+    <lightning:spinner variant="brand" size="large" />
+  </aura:if>
+
+  <div onmouseleave="{!c.closeDropdownAction}">
+    <button
+      onclick="{!c.openDropdown}"
+      style="margin-right: 40px; width: 10%; text-align: center; float: right"
+      class="slds-button slds-button_brand"
+    >
+      Actions
+    </button>
+    <div
+      id="dropdown"
+      class="slds-dropdown slds-dropdownright"
+      style="margin-left: 35%; margin-top: 31px; width: 20%; display: none"
+    >
+      <ul class="slds-dropdown__list" role="menu">
+        <li
+          class="slds-dropdown__item slds-is-selected"
+          onclick="{!c.generatePdfs}"
+        >
+          <a id="previewProof">
+            <span style="color: #006dcc; width: 100px !important; float: left">
+              Generate Pdf For Products
+            </span>
+          </a>
+        </li>
+        <!-- <li class="slds-dropdown__item slds-is-selected" onclick="{!c.previewProofApprovalPage}" >
+                <a id="previewProof"   >
+                    <span style="color: #006dcc; width:100px !important;float: left;">
+                        Preview Proof Approval
+                    </span>
+                </a>
+            </li>
+              <li class="slds-dropdown__item slds-is-selected" onclick="{!c.regeneratePo}" >
+                <a id="previewProof"   >
+                    <span style="color: #006dcc; width:100px !important;float: left;">
+                       Regenerate
+                    </span>
+                </a>
+            </li>-->
+      </ul>
+    </div>
+  </div>
+
+  <lightning:tabset selectedTabId="one">
+    <lightning:tab label="Purchase Order" id="one">
+      <c:PurchaseOrderProductsOppLineItem
+        recordId="{!v.recordId}"
+        opportunityName="{!v.opportunityName}"
+      />
+    </lightning:tab>
+    <!--   <lightning:tab label="Proof" id="two">
+            <c:PurchaseOrderProofsOppLineItem recordId="{!v.recordId}"/>
+        </lightning:tab> -->
+  </lightning:tabset>
+</aura:component>

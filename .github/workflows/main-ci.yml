@@ -275,9 +275,14 @@ jobs:
           TEST_CLASSES: ${{ steps.get-test-classes.outputs.TEST_CLASSES }}
         run: |
           echo "Test Classes are: $TEST_CLASSES"
-          sf apex run test --test-level RunSpecifiedTests --class-names $TEST_CLASSES --code-coverage --detailed-coverage --result-format human --wait 20 --output-dir ./.tests/apex
 
-      # Run Apex tests in scratch org
+          if [ -z "$TEST_CLASSES" ]; then
+            echo "There are no Test classes in this PR"
+          else
+            sf apex run test --test-level RunSpecifiedTests --class-names $TEST_CLASSES --code-coverage --detailed-coverage --result-format human --wait 20 --output-dir ./.tests/apex
+          fi
+
+      # Run Apex tests in scratch org - Enable this if you want to run all test cases
       # - name: "Run Apex tests"
       #   run: npm run test:scratch
 
@@ -299,14 +304,22 @@ jobs:
 
       # Check Code coverage
       - name: Enforce Apex Code Coverage - Min 75%
+        env:
+          TEST_CLASSES: ${{ steps.get-test-classes.outputs.TEST_CLASSES }}
         run: |
-          target=76
-          coverage=$(sf data query --query "SELECT PercentCovered FROM ApexOrgWideCoverage" --use-tooling-api --json | jq -r '.result.records[0].PercentCovered')
-          if [ "$coverage" -lt "$target" ]; then
-            echo "Failed: Current apex code coverage is $coverage% and it must be min 75%."
-            exit 1
+          echo "Test Classes are: $TEST_CLASSES"
+
+          if [ -z "$TEST_CLASSES" ]; then
+            echo "There are no Test classes in this PR"
           else
-            echo "Passed: Apex code coverage is $coverage%."
+            target=76
+            coverage=$(sf data query --query "SELECT PercentCovered FROM ApexOrgWideCoverage" --use-tooling-api --json | jq -r '.result.records[0].PercentCovered')
+            if [ "$coverage" -lt "$target" ]; then
+              echo "Failed: Current apex code coverage is $coverage% and it must be min 75%."
+              exit 1
+            else
+              echo "Passed: Apex code coverage is $coverage%."
+            fi
           fi
 
       # Delete the Scratch Org

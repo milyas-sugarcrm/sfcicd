@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Event_Name__c</fullName>
+    <description
+  >Use this field to add specfic event requests for new EME Distributor or Supplier Leads</description>
+    <externalId>false</externalId>
+    <label>Event Name</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName
+        >EME Exclusive #1 February 25-28, 2024, Embassy Suites Deerfield Beach Resort &amp; Spa, Deerfield Beach, FL</fullName>
+                <default>false</default>
+                <label
+        >EME Exclusive #1 February 25-28, 2024, Embassy Suites Deerfield Beach Resort &amp; Spa, Deerfield Beach, FL</label>
+            </value>
+            <value>
+                <fullName
+        >EME Exclusive #2 May 5-8, 2024, Embassy Suites by Hilton St Augustine Beach Oceanfront Resort, St. Augustine, FL</fullName>
+                <default>false</default>
+                <label
+        >EME Exclusive #2 May 5-8, 2024, Embassy Suites by Hilton St Augustine Beach Oceanfront Resort, St. Augustine, FL</label>
+            </value>
+            <value>
+                <fullName
+        >EME Team Solutions June 23-25, 2024, Embassy Suites by Hilton Boulder, Boulder, CO</fullName>
+                <default>false</default>
+                <label
+        >EME Team Solutions June 23-25, 2024, Embassy Suites by Hilton Boulder, Boulder, CO</label>
+            </value>
+            <value>
+                <fullName
+        >EME Exclusive #3 August 4-7, 2024, Westgate Park City Resort &amp; Spa, Park City, UT</fullName>
+                <default>false</default>
+                <label
+        >EME Exclusive #3 August 4-7, 2024, Westgate Park City Resort &amp; Spa, Park City, UT</label>
+            </value>
+            <value>
+                <fullName
+        >EME Exclusive #4 September 15-18, 2024, Zachari Dunes on Mandalay Beach, Curio Collection by Hilton, Oxnard, CA</fullName>
+                <default>false</default>
+                <label
+        >EME Exclusive #4 September 15-18, 2024, Zachari Dunes on Mandalay Beach, Curio Collection by Hilton, Oxnard, CA</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>5</visibleLines>
+</CustomField>

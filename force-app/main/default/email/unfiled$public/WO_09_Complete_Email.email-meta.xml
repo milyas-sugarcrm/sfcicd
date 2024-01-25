@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>WO - 09 Complete Email</name>
+    <style>none</style>
+    <subject>Work Order {!Order.OrderNumber} - Completed</subject>
+    <textOnly>Dear Phunion,
+
+{!Order.OrderNumber} for {!Order.WOAccountLink__c} has been marked as complete. If shipped, please notify the client with the tracking below.
+
+Tracking Number:  {!Order.Invoice_Tracking_Number__c}
+
+{!Order.WONameLink__c}
+
+Thanks,
+
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

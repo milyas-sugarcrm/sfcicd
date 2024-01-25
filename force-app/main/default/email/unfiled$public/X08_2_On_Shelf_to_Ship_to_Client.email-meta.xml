@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>08.2 On Shelf to Ship to Client</name>
+    <style>none</style>
+    <subject
+  >{!Order.Account_Name__c} Invoice {!Order.Invoice_Number__c}/Work Order {!Order.OrderNumber} is Ready to Ship</subject>
+    <textOnly>Hello,
+
+Please prepare shipping labels for Invoice {!Order.Invoice_Number__c} and copy the carrier and tracking information to Invoice {!Order.Invoice_Number__c}. Shipping information should be included on the invoice and added to Work Order {!Order.OrderNumber}. If there are any questions, please forward them to {!Order.OwnerEmail}. Please confirm in hands date for this job and adjust shipping rates/times as necessary.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

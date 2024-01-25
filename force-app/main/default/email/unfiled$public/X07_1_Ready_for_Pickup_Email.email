@@ -1,0 +1,8 @@
+Hello Phunions,<br/><br/>
+
+A Purchase Order for {!PurchaseOrder_LineItem__c.AccountName__c} , Invoice {!PurchaseOrder_LineItem__c.OrderInvoiceNumber__c} is ready for pickup from {!PurchaseOrder_LineItem__c.SupplierNameLink__c}. Operations Team, please schedule pickup from the vendor and communicate with the Operations Manager if needed. Sales Team, please communicate any special notes or requests with the Operations Team. <br/><br/>
+
+{!PurchaseOrder_LineItem__c.PONameLink__c}<br/><br/>
+
+Thanks,<br/>
+Ralph the Rooster

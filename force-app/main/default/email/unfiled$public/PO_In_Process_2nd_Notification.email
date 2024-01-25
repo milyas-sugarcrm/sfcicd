@@ -1,0 +1,12 @@
+</!DOCTYPE html>
+<html>
+<head>
+</head>
+<p>Operations Team:,</p><p>Upon confirmation request from {!PurchaseOrder_LineItem__c.SupplierNameLink__c}, regarding {!PurchaseOrder_LineItem__c.PONameLink__c}, no response has been given by the primary contact. Please follow up with {!PurchaseOrder_LineItem__c.SupplierNameLink__c} immediately to get written confirmation of PO Completion Date.
+<br/><br/>
+{!PurchaseOrder_LineItem__c.PONameLink__c}
+</p>
+Thanks,<br/>
+Ralph the Rooster
+</body>
+</html>

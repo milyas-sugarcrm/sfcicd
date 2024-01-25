@@ -1,0 +1,541 @@
+<apex:page
+  standardController="PurchaseOrder__c"
+  extensions="PurchaseOrderProofApprovalPreview"
+>
+  <script type="text/javascript">
+    function renderButtons(recordId, status) {
+      if (status == "Client Approved") {
+        document.getElementById("buttonsblock" + recordId).style.display =
+          "none";
+      }
+    }
+    function approveRejectForm(type, recordId) {
+      document.getElementById("formType" + recordId).innerHTML = type;
+      document.getElementById("popup" + recordId).style.display = "block";
+      document.getElementById("background").style.display = "block";
+    }
+    function saveComment(recordId) {
+      var type = document.getElementById("formType" + recordId).innerHTML;
+      console.log("type: " + type);
+      if (type === "Change Required") {
+        type = "Proof (Change Requested)";
+      } else {
+        type = "Proof (Client Approved)";
+        document.getElementById("buttonsblock" + recordId).style.display =
+          "none";
+      }
+      var comment = document.getElementById("comment" + recordId).value;
+      CallAddCommentMethod(recordId, type, comment);
+      document.getElementById("comment" + recordId).value = "";
+      document.getElementById("popup" + recordId).style.display = "none";
+      document.getElementById("background").style.display = "none";
+    }
+    function closeForm(recordId) {
+      document.getElementById("popup" + recordId).style.display = "none";
+      document.getElementById("background").style.display = "none";
+    }
+  </script>
+  <apex:form>
+    <apex:actionFunction
+      name="CallAddCommentMethod"
+      action="{!addComment}"
+      rerender="allComments"
+    >
+      <apex:param name="recId" value="" assignTo="{!recId}" />
+      <apex:param name="type" value="" assignTo="{!type}" />
+      <apex:param name="comment" value="" assignTo="{!comment}" />
+    </apex:actionFunction>
+  </apex:form>
+  <div
+    style="
+      background: #f0f0f0;
+      overflow: auto;
+      margin: 0;
+      padding: 0;
+      box-sizing: inherit;
+    "
+  >
+    <div
+      style="
+        background: #f0f0f0;
+        max-width: 1300px;
+        margin: auto;
+        height: -webkit-fill-available;
+      "
+    >
+      <div style="max-width: 100%; box-sizing: border-box; margin-left: auto">
+        <div
+          style="
+            float: left;
+            padding-left: 0.9375rem;
+            padding-right: 0.9375rem;
+            width: 100%;
+          "
+        >
+          <div id="ParentImage" style="position: relative; height: 150px">
+            <div
+              id="childImage"
+              style="position: absolute; left: 15px; top: 15px"
+            >
+              <apex:image width="40%" height="40%" url="{!$Resource.TPLogo}" />
+            </div>
+            <div
+              id="tableInfo"
+              style="position: absolute; left: 150px; top: 40px"
+            >
+              <apex:outputText
+                style="
+                  font-family: Helvetica, Roboto, Arial, sans-serif;
+                  font-size: 1.75rem;
+                  color: #ffffff;
+                "
+                value="Team Phun"
+              /><br />
+              <apex:outputText
+                style="font-size: 20px; color: #9aa0a3"
+                value="Proofs for PO Test"
+              /><br />
+            </div>
+            <apex:image
+              style="width: 100%; height: 100%"
+              url="{!$Resource.HeaderImage}"
+            />
+          </div>
+        </div>
+      </div>
+      <div style="max-width: 100%; box-sizing: border-box; padding: 10px">
+        <apex:repeat value="{!Details}" var="proofDetails">
+          <apex:repeat value="{!proofDetails.proofs}" var="proof">
+            <div
+              style="
+                padding-top: 25px;
+                padding-bottom: 25px;
+                background: #fff;
+                margin-top: 10px;
+                float: left;
+                width: 100%;
+                padding-left: 0.9375rem;
+                padding-right: 0.9375rem;
+              "
+            >
+              <h4
+                style="
+                  font-weight: 400;
+                  font-size: 1.5625rem;
+                  float: left;
+                  width: 100%;
+                  padding-left: 0.9375rem;
+                  padding-right: 0.9375rem;
+                "
+              >
+                {!proof.status}
+              </h4>
+              <div
+                style="
+                  font-size: 0.8rem;
+                  line-height: 1.15rem;
+                  padding: 20px;
+                  max-width: 75rem;
+                  margin-left: auto;
+                  margin-right: auto;
+                "
+              >
+                <div
+                  style="
+                    float: left;
+                    text-align: center;
+                    width: 16.66667%;
+                    padding-left: 0.9375rem;
+                    padding-right: 0.9375rem;
+                  "
+                >
+                  <a
+                    style="
+                      color: #5ca3b6;
+                      text-decoration: none;
+                      line-height: inherit;
+                      cursor: pointer;
+                    "
+                    href="{!proof.imagePreviewLink}"
+                    target="_blank"
+                  >
+                    <div
+                      style="
+                        background: url({!proof.imageUrl}) center center /
+                          contain no-repeat;
+                        width: 120px;
+                        height: 120px;
+                        margin: 0px auto;
+                        display: inline-block;
+                      "
+                    ></div>
+                    <div>click to enlarge</div>
+                  </a>
+                </div>
+                <div
+                  style="
+                    float: left;
+                    width: 30%;
+                    padding-left: 0.9375rem;
+                    padding-right: 0.9375rem;
+                  "
+                >
+                  <h4
+                    style="display: block; font-weight: bold; font-size: 14px"
+                  >
+                    {!proof.fileName}
+                  </h4>
+                  <a href="{!proof.imageUrl}" target="_blank">
+                    <button
+                      style="
+                        cursor: pointer;
+                        margin-top: 10px;
+                        width: 80px;
+                        height: 30px;
+                        background: #5ca3b6;
+                        color: #fff;
+                        font-size: 0.75rem;
+                      "
+                    >
+                      Download
+                    </button>
+                  </a>
+                </div>
+                <div
+                  style="
+                    float: left;
+                    width: 45%;
+                    padding-left: 0.9375rem;
+                    padding-right: 0.9375rem;
+                  "
+                >
+                  <div
+                    rendered="renderButtons('{!proof.proofId}','proof.status')"
+                    id="buttonsblock{!proof.proofId}"
+                    style="
+                      width: 100%;
+                      margin-left: auto;
+                      margin-right: auto;
+                      max-width: none;
+                    "
+                  >
+                    <div
+                      style="
+                        float: left;
+                        padding-left: 0px;
+                        padding-right: 0.9375rem;
+                      "
+                    >
+                      <button
+                        onclick="approveRejectForm('Change Required','{!proof.proofId}');"
+                        style="
+                          cursor: pointer;
+                          width: 225%;
+                          text-align: center;
+                          color: #fff;
+                          font-size: 0.75rem;
+                          height: 35px;
+                          border: none;
+                          background: #c8295e;
+                        "
+                      >
+                        Request Change
+                      </button>
+                    </div>
+                    <div style="padding-right: 0px">
+                      <button
+                        onclick="approveRejectForm('Approve','{!proof.proofId}');"
+                        style="
+                          cursor: pointer;
+                          float: right;
+                          width: 40%;
+                          background: #5ab444;
+                          text-align: center;
+                          color: #fff;
+                          font-size: 0.75rem;
+                          height: 35px;
+                          border: none;
+                        "
+                      >
+                        Approve
+                      </button>
+                    </div>
+                  </div>
+                  <div style="padding: 5px">
+                    <div>
+                      <span style="font-weight: bold; font-size: 14px"
+                        >&nbsp;</span
+                      >
+                      <span
+                        style="
+                          margin-left: 10px;
+                          font-weight: bold;
+                          font-size: 14px;
+                        "
+                      ></span>
+                      <span style="float: right; font-size: 10px">&nbsp;</span>
+                    </div>
+                    <div style="font-size: 14px">&nbsp; &nbsp;</div>
+                  </div>
+                  <apex:outputPanel id="allComments">
+                    <apex:repeat value="{!proof.comments}" var="comment">
+                      <div style="padding: 5px">
+                        <div>
+                          <span style="font-weight: bold; font-size: 14px"
+                            >{!comment.User__c}</span
+                          >
+                          <span
+                            style="
+                              margin-left: 10px;
+                              font-weight: bold;
+                              font-size: 14px;
+                            "
+                          ></span>
+                          <span style="float: right; font-size: 10px"
+                            >{!comment.Date__c}</span
+                          >
+                        </div>
+                        <div style="font-size: 14px">{!comment.Comment__c}</div>
+                      </div>
+                    </apex:repeat>
+                  </apex:outputPanel>
+                </div>
+              </div>
+            </div>
+
+            <!-- Approve Reject Proof -->
+            <div
+              id="popup{!proof.proofId}"
+              style="
+                z-index: 1006;
+                overflow-x: hidden;
+                padding-top: 25px;
+                padding-bottom: 25px;
+                padding-left: 0.9375rem;
+                padding-right: 0.9375rem;
+                background: #fff;
+                display: none;
+                width: 65%;
+                margin: 0;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                position: fixed;
+                height: 75%;
+                max-height: 700px;
+                overflow-y: hidden;
+              "
+            >
+              <button
+                onclick="closeForm('{!proof.proofId}')"
+                style="
+                  border: none;
+                  background: transparent;
+                  position: absolute;
+                  color: #8a8a8a;
+                  right: 1rem;
+                  top: 0.5rem;
+                  font-size: 2em;
+                  line-height: 1;
+                  cursor: pointer;
+                "
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+              <div
+                style="max-width: 75rem; margin-left: auto; margin-right: auto"
+              >
+                <h3
+                  id="formType{!proof.proofId}"
+                  style="
+                    margin-bottom: 10px;
+                    font-weight: 400;
+                    width: 100%;
+                    padding-left: 0.9375rem;
+                    padding-right: 0.9375rem;
+                    float: left;
+                    font-size: 1.9375rem;
+                  "
+                >
+                  Change Required
+                </h3>
+              </div>
+              <div
+                style="
+                  margin-bottom: 0;
+                  height: 90%;
+                  max-width: 75rem;
+                  margin-left: auto;
+                  margin-right: auto;
+                "
+              >
+                <div
+                  style="
+                    max-width: 75rem;
+                    margin-left: auto;
+                    margin-right: auto;
+                  "
+                >
+                  <div
+                    style="
+                      float: left;
+                      padding-left: 0.9375rem;
+                      padding-right: 0.9375rem;
+                      width: 40%;
+                    "
+                  >
+                    <label
+                      style="
+                        font-size: 18px;
+                        font-weight: bold;
+                        line-height: 1.8;
+                        color: #2a383f;
+                      "
+                    >
+                      Name
+                    </label>
+                    <div
+                      style="
+                        font-weight: normal;
+                        color: #2a383f;
+                        padding-bottom: 10px;
+                        font-size: 16px;
+                      "
+                    >
+                      Sean Burns
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      float: right;
+                      padding-left: 0.9375rem;
+                      padding-right: 0.9375rem;
+                      width: 50%;
+                    "
+                  >
+                    <label
+                      style="
+                        font-size: 18px;
+                        font-weight: bold;
+                        line-height: 1.8;
+                        color: #2a383f;
+                      "
+                    >
+                      Email
+                    </label>
+                    <div
+                      style="
+                        font-weight: normal;
+                        color: #2a383f;
+                        padding-bottom: 10px;
+                        font-size: 16px;
+                      "
+                    >
+                      sean@teamphun.com
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="
+                    max-width: 75rem;
+                    margin-left: auto;
+                    margin-right: auto;
+                  "
+                >
+                  <div style="width: 100%">
+                    <textarea
+                      id="comment{!proof.proofId}"
+                      placeholder="Add any comment you have here"
+                      style="
+                        padding: 0.5rem;
+                        font-size: 1rem;
+                        width: 95%;
+                        margin: 10px;
+                        overflow: hidden;
+                        overflow-wrap: break-word;
+                        resize: horizontal;
+                        height: 162px;
+                      "
+                    ></textarea>
+                  </div>
+                </div>
+                <div
+                  style="
+                    padding-left: 0.9375rem;
+                    padding-right: 0.9375rem;
+                    float: left;
+                    width: 8.33333%;
+                  "
+                >
+                  <button
+                    onclick="saveComment('{!proof.proofId}')"
+                    style="
+                      cursor: pointer;
+                      background: #5ca3b6;
+                      border-radius: 3px;
+                      padding: 0.85em 1em;
+                      text-align: center;
+                      font-size: 0.9rem;
+                      color: #fff;
+                    "
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- End of approve reject proof form-->
+          </apex:repeat>
+        </apex:repeat>
+
+        <div
+          id="background"
+          style="
+            display: none;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1005;
+            background-color: rgba(42, 56, 63, 0.45);
+            overflow: hidden;
+          "
+        ></div>
+      </div>
+      <div style="max-width: 100%; box-sizing: border-box; padding: 10px">
+        <div
+          style="
+            padding-left: 0.9375rem;
+            padding-right: 0.9375rem;
+            width: 100%;
+            float: left;
+            background: #fff;
+            margin-top: 10px;
+          "
+        >
+          <div style="float: left">
+            <p style="color: #55656d; font-size: 1rem">
+              Sean Burns<br />sean@teamphun.com
+            </p>
+          </div>
+
+          <div
+            style="
+              display: inline-block;
+              line-height: 1.15rem;
+              float: right;
+              margin-bottom: 20px;
+              margin-top: 20px;
+            "
+          >
+            <p style="color: #55656d; font-size: 1rem">
+              Team Phun LLC<br />(858) 598-5563 x1<br />683 Turquoise St.<br />
+              La Jolla, California 92037<br /> United States<br />
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</apex:page>

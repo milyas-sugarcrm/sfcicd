@@ -1,0 +1,18 @@
+<apex:page
+  standardController="Order"
+  extensions="ApproveOrderController"
+  action="{!updateStatus}"
+>
+  <script type="text/javascript">
+    const REFRESHED = "once";
+    function RefreshPage() {
+      if (REFRESHED != this.name) {
+        this.name = REFRESHED;
+        location.reload(true);
+      }
+    }
+  </script>
+  <body onload="RefreshPage();">
+    Your Order has been Approved.
+  </body>
+</apex:page>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description
+  >Email to send to Eric Johnson whenever a new Opp is created from Wordpress Foams of Record Type EME Distributor Booking Opportunity</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>For Distributor Opp (Eric Johnson)</name>
+    <style>none</style>
+    <subject>A new Opportunity is Created</subject>
+    <textOnly>Hello Eric,
+
+Salesforce could not create the lead for {!Contact.FirstName} {!Contact.LastName} at {!Opportunity.Company__c}. The email for this individual already exists in the Salesforce system as a lead or contact. A new Distributor Booking Opportunity was created for this account.
+
+Please follow up at this Link and proceed with qualifying {!Opportunity.Company__c} per the details below:
+
+First Name: {!Contact.FirstName}
+Last Name: {!Contact.LastName}
+Title: {!Opportunity.Title__c}
+Phone: {!Opportunity.Phone__c}
+Email: {!Opportunity.Email__c}
+Company: {!Opportunity.Company__c}
+Address: {!Opportunity.Billing_Address__c}
+Industry Number: {!Opportunity.Industry_Number__c}
+Events Requested: {!Opportunity.Event_Name__c}
+How did you hear about EME?: {!Opportunity.How_did_you_hear_about_EME__c}</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,63 @@
+<html style="overflow-y: hidden;">
+<head>
+	<title></title>
+</head>
+<body style="height: auto; min-height: auto;">Hello&nbsp;{{{Recipient.FirstName}}}:&nbsp;<br />
+<br />
+In an effort to ensure we are making every effort to ensure accurate and efficient communication for 2020, please confirm or update your account information below.<br />
+<br />
+Sales Information:<br />
+Outside Sales Rep:&nbsp;<br />
+Outside Sales Rep Mobile:<br />
+Outside Sales Rep Email:<br />
+Inside Sales Rep:<br />
+Inside Sales Rep Mobile:<br />
+Inside Sales Rep Email:<br />
+<br />
+Billing Information<br />
+Account Name: {{{Account.Name}}}<br />
+Primary Billing Contact:&nbsp;{{{Account.Billing_Contact__c}}}<br />
+Primary Billing Email:&nbsp;{{{Account.Billing_Email__c}}}<br />
+Primary Billing Phone:&nbsp;{{{Account.Phone}}}<br />
+Billing Email: {{{Recipient.Billing_Email__c}}}<br />
+Billing Address:<br />
+{{{Account.BillingAddress}}}<br />
+<br />
+Shipping Information<br />
+Account Name: {{{Account.Name}}}<br />
+Account Shipping Address: {{{Account.ShippingAddress}}}<br />
+<br />
+Third Party Shipping Allowed:&nbsp;{{{Account.Third_Party_Shipping__c}}}<br />
+Handling Fee:&nbsp;<br />
+Handling Fee Unit of Measure:&nbsp;<br />
+<br />
+Payment Terms:&nbsp;<br />
+Preferred Payment Method:&nbsp;<br />
+<br />
+<br />
+<br />
+Please update your records with Team Phun information below:<br />
+<br />
+Billing Information: (Please make checks payable to Team Phun)<br />
+Account Name: Team Phun, LLC, dba Team Phun<br />
+Primary Billing Contact: Jesse Goodwick<br />
+Primary Billing Email: jesse@teamphun.com<br />
+Primary Billing Phone: (858) 598-5563 x3<br />
+Primary Billing Address:<br />
+683 Turquoise St.<br />
+La Jolla, CA 92037<br />
+USA<br />
+<br />
+Shipping Information<br />
+Account Name: Team Phun (West)<br />
+Account Shipping Address (1):&nbsp;<br />
+Team Phun West Receiving<br />
+683 Turquoise St.<br />
+La Jolla, CA 92037<br />
+USA<br />
+Account Shipping Address (2):<br />
+Team Phun East Receiving<br />
+1801 Reynolds Ave. Unit D3<br />
+North Charleston, SC 29405<br />
+USA</body>
+</html>

@@ -1,0 +1,28 @@
+.THIS .dnd-table-parent {
+  display: flex;
+}
+
+.THIS .dnd-table {
+  display: table;
+  border: 1px solid red;
+}
+.THIS .subtotalAdd {
+  vertical-align: middle;
+}
+
+.THIS .dnd-table-row {
+  display: table-row;
+}
+
+.THIS .dnd-table-cell {
+  border: 1px solid #c0d6e4;
+  padding: 10px;
+  display: table-cell;
+}
+
+.THIS .dnd-recipient-table {
+  padding: 20px;
+}
+.THIS .ul {
+  cursor: pointer;
+}

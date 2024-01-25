@@ -1,0 +1,275 @@
+<aura:component
+  controller="OppLineItemNavController"
+  implements="force:lightningQuickActionWithoutHeader,force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+  access="global"
+>
+  <div
+    style="
+      border: solid;
+      border-bottom-width: 1px;
+      border-top-width: thin;
+      border-left-width: 1px;
+      border-right-width: 1px;
+      border-top-color: #f1f1f1;
+      border-bottom-color: #f1f1f1;
+      border-right-color: #f1f1f1;
+      border-left-color: #f1f1f1;
+    "
+  >
+    <table class="slds-table slds-table_cell-buffer slds-is-selected">
+      <thead>
+        <tr class="slds-line-height_reset">
+          <th scope="col">
+            <div
+              style="
+                font-size: 0.9rem;
+                padding: 0.5rem 0.625rem 0.625rem;
+                line-height: 1.5;
+                color: #2a383f;
+                font-weight: 700;
+              "
+              class="slds-truncate"
+              title="Existing PO #"
+            >
+              Existing PO #
+            </div>
+          </th>
+          <th scope="col">
+            <div
+              style="
+                font-size: 0.9rem;
+                padding: 0.5rem 0.625rem 0.625rem;
+                line-height: 1.5;
+                color: #2a383f;
+                font-weight: 700;
+              "
+              class="slds-truncate"
+              title="PO Details"
+            >
+              PO Details
+            </div>
+          </th>
+          <th scope="col">
+            <div
+              style="
+                font-size: 0.9rem;
+                padding: 0.5rem 0.625rem 0.625rem;
+                line-height: 1.5;
+                color: #2a383f;
+                font-weight: 700;
+              "
+              class="slds-truncate"
+              title="Action"
+            >
+              Action
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div
+              style="
+                padding: 0.5rem 0.625rem 0.625rem;
+                font-size: 0.9rem;
+                font-weight: 400;
+                color: rgb(42, 56, 63);
+              "
+              class="slds-truncate"
+            >
+              2008
+            </div>
+          </td>
+          <td>
+            <div class="slds-truncate">
+              <div
+                style="
+                  padding: 0.5rem 0.625rem 0.625rem;
+                  font-size: 0.9rem;
+                  font-weight: 400;
+                  color: rgb(42, 56, 63);
+                "
+              >
+                SkuBot Promo Limited > PO Test
+              </div>
+            </div>
+          </td>
+          <td>
+            <div style="padding: 15px">
+              <div style="width: 100%; float: left">
+                <div style="width: 5%; float: left">
+                  <lightning:input
+                    aura:id="productSelected"
+                    checked="false"
+                    type="checkbox"
+                  />
+                </div>
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    font-weight: 700;
+                    width: 50%;
+                    color: rgb(42, 56, 63);
+                  "
+                  class="slds-truncate"
+                >
+                  Create new PO#
+                </div>
+              </div>
+              <br />
+              <div style="width: 100%; float: left">
+                <div style="width: 5%; float: left">
+                  <lightning:input
+                    aura:id="productSelected"
+                    checked="false"
+                    type="checkbox"
+                  />
+                </div>
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    font-weight: 700;
+                    width: 50%;
+                    color: rgb(42, 56, 63);
+                  "
+                  class="slds-truncate"
+                >
+                  Don't regenerate
+                </div>
+              </div>
+              <br />
+              <div style="width: 100%; float: left">
+                <div style="width: 5%; float: left">
+                  <lightning:input
+                    aura:id="productSelected"
+                    checked="false"
+                    type="checkbox"
+                  />
+                </div>
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    font-weight: 700;
+                    width: 50%;
+                    color: rgb(42, 56, 63);
+                  "
+                  class="slds-truncate"
+                >
+                  Regenerate as #2008
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <div
+              style="
+                padding: 0.5rem 0.625rem 0.625rem;
+                font-size: 0.9rem;
+                font-weight: 400;
+                color: rgb(42, 56, 63);
+              "
+              class="slds-truncate"
+            >
+              2008
+            </div>
+          </td>
+          <td>
+            <div class="slds-truncate">
+              <div
+                style="
+                  padding: 0.5rem 0.625rem 0.625rem;
+                  font-size: 0.9rem;
+                  font-weight: 400;
+                  color: rgb(42, 56, 63);
+                "
+              >
+                SkuBot Promo Limited > PO Test
+              </div>
+            </div>
+          </td>
+          <td>
+            <div style="padding: 15px">
+              <div style="width: 100%; float: left">
+                <div style="width: 5%; float: left">
+                  <lightning:input
+                    aura:id="productSelected"
+                    checked="false"
+                    type="checkbox"
+                  />
+                </div>
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    font-weight: 700;
+                    width: 50%;
+                    color: rgb(42, 56, 63);
+                  "
+                  class="slds-truncate"
+                >
+                  Create new PO#
+                </div>
+              </div>
+              <br />
+              <div style="width: 100%; float: left">
+                <div style="width: 5%; float: left">
+                  <lightning:input
+                    aura:id="productSelected"
+                    checked="false"
+                    type="checkbox"
+                  />
+                </div>
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    font-weight: 700;
+                    width: 50%;
+                    color: rgb(42, 56, 63);
+                  "
+                  class="slds-truncate"
+                >
+                  Don't regenerate
+                </div>
+              </div>
+              <br />
+              <div style="width: 100%; float: left">
+                <div style="width: 5%; float: left">
+                  <lightning:input
+                    aura:id="productSelected"
+                    checked="false"
+                    type="checkbox"
+                  />
+                </div>
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    font-weight: 700;
+                    width: 50%;
+                    color: rgb(42, 56, 63);
+                  "
+                  class="slds-truncate"
+                >
+                  Regenerate as #2008
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button
+    class="slds-button slds-button_brand"
+    style="
+      margin-top: 20px;
+      margin-right: 25px;
+      text-align: center;
+      font-size: 0.8rem;
+    "
+  >
+    Regenerate
+  </button>
+</aura:component>

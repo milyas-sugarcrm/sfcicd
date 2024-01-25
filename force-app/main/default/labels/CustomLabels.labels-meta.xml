@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Approval_Email_Template</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Approval Email Template</shortDescription>
+        <value>Approval_Email</value>
+    </labels>
+    <labels>
+        <fullName>ContentVersionImage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ContentVersionImage</shortDescription>
+        <value
+    >https://teamphun--dev3.sandbox.lightning.force.com/sfc/servlet.shepherd/version/download/</value>
+    </labels>
+    <labels>
+        <fullName>Default_Margin_Value</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Default Margin Value</shortDescription>
+        <value>60</value>
+    </labels>
+    <labels>
+        <fullName>Design_Team_Email</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Design Team Email</shortDescription>
+        <value>suitetest906@gmail.com</value>
+    </labels>
+    <labels>
+        <fullName>Display_PO_So_Tabs</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Display PO, SO Tabs</shortDescription>
+        <value>True</value>
+    </labels>
+    <labels>
+        <fullName>Duplicate_Accounts</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Duplicate Accounts</shortDescription>
+        <value>Account with same name already exists</value>
+    </labels>
+    <labels>
+        <fullName>ESP_Key</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ESP Key</shortDescription>
+        <value
+    >AsiMemberAuth client_id=500116552&amp;client_secret=db94e7d3b1b31c2d20aed08e9ab8e7b3</value>
+    </labels>
+    <labels>
+        <fullName>ESP_URL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ESP URL</shortDescription>
+        <value>http://api.asicentral.com/v1/</value>
+    </labels>
+    <labels>
+        <fullName>ESP_app_Code</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ESP_app_Code</shortDescription>
+        <value>WESP</value>
+    </labels>
+    <labels>
+        <fullName>ESP_asi_number</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ESP_asi_number</shortDescription>
+        <value>342550</value>
+    </labels>
+    <labels>
+        <fullName>ESP_images_url</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ESP images url</shortDescription>
+        <value>http://api.asicentral.com/v1/</value>
+    </labels>
+    <labels>
+        <fullName>ESP_username</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ESP_username</shortDescription>
+        <value>sean@teamphun.com</value>
+    </labels>
+    <labels>
+        <fullName>Email_for_Order_Stages</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Email for Order Stages 7.2-8.1</shortDescription>
+        <value>suitetest906@gmail.com</value>
+    </labels>
+    <labels>
+        <fullName>Email_id_for_the_Quote_Request_Recipient</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription
+    >Email id for the Quote Request Recipient</shortDescription>
+        <value>suitetest906@gmail.com</value>
+    </labels>
+    <labels>
+        <fullName>Eric_Johnson_s_Email</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Eric Johnson&apos;s Email</shortDescription>
+        <value>hamza.bhatti@rolustech.com</value>
+    </labels>
+    <labels>
+        <fullName>ErrorEmailRecepients</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ErrorEmailRecepients</shortDescription>
+        <value>suitetest906@gmail.com</value>
+    </labels>
+    <labels>
+        <fullName>EspMediaLink</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>EspMediaLink</shortDescription>
+        <value>https://api.stage-asicentral.com/v1/</value>
+    </labels>
+    <labels>
+        <fullName>Google_Auth_Key_mdt_ID</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Google Auth Key mdt ID</shortDescription>
+        <value>m038M0000008P5gQAE</value>
+    </labels>
+    <labels>
+        <fullName>Instance_Link</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Instance Link</shortDescription>
+        <value>https://teamphun--dev3.sandbox.lightning.force.com/</value>
+    </labels>
+    <labels>
+        <fullName>OldSOHistoryRecordToDelete</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OldSOHistoryRecordToDelete</shortDescription>
+        <value>100</value>
+    </labels>
+    <labels>
+        <fullName>OnShelfForShipClientManagers</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OnShelfForShipClientManagers</shortDescription>
+        <value>suitetest906@gmail.com</value>
+    </labels>
+    <labels>
+        <fullName>Opportunity_Deposit_Invoice_Email_Subject</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription
+    >Opportunity Deposit Invoice Email Subject</shortDescription>
+        <value>Team Phun: DEPOSIT INVOICE</value>
+    </labels>
+    <labels>
+        <fullName>Opportunity_Estimate_Email_Subject</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Opportunity Estimate Email Subject</shortDescription>
+        <value>Team Phun: ESTIMATE</value>
+    </labels>
+    <labels>
+        <fullName>Opportunity_Presentation_Email_Subject</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription
+    >Opportunity Presentation Email Subject</shortDescription>
+        <value>Team Phun: PRESENTATION</value>
+    </labels>
+    <labels>
+        <fullName>Opportunity_Purchase_Order_Email_Subject</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription
+    >Opportunity Purchase Order Email Subject</shortDescription>
+        <value>Team Phun: PURCHASE ORDER</value>
+    </labels>
+    <labels>
+        <fullName>Opportunity_Sales_Order_Email_Subject</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription
+    >Opportunity Sales Order Email Subject</shortDescription>
+        <value>Team Phun: SALES ORDER</value>
+    </labels>
+    <labels>
+        <fullName>Org_Wide_Art_User</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Art User Org Wide Address</shortDescription>
+        <value>0D22a0000008PRLCA2</value>
+    </labels>
+    <labels>
+        <fullName>PONotificationEmail</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PONotificationEmail</shortDescription>
+        <value>suitetest906@gmail.com</value>
+    </labels>
+    <labels>
+        <fullName>Password</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Password</shortDescription>
+        <value>Makephun1</value>
+    </labels>
+    <labels>
+        <fullName>PickupManager</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PickupManager</shortDescription>
+        <value>suitetest906@gmail.com</value>
+    </labels>
+    <labels>
+        <fullName>QBO_Authentication_Error_Emails</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QBO_Authentication_Error_Emails</shortDescription>
+        <value>suitetest906@gmail.com</value>
+    </labels>
+    <labels>
+        <fullName>QBO_Custom_Field_1</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QBO Custom Field 1</shortDescription>
+        <value>SF Opportunity</value>
+    </labels>
+    <labels>
+        <fullName>QBO_Custom_Field_1_Id</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QBO Custom Field 1 Id</shortDescription>
+        <value>3</value>
+    </labels>
+    <labels>
+        <fullName>QBO_Promotional_Product_Service_Id</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QBO Promotional Product Service Id</shortDescription>
+        <value>244</value>
+    </labels>
+    <labels>
+        <fullName>QB_API_End_Point</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QB API End Point</shortDescription>
+        <value>https://sandbox-quickbooks.api.intuit.com</value>
+    </labels>
+    <labels>
+        <fullName>QB_Access_token_End_Point</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QB Access token End Point</shortDescription>
+        <value>https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer</value>
+    </labels>
+    <labels>
+        <fullName>QB_Authorization_End_Point</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QB Authorization End Point</shortDescription>
+        <value>https://appcenter.intuit.com/connect/oauth2</value>
+    </labels>
+    <labels>
+        <fullName>QB_Authorization_Scope</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QB Authorization Scope</shortDescription>
+        <value>com.intuit.quickbooks.accounting</value>
+    </labels>
+    <labels>
+        <fullName>QB_Client_Id</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QB Client Id</shortDescription>
+        <value>AB6wzNVfqDJuh1vCeTqcZ2HnbteI9wZ3ifdSXGMFwCWt3IchBd</value>
+    </labels>
+    <labels>
+        <fullName>QB_Client_Secret</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QB Client Secret</shortDescription>
+        <value>w8659kgOKKkg7k4g5ZMfe36adxLvGEzkS00pf6mG</value>
+    </labels>
+    <labels>
+        <fullName>QB_ID</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QB ID</shortDescription>
+        <value>1</value>
+    </labels>
+    <labels>
+        <fullName>QB_Redirect_URI</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QB Redirect URI</shortDescription>
+        <value
+    >https://teamphun--c.visualforce.com/apex/QuickBookAuthentication</value>
+    </labels>
+    <labels>
+        <fullName>QB_Syncing_Error_Emails</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QB_Syncing_Error_Emails</shortDescription>
+        <value>suitetest906@gmail.com</value>
+    </labels>
+    <labels>
+        <fullName>QB_Timezone</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QB_Timezone</shortDescription>
+        <value>MST</value>
+    </labels>
+    <labels>
+        <fullName>Reply_To</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Reply To</shortDescription>
+        <value
+    >approveemailreplyservice@j-1bog0sgoiw819c31wk3xbxm1b5i8adslcmw9745yammbt5bryy.2a-8xyxeaq.cs47.apex.sandbox.salesforce.com</value>
+    </labels>
+    <labels>
+        <fullName>SchedulerIssueThreshold</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SchedulerIssueThreshold</shortDescription>
+        <value>10</value>
+    </labels>
+    <labels>
+        <fullName>Scheduler_Interval</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Scheduler Interval</shortDescription>
+        <value>1</value>
+    </labels>
+    <labels>
+        <fullName>Service_Id</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Service Id</shortDescription>
+        <value>2</value>
+    </labels>
+    <labels>
+        <fullName>Threshold</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Threshold</shortDescription>
+        <value>10</value>
+    </labels>
+    <labels>
+        <fullName>Threshold_QBO_Authentication_Error_Emails</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription
+    >Threshold QBO Authentication Error Emails</shortDescription>
+        <value>360</value>
+    </labels>
+    <labels>
+        <fullName>Triggers</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Triggers</shortDescription>
+        <value>True</value>
+    </labels>
+    <labels>
+        <fullName>Vicky_Tirpack_s_Email</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Vicky Tirpack&apos;s Email</shortDescription>
+        <value>hamza.bhatti@rolustech.com</value>
+    </labels>
+    <labels>
+        <fullName>Work_Order_Approval_Email_Subject</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Work Order Approval Email Subject</shortDescription>
+        <value>Your Order is Waiting for Your Approval</value>
+    </labels>
+    <labels>
+        <fullName>ccAddress</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ccAddress</shortDescription>
+        <value>suitetest906@gmail.com</value>
+    </labels>
+    <labels>
+        <fullName>default_url</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>default_url</shortDescription>
+        <value
+    >https://teamphun--INSTANCENAME.sandbox.lightning.force.com/</value>
+    </labels>
+    <labels>
+        <fullName>service_Id_Breakdown</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>service_Id_Breakdown</shortDescription>
+        <value>2573</value>
+    </labels>
+    <labels>
+        <fullName>service_Id_Brokerage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>service_Id_Brokerage</shortDescription>
+        <value>2574</value>
+    </labels>
+    <labels>
+        <fullName>service_Id_Duty</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>service_Id_Duty</shortDescription>
+        <value>2575</value>
+    </labels>
+    <labels>
+        <fullName>service_Id_FixedCharges</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>service_Id_FixedCharges</shortDescription>
+        <value>2576</value>
+    </labels>
+    <labels>
+        <fullName>service_Id_InboundFreight</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>service_Id_InboundFreight</shortDescription>
+        <value>2577</value>
+    </labels>
+    <labels>
+        <fullName>service_Id_RunCharges</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>service_Id_RunCharges</shortDescription>
+        <value>2578</value>
+    </labels>
+</CustomLabels>

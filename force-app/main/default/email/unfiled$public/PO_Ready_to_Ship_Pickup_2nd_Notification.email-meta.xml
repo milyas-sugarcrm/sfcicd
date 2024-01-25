@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>PO Ready to Ship/Pickup 2nd Notification</name>
+    <style>none</style>
+    <subject
+  >Reminder to PO - {!PurchaseOrder_LineItem__c.Name} Add Shipping Information or Notify Client for Pickup</subject>
+    <textOnly>Hello Operations Team:
+
+This is a courtesy reminder that 24 hours have passed since {!PurchaseOrder_LineItem__c.PONameLink__c} from {!PurchaseOrder_LineItem__c.SupplierNameLink__c} has been in the Ready to Ship/Pickup status. If this PO has shipped to the client directly, please fill in the tracking number, and confirm that the client has been notified.
+
+If this PO is Ready to Pickup, please ensure the client has been notified, and schedule a pickup date and time with the client. Once confirmed, please move the PO status to Complete by filling in the appropriate fields to close the PO.
+
+{!PurchaseOrder_LineItem__c.PONameLink__c}
+
+Thanks a bunch,
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

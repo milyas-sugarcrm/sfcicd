@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName
+    >SCREENPRINT, HEAT TRANSFER, EMBROIDERY, DTG, KITTING, PATCHES, SEWING, FULFILLMENT</fullName>
+        <default>false</default>
+        <label
+    >SCREENPRINT, HEAT TRANSFER, EMBROIDERY, DTG, KITTING, PATCHES, SEWING, FULFILLMENT</label>
+    </customValue>
+    <description>Production Details</description>
+    <masterLabel>PRODUCTION</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

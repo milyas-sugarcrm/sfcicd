@@ -1,0 +1,7 @@
+</!DOCTYPE html>
+<html>
+<head>
+</head>
+<p>Hello Operations Team:</p><p>This is a friendly reminder that it’s been 24 hours since {!PurchaseOrder_LineItem__c.Name} moved into a Ready for Pickup Status. Please ensure a delivery is scheduled, and notify {!PurchaseOrder_LineItem__c.OwnerFullName} if there are any delays resulting from delivery interruptions.</p><p>If {!PurchaseOrder_LineItem__c.Name} has been received at QC, please update the PO Status to Received at QC.</p><p>Thanks a bunch,</p><p>Ralph the Rooster</p>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<apex:page
+  standardController="Opportunity"
+  extensions="OpportunityViewPortalExtention"
+>
+  <apex:OutputPanel style="overflow: auto">
+    <div
+      syle="    background: #fff;
+               padding: 20px;
+               border-radius: 5px;
+               width: 100%;
+               height: 100%;
+               "
+    >
+      <h1
+        style="
+          width: 100%;
+          color: #012b47;
+          border-bottom: 2px solid #eaeff3;
+          padding-top: 15px;
+          padding-left: 25px;
+          text-align: left;
+          font-size: 1.5rem;
+          margin-top: 0;
+          margin-bottom: 0.5rem;
+          display: block;
+          font-weight: 400;
+        "
+      >
+        <img
+          style="
+            width: 35px;
+            margin-right: 10px;
+            margin-bottom: 5px;
+            display: inline-block;
+            vertical-align: middle;
+            max-width: 100%;
+            height: auto;
+          "
+          src="{!$Resource.orderStatusIcon}"
+        />
+        Order Status
+      </h1>
+
+      <img
+        style="
+          padding-left: 26px;
+          margin-bottom: 10px;
+          display: inline-block;
+          vertical-align: middle;
+          max-width: 100%;
+          height: auto;
+        "
+        src="{!$Resource.orderstatuschange}"
+      />
+
+      <apex:repeat value="{!ProofingOrderStatusDetails}" var="data">
+        <div
+          class="grid-x order-status"
+          style="
+            margin-left: 25px;
+            padding: 15px 0;
+            display: -webkit-flex;
+            line-height: 1.5;
+            font-weight: 400;
+            color: #012b47;
+            box-sizing: inherit;
+            text-align: left;
+            flex-flow: row wrap;
+            border-top: 2px solid rgb(230, 238, 244);
+          "
+        >
+          <div
+            style="
+              border: 2px solid #02bbe1;
+              padding: 10px 15px !important;
+              text-align: left;
+              border-radius: 5px;
+              width: 29.5%;
+              display: inline;
+              color: #012b47;
+            "
+            class="cell small-4"
+            id="proofing"
+          >
+            <apex:repeat value="{!data.proofRequiredNames}" var="name">
+              <h3
+                style="
+                  color: #02bbe1;
+                  margin-bottom: 5px;
+                  font-size: 1rem;
+                  font-weight: 700;
+                  line-height: 1.15rem;
+                  text-align: left;
+                "
+              >
+                {!name}
+              </h3>
+              <br />
+            </apex:repeat>
+            <p
+              style="
+                font-size: 0.8rem;
+                color: #7b98ac;
+                text-rendering: optimizeLegibility;
+                text-align: left;
+              "
+            >
+              In-Hands Date: {!data.proofRequiredDate}
+            </p>
+          </div>
+        </div>
+      </apex:repeat>
+
+      <apex:repeat value="{!InProductionOrderStatusDetails}" var="data">
+        <div
+          class="grid-x order-status"
+          style="
+            margin-left: 25px;
+            padding: 15px 0;
+            display: -webkit-flex;
+            line-height: 1.5;
+            font-weight: 400;
+            color: #012b47;
+            box-sizing: inherit;
+            text-align: left;
+            flex-flow: row wrap;
+            border-top: 2px solid rgb(230, 238, 244);
+          "
+        >
+          <div
+            style="
+              margin-left: 33%;
+              border: 2px solid #ff3948;
+              padding: 10px 15px !important;
+              text-align: left;
+              border-radius: 5px;
+              display: inline;
+              width: 28.9%;
+              color: #012b47;
+            "
+            class="cell small-4"
+            id="proofing"
+          >
+            <apex:repeat value="{!data.InProductionNames}" var="name">
+              <h3
+                escape="false"
+                style="
+                  color: #ff3948;
+                  margin-bottom: 5px;
+                  font-size: 1rem;
+                  font-weight: 700;
+                  line-height: 1.15rem;
+                  text-align: left;
+                "
+              >
+                {!name}
+              </h3>
+              <br />
+            </apex:repeat>
+            <p
+              style="
+                font-size: 0.8rem;
+                color: #7b98ac;
+                text-rendering: optimizeLegibility;
+                text-align: left;
+              "
+            >
+              In-Hands Date: {!data.InProductionDate}
+            </p>
+          </div>
+        </div>
+      </apex:repeat>
+
+      <apex:repeat value="{!ShippedOrderStatusDetails}" var="data">
+        <div
+          class="grid-x order-status"
+          style="
+            margin-left: 25px;
+            padding: 15px 0;
+            display: -webkit-flex;
+            line-height: 1.5;
+            font-weight: 400;
+            color: #012b47;
+            box-sizing: inherit;
+            text-align: left;
+            flex-flow: row wrap;
+            border-top: 2px solid rgb(230, 238, 244);
+          "
+        >
+          <div
+            style="
+              margin-left: 66%;
+              border: 2px solid #03cd69;
+              padding: 10px 15px !important;
+              text-align: left;
+              border-radius: 5px;
+              display: inline;
+              width: 29%;
+              color: #012b47;
+            "
+            class="cell small-4"
+            id="proofing"
+          >
+            <h3
+              style="
+                color: #03cd69;
+                margin-bottom: 5px;
+                font-size: 1rem;
+                font-weight: 700;
+                line-height: 1.15rem;
+                text-align: left;
+              "
+            >
+              {!data.shippedName}
+            </h3>
+            <p
+              style="
+                font-size: 0.8rem;
+                color: #7b98ac;
+                text-rendering: optimizeLegibility;
+                text-align: left;
+              "
+            >
+              Shipped Date: {!data.shippedDate}
+            </p>
+            <p style="font-size: 0.8rem; color: #7b98ac; text-align: left">
+              {!data.shippedTrackingID}
+            </p>
+          </div>
+        </div>
+      </apex:repeat>
+    </div>
+  </apex:OutputPanel>
+</apex:page>

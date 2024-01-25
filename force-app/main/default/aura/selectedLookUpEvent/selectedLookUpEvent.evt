@@ -1,0 +1,3 @@
+<aura:event type="COMPONENT" description="This event is used to send the record to the parent shipping component">
+    <aura:attribute name="selectedRecordByEvent" type="sObject"/>
+</aura:event>

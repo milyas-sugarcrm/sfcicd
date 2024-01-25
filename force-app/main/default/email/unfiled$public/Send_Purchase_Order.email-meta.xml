@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>false</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Send Purchase Order</name>
+    <style>none</style>
+    <subject>Purchase Order PDF</subject>
+    <textOnly>Dear {!Vendor},
+
+Please note Team Phun is an AIM Distributor.
+
+Please review the attached Purchase Order {!PONumber} for accuracy. If any of the terms of this Purchase Order seem to be in error, please notify us immediately. If we have not received a confirmation of the PO - {!PONumber} within 24 hours, the PO - {!PONumber} is considered to be confirmed.
+
+Please direct any questions to info@teamphun.com for immediate attention.
+
+Thank you
+
+Team Phun</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

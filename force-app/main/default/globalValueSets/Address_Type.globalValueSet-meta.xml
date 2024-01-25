@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>BILLING</fullName>
+        <default>false</default>
+        <label>BILLING</label>
+    </customValue>
+    <customValue>
+        <fullName>SHIPPING</fullName>
+        <default>false</default>
+        <label>SHIPPING</label>
+    </customValue>
+    <customValue>
+        <fullName>BOTH</fullName>
+        <default>false</default>
+        <label>BOTH</label>
+    </customValue>
+    <masterLabel>Address Type</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

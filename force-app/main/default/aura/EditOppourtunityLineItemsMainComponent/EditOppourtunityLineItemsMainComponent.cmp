@@ -1,0 +1,20 @@
+<aura:component>
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <aura:attribute name="recordId" type="String" />
+  <div>Hello this is edit Record Id is {!recordId}</div>
+  <div
+    class="slds-grid slds-grid_vertical-align-end slds-grid_align-space"
+    style="height: 60px"
+  >
+    <div class="slds-col">
+      <lightning:input
+        aura:id="searchTerm"
+        name="searchTerm"
+        placeholder="Search Term"
+        isLoading="{!v.issearching }"
+        type="search"
+      />
+    </div>
+  </div>
+</aura:component>

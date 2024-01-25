@@ -1,0 +1,865 @@
+<apex:page controller="OpportunityViewPortalExtention">
+  <script type="text/javascript">
+    var previousOnload = window.onload;
+    window.onload = function () {
+      if (previousOnload) {
+        previousOnload();
+      }
+      document.getElementById("salesorderTab").style.display = "none";
+      document.getElementById("workorderTab").style.display = "none";
+      if ("{!Estimate}" === "false") {
+        document.getElementById("estimateTab").style.display = "none";
+      } else {
+        document.getElementById("estimateTab").style.display = "block";
+      }
+      if (
+        "{!Opportunity.StageName}" !== "Presentation" &&
+        "{!Opportunity.StageName}" !== "Needs Analysis"
+      ) {
+        document.getElementById(
+          "presentationStatusIcon"
+        ).style.backgroundImage = "url('{!$Resource.done}')";
+      } else {
+        document.getElementById("presentationTab").style.opacity = ".75";
+      }
+      if (
+        "{!Opportunity.StageName}" != "Presentation" &&
+        "{!Opportunity.StageName}" != "Needs Analysis" &&
+        "{!Opportunity.StageName}" != "Estimate"
+      ) {
+        document.getElementById("estimateStatusIcon").style.backgroundImage =
+          "url('{!$Resource.done}')";
+      } else {
+        document.getElementById("estimateTab").style.opacity = ".75";
+      }
+      if (
+        "{!Opportunity.StageName}" != "Presentation" &&
+        "{!Opportunity.StageName}" != "Needs Analysis" &&
+        "{!Opportunity.StageName}" != "Estimate" &&
+        "{!Opportunity.StageName}" != "Sales"
+      ) {
+        document.getElementById("salesorderTab").style.display = "block";
+        document.getElementById("salesorderStatusIcon").style.backgroundImage =
+          "url('{!$Resource.done}')";
+      } else {
+        document.getElementById("salesorderTab").style.opacity = ".75";
+      }
+      if ("{!Opportunity.StageName}" === "Closed Won") {
+        document.getElementById("workorderTab").style.opacity = "";
+      } else {
+        document.getElementById("workorderTab").style.opacity = ".75";
+      }
+
+      // check in progress stage
+      if ("{!Opportunity.StageName}" === "Presentation") {
+        document.getElementById(
+          "presentationStatusIcon"
+        ).style.backgroundImage = "url('{!$Resource.action}')";
+        document.getElementById("presentationTab").style.opacity = "";
+      }
+      if ("{!Opportunity.StageName}" === "Estimate") {
+        document.getElementById("estimateStatusIcon").style.backgroundImage =
+          "url('{!$Resource.action}')";
+        document.getElementById("estimateTab").style.opacity = "";
+      }
+      if ("{!Opportunity.StageName}" === "Sales") {
+        document.getElementById("salesorderTab").style.display = "block";
+        document.getElementById("salesorderStatusIcon").style.backgroundImage =
+          "url('{!$Resource.action}')";
+        document.getElementById("salesorderTab").style.opacity = "";
+      }
+    };
+    function redirectFunction(url) {
+      if (url != "null") {
+        if (
+          url.includes("OpportunityLineItemsPreviewPDF") &&
+          document.getElementById("presentationTab").style.opacity !== "0.75"
+        ) {
+          document.getElementById("popup").style.display = "block";
+          document.getElementById("theIframe").src = url;
+        } else if (
+          url.includes("OpportunityEstimatePreviewPDF") &&
+          document.getElementById("estimateTab").style.opacity !== "0.75"
+        ) {
+          document.getElementById("popup").style.display = "block";
+          document.getElementById("theIframe").src = url;
+        } else if (
+          url.includes("OpportunitySalesOrderPreviewPDF") &&
+          document.getElementById("salesorderTab").style.opacity !== "0.75"
+        ) {
+          document.getElementById("popup").style.display = "block";
+          document.getElementById("theIframe").src = url;
+        } else if (url.includes("PurchaseOrderProofApprovalPage")) {
+          document.getElementById("popup").style.display = "block";
+          document.getElementById("theIframe").src = url;
+        } else if (
+          url.includes("OrderStatusPreview") &&
+          document.getElementById("workorderTab").style.opacity !== "0.75"
+        ) {
+          document.getElementById("popup").style.display = "block";
+          document.getElementById("theIframe").src = url;
+        }
+      }
+    }
+    function viewEmail(subject, from, to, date, cc) {
+      var url = "";
+      if (subject.includes("Team Phun: SALES ORDER")) {
+        url = "{!Link}/OpportunitySalesOrderPreview?id={!Opportunity.id}";
+      } else if (subject.includes("Team Phun: ESTIMATE")) {
+        url = "{!Link}/OpportunityEstimatePreview?id={!Opportunity.id}";
+      } else if (subject.includes("Team Phun: PRESENTATION")) {
+        url = "{!Link}/OpportunityLineItemsPreviewPDF?id={!Opportunity.id}";
+      } else if (subject.includes("Team Phun: DEPOSIT INVOICE")) {
+        url = "";
+      }
+      document.getElementById("popupViewEmail").style.display = "block";
+      document.getElementById("viewEmailFrame").src = url;
+
+      document.getElementById("fromAddress").innerHTML = from;
+      document.getElementById("toAddress").innerHTML = to;
+      document.getElementById("ccAddress").innerHTML = cc;
+      document.getElementById("dateSent").innerHTML = date;
+      document.getElementById("subject").innerHTML = subject;
+    }
+
+    function closePage() {
+      document.getElementById("popup").style.display = "none";
+      document.getElementById("popupViewEmail").style.display = "none";
+    }
+  </script>
+  <apex:slds />
+  <div
+    id="popup"
+    style="
+      color: #012b47;
+      display: none;
+      padding: 50px !important;
+      box-sizing: border-box;
+      height: 100vh;
+      width: 100%;
+      padding: 0;
+      background: rgba(1, 45, 70, 0.8);
+      position: fixed;
+      z-index: 1;
+    "
+  >
+    <a
+      onclick="closePage()"
+      style="
+        position: absolute;
+        top: -5px;
+        right: 13px;
+        font-size: 2.5rem;
+        color: #fff;
+        opacity: 0.75;
+      "
+      >×</a
+    >
+    <div>
+      <apex:iframe src="" scrolling="true" id="theIframe" />
+    </div>
+  </div>
+
+  <div
+    id="popupViewEmail"
+    style="
+      color: #012b47;
+      display: none;
+      padding: 50px !important;
+      box-sizing: border-box;
+      height: 100vh;
+      width: 100%;
+      padding: 0;
+      background: rgba(1, 45, 70, 0.8);
+      position: fixed;
+      z-index: 1;
+    "
+  >
+    <a
+      onclick="closePage()"
+      style="
+        position: absolute;
+        top: -5px;
+        right: 13px;
+        font-size: 2.5rem;
+        color: #fff;
+        opacity: 0.75;
+      "
+      >×</a
+    >
+    <div
+      style="
+        font-size: 1rem;
+        background: white;
+        height: calc(100vh - 100px);
+        line-height: 1.5;
+      "
+    >
+      <div style="margin: 20px 0 0 20px">
+        <div
+          style="
+            font-size: 100%;
+            width: 25%;
+            color: #012b47;
+            text-align: left;
+            float: left;
+          "
+        >
+          From:
+        </div>
+        <div id="fromAddress" style="font-size: 100%; width: 50%"></div>
+      </div>
+      <div style="margin-left: 20px">
+        <div style="width: 25%; color: #012b47; text-align: left; float: left">
+          To:
+        </div>
+        <div id="toAddress" style="width: 50%"></div>
+      </div>
+      <div style="margin-left: 20px">
+        <div style="width: 25%; color: #012b47; text-align: left; float: left">
+          Subject:
+        </div>
+        <div id="subject" style="width: 50%"></div>
+      </div>
+      <div style="margin-left: 20px">
+        <div style="width: 25%; color: #012b47; text-align: left; float: left">
+          Date Sent:
+        </div>
+        <div id="dateSent" style="width: 50%"></div>
+      </div>
+      <div style="margin-left: 20px">
+        <div style="width: 25%; color: #012b47; text-align: left; float: left">
+          CC:
+        </div>
+        <div id="ccAddress" style="width: 50%"></div>
+      </div>
+      <br /><br /><br />
+
+      <apex:iframe src="" height="365" scrolling="true" id="viewEmailFrame" />
+    </div>
+  </div>
+
+  <div
+    id="ParentImage"
+    style="position: relative; height: 150px"
+    scrolling="false"
+  >
+    <div id="childImage" style="position: absolute; left: 15px; top: 15px">
+      <apex:image width="40%" height="40%" url="{!$Resource.TPLogo}" />
+    </div>
+    <div id="tableInfo" style="position: absolute; left: 150px; top: 40px">
+      <a
+        style="color: gray"
+        href="{!Link}/lightning/r/Opportunity/{!Opportunity.id}/view"
+      >
+        <apex:outputText
+          style="
+            font-family: Helvetica, Roboto, Arial, sans-serif;
+            font-size: 1.75rem;
+            color: #000000;
+          "
+          value="Project- {!Opportunity.name}"
+        /><br />
+      </a>
+      <apex:outputText
+        style="font-weight: 700; font-size: 1.3rem; color: #000000"
+        value="Team Phun "
+      /><br />
+    </div>
+    <apex:image
+      style="width: 100%; height: 100%"
+      url="{!$Resource.HeaderImage2}"
+    />
+  </div>
+
+  <apex:form>
+    <div
+      style="
+        font-family: museo-sans, helvetica, arial, sans-serif;
+        float: left;
+        font-weight: 300;
+        display: table;
+        width: 30%;
+        height: 100vh;
+        background-color: #edf2f4;
+        padding-left: 25px;
+        padding-top: 25px;
+        padding-right: 25px;
+        padding-bottom: 0px;
+      "
+    >
+      <apex:outputText
+        style="
+          font-family: museo-slab, helvetica, arial, sans-serif;
+          font-size: 2rem;
+          color: #11254a;
+          margin-bottom: 25px;
+        "
+        value="Project Status"
+      /><br /><br />
+
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          flex-wrap: nowrap;
+          font-weight: 300;
+          line-height: 1.5;
+        "
+      >
+        <div
+          id="presentationTab"
+          style="height: 60px; margin-bottom: 5px; line-height: 1.5"
+          onclick="redirectFunction('{!Link}/OpportunityLineItemsPreviewPDF?id={!Opportunity.id}')"
+        >
+          <a
+            style="
+              font-family: sans-serif;
+              color: #1779ba;
+              background-color: transparent;
+            "
+          >
+            <div
+              id="presentationStatusIcon"
+              style="
+                position: relative;
+                background-size: 32px;
+                padding-right: 10px;
+                background-position-x: right;
+                background-position-y: top;
+                background-repeat: no-repeat;
+                padding-left: 10px;
+                position: relative;
+                background-color: #fff;
+                background-origin: padding-box;
+                background-clip: border-box;
+              "
+            >
+              <img
+                style="
+                  margin-top: 10px;
+                  margin-bottom: 10px;
+                  margin-right: 10px;
+                  width: 35px;
+                  vertical-align: middle;
+                "
+                src="{!$Resource.presentationIcon}"
+              />
+              <apex:outputText
+                style="
+                  line-height: 1rem;
+                  font-size: 1rem;
+                  color: #012b47;
+                  display: inline-block;
+                "
+                value="Presentation"
+              />
+            </div>
+          </a>
+        </div>
+
+        <div
+          id="estimateTab"
+          style="height: 60px; margin-bottom: 5px; display: none"
+          onclick="redirectFunction('{!Link}/OpportunityEstimatePreviewPDF?id={!Opportunity.id}')"
+        >
+          <a
+            style="
+              font-family: sans-serif;
+              color: #1779ba;
+              background-color: transparent;
+            "
+          >
+            <div
+              id="estimateStatusIcon"
+              style="
+                position: relative;
+                background-size: 32px;
+                padding-right: 10px;
+                background-position-x: right;
+                background-position-y: top;
+                background-repeat: no-repeat;
+                padding-left: 10px;
+                position: relative;
+                background-color: #fff;
+                background-origin: padding-box;
+                background-clip: border-box;
+              "
+            >
+              <img
+                style="
+                  margin-top: 10px;
+                  margin-bottom: 10px;
+                  margin-right: 10px;
+                  width: 35px;
+                  vertical-align: middle;
+                "
+                src="{!$Resource.estimateIcon}"
+              />
+              <apex:outputText
+                style="
+                  line-height: 1rem;
+                  font-size: 1rem;
+                  color: #012b47;
+                  display: inline-block;
+                "
+                value="Estimate"
+              /><br />
+            </div>
+          </a>
+        </div>
+
+        <div
+          id="salesorderTab"
+          style="height: 60px; margin-bottom: 5px; display: none"
+          onclick="redirectFunction('{!Link}/OpportunitySalesOrderPreviewPDF?id={!Opportunity.id}')"
+        >
+          <a
+            style="
+              font-family: sans-serif;
+              color: #1779ba;
+              background-color: transparent;
+            "
+          >
+            <div
+              id="salesorderStatusIcon"
+              style="
+                position: relative;
+                background-size: 32px;
+                padding-right: 10px;
+                background-position-x: right;
+                background-position-y: top;
+                background-repeat: no-repeat;
+                padding-left: 10px;
+                position: relative;
+                background-color: #fff;
+                background-origin: padding-box;
+                background-clip: border-box;
+              "
+            >
+              <img
+                style="
+                  margin-top: 10px;
+                  margin-bottom: 10px;
+                  margin-right: 10px;
+                  width: 35px;
+                  vertical-align: middle;
+                "
+                src="{!$Resource.salesorderIcon}"
+              />
+              <apex:outputText
+                style="
+                  line-height: 1rem;
+                  font-size: 1rem;
+                  color: #012b47;
+                  display: inline-block;
+                "
+                value="Sales Order"
+              /><br />
+            </div>
+          </a>
+        </div>
+
+        <div
+          id="workorderTab"
+          style="height: 60px; margin-bottom: 5px; display: none"
+          onclick="redirectFunction('{!Link}/OrderStatusPreview?id={!Opportunity.id}')"
+        >
+          <a
+            style="
+              font-family: sans-serif;
+              color: #1779ba;
+              background-color: transparent;
+            "
+          >
+            <div
+              id="workorderStatusIcon"
+              style="
+                position: relative;
+                background-size: 32px;
+                padding-right: 10px;
+                background-position-x: right;
+                background-position-y: top;
+                background-repeat: no-repeat;
+                padding-left: 10px;
+                position: relative;
+                background-color: #fff;
+                background-origin: padding-box;
+                background-clip: border-box;
+              "
+            >
+              <img
+                style="
+                  margin-top: 10px;
+                  margin-bottom: 10px;
+                  margin-right: 10px;
+                  width: 35px;
+                  vertical-align: middle;
+                "
+                src="{!$Resource.orderStatusIcon}"
+              />
+              <apex:outputText
+                style="
+                  line-height: 1rem;
+                  font-size: 1rem;
+                  color: #012b47;
+                  display: inline-block;
+                "
+                value="Order Status"
+              /><br />
+            </div>
+          </a>
+        </div>
+        <!--            <div id="proofApproveTab" style="height: 60px; margin-bottom: 5px; display:none;" onclick="redirectFunction('{!Link}/PurchaseOrderProofApprovalPage?id={!PurchaseOrderId}')">
+                    <a style="font-family: sans-serif; color: #1779ba; background-color: transparent;">
+                        <div id="proofApproveTabStatusIcon" style=" position: relative;  background-size: 32px; padding-right: 10px; background-position-x: right; background-position-y: top; background-repeat: no-repeat; padding-left: 10px; position: relative; background-color: #fff; background-origin: padding-box; background-clip: border-box;">
+                            <img style="margin-top: 10px; margin-bottom: 10px; margin-right: 10px; width: 35px; vertical-align: middle;" src="{!$Resource.approve}"/>
+                            <apex:outputText style="line-height: 1rem; font-size: 1rem; color: #012b47; display: inline-block;" value="Proof Approval" /><br/>                       
+                        </div>
+                    </a>
+                </div>
+               <div id="feedbackTab" style="height: 60px; margin-bottom: 5px;">
+<a style="font-family: sans-serif; color: #1779ba; background-color: transparent;">
+<div id="feedbackStatusIcon" style=" position: relative; background-size: 32px; padding-right: 10px; background-position-x: right; background-position-y: top; background-repeat: no-repeat; padding-left: 10px; position: relative; background-color: #fff; background-origin: padding-box; background-clip: border-box;">
+<img style="margin-top: 10px; margin-bottom: 10px; margin-right: 10px; width: 35px; vertical-align: middle;" src="{!$Resource.feedbackIcon}"/>
+<apex:outputText style="line-height: 1rem; font-size: 1rem; color: #012b47; display: inline-block;" value="Feedback" /><br/>                       
+</div>
+</a>
+</div>-->
+      </div>
+    </div>
+
+    <div
+      style="
+        width: 70%;
+        font-family: museo-sans, helvetica, arial, sans-serif;
+        margin-bottom: 0;
+        overflow-y: scroll;
+        padding: 25px;
+        height: calc(100vh - 10px);
+        box-sizing: inherit;
+      "
+    >
+      <apex:outputText
+        value="Project Activities"
+        style="
+          font-weight: 400;
+          font-family: museo-slab, helvetica, arial, sans-serif;
+          font-size: 2rem;
+          color: #11254a;
+          margin-bottom: 25px;
+        "
+      /><br /><br />
+
+      <div
+        style="margin-top: px; margin-bottom: 0px; margin-left: 0px: margin-right:0px; width:100%"
+      >
+        <apex:repeat value="{!Details}" var="data">
+          <!-- For Email -->
+          <apex:repeat value="{!data.emailList}" var="email">
+            <div
+              style="
+                border-radius: 5px;
+                width: 100%;
+                webkit-box-sizing: inherit;
+                background: #edf2f4;
+                margin-bottom: 25px;
+                padding-top: 15px;
+                padding-right: 20px;
+                padding-bottom: 15px;
+                padding-left: 20px;
+              "
+            >
+              <h3
+                style="
+                  font-size: 1.1rem;
+                  font-weight: 700;
+                  line-height: 1.4;
+                  color: #012b47;
+                "
+              >
+                <a style="cursor: default; color: #177f9a"
+                  >{!email.fromName} [{!email.FromAddress}]
+                </a>
+                sent an email to {!email.ToAddress}
+              </h3>
+              <i
+                style="
+                  margin-bottom: 10px;
+                  display: block;
+                  font-style: normal;
+                  opacity: 0.6;
+                  font-size: 0.8rem;
+                "
+                >{!email.CreatedDate}</i
+              >
+              <br />
+              <div
+                style="
+                  width: 87%;
+                  display: block;
+                  font-weight: 400;
+                  line-height: 1.5;
+                  color: #012b47;
+                "
+              >
+                <h3
+                  style="
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    margin-bottom: 0;
+                    line-height: 1.4;
+                  "
+                >
+                  Subject: {!email.Subject}
+                </h3>
+                <p
+                  style="
+                    line-height: 1.6;
+                    margin-top: 10px;
+                    margin-bottom: 15px;
+                    color: #11254a;
+                    font-size: 15px;
+                  "
+                >
+                  {!email.TextBody}
+                </p>
+              </div>
+              <a
+                onclick="viewEmail('{!email.Subject}','{!email.fromName}','{!email.ToAddress}','{!email.CreatedDate}','{!email.CcAddress}')"
+                style="
+                  opacity: 0.8;
+                  background-color: #5ca3b6;
+                  color: #fff;
+                  font-size: 0.8rem;
+                  margin-bottom: 5px;
+                  margin-right: 5px;
+                  margin-top: 5px;
+                  padding-bottom: 10px;
+                  padding-left: 15px;
+                  padding-right: 15px;
+                  padding-top: 10px;
+                  font-family: museo-sans, helvetica, arial, sans-serif;
+                  border-bottom-left-radius: 5px;
+                  border-bottom-right-radius: 5px;
+                  border-top-right-radius: 5px;
+                  border-top-left-radius: 5px;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                "
+              >
+                View Email</a
+              >
+            </div>
+          </apex:repeat>
+
+          <!--for comments-->
+          <apex:repeat value="{!data.lineItemComments}" var="c">
+            <div
+              style="
+                background: #dfe8ee;
+                display: block;
+                border-radius: 5px;
+                padding: 15px 20px;
+                line-height: 1.5;
+                color: #012b47;
+                margin-bottom: 25px;
+              "
+            >
+              <img
+                style="
+                  max-width: 200px;
+                  max-height: 200px;
+                  float: right;
+                  width: 40px;
+                  height: 40px;
+                "
+                src="{!$Resource.presentationIcon}"
+              />
+              <h3
+                style="
+                  font-size: 1.1rem;
+                  font-weight: 700;
+                  margin-bottom: 0;
+                  line-height: 1.4;
+                "
+              >
+                <a style="cursor: default; color: #177f9a">{!c.User__c} </a
+                >commented on the presentation
+              </h3>
+              <br />
+              <a>
+                <h3
+                  style="
+                    margin: 0;
+                    padding: 0;
+                    line-height: 1.4;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    color: #177f9a;
+                    margin-bottom: 20px;
+                    margin-top: 20px;
+                    opacity: 0.7;
+                    transition: 0.3s;
+                  "
+                >
+                  {!data.ImageName}
+                </h3> </a
+              ><br />
+              <div style="display: flex; flex-direction: row; color: #012b47">
+                <div
+                  style="
+                    margin-right: 25px;
+                    max-width: 200px;
+                    max-height: 200px;
+                  "
+                >
+                  <apex:outputPanel
+                    rendered="{!if(!data.imageExist, false ,true)}"
+                  >
+                    <a>
+                      <img style="max-height: 200px" src="{!data.ImageUrl}" />
+                    </a>
+                  </apex:outputPanel>
+                  <apex:outputPanel
+                    rendered="{!if(!data.imageExist, true ,false)}"
+                  >
+                    <a>
+                      <img
+                        style="max-height: 200px"
+                        src="{!$Resource.No_Image_Available}"
+                      />
+                    </a>
+                  </apex:outputPanel>
+                </div>
+                <div>
+                  <p style="margin-bottom: 7px; font-size: 15px">
+                    {!c.Comment__c}
+                  </p>
+                  <i
+                    style="
+                      margin-bottom: 10px;
+                      display: block;
+                      font-style: normal;
+                      opacity: 0.6;
+                      font-size: 0.8rem;
+                    "
+                  >
+                    {!c.Comment_Date__c}
+                  </i>
+                </div>
+              </div>
+            </div>
+          </apex:repeat>
+
+          <!--for proof comments-->
+          <apex:repeat value="{!data.proofComments}" var="c">
+            <div
+              style="
+                background: #dfe8ee;
+                display: block;
+                border-radius: 5px;
+                padding: 15px 20px;
+                line-height: 1.5;
+                color: #012b47;
+                margin-bottom: 25px;
+              "
+            >
+              <h3
+                style="
+                  font-size: 1.1rem;
+                  font-weight: 700;
+                  margin-bottom: 0;
+                  line-height: 1.4;
+                "
+              >
+                <a style="color: #177f9a">{!data.status} </a> by
+                {!data.approvedBy}
+              </h3>
+              <br />
+              <div style="display: flex; flex-direction: row; color: #012b47">
+                <div
+                  style="
+                    margin-right: 25px;
+                    max-width: 200px;
+                    max-height: 200px;
+                  "
+                >
+                  <a>
+                    <img style="max-height: 200px" src="{!data.ImageUrl}" />
+                  </a>
+                </div>
+                <div>
+                  <i
+                    style="
+                      margin-bottom: 10px;
+                      display: block;
+                      font-style: normal;
+                      opacity: 0.6;
+                      font-size: 0.8rem;
+                    "
+                  >
+                    {!c.Date__c}
+                  </i>
+                </div>
+              </div>
+            </div>
+          </apex:repeat>
+
+          <!-- for Estimate approval/Change Request-->
+          <apex:repeat value="{!data.estimateList}" var="estimateDetails">
+            <div
+              style="
+                display: block;
+                background: #dfe8ee;
+                width: 100%;
+                margin-bottom: 25px;
+                border-radius: 5px;
+                max-width: 1400px;
+                padding: 15px 20px;
+              "
+            >
+              <img
+                style="
+                  max-width: 200px;
+                  max-height: 200px;
+                  float: right;
+                  width: 40px;
+                  height: 40px;
+                "
+                src="{!$Resource.salesorderIcon}"
+              />
+              <a style="cursor: default; line-height: inherit; color: #5ca3b6">
+                <h2
+                  style="
+                    display: inline-block;
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                    margin-bottom: 7px;
+                  "
+                >
+                  {!estimateDetails.Name}
+                </h2>
+              </a>
+              <p style="color: #012b47; font-weight: 400; font-size: 15px">
+                {!data.status} by {!data.approvedBy}
+              </p>
+              <br />
+              <i
+                style="
+                  margin-bottom: 10px;
+                  display: block;
+                  font-style: normal;
+                  font-size: 0.8rem;
+                  opacity: 0.6;
+                "
+              >
+                {!data.approveDate}
+              </i>
+            </div>
+          </apex:repeat>
+        </apex:repeat>
+      </div>
+    </div>
+  </apex:form>
+</apex:page>

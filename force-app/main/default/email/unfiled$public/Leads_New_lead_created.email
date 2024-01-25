@@ -1,0 +1,13 @@
+*** NEW {!Lead.LeadSource} LEAD CREATED NOTIFICATION ***  
+
+Company:  {!Lead.Company} 
+Lead Name:  {!Lead.Name}  
+Email: {!Lead.Email}
+Phone: {!Lead.Phone}
+
+Webform URL: {!Lead.Webform_URL__c}
+Quantity: {!Lead.Quantity__c}
+
+Descripttion: {!Lead.Description}
+
+Click on the link to access the lead directly:  {!Lead.Link}

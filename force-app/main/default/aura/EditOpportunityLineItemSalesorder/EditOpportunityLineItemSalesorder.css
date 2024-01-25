@@ -1,0 +1,19 @@
+.THIS {
+}
+.THIS .slds-carousel__content {
+  display: none;
+}
+.THIS .scrollable {
+  overflow-y: auto;
+}
+.THIS .header {
+  padding: 10px 16px;
+  background: #555;
+  color: #f1f1f1;
+}
+
+.THIS .sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}

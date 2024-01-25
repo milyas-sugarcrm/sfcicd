@@ -1,0 +1,1083 @@
+<aura:component
+  controller="EditOpportunityLineItemArtworkController"
+  implements="force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global"
+>
+  <aura:registerEvent
+    name="teamPhunEventHandler"
+    type="c:teamPhunEventHandler"
+  />
+  <aura:handler event="force:refreshView" action="{!c.doInit}" />
+  <aura:attribute name="opportunityId" type="String" />
+  <aura:attribute
+    name="colorList"
+    type="List"
+    default="[]"
+    description="Color Picklist Values"
+  />
+  <aura:attribute
+    name="selectedColorList"
+    type="List"
+    default="[]"
+    description="Selected Color Picklist Values"
+  />
+  <aura:attribute
+    name="sizeList"
+    type="List"
+    default="[]"
+    description="Size Picklist Values"
+  />
+  <aura:attribute
+    name="selectedSizeList"
+    type="List"
+    default="[]"
+    description="Selected Size Picklist Values"
+  />
+  <aura:attribute name="colorListInText" type="List" default="[]" />
+  <aura:attribute name="SalesStage" type="Boolean" default="false" />
+  <aura:attribute
+    name="filetype"
+    type="List"
+    default="['.png', '.jpg', '.jpeg', '.ai', '.eps', '.svg']"
+  />
+  <aura:attribute name="sizeListInText" type="List" default="[]" />
+  <aura:attribute name="updateSizePopup" type="boolean" default="false" />
+  <aura:attribute name="updateColorPopup" type="boolean" default="false" />
+  <aura:attribute name="recordToEdit" type="id" />
+  <aura:attribute name="artworkEdit" type="String[]" />
+  <ltng:require styles="{!$Resource.Artwork}" />
+  <aura:attribute name="editArtworkPopup" type="boolean" default="false" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="recordId" type="id" />
+  <aura:attribute name="artworkPopup" type="boolean" default="false" />
+  <aura:attribute name="images" type="List" />
+  <aura:attribute name="artworkList" type="String[]" />
+
+  <aura:attribute name="fileName" type="String" default="No File Selected.." />
+  <aura:attribute name="fileUploaded" type="boolean" default="false" />
+  <aura:attribute name="documentId" type="String" default="" />
+  <aura:attribute name="Spinner" type="boolean" default="false" />
+  <aura:if isTrue="{!v.Spinner}">
+    <lightning:spinner variant="brand" size="large" />
+  </aura:if>
+
+  <lightning:card title="Colors and Sizes">
+    <table class="slds-table slds-no-row-hover slds-table_cell-buffer">
+      <tbody>
+        <tr>
+          <td style="width: 81%">
+            <lightning:Textarea
+              type="text"
+              label="Product Sizes"
+              value="{!v.sizeListInText}"
+              disabled="true"
+            />
+          </td>
+          <td>
+            <aura:if isTrue="{!v.SalesStage}">
+              <lightning:button
+                class="slds-button slds-button--brand"
+                onclick="{!c.openUpdateSizePopup}"
+                disabled="true"
+                >Edit</lightning:button
+              >
+              <aura:set attribute="else">
+                <lightning:button
+                  class="slds-button slds-button--brand"
+                  onclick="{!c.openUpdateSizePopup}"
+                  >Edit</lightning:button
+                >
+              </aura:set>
+            </aura:if>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <lightning:Textarea
+              type="text"
+              label="Product Colors"
+              value="{!v.colorListInText}"
+              disabled="true"
+            />
+          </td>
+          <td>
+            <aura:if isTrue="{!v.SalesStage}">
+              <lightning:button
+                class="slds-button slds-button--brand"
+                onclick="{!c.openUpdateColorPopup}"
+                disabled="true"
+                >Edit</lightning:button
+              >
+              <aura:set attribute="else">
+                <lightning:button
+                  class="slds-button slds-button--brand"
+                  onclick="{!c.openUpdateColorPopup}"
+                  >Edit</lightning:button
+                >
+              </aura:set>
+            </aura:if>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </lightning:card>
+
+  <lightning:card title="ArtWork">
+    <table
+      class="slds-table slds-table_fixed-layout slds-no-row-hover slds-table_cell-buffer"
+    >
+      <tbody>
+        <tr>
+          <td>
+            <aura:if isTrue="{!v.SalesStage}">
+              <button
+                class="slds-button slds-button--brand"
+                disabled="true"
+                onclick="{!c.openArtworkPopup}"
+              >
+                Add Artwork
+              </button>
+              <aura:set attribute="else">
+                <button
+                  class="slds-button slds-button--brand"
+                  onclick="{!c.openArtworkPopup}"
+                >
+                  Add Artwork
+                </button>
+              </aura:set>
+            </aura:if>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Body of lightning card starts here -->
+    <p class="slds-p-horizontal_small">
+      <div
+        class="slds-grid slds-grid--pull-padded"
+        style="display: block !important"
+      >
+        <div
+          style="margin: 5px; flex-wrap: wrap"
+          class="slds-accordion__summary"
+        >
+          <aura:iteration items="{!v.artworkList}" var="artwork">
+            <div style="padding: 5px; width: 100%" class="adjustGrid">
+              <lightning:recordViewForm>
+                <!--recordId = "{!product.Id}" -->
+                <div
+                  class="slds-box slds-theme_default"
+                  style="position: relative; width: 100%"
+                >
+                  <article class="slds-card slds-card--narrow">
+                    <table>
+                      <tr>
+                        <td style="vertical-align: top; width: 10%">
+                          <div
+                            class="square"
+                            style="
+                              background: #121213;
+                              padding: 12px;
+                              width: 33px;
+                              color: white;
+                              height: 39px;
+                            "
+                          >
+                            <h1>{!artwork.counter}</h1>
+                          </div>
+                        </td>
+                        <td style="width: 40%">
+                          <div
+                            class="slds-grid"
+                            style="display: block !important"
+                          >
+                            <div class="slds-col" style="padding: 0">
+                              <div class="slds-card__body">
+                                <table>
+                                  <td style="width: 50%">
+                                    <span
+                                      class="truncate"
+                                      style="font-weight: bold"
+                                      >Artwork Title:
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <label class="tags_data_padding">
+                                      {!artwork.title}
+                                    </label>
+                                  </td>
+                                </table>
+                              </div>
+                            </div>
+                            <div class="slds-col" style="padding: 0">
+                              <div class="slds-card__body">
+                                <table>
+                                  <td style="width: 50%">
+                                    <span
+                                      class="truncate"
+                                      style="font-weight: bold"
+                                      >Imprint Type:
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <label class="tags_data_padding">
+                                      {!artwork.imprintType}
+                                    </label>
+                                  </td>
+                                </table>
+                              </div>
+                            </div>
+
+                            <!--
+												      <div class = "slds-col" style = "padding: 0;">  
+                                                            <div class = "slds-card__body">
+                                                                <table>
+                                                                    <td style="width: 50%;">
+                                                                <span class="truncate" style = "font-weight: bold;">Proof Required: </span></td>
+                                                                <td>
+                                                                    <li class="slds-list__item slds-m-right_large slds-grid slds-truncate_container_33">
+                                                                    <label class = "tags_data_padding">
+                                                                    {!artwork.proofRequired}
+                                                                </label>
+                                                                    </li>
+                                                                    </td>
+                                                                </table></div>
+                                                        </div> 
+													
+                                                        -->
+                            <div class="slds-col" style="padding: 0">
+                              <div class="slds-card__body">
+                                <table>
+                                  <td style="width: 50%">
+                                    <span
+                                      class="truncate"
+                                      style="font-weight: bold"
+                                      >Logo Name:
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <label class="tags_data_padding">
+                                      {!artwork.logoName}
+                                    </label>
+                                  </td>
+                                </table>
+                              </div>
+                            </div>
+
+                            <div class="slds-col" style="padding: 0">
+                              <div class="slds-card__body">
+                                <table>
+                                  <td style="width: 50%">
+                                    <span
+                                      class="truncate"
+                                      style="font-weight: bold"
+                                      >Logo Size:
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <label class="tags_data_padding">
+                                      {!artwork.logoSize}
+                                    </label>
+                                  </td>
+                                </table>
+                              </div>
+                            </div>
+
+                            <div class="slds-col" style="padding: 0">
+                              <div class="slds-card__body">
+                                <table>
+                                  <td style="width: 50%">
+                                    <span
+                                      class="truncate"
+                                      style="font-weight: bold"
+                                      >Repeat Logo:
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <label class="tags_data_padding">
+                                      {!artwork.repeatLogo}
+                                    </label>
+                                  </td>
+                                </table>
+                              </div>
+                            </div>
+
+                            <div class="slds-col" style="padding: 0">
+                              <table>
+                                <td style="width: 50%">
+                                  <span
+                                    class="truncate"
+                                    style="font-weight: bold"
+                                    >Logo Color:
+                                  </span>
+                                </td>
+                                <td>
+                                  <label class="tags_data_padding">
+                                    {!artwork.logoColor}
+                                  </label>
+                                </td>
+                              </table>
+                            </div>
+                            <div class="slds-col" style="padding: 0">
+                              <table>
+                                <td style="width: 50%">
+                                  <span
+                                    class="truncate"
+                                    style="font-weight: bold"
+                                    >Suplier Notes:
+                                  </span>
+                                </td>
+                                <td>
+                                  <label class="tags_data_padding">
+                                    {!artwork.supplierNotes}
+                                  </label>
+                                </td>
+                              </table>
+                            </div>
+                          </div>
+                        </td>
+                        <td valign="top">
+                          <div>
+                            <aura:if isTrue="{!artwork.documentId != null }">
+                              <aura:if
+                                isTrue="{!artwork.artworkImageSupportExtension == true }"
+                              >
+                                <lightning:carousel disableAutoScroll="true">
+                                  <lightning:carouselImage
+                                    src="{!$Label.c.ContentVersionImage+artwork.documentId}"
+                                    class="slds-p-top_none"
+                                    header=""
+                                    description=""
+                                    alternativeText="Artwork Image"
+                                  >
+                                  </lightning:carouselImage>
+                                </lightning:carousel>
+                              </aura:if>
+                              <aura:if
+                                isTrue="{!artwork.artworkImageSupportExtension == false }"
+                              >
+                                <img
+                                  src="{!$Resource.noImageSupport}"
+                                  style="width: 100%; height: 100%"
+                                />
+                              </aura:if>
+                              <aura:set attribute="else">
+                                <img
+                                  src="{!$Resource.No_Image_Available}"
+                                  style="width: 100%; height: 100%"
+                                />
+                              </aura:set>
+                            </aura:if>
+                          </div>
+                        </td>
+                        <td
+                          data-value="{!artwork.id}"
+                          onclick="{!c.deleteArtWork}"
+                          style="vertical-align: top; width: 1%"
+                        >
+                          <lightning:icon
+                            class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                            iconName="utility:close"
+                            aura:id="del"
+                            size="small"
+                          />
+                        </td>
+                      </tr>
+                      <tr
+                        data-value="{!artwork.id}"
+                        onclick="{!c.openEditArtworkPopup}"
+                      >
+                        <lightning:button class="slds-button slds-button--brand"
+                          >Edit</lightning:button
+                        >
+                      </tr>
+                    </table>
+                  </article>
+                </div>
+              </lightning:recordViewForm>
+            </div>
+          </aura:iteration>
+        </div>
+      </div>
+    </p>
+  </lightning:card>
+
+  <!-- UPDATE SIZE  -->
+
+  <div class="slds-m-around--xx-large" style="margin: 0px !important">
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.updateSizePopup}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="height: 110% !important"
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Select Variations
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeUpdateSizePopup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+
+          <aura:if isTrue="{! v.Error !=  null}">
+            <div class="slds-modal__content slds-p-around_medium">
+              <p style="color: red">{!v.Error}</p>
+            </div>
+          </aura:if>
+          <div class="slds-modal__content slds-p-around--medium">
+            <table>
+              <tbody class="slds-brand-band">
+                <tr style="width: 100%; padding-left: 5%; padding-bottom: 3%">
+                  <lightning:dualListbox
+                    aura:id="selectSize"
+                    name="Size"
+                    label="Select Size"
+                    sourceLabel="Available Sizes"
+                    selectedLabel="Selected Sizes"
+                    options="{!v.sizeList }"
+                    value="{!v.selectedSizeList}"
+                    onchange="{!c.handleSizeChange}"
+                  />
+                </tr>
+
+                <tr style="padding-left: 5%">
+                  <td>
+                    <lightning:input
+                      type="text"
+                      label="Add New Size"
+                      aura:id="sizeAddField"
+                    />
+                  </td>
+                  <td style="vertical-align: bottom; padding-left: 4%">
+                    <lightning:button
+                      variant="brand"
+                      label="Add&nbsp;New&nbsp;Size"
+                      onclick="{!c.addSize}"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closeUpdateSizePopup}"
+              >Cancel</lightning:button
+            >
+            <lightning:button
+              class="slds-button slds-button--brand customb"
+              onclick="{!c.saveSelectedSize}"
+              >Save</lightning:button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+
+  <!-- UPDATE COLOR  -->
+
+  <div class="slds-m-around--xx-large" style="margin: 0px !important">
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.updateColorPopup}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="height: 110% !important"
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Select Variations
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeUpdateColorPopup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+
+          <div class="slds-modal__content slds-p-around--medium">
+            <table>
+              <tbody class="slds-brand-band">
+                <tr style="width: 100%; padding-left: 5%; padding-bottom: 3%">
+                  <lightning:dualListbox
+                    aura:id="selectColor"
+                    name="Color"
+                    label="Select Color"
+                    sourceLabel="Available Colors"
+                    selectedLabel="Selected Colors"
+                    options="{!v.colorList }"
+                    value="{!v.selectedColorList}"
+                    onchange="{!c.handleColorChange}"
+                  />
+                </tr>
+
+                <tr style="padding-left: 5%">
+                  <td>
+                    <lightning:input
+                      type="text"
+                      label="Add New Color"
+                      aura:id="colorAddField"
+                    />
+                  </td>
+                  <td style="vertical-align: bottom; padding-left: 4%">
+                    <lightning:button
+                      label="Add&nbsp;New&nbsp;Color"
+                      variant="brand"
+                      onclick="{!c.addColor}"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closeUpdateColorPopup}"
+              >Cancel</lightning:button
+            >
+            <lightning:button
+              class="slds-button slds-button--brand customb"
+              onclick="{!c.saveSelectedColor}"
+              >Save</lightning:button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+
+  <!--    THIS IS EDIT ARTWORK POPUP   -->
+
+  <div class="slds-m-around--xx-large" style="margin: 0px !important">
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.editArtworkPopup}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="height: 110% !important"
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Edit Artwork
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeEditArtworkPopup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+
+          <aura:if isTrue="{! v.Error !=  null}">
+            <div class="slds-modal__content slds-p-around_medium">
+              <p style="color: red">{!v.Error}</p>
+            </div>
+          </aura:if>
+          <div class="slds-modal__content slds-p-around--medium">
+            <aura:iteration items="{!v.artworkEdit}" var="art">
+              <form class="slds-form--stacked">
+                <div class="slds">
+                  <div class="slds-grid slds-wrap">
+                    <div class="slds-col--padded slds-medium-size--1-of-2">
+                      <div class="slds-form-element">
+                        <div class="slds-form-element__control">
+                          <lightning:input
+                            type="text"
+                            label="Title"
+                            value="{!art.Title__c}"
+                            aura:id="editTitle"
+                            placeholder="Title"
+                            required="true"
+                          />
+                        </div>
+                      </div>
+                      <div class="slds-form-element">
+                        <div class="slds-form-element__control">
+                          <lightning:select
+                            aura:id="editImprintType"
+                            value="{!art.Imprint_Type__c}"
+                            label="Imprint Type"
+                            name="imprintType"
+                            required="true"
+                          >
+                            <option value="">-- --</option>
+                            <option value="3D Laser Engraving">
+                              3D Laser Engraving
+                            </option>
+                            <option value="Custom Febric Label">
+                              Custom Febric Label
+                            </option>
+                            <option value="Custom PVC Shape">
+                              Custom PVC Shape
+                            </option>
+                            <option value="Cut and Sew">Cut and Sew</option>
+                            <option value="Cutting">Cutting</option>
+                            <option value="Deep Etch Sandblast">
+                              Deep Etch Sandblast
+                            </option>
+                            <option value="Dye Sublimation">
+                              Dye Sublimation
+                            </option>
+                            <option value="Embossing/Debossing">
+                              Embossing/Debossing
+                            </option>
+                            <option value="Embroidery">Embroidery</option>
+                            <option value="Flocking">Flocking</option>
+                            <option value="Graphic Desgin/Art Redraw">
+                              Graphic Desgin/Art Redraw
+                            </option>
+                            <option value="Heat Transfer Applique">
+                              Heat Transfer Applique
+                            </option>
+                            <option value="Hot Stamping">Hot Stamping</option>
+                            <option value="Jaquard Weave">Jaquard Weave</option>
+                            <option value="Laser Engraving">
+                              Laser Engraving
+                            </option>
+                            <option value="Lextra">Lextra</option>
+                            <option value="Logo Dome">Logo Dome</option>
+                            <option value="Logo Magic">Logo Magic</option>
+                            <option value="No Imprint (Blank Goods)">
+                              No Imprint (Blank Goods)
+                            </option>
+                            <option value="Offset/Litho Printing">
+                              Offset/Litho Printing
+                            </option>
+                            <option value="Pad Printing">Pad Printing</option>
+                            <option value="Perma Patch">Perma Patch</option>
+                            <option value="Sewing">Sewing</option>
+                            <option value="Silk Screening">
+                              Silk Screening
+                            </option>
+                            <option value="Sublimated Transfer">
+                              Sublimated Transfer
+                            </option>
+                            <option value="Sublimation">Sublimation</option>
+                            <option value="Tackle Twill">Tackle Twill</option>
+                            <option value="Transfer Print">
+                              Transfer Print
+                            </option>
+                          </lightning:select>
+                        </div>
+                      </div>
+                      <!--
+                                            <div class = "slds-form-element">
+                                                <div class = "slds-form-element__control">
+                                                    <lightning:select aura:id = "editProofRequired" label = "Proof Required"  value = "{!art.Proof_Required__c}"  name = "Prooooooof Required" required = "true">
+                                                        <option value = ""></option>
+                                                        <option value = "None">-</option>
+                                                        <option value = "Email Proof">Email Proof</option>
+                                                        <option value = "Digitel Photo">Digitel Photo</option>
+                                                        <option value = "Pre-Production">Pre-Production</option>
+                                                        
+                                                    </lightning:select>  
+                                                </div>
+                                            </div> 
+                                            -->
+                      <div class="slds-form-element">
+                        <div class="slds-form-element__control">
+                          <lightning:Textarea
+                            type="text"
+                            label="Logo Name"
+                            value="{!art.logo_Name__c}"
+                            aura:id="editLogoName"
+                            placeholder="Logo Name"
+                            required="true"
+                          />
+                        </div>
+                      </div>
+                      <div class="slds-form-element">
+                        <div class="slds-form-element__control">
+                          <lightning:input
+                            type="text"
+                            aura:id="editLogoSize"
+                            value="{!art.Logo_Size__c}"
+                            label="Logo Size"
+                            required="true"
+                          />
+                        </div>
+                      </div>
+                      <div class="slds-form-element">
+                        <div class="slds-form-element__control">
+                          <lightning:Textarea
+                            type="text"
+                            aura:id="editLogoColor"
+                            value="{!art.Logo_Color__c}"
+                            label="Logo Color"
+                            required="true"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="slds-form-element">
+                        <div class="slds-form-element__control">
+                          <lightning:select
+                            aura:id="editRepeatLogo"
+                            value="{!art.Repeat_Logo__c}"
+                            label="Repeat Logo"
+                            name="Repeat Logo"
+                            required="true"
+                          >
+                            <option value="">-- --</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                          </lightning:select>
+                        </div>
+                      </div>
+
+                      <div class="slds-form-element">
+                        <div class="slds-form-element__control">
+                          <lightning:Textarea
+                            type="text"
+                            value="{!art.Supplier_Notes__c}"
+                            aura:id="editSupplierNotes"
+                            label="Supplier Notes"
+                          />
+                        </div>
+                      </div>
+                      <br /><br /><br />
+                    </div>
+                    <div class="slds-col--padded slds-medium-size--1-of-2">
+                      <div class="slds-form-element">
+                        <div class="slds-form-element__control">
+                          <lightning:fileUpload
+                            label="Upload File"
+                            multiple="false"
+                            accept="{!v.filetype}"
+                            required="true"
+                            recordId="{!v.recordId}"
+                            aura:id="editfileId"
+                            onuploadfinished="{!c.handleUploadFinished}"
+                          />
+                          <aura:if isTrue="{! v.fileUploaded}">
+                            <div>{!v.fileName}</div>
+                          </aura:if>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </aura:iteration>
+          </div>
+
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closeEditArtworkPopup}"
+              >Cancel</lightning:button
+            >
+            <lightning:button
+              class="slds-button slds-button--brand customb"
+              onclick="{!c.editArtwork}"
+              >Save</lightning:button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+
+  <!--    THIS IS ADD ARTWORK POPUP   -->
+
+  <div class="slds-m-around--xx-large" style="margin: 0px !important">
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.artworkPopup}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="height: 100% !important"
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Add Artwork
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeArtworkPopup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+
+          <aura:if isTrue="{! v.Error !=  null}">
+            <div class="slds-modal__content slds-p-around_medium">
+              <p style="color: red">{!v.Error}</p>
+            </div>
+          </aura:if>
+          <div class="slds-modal__content slds-p-around--medium">
+            <form class="slds-form--stacked">
+              <div class="slds">
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col--padded slds-medium-size--1-of-2">
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <lightning:input
+                          type="text"
+                          label="Title"
+                          aura:id="title"
+                          required="true"
+                        />
+                      </div>
+                    </div>
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <lightning:select
+                          aura:id="imprintType"
+                          label="Imprint Type"
+                          name="imprintType"
+                          required="true"
+                        >
+                          <option value="">-- --</option>
+                          <option value="3D Laser Engraving">
+                            3D Laser Engraving
+                          </option>
+                          <option value="Custom Febric Label">
+                            Custom Febric Label
+                          </option>
+                          <option value="Custom PVC Shape">
+                            Custom PVC Shape
+                          </option>
+                          <option value="Cut and Sew">Cut and Sew</option>
+                          <option value="Cutting">Cutting</option>
+                          <option value="Deep Etch Sandblast">
+                            Deep Etch Sandblast
+                          </option>
+                          <option value="Dye Sublimation">
+                            Dye Sublimation
+                          </option>
+                          <option value="Embossing/Debossing">
+                            Embossing/Debossing
+                          </option>
+                          <option value="Embroidery">Embroidery</option>
+                          <option value="Flocking">Flocking</option>
+                          <option value="Graphic Desgin/Art Redraw">
+                            Graphic Desgin/Art Redraw
+                          </option>
+                          <option value="Heat Transfer Applique">
+                            Heat Transfer Applique
+                          </option>
+                          <option value="Hot Stamping">Hot Stamping</option>
+                          <option value="Jaquard Weave">Jaquard Weave</option>
+                          <option value="Laser Engraving">
+                            Laser Engraving
+                          </option>
+                          <option value="Lextra">Lextra</option>
+                          <option value="Logo Dome">Logo Dome</option>
+                          <option value="Logo Magic">Logo Magic</option>
+                          <option value="No Imprint (Blank Goods)">
+                            No Imprint (Blank Goods)
+                          </option>
+                          <option value="Offset/Litho Printing">
+                            Offset/Litho Printing
+                          </option>
+                          <option value="Pad Printing">Pad Printing</option>
+                          <option value="Perma Patch">Perma Patch</option>
+                          <option value="Sewing">Sewing</option>
+                          <option value="Silk Screening">Silk Screening</option>
+                          <option value="Sublimated Transfer">
+                            Sublimated Transfer
+                          </option>
+                          <option value="Sublimation">Sublimation</option>
+                          <option value="Tackle Twill">Tackle Twill</option>
+                          <option value="Transfer Print">Transfer Print</option>
+                        </lightning:select>
+                      </div>
+                    </div>
+                    <!--  
+                                        <div class = "slds-form-element">
+                                            
+                                            <div class = "slds-form-element__control">
+                                                <lightning:select aura:id = "proofRequired" label = "Proof Required"   name = "Proof Required" required = "true">
+                                                    <option value = ""></option>
+                                                    <option value = "None">None</option>
+                                                    <option value = "Email Proof">Email Proof</option>
+                                                    <option value = "Digitel Photo">Digitel Photo</option>
+                                                    <option value = "Pre-Production">Pre-Production</option>
+                                                    
+                                                </lightning:select>  
+                                            </div>
+                                        </div>
+                                        -->
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <lightning:Textarea
+                          type="text"
+                          label="Logo Name"
+                          aura:id="logoName"
+                          required="true"
+                        />
+                      </div>
+                    </div>
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <lightning:input
+                          type="text"
+                          aura:id="logoSize"
+                          label="Logo Size"
+                          required="true"
+                        />
+                      </div>
+                    </div>
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <lightning:Textarea
+                          type="text"
+                          aura:id="logoColor"
+                          label="Logo Color"
+                          required="true"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <lightning:select
+                          aura:id="repeatLogo"
+                          label="Repeat Logo"
+                          name="Repeat Logo"
+                          required="true"
+                        >
+                          <option value="">-- --</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </lightning:select>
+                      </div>
+                    </div>
+
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <lightning:Textarea
+                          type="text"
+                          aura:id="supplierNotes"
+                          label="Supplier Notes"
+                        />
+                      </div>
+                    </div>
+                    <br /><br /><br />
+                  </div>
+                  <div class="slds-col--padded slds-medium-size--1-of-2">
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <lightning:fileUpload
+                          label="Upload File"
+                          multiple="false"
+                          accept="{!v.filetype}"
+                          required="true"
+                          recordId="{!v.recordId}"
+                          aura:id="fileId"
+                          onuploadfinished="{!c.handleUploadFinished}"
+                        />
+                        <aura:if isTrue="{! v.fileUploaded}">
+                          <div>{!v.fileName}</div>
+                        </aura:if>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closeArtworkPopup}"
+              >Cancel</lightning:button
+            >
+            <lightning:button
+              class="slds-button slds-button--brand customb"
+              onclick="{!c.addArtwork}"
+              >Save</lightning:button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+</aura:component>

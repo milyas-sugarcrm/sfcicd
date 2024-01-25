@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description
+  >This is a template to confirm details for a vendor account at the end of each year.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Annual Vendor Account Check</name>
+    <relatedEntityType>Account</relatedEntityType>
+    <style>none</style>
+    <subject>Team Phun Account Info Check</subject>
+    <type>custom</type>
+    <uiType>SFX</uiType>
+</EmailTemplate>

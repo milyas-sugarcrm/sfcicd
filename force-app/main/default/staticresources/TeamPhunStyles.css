@@ -1,0 +1,62 @@
+.slds-carousel__content{
+
+    display:none;
+}
+@media(max-width: 1250px)
+{
+    .adjustGrid{
+        width:100%!important;
+        
+    }
+    .slds-accordion__summary{
+        flex-direction: column;
+    }
+}
+
+.text_adjustment {
+    white-space: nowrap; 
+    width: 139px; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    display: inline-block;
+}
+.float_text {
+    float:left;
+}
+.dyn-height {
+      padding:7px;
+    max-height:60px;
+    overflow-y:auto;
+}
+
+
+.dyn-td {
+  
+    max-height:60px;
+    overflow-y:auto;
+}
+.slds-carousel__image{
+    height:150px;
+    width:150px;
+ 	padding:5px;
+    
+    
+}
+.slds-carousel__indicators{
+   padding:10px
+}
+
+.description_style{
+  padding:7px;
+}
+.tags_data_padding{
+     padding:2px;
+}
+.dynamicFiterButton {
+ 	padding:5px;
+    width:16%;   
+}
+.dynamicFiter {
+ 	padding:5px;
+    width:16%;   
+}

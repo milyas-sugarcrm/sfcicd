@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>24HoursSinceStageOnOBAP</name>
+    <style>none</style>
+    <subject>Purchasing Not Complete</subject>
+    <textOnly>Hello Phunions,
+
+It&apos;s been 24 hours since the mockup was approved by the client for production, and we haven&apos;t completed purchasing. Please coordinate and figure out why.
+
+{!Order.WONameLink__c}
+
+Thanks,
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

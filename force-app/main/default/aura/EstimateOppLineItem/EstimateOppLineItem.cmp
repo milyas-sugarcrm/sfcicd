@@ -1,0 +1,638 @@
+<aura:component
+  controller="EstimateOppLineItemController"
+  implements="force:lightningQuickActionWithoutHeader,force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+  access="global"
+>
+  <aura:attribute name="recordId" type="Id" />
+  <aura:attribute name="deleteId" type="Id" />
+  <aura:handler event="force:refreshView" action="{!c.doInit}" />
+  <aura:handler event="c:RefreshEstimate" action="{!c.refresh}" />
+  <aura:registerEvent
+    name="RefreshPresentationComponent"
+    type="c:RefreshPresentationComponent"
+  />
+  <aura:registerEvent name="RefreshTabs" type="c:RefreshTabs" />
+  <aura:handler
+    event="c:CloseSalesOrderPopup"
+    action="{!c.closeSalesOrderPopup}"
+  />
+  <aura:attribute name="oppId" type="String" />
+  <aura:attribute name="deletePopup" type="boolean" default="false" />
+  <aura:attribute name="isDeletable" type="boolean" default="true" />
+  <aura:attribute name="viewAll" type="boolean" default="true" />
+  <aura:attribute name="numOfRecords" type="integer" default="6" />
+  <aura:attribute name="EstimateRelatedOpportunityLineItems" type="String[]" />
+  <aura:attribute name="ErrorEstimate" type="String" />
+  <aura:attribute name="isOpen" type="boolean" default="false" />
+  <aura:attribute name="isDelDialogOpen" type="boolean" default="false" />
+  <aura:attribute name="Spinner" type="boolean" default="false" />
+  <aura:attribute name="errors" type="List" />
+  <aura:attribute name="isNew" type="boolean" />
+  <aura:attribute name="Error" type="String" />
+  <aura:attribute name="Size" type="String" default="0" />
+  <aura:attribute
+    name="openConvertToSalesOrder"
+    type="boolean"
+    default="false"
+  />
+  <aura:attribute name="SalesStage" type="Boolean" default="false" />
+
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <aura:html tag="style"> </aura:html>
+  <!--   ////////////                 Show List View Component ATtributes                     //////////                  -->
+
+  <!--loading spinner start... style=Brand Medium (blue dots)-->
+  <aura:if isTrue="{!v.Spinner}">
+    <div class="slds-p-horizontal--small slds-size--1-of-1">
+      <div class="slds-p-horizontal--small slds-size--1-of-1 isActivityLoading">
+        <lightning:spinner variant="brand" size="small" />
+      </div>
+    </div>
+  </aura:if>
+
+  <!-- //Show Other Directorship List view Lightning Component -->
+
+  <article class="slds-card slds-card_boundary">
+    <div style="padding-left: 20px; padding-right: 16px" class="slds-grid">
+      <header class="slds-media slds-media_center slds-has-flexi-truncate">
+        <div class="slds-media__figure">
+          <span class="slds-icon_container slds-icon-standard-contact">
+            <lightning:icon iconName="standard:account" size="small" />
+          </span>
+        </div>
+        <div class="slds-media__body">
+          <h2>
+            <a
+              href="javascript:void(0)"
+              onclick="{!c.gotoRelatedList}"
+              class="slds-card__header-link slds-truncate"
+            >
+              <span class="slds-text-heading_small">Estimate Products</span>
+              <aura:if isTrue="{!v.viewAll}">
+                <aura:if isTrue="{!greaterthan(v.Size,6)}">
+                  <span
+                    class="slds-text-heading--small slds-shrink-none slds-m-right--xx-small"
+                    title="Estimate Products"
+                  >
+                    (6+)</span
+                  >
+                  <aura:set attribute="else"
+                    ><span
+                      class="slds-text-heading--small slds-shrink-none slds-m-right--xx-small"
+                      title="Estimate Products"
+                    >
+                      ({!v.Size})</span
+                    >
+                  </aura:set>
+                </aura:if>
+                <aura:set attribute="else">
+                  <span
+                    class="slds-text-heading--small slds-shrink-none slds-m-right--xx-small"
+                    title="Estimate Products"
+                  >
+                    ({!v.Size})</span
+                  ></aura:set
+                >
+              </aura:if>
+            </a>
+          </h2>
+        </div>
+      </header>
+
+      <div style="padding-top: 24px" onmouseleave="{!c.closeDropdownAction}">
+        <button
+          onclick="{!c.openDropdown}"
+          class="slds-button slds-button_brand"
+        >
+          Actions
+        </button>
+        <div
+          id="estimateDropdown"
+          class="slds-dropdown slds-dropdown--right"
+          style="margin-top: 0px; margin-right: 1%; width: 20%; display: none"
+        >
+          <ul class="slds-dropdown__list" role="menu">
+            <li
+              class="slds-dropdown__item slds-is-selected"
+              onclick="{!c.newButton}"
+            >
+              <a id="createInvoice">
+                <span
+                  style="color: #006dcc; width: 100px !important; float: left"
+                >
+                  Add New Product
+                </span>
+              </a>
+            </li>
+            <li
+              class="slds-dropdown__item slds-is-selected"
+              onclick="{!c.openPreviewEstimatePage}"
+            >
+              <a id="createInvoice">
+                <span
+                  style="color: #006dcc; width: 100px !important; float: left"
+                >
+                  Preview Estimate
+                </span>
+              </a>
+            </li>
+            <li
+              class="slds-dropdown__item slds-is-selected"
+              onclick="{!c.deleteEstimate}"
+            >
+              <a>
+                <span
+                  style="color: #006dcc; width: 100px !important; float: left"
+                >
+                  Delete Estimate
+                </span>
+              </a>
+            </li>
+            <aura:if isTrue="{!v.SalesStage == false}">
+              <li
+                class="slds-dropdown__item slds-is-selected"
+                onclick="{!c.openSalesOrderPopup}"
+              >
+                <a id="regenrateAllPos">
+                  <span
+                    style="color: #006dcc; width: 100px !important; float: left"
+                  >
+                    Convert To Sales Order
+                  </span>
+                </a>
+              </li>
+            </aura:if>
+            <li
+              class="slds-dropdown__item slds-is-selected"
+              onclick="{!c.syncEstimate}"
+            >
+              <a>
+                <span
+                  style="color: #006dcc; width: 100px !important; float: left"
+                >
+                  Sync Estimate
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <aura:if isTrue="{! v.ErrorEstimate != null}">
+      <div class="slds-modal__content slds-p-around_medium">
+        <p style="color: red; font-weight: bold">{!v.ErrorEstimate}</p>
+      </div>
+    </aura:if>
+    <aura:if isTrue="{!not(empty(v.EstimateRelatedOpportunityLineItems))}">
+      <div>
+        <table
+          class="slds-table slds-table_fixed-layout slds-table_cell-buffer"
+        >
+          <thead>
+            <tr>
+              <th scope="col" style="width: 20%">
+                <div class="slds-truncate">Name</div>
+              </th>
+              <th style="width: 65%">
+                <table>
+                  <thead>
+                    <th
+                      scope="col"
+                      style="
+                        width: 19.8%;
+                        white-space: initial;
+                        padding-left: 24px;
+                      "
+                    >
+                      <div class="slds-truncate">Items</div>
+                    </th>
+                    <th scope="col" style="width: 16.6%">
+                      <div class="slds-truncate">Units</div>
+                    </th>
+                    <th scope="col" style="width: 16.6%">
+                      <div class="slds-truncate">Price</div>
+                    </th>
+                    <th scope="col" style="width: 14%">
+                      <div class="slds-truncate">Margin</div>
+                    </th>
+                    <th scope="col" style="width: 14%">
+                      <div class="slds-truncate">Tax</div>
+                    </th>
+                    <th scope="col" style="width: 19%">
+                      <div class="slds-truncate">Amount</div>
+                    </th>
+                  </thead>
+                </table>
+              </th>
+              <th scope="col" style="width: 15%; text-align: center">
+                <div class="slds-truncate">Action</div>
+              </th>
+            </tr>
+          </thead>
+          <!--thead >
+                        <tr >
+                            <th scope="col" style="background-color: #FFFFFF; width: 20%;">
+                              
+                            </th>
+                            <th scope="col" style="background-color: #FFFFFF; width: 60%;">
+                                <th scope="col" style="background-color: #FFFFFF; width: 16.6%;padding-left: 25px;">
+                                 
+                                </th>
+                                <th scope="col" style="background-color: #FFFFFF; width: 20%;padding-left: 33px;">
+                                   
+                                </th>
+                                <th scope="col" style="background-color: #FFFFFF;width: 16.6%;padding-left:19px;">
+                                    
+                                </th>
+                                <th scope="col" style="background-color: #FFFFFF;width: 16.6%;padding-left: 18px;">
+                                    
+                                </th>
+                                <th scope="col" style="background-color: #FFFFFF;width: 16.6%;padding-left: 11px;">
+                                   
+                                </th>
+                                <th scope="col" style=" background-color: #FFFFFF; padding-left: 5px;" >
+                                    
+                                </th>
+                            </th>
+                            <th scope="col" style="background-color: #FFFFFF; width:20%; text-align: center;">
+                                <div class="slds-truncate"> </div>
+                            </th>
+                        </tr>
+                    </thead-->
+          <tbody>
+            <!--tr style="color: darkslategray; font-weight: bold;background-color: #FAFAF9;">
+                            <td style="width:20%; white-space: initial;">
+                                Name
+                            </td> 
+                            <td>
+                                <table>
+                                    <body>
+                                        <tr>
+                                            <td style="width: 16.6%; white-space: initial;">Items</td> 
+                                            <td style="width: 16.6%; ">Units</td> 
+                                            <td style="width: 16.6%;">Price</td> 
+                                            <td style="width: 16.6%;">Margin</td> 
+                                            <td style="width: 16.6%;">Tax</td> 
+                                            <td style="width: 16.6%;">Amount</td>
+                                        </tr>
+                                    </body>
+                                </table>
+                            </td>
+                            <td style="text-align: center;">Action</td>
+                        </tr-->
+            <aura:iteration
+              items="{!v.EstimateRelatedOpportunityLineItems}"
+              var="product"
+            >
+              <tr>
+                <td style="width: 20%; white-space: initial">
+                  <div class="slds-col">
+                    <div>
+                      <p>
+                        <label
+                          class="txt"
+                          data-crudaction="Edit"
+                          style="color: #006dcc; cursor: pointer"
+                          data-value="{!product.oppLineItemId}"
+                          onclick="{!c.editEstimateProductLineItem}"
+                          >{!product.productName}</label
+                        >
+                      </p>
+                    </div>
+                  </div>
+                  <div class="slds-col">
+                    <p>{!product.sku}</p>
+                  </div>
+                  <div class="slds-col">
+                    <p>{!product.supplier}</p>
+                  </div>
+                </td>
+                <td>
+                  <table>
+                    <tbody>
+                      <aura:iteration
+                        items="{!product.pricingDetails}"
+                        var="pricing"
+                      >
+                        <tr>
+                          <td style="width: 19.8%; white-space: initial">
+                            {!pricing.Size__c}
+                          </td>
+                          <td style="width: 16.6%">
+                            <aura:if isTrue="{!pricing.Retail_Price__c}">
+                              {!pricing.Estimated_Quantity__c}
+                            </aura:if>
+                          </td>
+                          <td style="width: 16.6%">
+                            <aura:if isTrue="{!pricing.Retail_Price__c}">
+                              ${!pricing.Retail_Price__c}
+                            </aura:if>
+                          </td>
+                          <td style="width: 14%"></td>
+                          <td style="width: 14%"></td>
+                          <td style="width: 19%">
+                            <aura:if isTrue="{!pricing.Total__c != null}">
+                              ${!pricing.Total__c}
+                            </aura:if>
+                          </td>
+                        </tr>
+                      </aura:iteration>
+                      <tr style="font-weight: bold">
+                        <td style="width: 19.8%">Total Units</td>
+                        <td style="width: 16.6%">{!product.units}</td>
+                        <td style="width: 16.6%"></td>
+                        <td style="width: 14%"></td>
+                        <td style="width: 14%"></td>
+                        <td style="width: 19%"></td>
+                      </tr>
+                      <aura:iteration
+                        items="{!product.extraCharges}"
+                        var="extraCharge"
+                      >
+                        <tr>
+                          <td style="width: 19.8%; white-space: initial">
+                            {!extraCharge.Title__c}
+                          </td>
+                          <td style="width: 16.6%">
+                            <aura:if isTrue="{!extraCharge.Quantity__c}">
+                              {!extraCharge.Quantity__c}
+                            </aura:if>
+                          </td>
+                          <td style="width: 16.6%">
+                            <aura:if isTrue="{!extraCharge.Net_Cost__c}">
+                              ${!extraCharge.Net_Cost__c}
+                            </aura:if>
+                          </td>
+                          <td style="width: 14%"></td>
+                          <td style="width: 14%"></td>
+                          <td style="width: 19%">
+                            <aura:if
+                              isTrue="{!extraCharge.Retail_Price__c != null}"
+                            >
+                              ${!extraCharge.Retail_Price__c}
+                            </aura:if>
+                          </td>
+                        </tr>
+                      </aura:iteration>
+                      <tr style="font-weight: bold">
+                        <td style="width: 19.8%">Total(USD)</td>
+                        <td style="width: 16.6%"></td>
+                        <td style="width: 16.6%"></td>
+                        <td style="width: 14%">
+                          <aura:if isTrue="{!product.marginPercentage != null}">
+                            {!product.marginPercentage}%
+                          </aura:if>
+                        </td>
+                        <td style="width: 14%">{!product.tax}</td>
+                        <td style="width: 19%">${!product.total}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+
+                <td style="text-align: center">
+                  <div class="slds-no-flex">
+                    <div class="slds-shrink-none">
+                      <ui:menu>
+                        <ui:menuTriggerLink aura:id="trigger">
+                          <a
+                            class="slds-button slds-button--icon-x-small slds-button--icon-border-filled CIcon"
+                            role="button"
+                            title="Show more actions"
+                            href="javascript:void(0);"
+                          >
+                            <span
+                              class="slds-icon_container slds-icon-utility-down slds-button__icon forceIcon"
+                              data-aura-class="forceIcon"
+                            >
+                              <span
+                                class="lightningPrimitiveIcon"
+                                data-aura-class="lightningPrimitiveIcon"
+                              >
+                                <lightning:icon
+                                  iconName="utility:down"
+                                  size="xx-small"
+                                />
+                              </span>
+                              <span class="slds-assistive-text"
+                                >Show more actions</span
+                              >
+                            </span>
+                          </a>
+                        </ui:menuTriggerLink>
+                        <ui:menuList
+                          class="actionMenu CMenu"
+                          aura:id="actionMenu"
+                          autoPosition="true"
+                        >
+                          <span
+                            class="uiMenuItem"
+                            data-crudaction="Delete"
+                            data-value="{!product.oppLineItemId}"
+                            onclick="{!c.openDeletePopup}"
+                            ><a style="color: rgb(0, 112, 210)">Delete</a></span
+                          >
+                          <span
+                            class="uiMenuItem"
+                            data-crudaction="Edit"
+                            data-value="{!product.oppLineItemId}"
+                            onclick="{!c.editEstimateProductLineItem}"
+                            ><a style="color: rgb(0, 112, 210)">Edit</a></span
+                          >
+                        </ui:menuList>
+                      </ui:menu>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </aura:iteration>
+          </tbody>
+        </table>
+      </div>
+
+      <aura:if isTrue="{!greaterthan(v.Size,6)}">
+        <aura:if isTrue="{!v.viewAll}">
+          <footer class="slds-card__footer">
+            <a href="javascript:void(0)" onclick="{!c.gotoRelatedList}"
+              >View All <span class="slds-assistive-text">entity type</span></a
+            >
+          </footer>
+        </aura:if>
+      </aura:if>
+    </aura:if>
+  </article>
+
+  <!-- DELETE POPUP  -->
+
+  <div class="slds-m-around--xx-large" style="margin: 0px !important">
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.deletePopup}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="height: 110% !important"
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Delete Product
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeDeletePopup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+          <aura:if isTrue="{! v.Error != null}">
+            <div class="slds-modal__content slds-p-around_medium">
+              <p style="color: red">{!v.Error}</p>
+            </div>
+          </aura:if>
+          <div class="slds-modal__content slds-p-around--medium">
+            <form class="slds-form--stacked">
+              <div class="slds">
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col--padded slds-medium-size--1-of-2">
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        Are you sure you want to delete this product?
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closeDeletePopup}"
+              >Cancel</lightning:button
+            >
+            <lightning:button
+              class="slds-button slds-button--brand customb"
+              onclick="{!c.deleteOpportunityLineItem}"
+              >Delete</lightning:button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+
+    <aura:if isTrue="{!v.shippingPopup}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="
+            height: auto !important;
+            width: 100% !important;
+            max-width: 80rem;
+          "
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Editing shipping information
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeShippingPopup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+          <aura:if isTrue="{! v.Error != null}">
+            <div class="slds-modal__content slds-p-around_medium">
+              <p style="color: red">{!v.Error}</p>
+            </div>
+          </aura:if>
+          <div class="slds-modal__content slds-p-around--large">
+            <c:ShippingMainComponent
+              recordId="{!v.shippingRecordId}"
+            ></c:ShippingMainComponent>
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+
+  <aura:if isTrue="{!v.openConvertToSalesOrder}">
+    <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+    <div
+      role="dialog"
+      tabindex="-1"
+      aria-labelledby="header99"
+      class="slds-modal slds-fade-in-open"
+    >
+      <div
+        class="slds-modal__container"
+        style="height: auto !important; width: 70% !important; max-width: 70rem"
+        role="document"
+        tabindex="0"
+      >
+        <div class="slds-modal__header">
+          <h2
+            id="modal-heading-01"
+            class="slds-text-heading_medium slds-hyphenate"
+          >
+            Convert Estimate To Sales Order
+          </h2>
+          <button
+            class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+            title="Close"
+            onclick="{!c.closeSalesOrderPopup}"
+          >
+            <lightning:icon
+              class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+              iconName="utility:close"
+              size="small"
+            />
+            <span class="slds-assistive-text">Close this window</span>
+          </button>
+        </div>
+        <div class="slds-modal__content slds-p-around--large">
+          <c:ConvertToSalesOrderComponent recordId="{!v.oppId}" />
+        </div>
+      </div>
+    </div>
+    <div class="slds-backdrop slds-backdrop--open"></div>
+  </aura:if>
+</aura:component>

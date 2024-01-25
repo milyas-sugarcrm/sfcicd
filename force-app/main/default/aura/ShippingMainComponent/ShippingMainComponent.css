@@ -1,0 +1,25 @@
+.THIS {
+}
+.THIS .labelNames {
+  font-weight: bold;
+}
+
+.THIS .hideBlock {
+  display: none;
+}
+
+.THIS .showBlock {
+  display: block;
+}
+
+.THIS .requiredFields {
+  padding-top: 20px;
+}
+
+.THIS .otherSupplierStyles {
+  padding: 10px;
+  background-color: #edf2f4;
+}
+.THIS .table_label_padding {
+  padding-top: 10px;
+}

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>100% Cotton</fullName>
+        <default>false</default>
+        <label>100% Cotton</label>
+    </customValue>
+    <customValue>
+        <fullName>Cotton/Poly Blend</fullName>
+        <default>false</default>
+        <label>Cotton/Poly Blend</label>
+    </customValue>
+    <customValue>
+        <fullName>Triblend</fullName>
+        <default>false</default>
+        <label>Triblend</label>
+    </customValue>
+    <customValue>
+        <fullName>100% Polyester</fullName>
+        <default>false</default>
+        <label>100% Polyester</label>
+    </customValue>
+    <customValue>
+        <fullName>Ringspun Cotton</fullName>
+        <default>false</default>
+        <label>Ringspun Cotton</label>
+    </customValue>
+    <customValue>
+        <fullName>Combed and Ringspun Cotton</fullName>
+        <default>false</default>
+        <label>Combed and Ringspun Cotton</label>
+    </customValue>
+    <customValue>
+        <fullName>60/40 Blend</fullName>
+        <default>false</default>
+        <label>60/40 Blend</label>
+    </customValue>
+    <customValue>
+        <fullName>Fleece</fullName>
+        <default>false</default>
+        <label>Fleece</label>
+    </customValue>
+    <customValue>
+        <fullName>Woven</fullName>
+        <default>false</default>
+        <label>Woven</label>
+    </customValue>
+    <customValue>
+        <fullName>Ceramic</fullName>
+        <default>false</default>
+        <label>Ceramic</label>
+    </customValue>
+    <customValue>
+        <fullName>Metal</fullName>
+        <default>false</default>
+        <label>Metal</label>
+    </customValue>
+    <customValue>
+        <fullName>Glass</fullName>
+        <default>false</default>
+        <label>Glass</label>
+    </customValue>
+    <customValue>
+        <fullName>Plastic</fullName>
+        <default>false</default>
+        <label>Plastic</label>
+    </customValue>
+    <customValue>
+        <fullName>Aluminum</fullName>
+        <default>false</default>
+        <label>Aluminum</label>
+    </customValue>
+    <customValue>
+        <fullName>Stainless Steel</fullName>
+        <default>false</default>
+        <label>Stainless Steel</label>
+    </customValue>
+    <customValue>
+        <fullName>Fabric</fullName>
+        <default>false</default>
+        <label>Fabric</label>
+    </customValue>
+    <customValue>
+        <fullName>Other</fullName>
+        <default>false</default>
+        <label>Other</label>
+    </customValue>
+    <customValue>
+        <fullName>Leather</fullName>
+        <default>false</default>
+        <label>Leather</label>
+    </customValue>
+    <customValue>
+        <fullName>Paper</fullName>
+        <default>false</default>
+        <label>Paper</label>
+    </customValue>
+    <customValue>
+        <fullName>Vinyl</fullName>
+        <default>false</default>
+        <label>Vinyl</label>
+    </customValue>
+    <customValue>
+        <fullName>Foam</fullName>
+        <default>false</default>
+        <label>Foam</label>
+    </customValue>
+    <customValue>
+        <fullName>Rubber</fullName>
+        <default>false</default>
+        <label>Rubber</label>
+    </customValue>
+    <customValue>
+        <fullName>Stone</fullName>
+        <default>false</default>
+        <label>Stone</label>
+    </customValue>
+    <customValue>
+        <fullName>Organic</fullName>
+        <default>false</default>
+        <label>Organic</label>
+    </customValue>
+    <customValue>
+        <fullName>Edibles</fullName>
+        <default>false</default>
+        <label>Edibles</label>
+    </customValue>
+    <customValue>
+        <fullName>Crystal</fullName>
+        <default>false</default>
+        <label>Crystal</label>
+    </customValue>
+    <customValue>
+        <fullName>Acrylic</fullName>
+        <default>false</default>
+        <label>Acrylic</label>
+    </customValue>
+    <customValue>
+        <fullName>Wood</fullName>
+        <default>false</default>
+        <label>Wood</label>
+    </customValue>
+    <customValue>
+        <fullName>Coroplast (Sentra)</fullName>
+        <default>false</default>
+        <label>Coroplast (Sentra)</label>
+    </customValue>
+    <customValue>
+        <fullName>Plywood</fullName>
+        <default>false</default>
+        <label>Plywood</label>
+    </customValue>
+    <customValue>
+        <fullName>Gatorboard</fullName>
+        <default>false</default>
+        <label>Gatorboard</label>
+    </customValue>
+    <customValue>
+        <fullName>PVC</fullName>
+        <default>false</default>
+        <label>PVC</label>
+    </customValue>
+    <customValue>
+        <fullName>Nylon</fullName>
+        <default>false</default>
+        <label>Nylon</label>
+    </customValue>
+    <customValue>
+        <fullName>Wool Blend</fullName>
+        <default>false</default>
+        <label>Wool Blend</label>
+    </customValue>
+    <customValue>
+        <fullName>Twill</fullName>
+        <default>false</default>
+        <label>Twill</label>
+    </customValue>
+    <customValue>
+        <fullName>Canvas</fullName>
+        <default>false</default>
+        <label>Canvas</label>
+    </customValue>
+    <customValue>
+        <fullName>Suede</fullName>
+        <default>false</default>
+        <label>Suede</label>
+    </customValue>
+    <customValue>
+        <fullName>Ripstop</fullName>
+        <default>false</default>
+        <label>Ripstop</label>
+    </customValue>
+    <customValue>
+        <fullName>Corduroy</fullName>
+        <default>false</default>
+        <label>Corduroy</label>
+    </customValue>
+    <description>Type of Materials used. 
+e.g. 
+Apparel = Fabric Type
+Drinkware = Material Type</description>
+    <masterLabel>Material Type</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

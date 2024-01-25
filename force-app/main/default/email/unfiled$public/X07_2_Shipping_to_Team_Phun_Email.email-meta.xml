@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>07.2 - Shipping to Team Phun Email</name>
+    <style>none</style>
+    <subject
+  >{!Order.Account_Name__c} Invoice {!Order.Invoice_Number__c} is shipping to Team Phun</subject>
+    <textOnly>Hello,
+
+Invoice {!Order.Invoice_Number__c}/Work Order {!Order.OrderNumber} is shipping to Team Phun. Please prepare for Quality Assurance.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

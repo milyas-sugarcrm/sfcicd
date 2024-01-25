@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description
+  >Use for leads from Seamless, change critical reference data as needed.</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>Hotel / Hospitality Cold Lead Email</name>
+    <relatedEntityType>Lead</relatedEntityType>
+    <style>none</style>
+    <subject
+  >{{{Recipient.Company}}} Branded Merchandise, Apparel, etc.</subject>
+    <type>custom</type>
+    <uiType>SFX</uiType>
+</EmailTemplate>

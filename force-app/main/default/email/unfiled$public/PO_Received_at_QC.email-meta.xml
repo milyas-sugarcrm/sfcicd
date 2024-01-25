@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>PO Received at QC</name>
+    <style>none</style>
+    <subject
+  >Follow Up to Confirm PO - {!PurchaseOrder_LineItem__c.Name} is scheduled for Quality Control</subject>
+    <textOnly>Hello Operations Team:
+
+This is a friendly reminder that {!PurchaseOrder_LineItem__c.PONameLink__c} has been in Received at QC Status for more than 24 hours. Please ensure QC is scheduled to be performed, and notify {!PurchaseOrder_LineItem__c.POOrderOwner__c} if there are any delays resulting from Quality Control interruptions.
+
+If {!PurchaseOrder_LineItem__c.PONameLink__c} has been reviewed by QC and there are no problems, please update the PO Status to the correct stage by filling in the appropriate fields.
+
+{!PurchaseOrder_LineItem__c.PONameLink__c}
+
+Thanks a bunch,
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

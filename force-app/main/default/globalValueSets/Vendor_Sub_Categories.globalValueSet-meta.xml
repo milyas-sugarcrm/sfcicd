@@ -1,0 +1,776 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>T-Shirts</fullName>
+        <default>false</default>
+        <label>T-Shirts</label>
+    </customValue>
+    <customValue>
+        <fullName>Sweatshirts</fullName>
+        <default>false</default>
+        <label>Sweatshirts</label>
+    </customValue>
+    <customValue>
+        <fullName>Dress Shirts</fullName>
+        <default>false</default>
+        <label>Dress Shirts</label>
+    </customValue>
+    <customValue>
+        <fullName>Polo Shirts</fullName>
+        <default>false</default>
+        <label>Polo Shirts</label>
+    </customValue>
+    <customValue>
+        <fullName>Headwear</fullName>
+        <default>false</default>
+        <label>Headwear</label>
+    </customValue>
+    <customValue>
+        <fullName>Other Apparel</fullName>
+        <default>false</default>
+        <label>Other Apparel</label>
+    </customValue>
+    <customValue>
+        <fullName>Outerwear</fullName>
+        <default>false</default>
+        <label>Outerwear</label>
+    </customValue>
+    <customValue>
+        <fullName>Uniforms</fullName>
+        <default>false</default>
+        <label>Uniforms</label>
+    </customValue>
+    <customValue>
+        <fullName>Sweaters &amp; Cardigans</fullName>
+        <default>false</default>
+        <label>Sweaters &amp; Cardigans</label>
+    </customValue>
+    <customValue>
+        <fullName>Athletic Apparel</fullName>
+        <default>false</default>
+        <label>Athletic Apparel</label>
+    </customValue>
+    <customValue>
+        <fullName>Embroidered Apparel</fullName>
+        <default>false</default>
+        <label>Embroidered Apparel</label>
+    </customValue>
+    <customValue>
+        <fullName>Auto Accessories</fullName>
+        <default>false</default>
+        <label>Auto Accessories</label>
+    </customValue>
+    <customValue>
+        <fullName>Keychains</fullName>
+        <default>false</default>
+        <label>Keychains</label>
+    </customValue>
+    <customValue>
+        <fullName>Key Lights</fullName>
+        <default>false</default>
+        <label>Key Lights</label>
+    </customValue>
+    <customValue>
+        <fullName>Food &amp; Lunch Containers</fullName>
+        <default>false</default>
+        <label>Food &amp; Lunch Containers</label>
+    </customValue>
+    <customValue>
+        <fullName>Kitchenware</fullName>
+        <default>false</default>
+        <label>Kitchenware</label>
+    </customValue>
+    <customValue>
+        <fullName>Living</fullName>
+        <default>false</default>
+        <label>Living</label>
+    </customValue>
+    <customValue>
+        <fullName>Lawn &amp; Garden</fullName>
+        <default>false</default>
+        <label>Lawn &amp; Garden</label>
+    </customValue>
+    <customValue>
+        <fullName>Pet Supplies</fullName>
+        <default>false</default>
+        <label>Pet Supplies</label>
+    </customValue>
+    <customValue>
+        <fullName>Flashlights</fullName>
+        <default>false</default>
+        <label>Flashlights</label>
+    </customValue>
+    <customValue>
+        <fullName>Tape Measures</fullName>
+        <default>false</default>
+        <label>Tape Measures</label>
+    </customValue>
+    <customValue>
+        <fullName>Tools</fullName>
+        <default>false</default>
+        <label>Tools</label>
+    </customValue>
+    <customValue>
+        <fullName>Tote Bags</fullName>
+        <default>false</default>
+        <label>Tote Bags</label>
+    </customValue>
+    <customValue>
+        <fullName>Coolers</fullName>
+        <default>false</default>
+        <label>Coolers</label>
+    </customValue>
+    <customValue>
+        <fullName>Drawstring Sportpacks</fullName>
+        <default>false</default>
+        <label>Drawstring Sportpacks</label>
+    </customValue>
+    <customValue>
+        <fullName>Duffels &amp; Gym Bags</fullName>
+        <default>false</default>
+        <label>Duffels &amp; Gym Bags</label>
+    </customValue>
+    <customValue>
+        <fullName>Laptop &amp; Tablet Bags</fullName>
+        <default>false</default>
+        <label>Laptop &amp; Tablet Bags</label>
+    </customValue>
+    <customValue>
+        <fullName>Business Bags</fullName>
+        <default>false</default>
+        <label>Business Bags</label>
+    </customValue>
+    <customValue>
+        <fullName>Backpacks</fullName>
+        <default>false</default>
+        <label>Backpacks</label>
+    </customValue>
+    <customValue>
+        <fullName>Travel</fullName>
+        <default>false</default>
+        <label>Travel</label>
+    </customValue>
+    <customValue>
+        <fullName>Plastic Bags</fullName>
+        <default>false</default>
+        <label>Plastic Bags</label>
+    </customValue>
+    <customValue>
+        <fullName>Paper Bags</fullName>
+        <default>false</default>
+        <label>Paper Bags</label>
+    </customValue>
+    <customValue>
+        <fullName>Gift Bags</fullName>
+        <default>false</default>
+        <label>Gift Bags</label>
+    </customValue>
+    <customValue>
+        <fullName>Embroidered Bags</fullName>
+        <default>false</default>
+        <label>Embroidered Bags</label>
+    </customValue>
+    <customValue>
+        <fullName>Water Bottles</fullName>
+        <default>false</default>
+        <label>Water Bottles</label>
+    </customValue>
+    <customValue>
+        <fullName>Plastic Cups</fullName>
+        <default>false</default>
+        <label>Plastic Cups</label>
+    </customValue>
+    <customValue>
+        <fullName>Reusable Straws</fullName>
+        <default>false</default>
+        <label>Reusable Straws</label>
+    </customValue>
+    <customValue>
+        <fullName>Disposable Cups</fullName>
+        <default>false</default>
+        <label>Disposable Cups</label>
+    </customValue>
+    <customValue>
+        <fullName>Coasters</fullName>
+        <default>false</default>
+        <label>Coasters</label>
+    </customValue>
+    <customValue>
+        <fullName>Travel Mugs &amp; Tumblers</fullName>
+        <default>false</default>
+        <label>Travel Mugs &amp; Tumblers</label>
+    </customValue>
+    <customValue>
+        <fullName>Beverage Holders</fullName>
+        <default>false</default>
+        <label>Beverage Holders</label>
+    </customValue>
+    <customValue>
+        <fullName>Vacuum Insulated</fullName>
+        <default>false</default>
+        <label>Vacuum Insulated</label>
+    </customValue>
+    <customValue>
+        <fullName>Coffee Mugs</fullName>
+        <default>false</default>
+        <label>Coffee Mugs</label>
+    </customValue>
+    <customValue>
+        <fullName>Glassware</fullName>
+        <default>false</default>
+        <label>Glassware</label>
+    </customValue>
+    <customValue>
+        <fullName>Pub Glasses &amp; Cups</fullName>
+        <default>false</default>
+        <label>Pub Glasses &amp; Cups</label>
+    </customValue>
+    <customValue>
+        <fullName>Candy</fullName>
+        <default>false</default>
+        <label>Candy</label>
+    </customValue>
+    <customValue>
+        <fullName>Chocolate</fullName>
+        <default>false</default>
+        <label>Chocolate</label>
+    </customValue>
+    <customValue>
+        <fullName>Cookies</fullName>
+        <default>false</default>
+        <label>Cookies</label>
+    </customValue>
+    <customValue>
+        <fullName>Gum</fullName>
+        <default>false</default>
+        <label>Gum</label>
+    </customValue>
+    <customValue>
+        <fullName>Mints</fullName>
+        <default>false</default>
+        <label>Mints</label>
+    </customValue>
+    <customValue>
+        <fullName>Nuts &amp; Pretzels</fullName>
+        <default>false</default>
+        <label>Nuts &amp; Pretzels</label>
+    </customValue>
+    <customValue>
+        <fullName>Popcorn</fullName>
+        <default>false</default>
+        <label>Popcorn</label>
+    </customValue>
+    <customValue>
+        <fullName>Mixed Assortment</fullName>
+        <default>false</default>
+        <label>Mixed Assortment</label>
+    </customValue>
+    <customValue>
+        <fullName>Cheese &amp; Meats</fullName>
+        <default>false</default>
+        <label>Cheese &amp; Meats</label>
+    </customValue>
+    <customValue>
+        <fullName>Individually Wrapped</fullName>
+        <default>false</default>
+        <label>Individually Wrapped</label>
+    </customValue>
+    <customValue>
+        <fullName>Bags</fullName>
+        <default>false</default>
+        <label>Bags</label>
+    </customValue>
+    <customValue>
+        <fullName>Candy Jars</fullName>
+        <default>false</default>
+        <label>Candy Jars</label>
+    </customValue>
+    <customValue>
+        <fullName>Tins</fullName>
+        <default>false</default>
+        <label>Tins</label>
+    </customValue>
+    <customValue>
+        <fullName>Gift Boxes &amp; Baskets</fullName>
+        <default>false</default>
+        <label>Gift Boxes &amp; Baskets</label>
+    </customValue>
+    <customValue>
+        <fullName>Packaged with Gift</fullName>
+        <default>false</default>
+        <label>Packaged with Gift</label>
+    </customValue>
+    <customValue>
+        <fullName>Water &amp; Beverages</fullName>
+        <default>false</default>
+        <label>Water &amp; Beverages</label>
+    </customValue>
+    <customValue>
+        <fullName>BBQ Gifts</fullName>
+        <default>false</default>
+        <label>BBQ Gifts</label>
+    </customValue>
+    <customValue>
+        <fullName>Wine Gifts</fullName>
+        <default>false</default>
+        <label>Wine Gifts</label>
+    </customValue>
+    <customValue>
+        <fullName>Food</fullName>
+        <default>false</default>
+        <label>Food</label>
+    </customValue>
+    <customValue>
+        <fullName>Food Gift Sets</fullName>
+        <default>false</default>
+        <label>Food Gift Sets</label>
+    </customValue>
+    <customValue>
+        <fullName>Magnets</fullName>
+        <default>false</default>
+        <label>Magnets</label>
+    </customValue>
+    <customValue>
+        <fullName>Desk Accessories</fullName>
+        <default>false</default>
+        <label>Desk Accessories</label>
+    </customValue>
+    <customValue>
+        <fullName>Stickers &amp; Decals</fullName>
+        <default>false</default>
+        <label>Stickers &amp; Decals</label>
+    </customValue>
+    <customValue>
+        <fullName>Stress Relievers</fullName>
+        <default>false</default>
+        <label>Stress Relievers</label>
+    </customValue>
+    <customValue>
+        <fullName>Awards &amp; Recognition</fullName>
+        <default>false</default>
+        <label>Awards &amp; Recognition</label>
+    </customValue>
+    <customValue>
+        <fullName>Business Card Holders</fullName>
+        <default>false</default>
+        <label>Business Card Holders</label>
+    </customValue>
+    <customValue>
+        <fullName>Picture Frames</fullName>
+        <default>false</default>
+        <label>Picture Frames</label>
+    </customValue>
+    <customValue>
+        <fullName>Books &amp; Bookmarks</fullName>
+        <default>false</default>
+        <label>Books &amp; Bookmarks</label>
+    </customValue>
+    <customValue>
+        <fullName>Clocks</fullName>
+        <default>false</default>
+        <label>Clocks</label>
+    </customValue>
+    <customValue>
+        <fullName>Watches</fullName>
+        <default>false</default>
+        <label>Watches</label>
+    </customValue>
+    <customValue>
+        <fullName>Rulers</fullName>
+        <default>false</default>
+        <label>Rulers</label>
+    </customValue>
+    <customValue>
+        <fullName>Umbrellas</fullName>
+        <default>false</default>
+        <label>Umbrellas</label>
+    </customValue>
+    <customValue>
+        <fullName>Towels</fullName>
+        <default>false</default>
+        <label>Towels</label>
+    </customValue>
+    <customValue>
+        <fullName>Blankets</fullName>
+        <default>false</default>
+        <label>Blankets</label>
+    </customValue>
+    <customValue>
+        <fullName>Sports &amp; Fitness</fullName>
+        <default>false</default>
+        <label>Sports &amp; Fitness</label>
+    </customValue>
+    <customValue>
+        <fullName>Golf</fullName>
+        <default>false</default>
+        <label>Golf</label>
+    </customValue>
+    <customValue>
+        <fullName>Hand Fans</fullName>
+        <default>false</default>
+        <label>Hand Fans</label>
+    </customValue>
+    <customValue>
+        <fullName>Sunglasses</fullName>
+        <default>false</default>
+        <label>Sunglasses</label>
+    </customValue>
+    <customValue>
+        <fullName>BBQ &amp; Picnic</fullName>
+        <default>false</default>
+        <label>BBQ &amp; Picnic</label>
+    </customValue>
+    <customValue>
+        <fullName>Chairs</fullName>
+        <default>false</default>
+        <label>Chairs</label>
+    </customValue>
+    <customValue>
+        <fullName>Padfolios</fullName>
+        <default>false</default>
+        <label>Padfolios</label>
+    </customValue>
+    <customValue>
+        <fullName>Notebooks &amp; Journals</fullName>
+        <default>false</default>
+        <label>Notebooks &amp; Journals</label>
+    </customValue>
+    <customValue>
+        <fullName>Presentation Folders</fullName>
+        <default>false</default>
+        <label>Presentation Folders</label>
+    </customValue>
+    <customValue>
+        <fullName>Cubes, Pads &amp; Flags</fullName>
+        <default>false</default>
+        <label>Cubes, Pads &amp; Flags</label>
+    </customValue>
+    <customValue>
+        <fullName>Marketing Materials</fullName>
+        <default>false</default>
+        <label>Marketing Materials</label>
+    </customValue>
+    <customValue>
+        <fullName>Packaging</fullName>
+        <default>false</default>
+        <label>Packaging</label>
+    </customValue>
+    <customValue>
+        <fullName>Document Holders</fullName>
+        <default>false</default>
+        <label>Document Holders</label>
+    </customValue>
+    <customValue>
+        <fullName>Binders</fullName>
+        <default>false</default>
+        <label>Binders</label>
+    </customValue>
+    <customValue>
+        <fullName>Clipboards</fullName>
+        <default>false</default>
+        <label>Clipboards</label>
+    </customValue>
+    <customValue>
+        <fullName>Calendars</fullName>
+        <default>false</default>
+        <label>Calendars</label>
+    </customValue>
+    <customValue>
+        <fullName>Planners &amp; Diaries</fullName>
+        <default>false</default>
+        <label>Planners &amp; Diaries</label>
+    </customValue>
+    <customValue>
+        <fullName>Greeting Cards</fullName>
+        <default>false</default>
+        <label>Greeting Cards</label>
+    </customValue>
+    <customValue>
+        <fullName>Chargers &amp; Cables</fullName>
+        <default>false</default>
+        <label>Chargers &amp; Cables</label>
+    </customValue>
+    <customValue>
+        <fullName>Cell Phone Accessories</fullName>
+        <default>false</default>
+        <label>Cell Phone Accessories</label>
+    </customValue>
+    <customValue>
+        <fullName>USB Flash Drives</fullName>
+        <default>false</default>
+        <label>USB Flash Drives</label>
+    </customValue>
+    <customValue>
+        <fullName>Music &amp; Audio</fullName>
+        <default>false</default>
+        <label>Music &amp; Audio</label>
+    </customValue>
+    <customValue>
+        <fullName>Tech Friendly Bags</fullName>
+        <default>false</default>
+        <label>Tech Friendly Bags</label>
+    </customValue>
+    <customValue>
+        <fullName>Stylus Pens &amp; Tools</fullName>
+        <default>false</default>
+        <label>Stylus Pens &amp; Tools</label>
+    </customValue>
+    <customValue>
+        <fullName>Tech Accessories</fullName>
+        <default>false</default>
+        <label>Tech Accessories</label>
+    </customValue>
+    <customValue>
+        <fullName>Tech Cases &amp; Organizers</fullName>
+        <default>false</default>
+        <label>Tech Cases &amp; Organizers</label>
+    </customValue>
+    <customValue>
+        <fullName>Balloons</fullName>
+        <default>false</default>
+        <label>Balloons</label>
+    </customValue>
+    <customValue>
+        <fullName>Childrens Toys</fullName>
+        <default>false</default>
+        <label>Childrens Toys</label>
+    </customValue>
+    <customValue>
+        <fullName>Coloring &amp; Art</fullName>
+        <default>false</default>
+        <label>Coloring &amp; Art</label>
+    </customValue>
+    <customValue>
+        <fullName>Executive Toys</fullName>
+        <default>false</default>
+        <label>Executive Toys</label>
+    </customValue>
+    <customValue>
+        <fullName>Flyers &amp; Flying Discs</fullName>
+        <default>false</default>
+        <label>Flyers &amp; Flying Discs</label>
+    </customValue>
+    <customValue>
+        <fullName>Light Up Novelties</fullName>
+        <default>false</default>
+        <label>Light Up Novelties</label>
+    </customValue>
+    <customValue>
+        <fullName>Novelty &amp; Sport Balls</fullName>
+        <default>false</default>
+        <label>Novelty &amp; Sport Balls</label>
+    </customValue>
+    <customValue>
+        <fullName>Team Spirit</fullName>
+        <default>false</default>
+        <label>Team Spirit</label>
+    </customValue>
+    <customValue>
+        <fullName>Table Covers &amp; Throws</fullName>
+        <default>false</default>
+        <label>Table Covers &amp; Throws</label>
+    </customValue>
+    <customValue>
+        <fullName>Table Top Displays</fullName>
+        <default>false</default>
+        <label>Table Top Displays</label>
+    </customValue>
+    <customValue>
+        <fullName>Floor Displays</fullName>
+        <default>false</default>
+        <label>Floor Displays</label>
+    </customValue>
+    <customValue>
+        <fullName>Display Kits</fullName>
+        <default>false</default>
+        <label>Display Kits</label>
+    </customValue>
+    <customValue>
+        <fullName>Display Accessories</fullName>
+        <default>false</default>
+        <label>Display Accessories</label>
+    </customValue>
+    <customValue>
+        <fullName>Banners, Flags &amp; Signs</fullName>
+        <default>false</default>
+        <label>Banners, Flags &amp; Signs</label>
+    </customValue>
+    <customValue>
+        <fullName>Trade Show Games</fullName>
+        <default>false</default>
+        <label>Trade Show Games</label>
+    </customValue>
+    <customValue>
+        <fullName>Literature Displays</fullName>
+        <default>false</default>
+        <label>Literature Displays</label>
+    </customValue>
+    <customValue>
+        <fullName>Tents</fullName>
+        <default>false</default>
+        <label>Tents</label>
+    </customValue>
+    <customValue>
+        <fullName>Food Service Supplies</fullName>
+        <default>false</default>
+        <label>Food Service Supplies</label>
+    </customValue>
+    <customValue>
+        <fullName>Lanyards &amp; Badges</fullName>
+        <default>false</default>
+        <label>Lanyards &amp; Badges</label>
+    </customValue>
+    <customValue>
+        <fullName>Lanyard &amp; ID Holder Accessories</fullName>
+        <default>false</default>
+        <label>Lanyard &amp; ID Holder Accessories</label>
+    </customValue>
+    <customValue>
+        <fullName>Giveaways</fullName>
+        <default>false</default>
+        <label>Giveaways</label>
+    </customValue>
+    <customValue>
+        <fullName>Hand Sanitizers</fullName>
+        <default>false</default>
+        <label>Hand Sanitizers</label>
+    </customValue>
+    <customValue>
+        <fullName>First Aid</fullName>
+        <default>false</default>
+        <label>First Aid</label>
+    </customValue>
+    <customValue>
+        <fullName>Lip Balm</fullName>
+        <default>false</default>
+        <label>Lip Balm</label>
+    </customValue>
+    <customValue>
+        <fullName>Sunscreen</fullName>
+        <default>false</default>
+        <label>Sunscreen</label>
+    </customValue>
+    <customValue>
+        <fullName>Healthcare</fullName>
+        <default>false</default>
+        <label>Healthcare</label>
+    </customValue>
+    <customValue>
+        <fullName>Personal Care</fullName>
+        <default>false</default>
+        <label>Personal Care</label>
+    </customValue>
+    <customValue>
+        <fullName>Safety</fullName>
+        <default>false</default>
+        <label>Safety</label>
+    </customValue>
+    <customValue>
+        <fullName>Pedometers</fullName>
+        <default>false</default>
+        <label>Pedometers</label>
+    </customValue>
+    <customValue>
+        <fullName>Educational Guides</fullName>
+        <default>false</default>
+        <label>Educational Guides</label>
+    </customValue>
+    <customValue>
+        <fullName>Pens</fullName>
+        <default>false</default>
+        <label>Pens</label>
+    </customValue>
+    <customValue>
+        <fullName>Pens by Ink Color</fullName>
+        <default>false</default>
+        <label>Pens by Ink Color</label>
+    </customValue>
+    <customValue>
+        <fullName>Pens by Material</fullName>
+        <default>false</default>
+        <label>Pens by Material</label>
+    </customValue>
+    <customValue>
+        <fullName>Pens by Imprint</fullName>
+        <default>false</default>
+        <label>Pens by Imprint</label>
+    </customValue>
+    <customValue>
+        <fullName>Writing Sets</fullName>
+        <default>false</default>
+        <label>Writing Sets</label>
+    </customValue>
+    <customValue>
+        <fullName>Pencils</fullName>
+        <default>false</default>
+        <label>Pencils</label>
+    </customValue>
+    <customValue>
+        <fullName>Highlighters</fullName>
+        <default>false</default>
+        <label>Highlighters</label>
+    </customValue>
+    <customValue>
+        <fullName>Markers</fullName>
+        <default>false</default>
+        <label>Markers</label>
+    </customValue>
+    <customValue>
+        <fullName>Baseball Caps</fullName>
+        <default>false</default>
+        <label>Baseball Caps</label>
+    </customValue>
+    <customValue>
+        <fullName>Dad Hats</fullName>
+        <default>false</default>
+        <label>Dad Hats</label>
+    </customValue>
+    <customValue>
+        <fullName>Beanies</fullName>
+        <default>false</default>
+        <label>Beanies</label>
+    </customValue>
+    <customValue>
+        <fullName>Trucker Caps</fullName>
+        <default>false</default>
+        <label>Trucker Caps</label>
+    </customValue>
+    <customValue>
+        <fullName>Visors</fullName>
+        <default>false</default>
+        <label>Visors</label>
+    </customValue>
+    <customValue>
+        <fullName>Flat Bill</fullName>
+        <default>false</default>
+        <label>Flat Bill</label>
+    </customValue>
+    <customValue>
+        <fullName>Promotional Cap</fullName>
+        <default>false</default>
+        <label>Promotional Cap</label>
+    </customValue>
+    <customValue>
+        <fullName>Straw Hat</fullName>
+        <default>false</default>
+        <label>Straw Hat</label>
+    </customValue>
+    <customValue>
+        <fullName>Structured</fullName>
+        <default>false</default>
+        <label>Structured</label>
+    </customValue>
+    <customValue>
+        <fullName>Unstructured</fullName>
+        <default>false</default>
+        <label>Unstructured</label>
+    </customValue>
+    <customValue>
+        <fullName>Testing Only</fullName>
+        <default>false</default>
+        <label>Testing Only</label>
+    </customValue>
+    <description>These are the sub categories for Vendors</description>
+    <masterLabel>Vendor Sub Categories</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

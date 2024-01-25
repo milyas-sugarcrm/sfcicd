@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Apparel</fullName>
+        <default>false</default>
+        <label>Apparel</label>
+    </customValue>
+    <customValue>
+        <fullName>Decorator</fullName>
+        <default>false</default>
+        <label>Decorator</label>
+    </customValue>
+    <customValue>
+        <fullName>Fulfillment</fullName>
+        <default>false</default>
+        <label>Fulfillment</label>
+    </customValue>
+    <customValue>
+        <fullName>Promotional Products</fullName>
+        <default>true</default>
+        <label>Promotional Products</label>
+    </customValue>
+    <customValue>
+        <fullName>Trade Show &amp; Signage</fullName>
+        <default>false</default>
+        <label>Trade Show &amp; Signage</label>
+    </customValue>
+    <customValue>
+        <fullName>Design Services</fullName>
+        <default>false</default>
+        <label>Design Services</label>
+    </customValue>
+    <customValue>
+        <fullName>Office &amp; Awards</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Office &amp; Awards</label>
+    </customValue>
+    <customValue>
+        <fullName>Outdoor &amp; Leisure</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Outdoor &amp; Leisure</label>
+    </customValue>
+    <customValue>
+        <fullName>Stationery</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Stationery</label>
+    </customValue>
+    <customValue>
+        <fullName>Technology</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Technology</label>
+    </customValue>
+    <customValue>
+        <fullName>Toys &amp; Novelties</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Toys &amp; Novelties</label>
+    </customValue>
+    <customValue>
+        <fullName>Uniform</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Uniform</label>
+    </customValue>
+    <customValue>
+        <fullName>Wellness &amp; Safety</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Wellness &amp; Safety</label>
+    </customValue>
+    <customValue>
+        <fullName>Writing</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Writing</label>
+    </customValue>
+    <customValue>
+        <fullName>Headwear</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Headwear</label>
+    </customValue>
+    <customValue>
+        <fullName>Food &amp; Candy</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Food &amp; Candy</label>
+    </customValue>
+    <customValue>
+        <fullName>Drinkware</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Drinkware</label>
+    </customValue>
+    <customValue>
+        <fullName>Bags</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Bags</label>
+    </customValue>
+    <customValue>
+        <fullName>Auto, Home &amp; Tools</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Auto, Home &amp; Tools</label>
+    </customValue>
+    <customValue>
+        <fullName>Digital Services</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Digital Services</label>
+    </customValue>
+    <customValue>
+        <fullName>Warehouse</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Warehouse</label>
+    </customValue>
+    <description
+  >This is the primary category for product supplied by this vendor</description>
+    <masterLabel>Vendor Primary Category</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

@@ -1,0 +1,732 @@
+<aura:component
+  controller="AddProductTeamPhunTabController"
+  implements="force:lightningQuickActionWithoutHeader,force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+  access="global"
+>
+  <aura:attribute name="recordId" type="String" />
+  <aura:attribute name="productList" type="List" />
+  <aura:attribute name="currentPageNumber" type="Integer" default="1" />
+  <aura:attribute name="currentPage" type="Integer" default="1" />
+  <aura:attribute name="totalProducts" type="Integer" default="1" />
+  <aura:attribute name="SearchDetails" type="object" />
+  <aura:attribute name="isFilter" type="boolean" default="true" />
+  <aura:attribute name="tabname" type="String" access="public" />
+  <aura:attribute name="recordFrom" type="String" access="public" />
+  <aura:attribute name="SpinnerTeamPhun" type="boolean" default="false" />
+  <aura:attribute
+    name="openSearchDetailsPopoup"
+    type="Boolean"
+    default="false"
+  />
+  <ltng:require styles="{!$Resource.TeamPhunStyles}" />
+
+  <div
+    class="slds-grid slds-grid_vertical-align-end slds-grid_align-space"
+    style="
+      flex-wrap: wrap;
+      justify-content: left;
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-top: 10px;
+    "
+  >
+    <div class="slds-col dynamicFiter" onkeypress="{!c.keyCheck}">
+      <lightning:input
+        aura:id="searchName"
+        name="searchTerm"
+        placeholder="Search Term"
+        isLoading="{!v.issearching }"
+        type="search"
+      />
+    </div>
+    <div class="slds-col dynamicFiter">
+      <lightning:select aura:id="Supplier" name="Supplier" required="false">
+        <option value="">Supplier</option>
+        <option value="POL Test Vendor">POL Test Vendor</option>
+        <option value="SkuBot Promo Limited">SkuBot Promo Limited</option>
+      </lightning:select>
+    </div>
+    <div class="slds-col dynamicFiter" onkeypress="{!c.keyCheck}">
+      <lightning:input aura:id="NetMin" name="NetMin" placeholder="Net Min" />
+    </div>
+    <div class="slds-col dynamicFiter" onkeypress="{!c.keyCheck}">
+      <lightning:input aura:id="NetMax" name="NetMax" placeholder="Net Max" />
+    </div>
+
+    <div class="slds-col" style="padding-left: 20px">
+      <lightning:button
+        name="Search"
+        variant="brand"
+        label="Search"
+        title="Search"
+        onclick="{!c.handleSearchClick }"
+      />
+      <lightning:button
+        name="Search"
+        label="Reset"
+        title="Reset"
+        onclick="{!c.handleResetClick}"
+      />
+    </div>
+  </div>
+  <aura:if isTrue="{!v.SpinnerTeamPhun}">
+    <div
+      id="lite_box_loading_overlay"
+      style="
+        position: fixed;
+        background-color: rgba(0, 0, 0, 0.7);
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 9999999 !important;
+      "
+    >
+      <div
+        id="lite_box_loading_overlay_inner"
+        style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          z-index: 9999 !important;
+          -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+          border-radius: 0;
+          -webkit-margin-before: -2%;
+        "
+      >
+        <lightning:spinner variant="brand" size="large" />
+      </div>
+    </div>
+  </aura:if>
+  <div style="padding: 11px">
+    <!-- Lightning card to show contacts -->
+    <aura:if isTrue="{! not(empty(v.productList))}">
+      <lightning:card title="{! 'Products (' + v.totalProducts+')'}">
+        <!-- Body of lightning card starts here -->
+        <p class="slds-p-horizontal_small">
+          <div
+            class="slds-grid slds-grid--pull-padded"
+            style="display: block !important"
+          >
+            <div
+              style="margin: 5px; flex-wrap: wrap"
+              class="slds-accordion__summary"
+            >
+              <aura:iteration items="{!v.productList}" var="product">
+                <div style="padding: 5px; width: 100%" class="adjustGrid">
+                  <lightning:recordViewForm>
+                    <!--recordId="{!product.Id}" -->
+                    <div
+                      class="slds-box slds-theme_default"
+                      style="position: relative; height: 210px; width: 100%"
+                    >
+                      <article class="slds-card slds-card--narrow">
+                        <table>
+                          <tr>
+                            <td
+                              style="
+                                vertical-align: top;
+                                padding-right: 20px;
+                                width: 10%;
+                              "
+                            >
+                              <div
+                                style="width: 150px; height: 150px"
+                                class="slds-float--right"
+                              >
+                                <aura:if
+                                  isTrue="{!not(empty(product.imageUrl))}"
+                                >
+                                  <div
+                                    style="
+                                      box-sizing: border-box;
+                                      border-style: groove;
+                                      border-width: 1px;
+                                      border-top-left-radius: var(
+                                        --lwc-borderRadiusMedium,
+                                        0.25rem
+                                      );
+                                      border-top-right-radius: var(
+                                        --lwc-borderRadiusMedium,
+                                        0.25rem
+                                      );
+                                      border-bottom-left-radius: var(
+                                        --lwc-borderRadiusMedium,
+                                        0.25rem
+                                      );
+                                      border-bottom-right-radius: var(
+                                        --lwc-borderRadiusMedium,
+                                        0.25rem
+                                      );
+                                    "
+                                  >
+                                    <img
+                                      style="
+                                        width: 145px;
+                                        height: 145px;
+                                        margin: 2px;
+                                      "
+                                      src="{!$Label.c.ContentVersionImage+product.imageUrl}"
+                                    />
+                                  </div>
+                                  <aura:set attribute="else">
+                                    <lightning:carouselImage
+                                      src="{!$Resource.No_Image_Available}"
+                                      class="slds-p-top_none"
+                                      header=""
+                                      description=""
+                                      alternativeText="Product Image"
+                                    >
+                                    </lightning:carouselImage>
+                                  </aura:set>
+                                </aura:if>
+                              </div>
+                            </td>
+                            <td style="width: 50%">
+                              <div
+                                class="slds-grid"
+                                style="display: block !important"
+                              >
+                                <div class="slds-col">
+                                  <label
+                                    style="
+                                      font-size: 15px;
+                                      font-weight: bold;
+                                      color: mediumblue;
+                                    "
+                                  >
+                                    {!product.name}
+                                  </label>
+                                </div>
+
+                                <div class="slds-col">
+                                  <aura:if
+                                    isTrue="{!not(empty(product.ProductCode))}"
+                                  >
+                                    <label
+                                      style="font-weight: bold; font-size: 13px"
+                                    >
+                                      {!product.ProductCode}
+                                    </label>
+                                  </aura:if>
+                                  <aura:if
+                                    isTrue="{!not(empty(product.commonSkuId))}"
+                                  >
+                                    <label
+                                      style="
+                                        font-style: italic;
+                                        font-weight: bold;
+                                        font-size: 13px;
+                                        color: gray;
+                                      "
+                                    >
+                                      | {!product.commonSkuId}</label
+                                    >
+                                  </aura:if>
+                                </div>
+                                <div class="slds-col">
+                                  <div class="">
+                                    <aura:if
+                                      isTrue="{!not(empty(product.supplier))}"
+                                    >
+                                      <label
+                                        style="
+                                          font-weight: bold;
+                                          font-size: 14px;
+                                        "
+                                      >
+                                        {!product.supplier}
+                                      </label>
+                                    </aura:if>
+                                    <aura:if
+                                      isTrue="{!not(empty(product.productSupplierCode))}"
+                                    >
+                                      <a
+                                        style="
+                                          font-style: italic;
+                                          pointer-events: none;
+                                        "
+                                      >
+                                        asi/{!product.productSupplierCode}</a
+                                      >
+                                    </aura:if>
+                                  </div>
+                                </div>
+                                <div class="slds-col">
+                                  <aura:if
+                                    isTrue="{!not(empty(product.productColor))}"
+                                  >
+                                    <div class="">
+                                      <label style="font-weight: bold"
+                                        >Colors:</label
+                                      >
+                                      <label class="tags_data_padding">
+                                        {!product.productColor}
+                                      </label>
+                                    </div>
+                                  </aura:if>
+                                </div>
+                                <div class="slds-col">
+                                  <aura:if
+                                    isTrue="{!not(empty(product.productSize))}"
+                                  >
+                                    <div class="">
+                                      <label style="font-weight: bold"
+                                        >Sizes:</label
+                                      >
+                                      <label class="tags_data_padding">
+                                        {!product.productSize}
+                                      </label>
+                                    </div>
+                                  </aura:if>
+                                </div>
+                                <div class="slds-col">
+                                  <a
+                                    data-value="{!product.id}"
+                                    onclick="{!c.openPopupSearchView}"
+                                  >
+                                    + More
+                                  </a>
+                                </div>
+
+                                <!--  <div class="slds-col">                                        
+                                                            <div class="slds-card__body"><span class="slds-badge float_text">NetPrice :</span>
+                                                                <label class="tags_data_padding text_adjustment">
+                                                                    ${!product.netPrice}
+                                                                </label></div> 
+                                                        </div>
+
+                                                        <div class="slds-col">
+                                                            <div class="slds-card__body"><span class="slds-badge float_text">Brand:</span>
+                                                               <label class="tags_data_padding text_adjustment">
+                                                                {!product.productBrand}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                       
+                                                        <div class="slds-card__body" >
+                                                            <span class="slds-badge">Description:</span>
+                                                            <br/><p class="dyn-height">
+                                                            {!product.description}
+                                                            </p>
+                                                        </div> -->
+                              </div>
+                            </td>
+                            <td style="vertical-align: top; width: 40%">
+                              <div
+                                class="slds-grid"
+                                style="float: right; display: block !important"
+                              >
+                                <div class="slds-col">
+                                  <div class="">
+                                    <span>PRICE : </span>
+                                    <label style="font-weight: bold">
+                                      ${!product.netPrice}
+                                    </label>
+                                  </div>
+                                </div>
+                                <div class="slds-col">
+                                  <div class="">
+                                    <span>COST : </span>
+                                    <label style="font-weight: bold">
+                                      ${!product.productCost}
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </table>
+                      </article>
+                      <div
+                        onclick="{! c.handleAddProduct }"
+                        data-value="{!product.id}"
+                        style="position: absolute; bottom: 10px; right: 15px"
+                      >
+                        <lightning:button
+                          variant="brand"
+                          label="Add Product"
+                          aura:id="{!product.Id}"
+                        />
+                      </div>
+                    </div>
+                  </lightning:recordViewForm>
+                </div>
+              </aura:iteration>
+            </div>
+            <div class="slds-grid slds-grid--pull-padded" style="padding: 20px">
+              <div class="slds-col--padded slds-size--1-of-5"></div>
+              <div class="slds-col--padded slds-size--1-of-5"></div>
+              <div class="slds-col--padded slds-size--1-of-5">
+                Page {!v.currentPageNumber}
+              </div>
+              <div class="slds-col--padded slds-size--1-of-5"></div>
+              <div
+                style="text-align: right; padding-right: 25px"
+                class="slds-col--padded slds-size--1-of-5"
+              >
+                <lightning:button
+                  label="Previous"
+                  disabled="{!v.currentPageNumber == 1}"
+                  onclick="{!c.previousPage}"
+                />
+                <lightning:button
+                  label="Next"
+                  variant="brand"
+                  disabled="{!v.currentPageNumber*24 >= v.totalProducts}"
+                  onclick="{!c.nextPage}"
+                />
+              </div>
+            </div>
+          </div>
+        </p>
+      </lightning:card>
+    </aura:if>
+  </div>
+
+  <!-- SEARCH DETAILS POPUP -->
+  <div class="slds-m-around--xx-large" style="margin: 0px !important">
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.openSearchDetailsPopoup}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="height: 110% !important; width: 60rem; max-width: 80rem"
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeSearchDetaislPopoup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+
+          <div
+            class="slds-modal__content slds-p-around--medium"
+            style="overflow: auto; max-height: 500px"
+          >
+            <aura:if isTrue="{!v.SpinnerVariant}">
+              <lightning:spinner variant="brand" size="large" />
+            </aura:if>
+            <form class="slds-form--stacked">
+              <p class="slds-p-horizontal_small">
+                <div
+                  class="slds-grid slds-grid--pull-padded"
+                  style="display: block !important"
+                >
+                  <div
+                    style="margin: 5px; flex-wrap: wrap"
+                    class="slds-accordion__summary"
+                  >
+                    <div style="padding: 5px; width: 100%" class="adjustGrid">
+                      <lightning:recordViewForm>
+                        <!--recordId="{!product.Id}" -->
+                        <div
+                          class="slds-box slds-theme_default"
+                          style="position: relative; height: 400%; width: 100%"
+                        >
+                          <article class="slds-card slds-card--narrow">
+                            <table>
+                              <tr>
+                                <td
+                                  style="
+                                    vertical-align: top;
+                                    width: 35%;
+                                    text-align: center;
+                                    padding-right: 15px;
+                                  "
+                                >
+                                  <div
+                                    style="
+                                      width: 100%;
+                                      border: groove;
+                                      height: 200px;
+                                    "
+                                    class="slds-float--right"
+                                  >
+                                    <aura:if
+                                      isTrue="{!not(empty(v.SearchDetails.imageUrl))}"
+                                    >
+                                      <img
+                                        style="
+                                          width: 300px !important;
+                                          height: 194px;
+                                        "
+                                        src="{!$Label.c.ContentVersionImage+v.SearchDetails.imageUrl}"
+                                      />
+
+                                      <aura:set attribute="else">
+                                        <img
+                                          style="
+                                            width: 300px !important;
+                                            height: 194px;
+                                          "
+                                          src="{!$Resource.No_Image_Available}"
+                                        />
+                                      </aura:set>
+                                    </aura:if>
+                                  </div>
+                                </td>
+                                <td style="vertical-align: top; width: 90%">
+                                  <div
+                                    class="slds-grid"
+                                    style="display: block !important"
+                                  >
+                                    <div class="slds-col">
+                                      <label
+                                        style="
+                                          font-size: 20px;
+                                          font-weight: bold;
+                                          color: mediumblue;
+                                        "
+                                      >
+                                        {!v.SearchDetails.name}
+                                      </label>
+                                    </div>
+                                    <div class="slds-col">
+                                      <div>
+                                        <aura:if
+                                          isTrue="{!not(empty(v.SearchDetails.ProductCode))}"
+                                        >
+                                          <label
+                                            style="
+                                              font-weight: bold;
+                                              font-size: 15px;
+                                            "
+                                          >
+                                            {!v.SearchDetails.ProductCode}
+                                          </label>
+                                        </aura:if>
+                                        <aura:if
+                                          isTrue="{!not(empty(v.SearchDetails.commonSkuId))}"
+                                        >
+                                          <label
+                                            style="
+                                              float: right;
+                                              font-style: italic;
+                                              font-weight: bold;
+                                              font-size: 15px;
+                                            "
+                                          >
+                                            {!v.SearchDetails.commonSkuId}</label
+                                          >
+                                        </aura:if>
+                                      </div>
+                                    </div>
+                                    <aura:if
+                                      isTrue="{!not(empty(v.SearchDetails.description))}"
+                                      ><br />
+                                      <div style="font-size: 15px">
+                                        {!v.SearchDetails.description}
+                                      </div>
+                                    </aura:if>
+                                    <br />
+
+                                    <div class="slds-col">
+                                      <div>
+                                        <aura:if
+                                          isTrue="{!not(empty(v.SearchDetails.productColor))}"
+                                        >
+                                          <aura:if
+                                            isTrue="{!not(empty(v.SearchDetails.productSize))}"
+                                          >
+                                            <label
+                                              style="
+                                                font-weight: bold;
+                                                font-size: 15px;
+                                              "
+                                              >Options</label
+                                            ><br />
+                                          </aura:if>
+                                        </aura:if>
+                                        <aura:if
+                                          isTrue="{!not(empty(v.SearchDetails.productColor))}"
+                                        >
+                                          <label
+                                            style="
+                                              font-weight: bold;
+                                              font-size: 15px;
+                                            "
+                                            >Colors:</label
+                                          >
+                                          <label style="font-size: 15px">
+                                            {!v.SearchDetails.productColor} </label
+                                          ><br />
+                                        </aura:if>
+                                        <aura:if
+                                          isTrue="{!not(empty(v.SearchDetails.productSize))}"
+                                        >
+                                          <label
+                                            style="
+                                              font-weight: bold;
+                                              font-size: 15px;
+                                            "
+                                            >Sizes:</label
+                                          >
+                                          <label style="font-size: 15px">
+                                            {!v.SearchDetails.productSize} </label
+                                          ><br />
+                                        </aura:if>
+                                      </div>
+                                    </div>
+                                    <br />
+                                    <div
+                                      class="slds-col"
+                                      style="
+                                        padding: 10px;
+                                        background-color: #f4f4f4;
+                                      "
+                                    >
+                                      <aura:if
+                                        isTrue="{!not(empty(v.SearchDetails.supplier))}"
+                                      >
+                                        <label
+                                          style="
+                                            font-weight: bold;
+                                            font-size: 14px;
+                                          "
+                                        >
+                                          {!v.SearchDetails.supplier}
+                                        </label>
+                                      </aura:if>
+
+                                      <aura:if
+                                        isTrue="{!not(empty(v.SearchDetails.productSupplierCode))}"
+                                      >
+                                        <a
+                                          style="
+                                            font-style: italic;
+                                            pointer-events: none;
+                                          "
+                                        >
+                                          asi/{!v.SearchDetails.productSupplierCode}</a
+                                        >
+                                      </aura:if>
+                                    </div>
+                                    <br />
+                                    <div>
+                                      <table
+                                        class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered"
+                                      >
+                                        <aura:if
+                                          isTrue="{!not(empty(v.SearchDetails.prices))}"
+                                        >
+                                          <thead>
+                                            <tr class="slds-line-height_reset">
+                                              <th class="" scope="col">
+                                                <div class="slds-truncate">
+                                                  Quantity
+                                                </div>
+                                              </th>
+                                              <th class="" scope="col">
+                                                <div class="slds-truncate">
+                                                  Price
+                                                </div>
+                                              </th>
+                                              <th class="" scope="col">
+                                                <div class="slds-truncate">
+                                                  Cost
+                                                </div>
+                                              </th>
+                                              <th class="" scope="col">
+                                                <div class="slds-truncate">
+                                                  Profit
+                                                </div>
+                                              </th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <aura:iteration
+                                              items="{!v.SearchDetails.prices}"
+                                              var="price"
+                                            >
+                                              <tr class="slds-hint-parent">
+                                                <th scope="row">
+                                                  <div class="slds-truncate">
+                                                    {!price.quantity}
+                                                  </div>
+                                                </th>
+                                                <th scope="row">
+                                                  <div class="slds-truncate">
+                                                    {!price.price}
+                                                  </div>
+                                                </th>
+                                                <th scope="row">
+                                                  <div class="slds-truncate">
+                                                    {!price.cost}
+                                                  </div>
+                                                </th>
+                                                <th scope="row">
+                                                  <div class="slds-truncate">
+                                                    {!price.profit}
+                                                  </div>
+                                                </th>
+                                              </tr>
+                                            </aura:iteration>
+                                          </tbody>
+                                        </aura:if>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            </table>
+                          </article>
+                        </div>
+                      </lightning:recordViewForm>
+                    </div>
+                  </div>
+                </div>
+              </p>
+            </form>
+          </div>
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closeSearchDetaislPopoup}"
+            >
+              Cancel</lightning:button
+            >
+
+            <a
+              onclick="{!c.viewSearchDetailsPage}"
+              data-value="{!v.SearchDetails.id}"
+              class="slds-button slds-button--brand"
+            >
+              View Details</a
+            >
+            <div
+              onclick="{! c.handleAddProduct }"
+              data-value="{!v.SearchDetails.id}"
+              style="padding-left: 5px; float: right"
+            >
+              <lightning:button
+                variant="brand"
+                label="Add Product"
+                aura:id="{!v.SearchDetails.Id}"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+</aura:component>

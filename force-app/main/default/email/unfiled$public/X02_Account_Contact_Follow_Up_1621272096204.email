@@ -1,0 +1,15 @@
+<html><head>
+	<title></title>
+</head>
+<body style="height: auto; min-height: auto;">Hello&nbsp;{{{Recipient.FirstName}}},<br />
+<br />
+I am following up on my original email inquiry to identify who I should speak with at&nbsp;{{{Recipient.Company}}} regarding branded apparel, promotional merchandise, signs &amp; displays, and digital services.&nbsp;<br />
+<br />
+<br />
+<br />
+Sean Burns<br />
+Director of Business Development<br />
+Team Phun<br />
+5026 Cass St., Suite B<br />
+San Diego, CA 92109<br />
+o. (858) 437-9302</body></html>

@@ -1,0 +1,10 @@
+</!DOCTYPE html>
+<html>
+<head>
+</head>
+<p>Operations Team,</p>
+<p> {!Order.OrderNumber} for {!Order.WOAccountLink__c} has been in "8.2 On Shelf to Ship to Client" for 12 hours. Locate the order, verify that it is ready to ship and coordinate shipment immediately. </p>
+<p>{!Order.WONameLink__c}</p>
+<p>Thanks,</p><p>Ralph the Rooster</p>
+</body>
+</html>

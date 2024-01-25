@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Payment in Advance (PIA) Immediate</fullName>
+        <default>false</default>
+        <label>Payment in Advance (PIA) Immediate</label>
+    </customValue>
+    <customValue>
+        <fullName>Payment in Advance (PIA) Before Ship</fullName>
+        <default>false</default>
+        <label>Payment in Advance (PIA) Before Ship</label>
+    </customValue>
+    <customValue>
+        <fullName>50% Down/Balance on Receipt</fullName>
+        <default>true</default>
+        <label>50% Down/Balance on Receipt</label>
+    </customValue>
+    <customValue>
+        <fullName>Net 15</fullName>
+        <default>false</default>
+        <label>Net 15</label>
+    </customValue>
+    <customValue>
+        <fullName>Net 30</fullName>
+        <default>false</default>
+        <label>Net 30</label>
+    </customValue>
+    <description>The terms preferred by the account.</description>
+    <masterLabel>Preferred Payment Terms</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

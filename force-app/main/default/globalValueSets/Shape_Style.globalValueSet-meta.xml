@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Fluke</fullName>
+        <default>false</default>
+        <label>Fluke</label>
+    </customValue>
+    <customValue>
+        <fullName>Saison</fullName>
+        <default>false</default>
+        <label>Saison</label>
+    </customValue>
+    <customValue>
+        <fullName>Can</fullName>
+        <default>false</default>
+        <label>Can</label>
+    </customValue>
+    <customValue>
+        <fullName>Pint</fullName>
+        <default>false</default>
+        <label>Pint</label>
+    </customValue>
+    <customValue>
+        <fullName>Old fashioned</fullName>
+        <default>false</default>
+        <label>Old fashioned</label>
+    </customValue>
+    <customValue>
+        <fullName>Double old fashioned</fullName>
+        <default>false</default>
+        <label>Double old fashioned</label>
+    </customValue>
+    <customValue>
+        <fullName>Coupe</fullName>
+        <default>false</default>
+        <label>Coupe</label>
+    </customValue>
+    <customValue>
+        <fullName>Rocks</fullName>
+        <default>false</default>
+        <label>Rocks</label>
+    </customValue>
+    <customValue>
+        <fullName>Fizz</fullName>
+        <default>false</default>
+        <label>Fizz</label>
+    </customValue>
+    <customValue>
+        <fullName>Collins</fullName>
+        <default>false</default>
+        <label>Collins</label>
+    </customValue>
+    <customValue>
+        <fullName>Martini</fullName>
+        <default>false</default>
+        <label>Martini</label>
+    </customValue>
+    <customValue>
+        <fullName>Snifter</fullName>
+        <default>false</default>
+        <label>Snifter</label>
+    </customValue>
+    <customValue>
+        <fullName>Zombie</fullName>
+        <default>false</default>
+        <label>Zombie</label>
+    </customValue>
+    <customValue>
+        <fullName>Rectangle</fullName>
+        <default>false</default>
+        <label>Rectangle</label>
+    </customValue>
+    <customValue>
+        <fullName>Square</fullName>
+        <default>false</default>
+        <label>Square</label>
+    </customValue>
+    <customValue>
+        <fullName>Circle</fullName>
+        <default>false</default>
+        <label>Circle</label>
+    </customValue>
+    <customValue>
+        <fullName>Oval</fullName>
+        <default>false</default>
+        <label>Oval</label>
+    </customValue>
+    <customValue>
+        <fullName>Laser Cut Custom Shape</fullName>
+        <default>false</default>
+        <label>Laser Cut Custom Shape</label>
+    </customValue>
+    <masterLabel>Shape/Style</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

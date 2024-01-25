@@ -1,0 +1,10 @@
+Hello Phunions,<br/><br/>
+
+It's been 24 hours since the mockup was sent to the client for approval, and we haven't received a response. Please follow up with  {!Order.WOAccountLink__c}.<br/><br/>
+
+{!Order.WONameLink__c}<br/><br/>
+
+
+
+Thanks,<br/>
+Ralph the Rooster<br/>

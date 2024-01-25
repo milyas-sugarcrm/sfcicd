@@ -1,0 +1,153 @@
+<aura:component
+  controller="EstimateHistory"
+  implements="force:lightningQuickActionWithoutHeader,force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+  access="global"
+>
+  <aura:attribute name="recordId" type="Id" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="Spinner" type="boolean" default="false" />
+  <aura:attribute name="historyRecords" type="String[]" />
+  <aura:html tag="style">
+    .slds-modal__container{ height : auto; width: 90%; max-width: 90rem; }
+    .modal-body{ height : 475px !important; max-height: 475px !important; }
+    .customFooter{ display: inline !important; } .slds-carousel__content{
+    display:none; } .slds-carousel__indicators { display:none;} }
+  </aura:html>
+  <aura:if isTrue="{!v.Spinner}">
+    <lightning:spinner variant="brand" size="large" />
+  </aura:if>
+  <div class="slds-modal__content slds-p-around_x-small" style="height: 425px">
+    <table class="slds-table slds-table_fixed-layout" style="font-size: 14px">
+      <thead>
+        <th style="width: 9%" title="Change Log#">
+          <strong>CL#</strong>
+        </th>
+        <th style="width: 15%">
+          <strong>Product</strong>
+        </th>
+        <th style="width: 16%">
+          <strong>Field</strong>
+        </th>
+        <th style="width: 15%">
+          <strong>Old Value</strong>
+        </th>
+        <th style="width: 15%">
+          <strong>New Value</strong>
+        </th>
+        <th style="width: 19%">
+          <strong>Date/Time</strong>
+        </th>
+        <th style="width: 15%">
+          <strong>Changed By</strong>
+        </th>
+      </thead>
+      <tbody>
+        <aura:iteration items="{!v.historyRecords}" var="historyRecord">
+          <tr style="">
+            <td class="truncate">
+              <label
+                class="txt"
+                style="color: #006dcc; cursor: pointer"
+                data-value="{!historyRecord.Related_Object_Id__c}"
+                onclick="{!c.openProduct}"
+              >
+                CL-{!historyRecord.count}
+              </label>
+            </td>
+            <td class="truncate" title="{!historyRecord.Name}">
+              <label
+                class="txt"
+                style="color: #006dcc; cursor: pointer"
+                data-value="{!historyRecord.Related_Object_Id__c}"
+                onclick="{!c.openProduct}"
+              >
+                {!historyRecord.Name}
+              </label>
+            </td>
+            <td class="truncate" title="{!historyRecord.Changed_field__c}">
+              {!historyRecord.Changed_field__c}
+            </td>
+            <aura:if
+              isTrue="{!historyRecord.Changed_field__c =='Artwork Image'}"
+            >
+              <td class="truncate" title="{!historyRecord.Previous_Value__c}">
+                <label
+                  class="txt"
+                  style="color: #006dcc; cursor: pointer"
+                  data-value="{!historyRecord.Previous_Value__c}"
+                  onclick="{!c.openImage}"
+                >
+                  {!historyRecord.Previous_Value__c}
+                </label>
+              </td>
+
+              <td class="truncate" title="{!historyRecord.New_Value__c}">
+                <label
+                  class="txt"
+                  style="color: #006dcc; cursor: pointer"
+                  data-value="{!historyRecord.New_Value__c}"
+                  onclick="{!c.openImage}"
+                >
+                  {!historyRecord.New_Value__c}
+                </label>
+              </td>
+              <aura:set attribute="else">
+                <aura:if isTrue="{!historyRecord.isCurrency}">
+                  <td
+                    class="truncate"
+                    title="{!historyRecord.Previous_Value__c}"
+                  >
+                    <ui:outputCurrency
+                      value="{!historyRecord.Previous_Value__c}"
+                      format="###,###,###,###,###.##"
+                    />
+                  </td>
+                  <aura:set attribute="else">
+                    <td
+                      class="truncate"
+                      title="{!historyRecord.Previous_Value__c}"
+                    >
+                      {!historyRecord.Previous_Value__c}
+                    </td>
+                  </aura:set>
+                </aura:if>
+                <aura:if isTrue="{!historyRecord.isCurrency}">
+                  <td class="truncate" title="{!historyRecord.New_Value__c}">
+                    <ui:outputCurrency
+                      value="{!historyRecord.New_Value__c}"
+                      format="###,###,###,###,###.##"
+                    />
+                  </td>
+                  <aura:set attribute="else">
+                    <td class="truncate" title="{!historyRecord.New_Value__c}">
+                      {!historyRecord.New_Value__c}
+                    </td>
+                  </aura:set>
+                </aura:if>
+              </aura:set>
+            </aura:if>
+            <td>
+              <p>
+                <lightning:formattedDateTime
+                  value="{!historyRecord.CreatedDate}"
+                  year="numeric"
+                  day="2-digit"
+                  month="2-digit"
+                  hour="2-digit"
+                  minute="2-digit"
+                />
+              </p>
+            </td>
+            <td
+              class="truncate"
+              title="{!historyRecord.Changed_By__r.FirstName}"
+            >
+              {!historyRecord.Changed_By__r.FirstName}
+              {!historyRecord.Changed_By__r.LastName}
+            </td>
+          </tr>
+        </aura:iteration>
+      </tbody>
+    </table>
+  </div>
+</aura:component>

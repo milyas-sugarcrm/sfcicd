@@ -1,0 +1,12 @@
+<aura:component
+  controller="generateResaleCertificationPdf"
+  implements="force:lightningQuickActionWithoutHeader,force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+  access="global"
+>
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="Spinner" type="boolean" default="false" />
+
+  <aura:if isTrue="{!v.Spinner}">
+    <lightning:spinner variant="brand" size="large" />
+  </aura:if>
+</aura:component>

@@ -1,0 +1,95 @@
+<aura:component
+  controller="CreatePurchaseOrders"
+  implements="force:lightningQuickActionWithoutHeader,force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,lightning:isUrlAddressable"
+  access="global"
+>
+  <aura:attribute name="Spinner" type="Boolean" default="false" />
+  <aura:attribute name="recordId" type="Id" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute
+    name="SalesOrderRelatedOpportunityLineItems"
+    type="String[]"
+  />
+  <aura:registerEvent
+    name="CloseCreatePurchaseOrder"
+    type="c:CloseCreatePurchaseOrder"
+  />
+
+  <aura:if isTrue="{!v.Spinner}">
+    <lightning:spinner variant="brand" size="large" />
+  </aura:if>
+
+  <aura:html tag="style">
+    .slds-modal__container{ height : auto; width: 50%; max-width: 50rem; }
+    .modal-body{ height : 500px !important; max-height: 750px !important; }
+    .customFooter{ display: inline !important; } .slds-carousel__content{
+    display:none; } .slds-carousel__indicators { display:none;} }
+  </aura:html>
+
+  <div
+    class="slds-modal__content slds-p-around_x-small"
+    style="max-height: 400px; overflow-y: scroll"
+  >
+    <div class="slds-card__body">
+      <table
+        class="slds-table slds-table_fixed-layout slds-no-row-hover slds-table_cell-buffer"
+      >
+        <thead>
+          <tr>
+            <th scope="col" style="width: 50%">
+              <div class="slds-truncate" label="Products">Products</div>
+            </th>
+            <th scope="col" style="width: 30%">
+              <div
+                style="text-align: center"
+                class="slds-truncate"
+                label="Units"
+              >
+                Purchase Order
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <aura:iteration
+            items="{!v.SalesOrderRelatedOpportunityLineItems}"
+            var="product"
+          >
+            <tr>
+              <td style="white-space: initial">
+                <div class="slds-col">
+                  <div>{!product.oppLineItem.Name}</div>
+                </div>
+              </td>
+              <td>
+                <div class="slds-truncate">
+                  <lightning:select
+                    aura:id="poPicklist"
+                    name="{!product.oppLineItem.Id}"
+                  >
+                    <option value="Create New PO">New Purchase Order</option>
+                    <aura:iteration items="{!product.existingPOs}" var="po">
+                      <option value="{!po.Id}">PO # {!po.Name}</option>
+                    </aura:iteration>
+                  </lightning:select>
+                </div>
+              </td>
+            </tr>
+          </aura:iteration>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="slds-modal__footer" style="background-color: white">
+    <lightning:button
+      class="slds-button slds-button--neutral"
+      onclick="{!c.closePopup}"
+      >Cancel</lightning:button
+    >
+    <lightning:button
+      class="slds-button slds-button--brand customb"
+      onclick="{!c.covertToPurchaseOrders}"
+      >Convert To Purchase Order</lightning:button
+    >
+  </div>
+</aura:component>

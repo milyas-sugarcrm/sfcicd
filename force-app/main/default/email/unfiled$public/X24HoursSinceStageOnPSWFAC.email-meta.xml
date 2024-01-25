@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>24HoursSinceStageOnPSWFAC</name>
+    <style>none</style>
+    <subject>Waiting For Approval</subject>
+    <textOnly>Hello Phunions,
+
+It&apos;s been 24 hours since the mockup was sent to the client for approval, and we haven&apos;t received a response. Please follow up with  {!Order.WOAccountLink__c}.
+
+{!Order.WONameLink__c}
+
+Thanks,
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,18 @@
+<html><head>
+	<title></title>
+</head>
+<body style="height: auto; min-height: auto;">Hello&nbsp;{{{Recipient.FirstName}}},<br />
+<br />
+I am following up on my last email, and wanted to ensure you received and saved my contact information as your primary point of contact here at Team Phun. Please review the information below and advise if anything needs to be changed on your account.&nbsp;<br />
+<br />
+Company Name: {{{Recipient.Company}}}<br />
+Billing Email: {{{Recipient.Billing_Email__c}}}<br />
+Art Approval Email:&nbsp;{{{Recipient.Art_Approval_Email__c}}}<br />
+<br />
+If I am unavailable or out of the office, you can email our team at info@teamphun.com with any urgent needs, and our team will take care of you in my absence.&nbsp;<br />
+<br />
+Please keep me in mind for any <a href="https://www.teamphun.com/wearables">branded apparel</a>, <a href="https://www.teamphun.com/merchandise">custom merch</a>, <a href="https://www.teamphun.com/signage">signs &amp; displays</a>, and <a href="https://www.teamphun.com/digital-marketing">digital services</a>&nbsp;you may need to support upcoming campaigns or marketing initiatives.&nbsp;<br />
+<br />
+Thank you for your time and I look forward to working with you,<br />
+<br />
+{{{Sender.Signature}}}</body></html>

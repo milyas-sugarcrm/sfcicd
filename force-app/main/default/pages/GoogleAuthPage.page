@@ -1,0 +1,4 @@
+<apex:page
+  controller="GoogleAuthController"
+  action="{!GoogleAuthController}"
+></apex:page>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <assignments>
+        <description>Set Estimate Number and Amount</description>
+        <name>Set_Estimates</name>
+        <label>Set Estimates</label>
+        <locationX>308</locationX>
+        <locationY>407</locationY>
+        <assignmentItems>
+            <assignToReference
+      >LoopedOrderId.Estimate_Number__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varOppId.Estimate_Number__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference
+      >LoopedOrderId.Estimated_Amount__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference
+        >varOppId.Estimated_Amount__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>LoopedOrderId.AccountId</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Order</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Check_Opportunity_Closed</name>
+        <label>Check Opportunity Closed</label>
+        <locationX>41</locationX>
+        <locationY>165</locationY>
+        <defaultConnectorLabel>Opp Open</defaultConnectorLabel>
+        <rules>
+            <name>Opp_Closed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varOppClosed</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Identify_all_Sales_Orders</targetReference>
+            </connector>
+            <label>Opp Closed</label>
+        </rules>
+    </decisions>
+    <description>Triggers on Opportunity Closed</description>
+    <interviewLabel
+  >Order - Opportunity Closed {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Order - Opportunity Closed</label>
+    <loops>
+        <description>Loop through each order</description>
+        <name>Loop_Order</name>
+        <label>Loop Order</label>
+        <locationX>306</locationX>
+        <locationY>167</locationY>
+        <assignNextValueToReference>LoopedOrderId</assignNextValueToReference>
+        <collectionReference>collectionSFOrders</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Set_Estimates</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_Orders</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Identify_all_Sales_Orders</name>
+        <label>Find Orders</label>
+        <locationX>227</locationX>
+        <locationY>167</locationY>
+        <assignNullValuesIfNoRecordsFound
+    >true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_Order</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>OpportunityId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varOppId.Id</elementReference>
+            </value>
+        </filters>
+        <object>Order</object>
+        <outputReference>collectionSFOrders</outputReference>
+        <queriedFields>Id</queriedFields>
+        <sortField>Id</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update each looped order</description>
+        <name>Update_Orders</name>
+        <label>Update Orders</label>
+        <locationX>518</locationX>
+        <locationY>167</locationY>
+        <inputReference>LoopedOrderId</inputReference>
+    </recordUpdates>
+    <startElementReference>Check_Opportunity_Closed</startElementReference>
+    <status>Obsolete</status>
+    <variables>
+        <name>collectionSFOrders</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Order</objectType>
+    </variables>
+    <variables>
+        <name>LoopedOrderId</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Order</objectType>
+    </variables>
+    <variables>
+        <name>varOppClosed</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>varOppId</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Opportunity</objectType>
+    </variables>
+</Flow>

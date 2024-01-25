@@ -1,0 +1,13 @@
+Dear Phunion,<br/><br/>
+
+
+{!Order.OrderNumber} for {!Order.WOAccountLink__c} is In Production. Please confirm ship-to address and due date are accurate. <br/><br/>
+
+
+
+{!Order.WONameLink__c}<br/><br/>
+
+
+
+Thanks,<br/>
+Ralph the Rooster<br/>

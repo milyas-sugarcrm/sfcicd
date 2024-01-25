@@ -1,0 +1,103 @@
+<template>
+  <div class="slds-float_right btn-container">
+    <lightning-combobox
+      class="event-filter"
+      name="eventFilter"
+      value={selectedFilter}
+      options={filterOptions}
+      onchange={handleFilterChange}
+    >
+    </lightning-combobox>
+    <lightning-button
+      label={REFRESH_LABEL}
+      class="slds-m-left_x-small"
+      title={REFRESH_LABEL}
+      variant="Neutral"
+      onclick={getEvents}
+    ></lightning-button>
+    <lightning-button
+      label={CREATE_NEW_EVENT_LABEL}
+      class="slds-m-left_x-small"
+      title={CREATE_NEW_EVENT_LABEL}
+      variant="brand"
+      onclick={handleCreateNewEvent}
+    ></lightning-button>
+  </div>
+
+  <lightning-card title={EVENTS_LABEL} icon-name="standard:event">
+    <template if:true={eventsSpinner}>
+      <lightning-spinner
+        alternative-text="Loading"
+        variant="brand"
+        size="small"
+      ></lightning-spinner>
+    </template>
+    <template if:true={isEvents}>
+      <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+        <thead>
+          <tr>
+            <th>{NAME_LABEL}</th>
+            <th>{EVENT_START_DATE_LABEL}</th>
+            <th>{EVENT_END_DATE_LABEL}</th>
+            <th>{CONTACT_LABEL}</th>
+            <th>{SCHEDULE_CONFIRMATION_LABEL}</th>
+            <th>{EVENT_STATUS_LABEL}</th>
+            <th>{EVENT_WORKFLOW_STATUS_LABEL}</th>
+            <th>{ACTION_LABEL}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template for:each={events} for:item="event">
+            <tr key={event.Id}>
+              <td>
+                <a
+                  href="javascript:void(0);"
+                  data-eventid={event.Id}
+                  onclick={openRecordDetailView}
+                  >{event.Name}</a
+                >
+              </td>
+              <td>
+                <lightning-formatted-date-time
+                  value={event.start_date_and_time__c}
+                  year="numeric"
+                  month="short"
+                  day="2-digit"
+                  hour="2-digit"
+                  minute="2-digit"
+                  time-zone-name="short"
+                ></lightning-formatted-date-time>
+              </td>
+              <td>
+                <lightning-formatted-date-time
+                  value={event.Event_End_Date__c}
+                  year="numeric"
+                  month="short"
+                  day="2-digit"
+                ></lightning-formatted-date-time>
+              </td>
+              <template if:true={event.Contact__r}>
+                <td>{event.Contact__r.Name}</td>
+              </template>
+              <template if:false={event.Contact__r}> <td></td> </template>
+              <td>{event.Schedule_Confirmation__c}</td>
+              <td>{event.Event_Status__c}</td>
+              <td>{event.Event_Workflow_Status__c}</td>
+              <td>
+                <a
+                  href="javascript:void(0);"
+                  data-eventid={event.Id}
+                  onclick={handleDeleteAction}
+                  >{DELETE_LABEL}</a
+                >
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </template>
+    <template if:false={isEvents}>
+      <p class="no-event-msg">{NO_EVENT_MSG}</p>
+    </template>
+  </lightning-card>
+</template>

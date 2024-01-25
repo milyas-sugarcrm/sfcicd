@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EME_Distributor_Booking_Opportunity</fullName>
+    <active>true</active>
+    <businessProcess>Default Sales Process</businessProcess>
+    <label>EME Distributor Booking Opportunity</label>
+    <picklistValues>
+        <picklist>Currency__c</picklist>
+        <values>
+            <fullName>AUD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CAN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PKR</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>USD</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Event_Name__c</picklist>
+        <values>
+            <fullName
+      >EME Exclusive %231 February 25-28%2C 2024%2C Embassy Suites Deerfield Beach Resort %26 Spa%2C Deerfield Beach%2C FL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName
+      >EME Exclusive %232 May 5-8%2C 2024%2C Embassy Suites by Hilton St Augustine Beach Oceanfront Resort%2C St%2E Augustine%2C FL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName
+      >EME Exclusive %233 August 4-7%2C 2024%2C Westgate Park City Resort %26 Spa%2C Park City%2C UT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName
+      >EME Exclusive %234 September 15-18%2C 2024%2C Zachari Dunes on Mandalay Beach%2C Curio Collection by Hilton%2C Oxnard%2C CA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName
+      >EME Team Solutions June 23-25%2C 2024%2C Embassy Suites by Hilton Boulder%2C Boulder%2C CO</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ForecastCategoryName</picklist>
+        <values>
+            <fullName>Best Case</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Omitted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pipeline</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>HIC_ShopifySync__DeliveryInstallationStatus__c</picklist>
+        <values>
+            <fullName>Completed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>In progress</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yet to begin</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>LeadSource</picklist>
+        <values>
+            <fullName>Employee Referral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Google AdWords</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inbound Email%2C Call%2C Walk In</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Outbound Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Outbound Sales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Purchased List</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Referral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Seamless%2EAI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Social Media</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Trade Show</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Webform</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Loss_Reason__c</picklist>
+        <values>
+            <fullName>Lost to Competitor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Budget %2F Lost Funding</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Decision %2F Non-Responsive</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Price</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Net_Terms_PFA__c</picklist>
+        <values>
+            <fullName>Net 15</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Net 30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Net 45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Net 60</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Preferred_Payment_Method_PFA__c</picklist>
+        <values>
+            <fullName>ACH Transfer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bill%2Ecom</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Credit Card</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Wire Transfer</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Presentation_Style__c</picklist>
+        <values>
+            <fullName>Gallery</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>List</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Smart Gallery</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tiles</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Priority__c</picklist>
+        <values>
+            <fullName>Firm</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rush</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Existing Business</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New Business</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

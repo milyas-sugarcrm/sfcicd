@@ -1,0 +1,619 @@
+<apex:page
+  standardController="Opportunity"
+  extensions="SowVFController"
+  showHeader="true"
+  sidebar="false"
+  standardStylesheets="true"
+  renderas="pdf"
+>
+  <html>
+    <head>
+      <style>
+        tr {
+          height: 40px;
+        }
+      </style>
+    </head>
+
+    <body>
+      <apex:image url="{!$Resource.PFA_Logo}" width="712" height="200" />
+      <table
+        aria-describedby="SOW Table"
+        width="710"
+        style="border: 1px solid #000; border-collapse: collapse"
+      >
+        <tr style="border: 1px solid #000">
+          <td style="color: #fff; background: #7894ff; border: 1px solid #000">
+            SOW #
+          </td>
+          <td
+            colspan="3"
+            style="background: #f2f2f2; border: 1px solid #000"
+          ></td>
+          <td
+            colspan="2"
+            style="color: #fff; background: #7894ff; border: 1px solid #000"
+          >
+            Effective Date
+          </td>
+          <td colspan="3" style="background: #f2f2f2; border: 1px solid #000">
+            <apex:outputField value="{!Opportunity.SOW_Effective_Date__c}" />
+          </td>
+          <!-- <td colspan="1" style=" background :#F2F2F2"></td>
+                <td colspan="1" style=" background :#F2F2F2"></td> -->
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td
+            colspan="9"
+            style="
+              color: #fff;
+              background: #a4c2f4;
+              font-weight: 600;
+              font-size: 18px;
+              border: 1px solid #000;
+            "
+          >
+            CLIENT INFORMATION
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td colspan="1" style="background: #e6ebff; border: 1px solid #000">
+            Account Name:
+          </td>
+          <td colspan="8" style="background: #f2f2f2; border: 1px solid #000">
+            <apex:outputField value="{!Opportunity.Account.Name}" />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td colspan="1" style="background: #e6ebff; border: 1px solid #000">
+            Company Name and DBA:
+          </td>
+          <td colspan="8" style="background: #f2f2f2; border: 1px solid #000">
+            <apex:outputField
+              value="{!Opportunity.Legal_Company_Name_PFA__c}"
+            />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td colspan="1" style="background: #e6ebff; border: 1px solid #000">
+            Account Contact:
+          </td>
+          <td colspan="8" style="background: #f2f2f2; border: 1px solid #000">
+            <apex:outputField value="{!relatedContact.Name}" />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td colspan="1" style="background: #e6ebff; border: 1px solid #000">
+            Account Contact Department:
+          </td>
+          <td colspan="8" style="background: #f2f2f2; border: 1px solid #000">
+            <apex:outputField value="{!relatedContact.Department}" />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td colspan="1" style="background: #e6ebff; border: 1px solid #000">
+            Phun For All Contact (Rep):
+          </td>
+          <td colspan="8" style="background: #f2f2f2; border: 1px solid #000">
+            <apex:outputField value="{!Opportunity.PFA_Representative__c}" />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td
+            colspan="9"
+            style="color: #fff; background: #a4c2f4; border: 1px solid #000"
+          >
+            BILLING INFORMATION
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td
+            rowspan="2"
+            colspan="1"
+            style="background: #e6ebff; border: 1px solid #000"
+          >
+            BILLING ADDRESS
+          </td>
+          <td colspan="1" style="background: #f2f2f2; border: 1px solid #000">
+            ADDRESS:
+          </td>
+          <td colspan="7" style="background: #f2f2f2; border: 1px solid #000">
+            <apex:outputField
+              value="{!Opportunity.Billing_Address1__Street__s}"
+            />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td colspan="1" style="background: #f2f2f2; border: 1px solid #000">
+            CITY
+          </td>
+          <td colspan="2" style="background: #f2f2f2; border: 1px solid #000">
+            <apex:outputField
+              value="{!Opportunity.Billing_Address1__City__s}"
+            />
+          </td>
+          <td colspan="1" style="background: #f2f2f2; border: 1px solid #000">
+            STATE
+          </td>
+          <td colspan="2" style="background: #f2f2f2; border: 1px solid #000">
+            <apex:outputField
+              value="{!Opportunity.Billing_Address1__StateCode__s}"
+            />
+          </td>
+          <td colspan="1" style="background: #f2f2f2; border: 1px solid #000">
+            ZIP
+          </td>
+          <td colspan="1" style="background: #f2f2f2; border: 1px solid #000">
+            <apex:outputField
+              value="{!Opportunity.Billing_Address1__PostalCode__s}"
+            />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td colspan="1" style="background: #e6ebff; border: 1px solid #000">
+            BILLING CONTACT NAME
+          </td>
+          <td colspan="8" style="background: #f2f2f2; border: 1px solid #000">
+            <apex:outputField
+              value="{!Opportunity.Billing_Contact_Name_PFA__c}"
+            />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td colspan="1" style="background: #e6ebff; border: 1px solid #000">
+            BILLING EMAIL
+          </td>
+          <td colspan="8" style="background: #f2f2f2; border: 1px solid #000">
+            <apex:outputField
+              value="{!Opportunity.Billing_Contact_Email_PFA__c}"
+            />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td colspan="1" style="background: #e6ebff; border: 1px solid #000">
+            PREFERRED PAYMENT TERMS
+            <p style="font-size: 10px">
+              *Terms need to be approved by PFA accounting department
+            </p>
+          </td>
+          <td colspan="8" style="background: #f2f2f2; border: 1px solid #000">
+            <apex:outputField value="{!Opportunity.Net_Terms_PFA__c}" />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td style="background: #e6ebff; border: 1px solid #000">
+            PREFERRED PAYMENT METHOD
+            <p style="font-size: 10px">
+              *PFA charges 3% credit card service fees
+            </p>
+          </td>
+          <td style="background: #f2f2f2; border: 1px solid #000">ACH/WIRE</td>
+          <td style="background: #f2f2f2; border: 1px solid #000">
+            <div
+              style="width: 15px; height: 15px; border: 1px solid #000; background-color: {!wire};"
+            ></div>
+          </td>
+          <td style="background: #f2f2f2; border: 1px solid #000">
+            CREDIT CARD
+          </td>
+          <td style="background: #f2f2f2; border: 1px solid #000">
+            <div
+              style="width: 15px; height: 15px; border: 1px solid #000; background-color: {!cc};"
+            ></div>
+          </td>
+          <td style="background: #f2f2f2; border: 1px solid #000">CHECK</td>
+          <td style="background: #f2f2f2; border: 1px solid #000">
+            <div
+              style="width: 15px; height: 15px; border: 1px solid #000; background-color: {!check};"
+            ></div>
+          </td>
+          <td style="background: #f2f2f2; border: 1px solid #000">Bill.com</td>
+          <td style="background: #f2f2f2; border: 1px solid #000">
+            <div
+              style="width: 15px; height: 15px; border: 1px solid #000; background-color: {!bill};"
+            ></div>
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td
+            colspan="9"
+            style="
+              background-color: #eb7253;
+              color: white;
+              text-align: center;
+              line-height: 20px;
+              border: 1px solid #000;
+            "
+          >
+            All New Accounts, Please Send a Completed W-9 to
+            pfaaccounting@teamphun.com
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td
+            colspan="9"
+            style="
+              background-color: #7893fe;
+              color: white;
+              border: 1px solid #000;
+            "
+          >
+            <strong>PROGRAM DETAILS</strong>
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td style="background-color: #e6ebff; border: 1px solid #000">
+            Campaign Name:
+          </td>
+          <td
+            colspan="8"
+            style="background-color: #f2f2f2; border: 1px solid #000"
+          >
+            <apex:outputField value="{!Opportunity.Campaign_Name__c}" />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td style="background-color: #e6ebff; border: 1px solid #000">
+            Market(s):
+          </td>
+          <td
+            colspan="8"
+            style="background-color: #f2f2f2; border: 1px solid #000"
+          >
+            <apex:outputField value="{!Opportunity.Markets__c}" />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td style="background-color: #e6ebff; border: 1px solid #000">
+            Account(s):
+          </td>
+          <td
+            colspan="8"
+            style="background-color: #f2f2f2; border: 1px solid #000"
+          >
+            <apex:outputField value="{!Opportunity.Account.Name}" />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td style="background-color: #e6ebff; border: 1px solid #000">
+            Program Date Range:
+          </td>
+          <td
+            colspan="8"
+            style="background-color: #f2f2f2; border: 1px solid #000"
+          >
+            <apex:outputField value="{!Opportunity.Campaign_Start_Date__c}" /> -
+            <apex:outputField value="{!Opportunity.Campaign_End_Date__c}" />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td style="background-color: #e6ebff; border: 1px solid #000">
+            Program Description:
+          </td>
+          <td
+            colspan="8"
+            style="background-color: #f2f2f2; border: 1px solid #000"
+          >
+            <apex:outputField value="{!Opportunity.Program_Description__c}" />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td style="background-color: #e6ebff; border: 1px solid #000">
+            Scheduling:
+          </td>
+          <td
+            colspan="8"
+            style="background-color: #f2f2f2; border: 1px solid #000"
+          >
+            <apex:outputField
+              value="{!Opportunity.Responsible_for_Scheduling__c}"
+            />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td style="background-color: #e6ebff; border: 1px solid #000">
+            Training Details and Logistics:
+          </td>
+          <td
+            colspan="8"
+            style="background-color: #f2f2f2; border: 1px solid #000"
+          >
+            <apex:outputField
+              value="{!Opportunity.Training_Details_Logistics__c}"
+            />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td style="background-color: #e6ebff; border: 1px solid #000">
+            Attire:
+          </td>
+          <td
+            colspan="8"
+            style="background-color: #f2f2f2; border: 1px solid #000"
+          >
+            <apex:outputField value="{!Opportunity.BA_Attire__c}" />
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td style="background-color: #e6ebff; border: 1px solid #000">
+            Logistics/Material Coordination:
+          </td>
+          <td
+            colspan="8"
+            style="background-color: #f2f2f2; border: 1px solid #000"
+          >
+            <apex:outputField
+              value="{!Opportunity.Logistics_Material_Coordination__c}"
+            />
+          </td>
+        </tr>
+
+        <tr style="border: 1px solid #000">
+          <td
+            colspan="9"
+            style="
+              background-color: #7893fe;
+              color: #fff;
+              border: 1px solid #000;
+            "
+          >
+            <strong>ESTIMATE</strong>
+          </td>
+        </tr>
+
+        <tr style="border: 1px solid #000">
+          <td style="background: #eb7253; border: 1px solid #000">Tier Name</td>
+          <td colspan="2" style="background: #eb7253; border: 1px solid #000">
+            Market(s)
+          </td>
+          <td colspan="2" style="background: #eb7253; border: 1px solid #000">
+            # of Activations
+          </td>
+          <td style="background: #eb7253; border: 1px solid #000">Hours</td>
+          <td style="background: #eb7253; border: 1px solid #000">
+            Hourly Rate
+          </td>
+          <td colspan="2" style="background: #eb7253; border: 1px solid #000">
+            Total
+          </td>
+        </tr>
+
+        <apex:repeat value="{!relatedTierEstimate}" var="tierEstimate">
+          <tr style="border: 1px solid #000">
+            <td style="background-color: #e6ebff; border: 1px solid #000">
+              <apex:outputField value="{!tierEstimate.Region__c}" />
+            </td>
+            <td colspan="2" style="border: 1px solid #000">
+              <apex:outputField value="{!tierEstimate.Market__c}" />
+            </td>
+            <td colspan="2" style="border: 1px solid #000">
+              <apex:outputField
+                value="{!tierEstimate.Number_of_Activations__c}"
+              />
+            </td>
+            <td style="border: 1px solid #000">
+              <apex:outputField value="{!tierEstimate.Hours__c}" />
+            </td>
+            <td style="background-color: #e6ebff; border: 1px solid #000">
+              <apex:outputField value="{!tierEstimate.Hourly_Rate__c}" />
+            </td>
+            <td
+              colspan="2"
+              style="background-color: #e6ebff; border: 1px solid #000"
+            >
+              <apex:outputField value="{!tierEstimate.Total__c}" />
+            </td>
+          </tr>
+        </apex:repeat>
+
+        <tr style="border: 1px solid #000">
+          <td
+            colspan="7"
+            style="
+              background-color: #7893fe;
+              color: white;
+              border: 1px solid #000;
+            "
+          >
+            <strong>Total Hourly Cost</strong>
+          </td>
+          <td
+            colspan="2"
+            style="
+              background-color: #7893fe;
+              color: white;
+              border: 1px solid #000;
+            "
+          >
+            <strong
+              ><apex:outputField value="{!Opportunity.Total_Hourly_Cost__c}"
+            /></strong>
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td style="background: #eb7253; border: 1px solid #000">
+            EXPENSES/MISCELLANEOUS
+          </td>
+          <td colspan="2" style="background: #eb7253; border: 1px solid #000">
+            # of Months
+          </td>
+          <td colspan="2" style="background: #eb7253; border: 1px solid #000">
+            # of Activations
+          </td>
+          <td style="background: #eb7253; border: 1px solid #000">
+            # of Ambassadors
+          </td>
+          <td style="background: #eb7253; border: 1px solid #000">
+            Estimated Cost
+          </td>
+          <td colspan="2" style="background: #eb7253; border: 1px solid #000">
+            Total
+          </td>
+        </tr>
+        <apex:repeat value="{!relatedExpense}" var="expense">
+          <tr style="border: 1px solid #000">
+            <td style="background-color: #e6ebff; border: 1px solid #000">
+              <apex:outputField value="{!expense.Expense_Type__c}" />
+            </td>
+            <td colspan="2" style="border: 1px solid #000">
+              <apex:outputField value="{!expense.Number_of_Months__c}" />
+            </td>
+            <td colspan="2" style="border: 1px solid #000">
+              <apex:outputField value="{!expense.Number_of_Activations__c}" />
+            </td>
+            <td style="border: 1px solid #000">
+              <apex:outputField value="{!expense.Number_of_Ambassadors__c}" />
+            </td>
+            <td style="background-color: #e6ebff; border: 1px solid #000">
+              <apex:outputField value="{!expense.Estimated_Cost__c}" />
+            </td>
+            <td
+              colspan="2"
+              style="background-color: #e6ebff; border: 1px solid #000"
+            >
+              <apex:outputField value="{!expense.Total__c}" />
+            </td>
+          </tr>
+        </apex:repeat>
+
+        <tr style="border: 1px solid #000">
+          <td
+            colspan="7"
+            style="
+              background-color: #7893fe;
+              color: white;
+              border: 1px solid #000;
+            "
+          >
+            <strong>Total Miscellaneous Cost</strong>
+          </td>
+          <td
+            colspan="2"
+            style="
+              background-color: #7893fe;
+              color: white;
+              border: 1px solid #000;
+            "
+          >
+            <strong
+              ><apex:outputField
+                value="{!Opportunity.Total_Miscellaneous_Cost__c}"
+            /></strong>
+          </td>
+        </tr>
+
+        <tr style="border: 1px solid #000">
+          <td
+            colspan="7"
+            style="
+              background-color: #eb7253;
+              color: white;
+              border: 1px solid #000;
+            "
+          >
+            TOTAL PROGRAM ESTIMATED COSTS
+          </td>
+          <td
+            colspan="2"
+            style="
+              background-color: #eb7253;
+              color: white;
+              border: 1px solid #000;
+            "
+          >
+            <strong
+              ><apex:outputField
+                value="{!Opportunity.Total_Program_Estimated_Cost__c}"
+            /></strong>
+          </td>
+        </tr>
+        <tr style="border: 1px solid #000">
+          <td colspan="9" style="border: 1px solid #000">
+            <div style="margin: 10px 0 10px 0">
+              <apex:outputField
+                value="{!Opportunity.Terms_and_Conditions__c}"
+              />
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <table
+        aria-describedby="SOW Table"
+        width="710"
+        style="border: 1px solid #000; border-collapse: collapse"
+      >
+        <tr>
+          <td
+            style="
+              background-color: #eb7253;
+              width: 50%;
+              border: 1px solid #000;
+            "
+          >
+            Client
+          </td>
+          <td
+            style="
+              background-color: #eb7253;
+              width: 50%;
+              border: 1px solid #000;
+            "
+          >
+            Agency
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 50%; border: 1px solid #000">
+            Print Name: &nbsp;
+            <apex:outputField value="{!Opportunity.Signor_Name_PFA__c}" />
+          </td>
+          <td style="width: 50%; border: 1px solid #000">
+            Print Name: &nbsp; Lesley Smith
+          </td>
+          <!-- <td style="width: 50%; border: 1px solid #000;">Print Name: &nbsp; <apex:outputField value="{!Opportunity.Owner.Name}" /></td> -->
+        </tr>
+        <tr>
+          <td style="width: 50%; border: 1px solid #000">
+            Title: &nbsp;
+            <apex:outputField value="{!Opportunity.Signor_Title_PFA__c}" />
+          </td>
+          <td style="width: 50%; border: 1px solid #000">
+            Title: &nbsp;
+            <apex:outputField value="{!Opportunity.PFA_User_Title__c}" />
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 50%; border: 1px solid #000; vertical-align: top">
+            Signature: &nbsp;
+            <div style="margin: 20px 0 5px 20px">
+              &nbsp; {s:client:sigBoxClient_____}
+            </div>
+          </td>
+          <td style="width: 50%; border: 1px solid #000; vertical-align: top">
+            Signature: &nbsp;
+            <div style="margin: 5px 0 5px 50px">
+              <apex:image
+                value="{!$Resource.LesleySignature}"
+                width="200"
+                height="66"
+              />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 50%; border: 1px solid #000; vertical-align: top">
+            Date: &nbsp;
+            <div style="margin: 10px 0 10px 10px">{d:client_____}</div>
+          </td>
+          <td style="width: 50%; border: 1px solid #000; vertical-align: top">
+            Date: &nbsp;
+            <div style="margin: 10px 0 10px 10px">
+              <apex:outputText value="{!sowCreationDate}"></apex:outputText>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </body>
+  </html>
+</apex:page>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Do_Not_Close_Without_Estimated_Amount</fullName>
+    <active>false</active>
+    <description
+  >You must fill in a Estimated Amount to Close an Opportunity</description>
+    <errorConditionFormula
+  >ISBLANK(Estimated_Amount__c) &amp;&amp;  IsClosed</errorConditionFormula>
+    <errorMessage
+  >You must enter an Estimated Amount to Close an Opportunity</errorMessage>
+</ValidationRule>

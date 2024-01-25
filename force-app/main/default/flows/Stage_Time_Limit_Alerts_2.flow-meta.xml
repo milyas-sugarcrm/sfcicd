@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>myWaitEvent_myWait_myRule_3_event_0_SA1</name>
+        <label>24HoursSinceStageOnSMTCFA</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Order.X24HoursSinceStageOnSMTCFA</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Order.X24HoursSinceStageOnSMTCFA</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>59.0</apiVersion>
+    <description
+  >Migrated from the Stage Time Limit Alerts process using 24 Hour Alert Email scheduling for Send Mockup To Client for Approval criteria.
+3 Emails Alerts which are sent out at 3 different stages when the work order stays at that stage for 24 hours.</description>
+    <label>Stage Time Limit Alerts_2</label>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <doesRequireRecordChangedToMeetCriteria
+    >true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue
+        >02_-_Send_Mock_Up_to_Client_for_Approval</stringValue>
+            </value>
+        </filters>
+        <object>Order</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <scheduledPaths>
+            <name>myWaitEvent_myWait_myRule_3_event_0</name>
+            <connector>
+                <targetReference
+        >myWaitEvent_myWait_myRule_3_event_0_SA1</targetReference>
+            </connector>
+            <label>ScheduledPath_1</label>
+            <offsetNumber>24</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <timeSource>RecordTriggerEvent</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

@@ -1,0 +1,812 @@
+<apex:page
+  standardController="PurchaseOrder_LineItem__c"
+  extensions="PurchaseOrderPreviewController"
+  showHeader="false"
+  applyBodyTag="false"
+  renderAs="pdf"
+  applyHtmlTag="false"
+>
+  <div
+    style="overflow: auto; margin: 0; top: 0; padding: 0; box-sizing: inherit"
+  >
+    <div style="max-width: 1300px; margin: auto">
+      <div style="max-width: 100%; box-sizing: border-box; margin-left: auto">
+        <div
+          style="
+            float: left;
+            padding-left: 0.9375rem;
+            padding-right: 0.9375rem;
+            width: 100%;
+          "
+        >
+          <div id="ParentImage" style="position: relative; height: 150px">
+            <div
+              id="childImage"
+              style="position: absolute; left: 15px; top: 15px"
+            >
+              <apex:image width="40%" height="40%" url="{!$Resource.TPLogo}" />
+            </div>
+            <div
+              id="tableInfo"
+              style="position: absolute; left: 150px; top: 40px"
+            >
+              <apex:outputText
+                style="
+                  font-family: Helvetica, Roboto, Arial, sans-serif;
+                  font-size: 1.75rem;
+                  color: #000000;
+                "
+                value="Team Phun"
+              /><br />
+              <a style="color: gray">
+                <apex:outputText
+                  style="font-size: 20px; color: #000000"
+                  value="Purchase Order {!PurchaseOrderNumber}"
+                /><br />
+              </a>
+            </div>
+            <!-- <apex:image style="width:100%; height:100%;"  url="{!$Resource.HeaderImage}"/> -->
+          </div>
+        </div>
+      </div>
+      <div style="max-width: 100%">
+        <div
+          style="background: #fff; margin-top: 10px; float: left; width: 100%"
+        >
+          <div
+            style="
+              float: left;
+              width: 50%;
+              border-right: 1px solid #e8e9e8;
+              height: auto;
+            "
+          >
+            <div style="float: left; width: 100%">
+              <h4
+                style="
+                  font-style: normal;
+                  line-height: 1.4;
+                  text-rendering: optimizeLegibility;
+                  font-size: 1rem;
+                  color: #000;
+                  text-transform: uppercase;
+                  margin-bottom: 0;
+                  font-weight: 400;
+                "
+              >
+                Ship To
+              </h4>
+              <apex:outputText
+                value=" {!ShippingDetails.shippingShipTo}"
+                escape="false"
+                style="
+                  margin-top: 0;
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+              </apex:outputText>
+              <br />
+              <div style="width: 50%">
+                <span>Address:</span><br />
+                <apex:outputText
+                  value="{!ShippingDetails.shippingInfoAddress}"
+                  escape="false"
+                  style="
+                    margin-top: 0;
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                </apex:outputText>
+              </div>
+            </div>
+            <div style="float: left; width: 50%">
+              <h4
+                style="
+                  margin-bottom: 0;
+                  font-style: normal;
+                  line-height: 1.4;
+                  text-rendering: optimizeLegibility;
+                  font-size: 1rem;
+                  color: #000;
+                  text-transform: uppercase;
+                  font-weight: 400;
+                "
+              >
+                IN HANDS DATE
+              </h4>
+
+              <apex:outputText
+                style="
+                  margin-top: 0;
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+                value="{0,date,MM.dd.YYYY}"
+              >
+                <apex:param
+                  value="{!ShippingDetails.shippingInformationDetails.In_Hands_Date__c}"
+                />
+              </apex:outputText>
+              <br />
+              <h4
+                style="
+                  font-style: normal;
+                  line-height: 1.4;
+                  text-rendering: optimizeLegibility;
+                  font-size: 1rem;
+                  color: #000;
+                  text-transform: uppercase;
+                  margin-bottom: 0;
+                  font-weight: 400;
+                "
+              >
+                SHIPPING METHOD
+              </h4>
+              <apex:outputText
+                value="{!ShippingDetails.shippingInformationDetails.Shipping_Method__c}"
+                escape="false"
+                style="
+                  margin-top: 0;
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+              </apex:outputText>
+            </div>
+            <div style="float: right; width: 50%">
+              <h4
+                style="
+                  margin-bottom: 0;
+                  font-style: normal;
+                  line-height: 1.4;
+                  text-rendering: optimizeLegibility;
+                  font-size: 1rem;
+                  color: #000;
+                  text-transform: uppercase;
+                  font-weight: 400;
+                "
+              >
+                FIRM
+              </h4>
+              <apex:outputText
+                value="{!ShippingFirm}"
+                escape="false"
+                style="
+                  margin-top: 0;
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+              </apex:outputText>
+              <h4
+                style="
+                  margin-bottom: 0;
+                  font-style: normal;
+                  font-size: 1rem;
+                  color: #000;
+                  text-transform: uppercase;
+                  font-weight: 400;
+                "
+              >
+                SHIP DATE REQUIRED
+              </h4>
+              <apex:outputText
+                value="To meet the IHD"
+                escape="false"
+                style="margin-top: 0; color: #55656d; font-size: 1rem"
+              >
+              </apex:outputText>
+            </div>
+          </div>
+
+          <div style="padding: 0; width: 49%; float: right">
+            <div style="float: left">
+              <h4
+                style="
+                  font-weight: 400;
+                  font-size: 1rem;
+                  margin-bottom: 0;
+                  color: #000;
+                  text-transform: uppercase;
+                "
+              >
+                SUPPLIER
+              </h4>
+              <div style="max-width: 110px; word-break: break-word">
+                <div
+                  style="
+                    margin-top: 0;
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  {!SupplierName}
+                </div>
+                <div
+                  style="
+                    margin-top: 0;
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  {!SupplierAddress}
+                </div>
+              </div>
+            </div>
+            <div style="float: right; width: 24.5%; padding: 0 5px 0 0">
+              <h4
+                style="
+                  font-weight: 400;
+                  font-size: 1rem;
+                  margin-bottom: 0;
+                  color: #000;
+                  text-transform: uppercase;
+                "
+              >
+                PO DATE
+              </h4>
+              <apex:outputText
+                style="
+                  margin-top: 0;
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+                value="{0,date,MM'/'dd'/'yyyy}"
+              >
+                <!-- <apex:param value="{!PODetail.PurchaseOrder__r.Purchase_Order_Date__c}" />  -->
+                <apex:param value="{!PODetail.CreatedDate}" />
+              </apex:outputText>
+            </div>
+
+            <div style="float: left; padding: 0 0 0 5px">
+              <h4
+                style="
+                  font-weight: 400;
+                  font-size: 1rem;
+                  margin-bottom: 0;
+                  color: #000;
+                  text-transform: uppercase;
+                "
+              >
+                Work Order#
+              </h4>
+              <p
+                style="
+                  margin-top: 0;
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                {!OpportunityName}
+              </p>
+            </div>
+            <!--
+                            <div style="padding: 0 0 0 0; float:right; width:26%">
+                                <h4 style="font-weight: 400; font-size: 1rem; margin-bottom: 0;color: #000; text-transform: uppercase;">
+                                    PHONE#</h4>
+                                <div  style="max-width: 110px; width:110px; word-break:break-all;">
+                                <p style="margin-top: 0;color: #55656d; font-size: 1rem; line-height: 1.15rem; margin-bottom: .5rem;">
+                                    {!AccountDetails.Phone}
+                                </p>
+                                </div>
+                            </div> -->
+          </div>
+        </div>
+      </div>
+      <div
+        style="
+          margin-top: 15px;
+          float: left;
+          padding-left: 0.9375rem;
+          padding-right: 0.9375rem;
+          width: 100%;
+          background: #fff;
+          display: inline-block;
+          border: 1px solid rgba(241, 207, 207, 0.1);
+        "
+      >
+        <hr />
+      </div>
+      <apex:repeat value="{!ListOfPurchaseOrderLineItem}" var="productLineItem">
+        <div
+          style="
+            padding-top: 10px;
+            max-width: 100%;
+            box-sizing: border-box;
+            padding: 15px;
+          "
+        >
+          <div
+            style="
+              margin-top: 15px;
+              float: left;
+              padding-left: 0.9375rem;
+              padding-right: 0.9375rem;
+              width: 100%;
+              background: #fff;
+              display: inline-block;
+              border: 1px solid rgba(241, 207, 207, 0.1);
+            "
+          >
+            <h3
+              style="
+                margin: 0;
+                padding: 0;
+                color: inherit;
+                font-family:
+                  Helvetica Neue,
+                  Helvetica,
+                  Roboto,
+                  Arial,
+                  sans-serif;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 1.4;
+                margin-bottom: 0.5rem;
+                margin-top: 0;
+                text-rendering: optimizeLegibility;
+                font-size: 1.3rem;
+              "
+            >
+              {!productLineItem.productLineItemName}
+            </h3>
+            <table
+              style="
+                font-size: 0.8rem;
+                border-radius: 0;
+                width: 100%;
+                border-collapse: inherit;
+                border-spacing: 0;
+                margin-top: 10px;
+                text-align: left;
+              "
+            >
+              <tbody>
+                <tr width="100%">
+                  <th
+                    width="10%"
+                    style="
+                      margin: 0;
+                      padding: 0;
+                      color: #000;
+                      font-size: 1rem;
+                      font-weight: bold;
+                      padding-top: 5px;
+                      text-transform: uppercase;
+                      vertical-align: top;
+                    "
+                  >
+                    SKU
+                  </th>
+                  <th
+                    width="18%"
+                    style="
+                      margin: 0;
+                      padding: 0;
+                      color: #000;
+                      font-size: 1rem;
+                      font-weight: bold;
+                      padding-top: 5px;
+                      text-transform: uppercase;
+                      vertical-align: top;
+                    "
+                  >
+                    Item
+                  </th>
+                  <!--  <th width="8%"  style="margin: 0; padding: 0; color: #000; font-size: 1rem; font-weight: bold; padding-top: 5px; text-transform: uppercase; vertical-align: top;"></th>  -->
+                  <th
+                    width="15%"
+                    style="
+                      margin: 0;
+                      padding: 0;
+                      color: #000;
+                      font-size: 1rem;
+                      font-weight: bold;
+                      padding-top: 5px;
+                      text-transform: uppercase;
+                      vertical-align: top;
+                      text-align: right !important;
+                    "
+                  >
+                    QTY
+                  </th>
+                  <th
+                    width="15%"
+                    style="
+                      margin: 0;
+                      padding: 0;
+                      color: #000;
+                      font-size: 1rem;
+                      font-weight: bold;
+                      padding-top: 5px;
+                      text-transform: uppercase;
+                      vertical-align: top;
+                      text-align: right !important;
+                    "
+                  >
+                    Unit Cost
+                  </th>
+                  <th
+                    width="20%"
+                    style="
+                      margin: 0;
+                      padding: 0;
+                      color: #000;
+                      font-size: 1rem;
+                      font-weight: bold;
+                      padding-top: 5px;
+                      text-transform: uppercase;
+                      vertical-align: top;
+                      text-align: right !important;
+                    "
+                  >
+                    Total Cost
+                  </th>
+                </tr>
+                <apex:repeat
+                  value="{!productLineItem.productDetails}"
+                  var="productDetails"
+                >
+                  <tr width="100%">
+                    <td
+                      width="10%"
+                      style="
+                        color: #55656d;
+                        font-size: 1rem !important;
+                        margin: 0;
+                        padding: 0;
+                      "
+                    >
+                      {!productDetails.SKU}
+                    </td>
+                    <td
+                      width="18%"
+                      style="
+                        color: #55656d;
+                        font-size: 1rem !important;
+                        margin: 0;
+                        padding: 0;
+                      "
+                    >
+                      Size: {!productDetails.size} - Color:
+                      {!productDetails.color}
+                    </td>
+                    <!--   <td width="8%"  style="margin: 0; padding: 0;"></td>  -->
+                    <td
+                      width="15%"
+                      style="
+                        color: #55656d;
+                        font-size: 1rem !important;
+                        margin: 0;
+                        padding: 0;
+                        text-align: right !important;
+                      "
+                    >
+                      <apex:outputText value="{0, number, ###,##0.##}">
+                        <apex:param value="{!productDetails.quantity}" />
+                      </apex:outputText>
+                    </td>
+                    <td
+                      width="15%"
+                      style="
+                        color: #55656d;
+                        font-size: 1rem !important;
+                        margin: 0;
+                        padding: 0;
+                        text-align: right !important;
+                      "
+                    >
+                      <apex:outputText value="{0, number, $###,##0.###}">
+                        <apex:param value="{!productDetails.unitCost}" />
+                      </apex:outputText>
+                    </td>
+                    <td
+                      width="20%"
+                      style="
+                        color: #55656d;
+                        font-size: 1rem !important;
+                        margin: 0;
+                        padding: 0;
+                        text-align: right !important;
+                      "
+                    >
+                      <apex:outputText value="{0, number, $###,##0.###}">
+                        <apex:param value="{!productDetails.totalCost}" />
+                      </apex:outputText>
+                    </td>
+                  </tr>
+                </apex:repeat>
+                <!-- <apex:outputPanel rendered="{!productLineItem.productExtraChargesDetails > 0}"> -->
+                <apex:outputPanel
+                  rendered="{!if(!productLineItem.extra, false ,true)}"
+                >
+                  <h3
+                    style="
+                      margin: 0;
+                      padding: 0;
+                      color: inherit;
+                      font-family:
+                        Helvetica Neue,
+                        Helvetica,
+                        Roboto,
+                        Arial,
+                        sans-serif;
+                      font-style: normal;
+                      font-weight: 400;
+                      line-height: 1.4;
+                      margin-bottom: 0.5rem;
+                      margin-top: 0;
+                      text-rendering: optimizeLegibility;
+                      font-size: 1.3rem;
+                    "
+                  >
+                    Extra Charges
+                  </h3>
+                  <tr width="100%">
+                    <th
+                      width="25%"
+                      style="
+                        margin: 0;
+                        padding: 0;
+                        color: #000;
+                        font-size: 1rem;
+                        font-weight: bold;
+                        padding-top: 5px;
+                        text-transform: uppercase;
+                        vertical-align: top;
+                      "
+                    >
+                      Name
+                    </th>
+                    <!--    <th width="27%"  style="margin: 0; padding: 0; color: #000; font-size: 1rem; font-weight: bold; padding-top: 5px; text-transform: uppercase; vertical-align: top;"></th>   -->
+                    <th
+                      width="16%"
+                      style="
+                        margin: 0;
+                        padding: 0;
+                        color: #000;
+                        font-size: 1rem;
+                        font-weight: bold;
+                        padding-top: 5px;
+                        text-transform: uppercase;
+                        vertical-align: top;
+                        text-align: right !important;
+                      "
+                    >
+                      QTY
+                    </th>
+                    <th
+                      width="15%"
+                      style="
+                        margin: 0;
+                        padding: 0;
+                        color: #000;
+                        font-size: 1rem;
+                        font-weight: bold;
+                        padding-top: 5px;
+                        text-transform: uppercase;
+                        vertical-align: top;
+                        text-align: right !important;
+                      "
+                    >
+                      Unit Cost
+                    </th>
+                    <th
+                      width="15%"
+                      style="
+                        margin: 0;
+                        padding: 0;
+                        color: #000;
+                        font-size: 1rem;
+                        font-weight: bold;
+                        padding-top: 5px;
+                        text-transform: uppercase;
+                        vertical-align: top;
+                        text-align: right !important;
+                      "
+                    >
+                      Total Cost
+                    </th>
+                  </tr>
+
+                  <apex:repeat
+                    value="{!productLineItem.productExtraChargesDetails}"
+                    var="productDetails"
+                  >
+                    <tr width="100%">
+                      <td
+                        width="25%"
+                        style="
+                          color: #55656d;
+                          font-size: 1rem !important;
+                          margin: 0;
+                          padding: 0;
+                        "
+                      >
+                        {!productDetails.extraChargeName}
+                      </td>
+                      <td
+                        width="16%"
+                        style="
+                          color: #55656d;
+                          font-size: 1rem !important;
+                          margin: 0;
+                          padding: 0;
+                          text-align: right !important;
+                        "
+                      >
+                        <apex:outputText value="{0, number, ###,##0.##}">
+                          <apex:param value="{!productDetails.quantity}" />
+                        </apex:outputText>
+                      </td>
+                      <td
+                        width="15%"
+                        style="
+                          color: #55656d;
+                          font-size: 1rem !important;
+                          margin: 0;
+                          padding: 0;
+                          text-align: right !important;
+                        "
+                      >
+                        <apex:outputText value="{0, number, $###,##0.###}">
+                          <apex:param value="{!productDetails.unitCost}" />
+                        </apex:outputText>
+                      </td>
+                      <td
+                        width="15%"
+                        style="
+                          color: #55656d;
+                          font-size: 1rem !important;
+                          margin: 0;
+                          padding: 0;
+                          text-align: right !important;
+                        "
+                      >
+                        <apex:outputText value="{0, number, $###,##0.###}">
+                          <apex:param value="{!productDetails.totalCost}" />
+                        </apex:outputText>
+                      </td>
+                    </tr>
+                  </apex:repeat>
+                </apex:outputPanel>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </apex:repeat>
+      <div style="padding: 10px; max-width: 100%; margin-bottom: 50px">
+        <div
+          style="
+            float: right;
+            width: 50%;
+            margin-bottom: 10px;
+            display: inline-grid;
+            margin-top: 15px;
+          "
+        >
+          <table
+            style="
+              text-align: left;
+              width: 100%;
+              background: #808384;
+              margin-bottom: 20px;
+            "
+          >
+            <tbody>
+              <tr>
+                <th
+                  style="
+                    padding-bottom: 10px;
+                    border: none !important;
+                    padding-left: 20px;
+                    font-size: 1rem;
+                    color: #fff;
+                    text-transform: uppercase;
+                    font-weight: 400;
+                    background: #808384;
+                  "
+                  width="50%"
+                >
+                  ORDER TOTAL
+                </th>
+                <td
+                  id=""
+                  style="
+                    font-size: 1rem;
+                    color: #fff;
+                    padding: 0 30px;
+                    background: #808384;
+                    text-align: right !important;
+                  "
+                >
+                  <apex:outputText value="{0, number, $###,##0.###}">
+                    <apex:param value="{!PageTotal}" />
+                  </apex:outputText>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p
+            id="statusinfo"
+            style="
+              margin-top: 25px;
+              margin-bottom: 35px;
+              text-align: right;
+              color: #55656d;
+              font-size: 1rem;
+              line-height: 1.15rem;
+              display: none;
+            "
+          >
+            {!PODetail.Purchase_Order_Status__c} by {!PODetail.Approved_By__c}
+            on {!PODetail.Production_Rep__c}
+          </p>
+        </div>
+
+        <div style="width: 47%; margin-bottom: 50px; float: left">
+          <div style="width: 100%">
+            <h3 style="font-size: 1.3rem; font-weight: 400">
+              Questions about this purchase order?
+            </h3>
+            <p
+              style="
+                color: #55656d;
+                font-size: 1rem;
+                line-height: 1.15rem;
+                margin-bottom: 0.5rem;
+              "
+            >
+              {!ProductionRepName}
+              <br />
+              <a style="color: #55656d" href="mailto:info@teamphun.com"
+                >{!teamPhunEmail}</a
+              >
+              <br />
+            </p>
+            <p
+              style="
+                color: #55656d;
+                font-size: 1rem;
+                line-height: 1.15rem;
+                margin-bottom: 0.5rem;
+              "
+            >
+              TEAM PHUN<br />5026 Cass St #B<br /> San Diego, CA 92109<br />
+            </p>
+          </div>
+        </div>
+
+        <!-- <div style="margin: 0; padding: 0; box-sizing: border-box; float: left; width: 100%;">
+                    <hr style="margin: 0; max-width: 100%; width: 100% !important;"/>
+                    <h5 style="margin: 0; padding: 0; color: inherit; font-family: Helvetica Neue, Helvetica, Roboto, Arial, sans-serif; font-style: normal; font-weight: 400; line-height: 1.4; margin-bottom: .5rem; margin-top: 20px; text-rendering: optimizeLegibility; font-size: 1rem; padding-left: 30px; text-transform: uppercase;">
+                        Terms and Conditions
+                    </h5>
+                    <p style="margin: 0; padding: 0; color: #55656d; font-size: 1rem; line-height: 1rem; margin-bottom: 0.5rem; padding-left: 30px;">
+                    </p>
+                </div> -->
+      </div>
+    </div>
+  </div>
+</apex:page>

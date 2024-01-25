@@ -1,0 +1,10 @@
+</!DOCTYPE html>
+<html>
+<head>
+</head>
+<p>Hello {!PurchaseOrder_LineItem__c.POOrderOwner__c}:</p><p>Please note that PO {!PurchaseOrder_LineItem__c.PONameLink__c} from {!PurchaseOrder_LineItem__c.SupplierNameLink__c} related to {!PurchaseOrder_LineItem__c.Account__c} has been QC'd and is Ready to Ship or Pickup. If you haven’t already, please communicate with the Operations Team to determine whether:
+</p><ul><li>{!PurchaseOrder_LineItem__c.Name} should be held until order is complete before client is notified</li><li>{!PurchaseOrder_LineItem__c.Name} should be shipped to client</li><li>{!PurchaseOrder_LineItem__c.Name} will be picked up by the client</li></ul><p>If you have already indicated how the Operations Team should proceed on the Work Order notes, this message is for your information only. </p>
+{!PurchaseOrder_LineItem__c.PONameLink__c}<br/>
+<p>Thanks a bunch,<br/>Ralph the Rooster</p>
+</body>
+</html>

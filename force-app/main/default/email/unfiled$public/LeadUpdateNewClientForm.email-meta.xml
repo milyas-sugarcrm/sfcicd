@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>false</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>LeadUpdateNewClientForm</name>
+    <style>none</style>
+    <subject>Lead Updated by New Client Form Submission</subject>
+    <textOnly>New Lead Notification
+
+New Lead Notification
+
+Hello Lesley,
+
+A Lead has been updated after the &apos;New Client Form&apos; submission with the following details:
+
+Organization Name: {!organizationName}
+
+Signor Name: {!signorName}
+
+Signor Title: {!signorTitle}
+
+Signor Email: {!signorEmail}
+
+Lead Email: {!Email}
+
+Click to View Lead</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

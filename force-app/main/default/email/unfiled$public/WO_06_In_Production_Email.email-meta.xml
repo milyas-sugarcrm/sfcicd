@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>WO 06 - In Production Email</name>
+    <style>none</style>
+    <subject>Work Order {!Order.OrderNumber} move to In Production</subject>
+    <textOnly>Dear Phunion,
+
+{!Order.OrderNumber} for {!Order.WOAccountLink__c} is In Production. Please confirm ship-to address and due date are accurate.
+
+{!Order.WONameLink__c}
+
+Thanks,
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
