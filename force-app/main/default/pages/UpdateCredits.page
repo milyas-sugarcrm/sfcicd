@@ -1,0 +1,270 @@
+<apex:page standardController="User" extensions="UpdateCreditsController">
+  <script type="text/javascript">
+    var previousOnload = window.onload;
+    window.onload = function () {
+      if (previousOnload) {
+        previousOnload();
+      }
+      var previousStatus = "{!PreviousRequestStatus}";
+      if (previousStatus == "toBeRejected") {
+        document.getElementById("lite_box_loading_overlay").style.display =
+          "block";
+        rejectRequestMethod();
+      } else if (previousStatus == "toBeApproved")
+        document.getElementById("updateCredits").style.display = "flex";
+      else if (previousStatus == "Rejected") {
+        document.getElementById("rejected").style.display = "block";
+      } else if (previousStatus == "Approved") {
+        document.getElementById("approved").style.display = "block";
+      }
+    };
+    function addCreditsToBank() {
+      document.getElementById("lite_box_loading_overlay").style.display =
+        "block";
+      addCreditsMethod(document.getElementById("credits").value);
+    }
+    function displayMessage(message) {
+      console.log(message);
+      if (message == true) {
+        document.getElementById("approve").style.display = "block";
+        document.getElementById("updateCredits").style.display = "none";
+      } else {
+        document.getElementById("error_message").style.display = "block";
+      }
+      document.getElementById("lite_box_loading_overlay").style.display =
+        "none";
+      setTimeout(function () {
+        document.getElementById("error_message").style.display = "none";
+      }, 2000);
+    }
+    function displayRejectionMessage(message) {
+      if (message == true) {
+        document.getElementById("reject").style.display = "block";
+      } else {
+        document.getElementById("rejectionError").style.display = "block";
+      }
+      document.getElementById("lite_box_loading_overlay").style.display =
+        "none";
+      setTimeout(function () {
+        document.getElementById("error_message").style.display = "none";
+      }, 2000);
+    }
+  </script>
+  <apex:form>
+    <apex:actionFunction
+      name="addCreditsMethod"
+      action="{!addCredits}"
+      oncomplete="displayMessage({!valueReturned})"
+      reRender=""
+    >
+      <apex:param name="updatedCredits" value="" assignTo="{!updatedCredits}" />
+    </apex:actionFunction>
+    <apex:actionFunction
+      name="rejectRequestMethod"
+      action="{!rejectRequest}"
+      oncomplete="displayRejectionMessage({!valueReturned})"
+      reRender=""
+    >
+    </apex:actionFunction>
+  </apex:form>
+  <div
+    id="lite_box_loading_overlay"
+    style="
+      position: fixed;
+      display: none;
+      background-color: rgba(0, 0, 0, 0.7);
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 9999999 !important;
+    "
+  >
+    <div
+      id="lite_box_loading_overlay_inner"
+      style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 9999 !important;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        border-radius: 0;
+        -webkit-margin-before: -2%;
+      "
+    >
+      <img width="60px" src="{!$Resource.loading}" />
+    </div>
+  </div>
+  <div id="reject" style="text-align: center; margin-top: 60px; display: none">
+    <h
+      id="message"
+      style="
+        color: #ffffff;
+        font-size: 18px;
+        text-align: center;
+        width: 96%;
+        border: 1px solid #e6e6e6;
+        padding: 20px;
+        overflow: hidden;
+        border-radius: 4px;
+        background-color: #5cb85c;
+      "
+    >
+      Request has been rejected successfully and an email has sent to the user.
+    </h>
+  </div>
+  <div
+    id="rejected"
+    style="text-align: center; margin-top: 60px; display: none"
+  >
+    <h
+      id="message"
+      style="
+        color: #ffffff;
+        font-size: 18px;
+        text-align: center;
+        width: 96%;
+        border: 1px solid #e6e6e6;
+        padding: 20px;
+        overflow: hidden;
+        border-radius: 4px;
+        background-color: #5cb85c;
+      "
+    >
+      This Request has already been rejected.
+    </h>
+  </div>
+  <div id="approve" style="text-align: center; margin-top: 60px; display: none">
+    <h
+      style="
+        color: #ffffff;
+        font-size: 18px;
+        text-align: center;
+        width: 96%;
+        border: 1px solid #e6e6e6;
+        padding: 20px;
+        overflow: hidden;
+        border-radius: 4px;
+        background-color: #5cb85c;
+      "
+    >
+      Request has been approved successfully and an email has sent to the user.
+    </h>
+  </div>
+  <div
+    id="approved"
+    style="text-align: center; margin-top: 60px; display: none"
+  >
+    <h
+      style="
+        color: #ffffff;
+        font-size: 18px;
+        text-align: center;
+        width: 96%;
+        border: 1px solid #e6e6e6;
+        padding: 20px;
+        overflow: hidden;
+        border-radius: 4px;
+        background-color: #5cb85c;
+      "
+    >
+      This request has already been approved.
+    </h>
+  </div>
+  <div
+    id="error_message"
+    style="
+      background: #ff0000;
+      display: block;
+      position: fixed;
+      left: 50%;
+      font-size: 16px;
+      z-index: 999999999999;
+      padding: 16px 20px;
+      border-radius: 5px;
+      min-width: 200px;
+      width: auto;
+      text-align: center;
+      color: #ffffff;
+      transform: translate(-50%, 0px);
+      display: none;
+    "
+  >
+    Some error occured while adding credits.
+  </div>
+  <div
+    id="rejectionError"
+    style="
+      background: #ff0000;
+      display: block;
+      position: fixed;
+      left: 50%;
+      font-size: 16px;
+      z-index: 999999999999;
+      padding: 16px 20px;
+      border-radius: 5px;
+      min-width: 200px;
+      width: auto;
+      text-align: center;
+      color: #ffffff;
+      transform: translate(-50%, 0px);
+      display: none;
+    "
+  >
+    Some error occured while rejecting request.
+  </div>
+  <div id="updateCredits" style="display: none">
+    <div style="margin-top: 15px; margin-left: 15px; float: left">
+      <p style="font-size: 0.9rem">
+        {!UserDetails.FirstName} has requested to update the Bank Credits. Click
+        <a style="color: #0000ee" href="{!OppLink}"
+          >{!OpportunityDetails.Name}</a
+        >
+        to view details about credits use against requested opportunity.
+        <br /><br />User has already
+        <label style="font-weight: bold">{!UserDetails.Design_Bank__c}</label>
+        credits in the bank. <br /><br />Please enter credits below to approve
+        the request.
+      </p>
+      <p
+        style="
+          font-size: 0.9rem;
+          font-weight: bold;
+          line-height: 1.15rem;
+          margin-bottom: 0.5rem;
+        "
+      >
+        Enter Credits:
+      </p>
+      <input
+        type="number"
+        id="credits"
+        name="credits"
+        style="
+          padding: 5px;
+          padding-right: 0px;
+          border: 1px solid #cacaca;
+          font-size: 1rem;
+        "
+      />
+      <br />
+      <button
+        rerender="none"
+        onclick="addCreditsToBank();"
+        style="
+          font-size: 0.8rem;
+          margin-top: 10px;
+          padding-right: 10px;
+          padding-left: 10px;
+          cursor: pointer;
+          padding: 7px;
+          background: #283799;
+          color: white;
+        "
+      >
+        Update
+      </button>
+    </div>
+  </div>
+</apex:page>

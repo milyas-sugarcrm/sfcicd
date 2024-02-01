@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Support_Request</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <linkType>url</linkType>
+    <masterLabel>Support Request</masterLabel>
+    <openType>replace</openType>
+    <protected>false</protected>
+    <url
+  >/lightning/o/Quote_Request__c/new?defaultFieldValues=Opportunity_Name__c={!Opportunity.Id},Client_Name__c={!Opportunity.AccountId}</url>
+</WebLink>

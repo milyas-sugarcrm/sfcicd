@@ -1,0 +1,174 @@
+<template>
+  <lightning-card title="Billing Report" icon-name="custom:custom11">
+    <lightning-layout>
+      <lightning-layout-item size="2" class="slds-var-m-around_small">
+        <lightning-combobox
+          name="payment_status"
+          label="Payment Status"
+          value={value}
+          onchange={handlePaymentStatusChange}
+          options={paymentStatusOptions}
+        ></lightning-combobox>
+      </lightning-layout-item>
+      <lightning-layout-item size="2" class="slds-var-m-around_small">
+        <lightning-input
+          type="date"
+          label="Start Date"
+          value={eventStartDate}
+          onchange={handleEventStartDateChange}
+        ></lightning-input>
+      </lightning-layout-item>
+      <lightning-layout-item size="2" class="slds-var-m-around_small">
+        <lightning-input
+          type="date"
+          label="End Date"
+          value={eventEndDate}
+          onchange={handleEventEndDateChange}
+        ></lightning-input>
+      </lightning-layout-item>
+      <lightning-layout-item
+        size="2"
+        class="slds-var-m-around_small slds-align_absolute-center"
+      >
+        <lightning-button
+          variant="brand"
+          label="Search"
+          title="Primary action"
+          style="margin-top: 20px; margin-right: 10px"
+          onclick={handleSearchClick}
+        ></lightning-button>
+        <lightning-button
+          variant="brand"
+          label="Generate"
+          title="Primary action"
+          style="margin-top: 20px"
+          onclick={handleGenerateClick}
+        ></lightning-button>
+      </lightning-layout-item>
+    </lightning-layout>
+
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+      <thead>
+        <tr class="slds-line-height_reset">
+          <th class="" scope="col">
+            <lightning-input
+              type="checkbox"
+              label=""
+              onchange={handleCheckAll}
+              checked={selectAll}
+            ></lightning-input>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title="Event">Event</div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title="Account">Account</div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title="Campaign">Campaign</div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title="Brand Ambassador">
+              Brand Ambassador
+            </div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title="Total Expense">Total Expense</div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <template if:true={billingReportRecords}>
+          <template for:each={billingReportRecords} for:item="record">
+            <tr class="slds-hint-parent" key={record.Id}>
+              <td data-label="Select Record">
+                <template if:true={record.isChecked}>
+                  <lightning-input
+                    type="checkbox"
+                    label={record.name}
+                    value={record.Id}
+                    checked={record.isChecked}
+                    onchange={handleCheckboxChange}
+                  ></lightning-input>
+                </template>
+                <template if:false={record.isChecked}>
+                  <lightning-input
+                    type="checkbox"
+                    label={record.name}
+                    value={record.Id}
+                    onchange={handleCheckboxChange}
+                  ></lightning-input>
+                </template>
+              </td>
+              <td data-label="Event Name">
+                <template if:true={record.Name}>
+                  <a
+                    href={recordPageUrl}
+                    onclick={handleNavigate}
+                    onmouseout={handleMouseout}
+                    onmouseover={handleMouseover}
+                    data-item={record.Id}
+                    >{record.Name}
+                  </a>
+                </template>
+                <template if:false={record.Name}> &nbsp; </template>
+              </td>
+              <td data-label="Account">
+                <template if:true={record.Account__r}>
+                  <a
+                    href={recordPageUrl}
+                    onclick={handleNavigate}
+                    data-item={record.Account__r.Id}
+                    >{record.Account__r.Name}
+                  </a>
+                </template>
+                <template if:false={record.Account__r}> &nbsp; </template>
+              </td>
+              <td data-label="Campaign">
+                <template if:true={record.PFA_Campaign_Id__r}>
+                  <a
+                    href={recordPageUrl}
+                    onclick={handleNavigate}
+                    data-item={record.PFA_Campaign_Id__r.Id}
+                    >{record.PFA_Campaign_Id__r.Name}
+                  </a>
+                </template>
+                <template if:false={record.PFA_Campaign_Id__r}>
+                  &nbsp;
+                </template>
+              </td>
+              <td data-label="Brand Ambassador">
+                <template if:true={record.Contact__r}>
+                  <a
+                    href={recordPageUrl}
+                    onclick={handleNavigate}
+                    data-item={record.Contact__r.Id}
+                    >{record.Contact__r.Name}
+                  </a>
+                </template>
+                <template if:false={record.Contact__r}> &nbsp; </template>
+              </td>
+              <td data-label="Total Cost">
+                <template if:true={record.Total_Cost__c}>
+                  {record.Total_Cost__c}
+                </template>
+                <template if:false={record.Total_Cost__c}> &nbsp; </template>
+              </td>
+            </tr>
+          </template>
+        </template>
+        <template if:false={billingReportRecords}>
+          <tr>
+            <td colspan="5">No Records Available</td>
+          </tr>
+        </template>
+        <template if:true={isLoading}>
+          <lightning-spinner
+            alternative-text="Loading"
+            size="medium"
+          ></lightning-spinner>
+        </template>
+      </tbody>
+    </table>
+  </lightning-card>
+</template>

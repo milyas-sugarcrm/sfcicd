@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Outbound Sales Call</fullName>
+        <default>true</default>
+        <label>Outbound Sales Call</label>
+    </customValue>
+    <customValue>
+        <fullName>Outbound Email</fullName>
+        <default>false</default>
+        <label>Outbound Email</label>
+    </customValue>
+    <customValue>
+        <fullName>Inbound Phone Call</fullName>
+        <default>false</default>
+        <label>Inbound Phone Call</label>
+    </customValue>
+    <customValue>
+        <fullName>Inbound Email</fullName>
+        <default>false</default>
+        <label>Inbound Email</label>
+    </customValue>
+    <customValue>
+        <fullName>Face to Face Meeting</fullName>
+        <default>false</default>
+        <label>Face to Face Meeting</label>
+    </customValue>
+    <customValue>
+        <fullName>Other Sales Activity</fullName>
+        <default>false</default>
+        <label>Other Sales Activity</label>
+    </customValue>
+    <description
+  >This field must be filled out when logging Sales Activities</description>
+    <masterLabel>Sales Activity</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>Face to Face Meeting</fullName>
+        <default>false</default>
+        <label>Face to Face Meeting</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Drop In</fullName>
+        <default>false</default>
+        <label>Drop In</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Linkedin</fullName>
+        <default>true</default>
+        <label>Linkedin</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Social Media</fullName>
+        <default>false</default>
+        <label>Social Media</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Outbound Phone Call</fullName>
+        <default>false</default>
+        <label>Outbound Phone Call</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Web Conference</fullName>
+        <default>false</default>
+        <label>Web Conference</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Outbound Email</fullName>
+        <default>false</default>
+        <label>Outbound Email</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Text</fullName>
+        <default>false</default>
+        <label>Text</label>
+    </standardValue>
+</StandardValueSet>

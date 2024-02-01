@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldOverrides>
+        <field>BccAddress</field>
+        <formula>Opportunity.ContactId</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>CcAddress</field>
+        <formula>Opportunity.ContactId</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>HtmlBody</field>
+        <formula>&quot;&lt;/!DOCTYPE html&gt;&quot;+
+&quot;&lt;html&gt;&quot;+
+&quot;&lt;head&gt;&quot;+
+&quot;&lt;/head&gt;&quot;+
+
+&quot;&lt;body&gt;&quot;+
+&quot;Presentation link:&quot;+ &quot;&lt;a href=&apos;https://dev1-approveorder.cs78.force.com/OpportunityLineItemsPreview?id=&quot;+Opportunity.Id+&quot;&apos;&gt;https://dev1-approveorder.cs78.force.com/OpportunityLineItemsPreview?id=&quot;+Opportunity.Id+&quot;&lt;/a&gt;&quot;+
+&quot;&lt;/body&gt;&quot;+
+&quot;&lt;/html&gt;&quot;</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>Subject</field>
+        <formula
+    >&quot;Team Phun: PRESENTATION #&quot;+Opportunity.Name</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>ToAddress</field>
+        <formula>Opportunity.ContactId</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>ValidatedFromAddress</field>
+        <formula>Opportunity.OwnerId</formula>
+        <literalValue>syed.daniyal@rolustech.net</literalValue>
+    </fieldOverrides>
+    <label>Email Presentation old</label>
+    <optionsCreateFeedItem>true</optionsCreateFeedItem>
+    <quickActionLayout>
+        <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
+        <quickActionLayoutColumns>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>ValidatedFromAddress</field>
+                <uiBehavior>Required</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>ToAddress</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>CcAddress</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>BccAddress</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>HtmlBody</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>Subject</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>EmailTemplateId</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+        </quickActionLayoutColumns>
+        <quickActionLayoutColumns />
+    </quickActionLayout>
+    <targetObject>OutgoingEmail</targetObject>
+    <targetParentField>RelatedTo</targetParentField>
+    <type>SendEmail</type>
+</QuickAction>

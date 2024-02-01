@@ -1,0 +1,225 @@
+<aura:component
+  controller="ConvertToEstimateQuickActionController"
+  implements="force:lightningQuickActionWithoutHeader,force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+  access="global"
+>
+  <aura:attribute name="recordId" type="Id" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="RelatedOpportunityLineItems" type="String[]" />
+  <aura:attribute name="isEstimateExists" type="Boolean" default="false" />
+  <aura:registerEvent name="applicationEvents" type="c:applicationEvents" />
+  <aura:registerEvent
+    name="RefreshPresentationComponent"
+    type="c:RefreshPresentationComponent"
+  />
+  <aura:registerEvent name="RefreshTabs" type="c:RefreshTabs" />
+  <aura:registerEvent name="openWarningPopup" type="c:openWarningPopup" />
+  <aura:handler event="c:convertToEstimate" action="{!c.convertToEstimateJS}" />
+  <aura:attribute name="options" type="List" />
+  <aura:attribute name="noOfAccounts" type="Integer" />
+  <aura:attribute name="EstimateSpinner" type="Boolean" default="false" />
+  <aura:attribute name="showWarningPopup" type="Boolean" default="false" />
+  <aura:html tag="style">
+    .slds-modal__container{ height : auto; width: 30%; max-width: 30rem; }
+    .modal-body{ height : 400px !important; max-height: 400px !important; }
+    .customFooter{ display: inline !important; } .slds-carousel__content{
+    display:none; } .slds-carousel__indicators { display:none;} }
+  </aura:html>
+
+  <aura:attribute name="Spinner" type="Boolean" default="false" />
+
+  <div
+    class="slds-modal__content slds-p-around_x-small"
+    style="max-height: 400px; overflow-y: scroll"
+  >
+    <div class="">
+      <aura:if isTrue="{!v.EstimateSpinner}">
+        <lightning:spinner variant="brand" size="large" />
+      </aura:if>
+      <aura:if isTrue="{!v.Spinner}">
+        <div class="slds-p-horizontal--small slds-size--1-of-1">
+          <div
+            class="slds-p-horizontal--small slds-size--1-of-1 isActivityLoading"
+          >
+            <lightning:spinner variant="brand" size="small" />
+          </div>
+        </div>
+      </aura:if>
+
+      <table class="slds-table slds-table_fixed-layout slds-no-row-hover">
+        <thead>
+          <tr>
+            <th style="background-color: #ffffff; width: 10%"></th>
+            <th style="background-color: #ffffff; width: 15%"></th>
+            <th style="background-color: #ffffff; width: 20%"></th>
+            <th style="background-color: #ffffff; width: 55%">
+              <th style="background-color: #ffffff; width: 15%"></th>
+              <th style="background-color: #ffffff; width: 15%">
+                <div class="slds-truncate"></div>
+              </th>
+              <th style="width: 10%; background-color: #ffffff">
+                <div class="slds-truncate"></div>
+              </th>
+              <th style="background-color: #ffffff"></th>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            style="
+              color: darkslategray;
+              font-weight: bold;
+              background-color: #fafaf9;
+            "
+          >
+            <td>Quantity</td>
+            <td style="white-space: initial">Products</td>
+            <td></td>
+            <td>
+              <table>
+                <body>
+                  <tr>
+                    <td style="width: 15%; white-space: initial"></td>
+                    <td style="width: 15%">Units</td>
+                    <td style="width: 10%; padding-left: 50px">Margin</td>
+                    <td style="padding-left: 55px">Amount</td>
+                  </tr>
+                </body>
+              </table>
+            </td>
+          </tr>
+          <aura:iteration
+            items="{!v.RelatedOpportunityLineItems}"
+            var="product"
+          >
+            <tr class="">
+              <td>
+                <lightning:input
+                  type="number"
+                  step="any"
+                  aura:id="opportunityLineItemQuantity"
+                  title=""
+                  name="{!product.oppLineItemId}"
+                />
+              </td>
+              <td style="white-space: initial">
+                <div class="slds-col">
+                  <div title="ProductLine Item">
+                    <p class="slds-truncate">
+                      <lightning:formattedUrl
+                        value="{!'/lightning/r/Product2/'+product.productId+'/view'}"
+                        tooltip="{!product.productName}"
+                        label="{!product.productName}"
+                        target="_blank"
+                      />
+                    </p>
+                  </div>
+                </div>
+                <div class="slds-col">
+                  <p>{!product.sku}</p>
+                </div>
+                <div class="slds-col">
+                  <p>{!product.supplier}</p>
+                </div>
+              </td>
+              <td></td>
+              <td>
+                <table>
+                  <body>
+                    <aura:iteration
+                      items="{!product.pricingDetails}"
+                      var="pricing"
+                    >
+                      <tr>
+                        <td style="width: 15%; white-space: initial">&nbsp;</td>
+                        <td style="width: 15%">
+                          <ui:outputCurrency
+                            value="{!pricing.Quantity__c}"
+                            format="#,###"
+                          />
+                        </td>
+                        <td style="width: 10%; padding-left: 50px">
+                          <aura:if isTrue="{!pricing.Margin__c !=null}">
+                            {!pricing.Margin__c}%
+                          </aura:if>
+                        </td>
+                        <td style="padding-left: 69px">
+                          <aura:if
+                            isTrue="{!pricing.Price_Per_Unit__c != null}"
+                          >
+                            <ui:outputCurrency
+                              value="{!pricing.Price_Per_Unit__c}"
+                              format="$#,###.##"
+                            />
+                          </aura:if>
+                        </td>
+                      </tr>
+                    </aura:iteration>
+
+                    <aura:iteration
+                      items="{!product.fixedCharges}"
+                      var="fixedCharges"
+                    >
+                      <tr>
+                        <td
+                          style="
+                            width: 15%;
+                            white-space: initial;
+                            word-break: break-word;
+                          "
+                        >
+                          <aura:if isTrue="{!fixedCharges.Title__c}">
+                            {!fixedCharges.Title__c}
+                          </aura:if>
+                        </td>
+
+                        <td style="width: 15%"></td>
+                        <td style="width: 10%; padding-left: 50px">
+                          <aura:if isTrue="{!fixedCharges.Margin__c}">
+                            {!fixedCharges.Margin__c}%
+                          </aura:if>
+                        </td>
+                        <td style="padding-left: 69px">
+                          <aura:if isTrue="{!fixedCharges.Retail_Price__c}">
+                            <ui:outputCurrency
+                              value="{!fixedCharges.Retail_Price__c}"
+                              format="$#,###.##"
+                            />
+                          </aura:if>
+                        </td>
+                      </tr>
+                    </aura:iteration>
+                  </body>
+                </table>
+              </td>
+            </tr>
+          </aura:iteration>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="slds-modal__footer" style="background-color: white">
+    <div style="width: 100%">
+      <div class="slds-form-element" style="display: flex">
+        <label style="padding-right: 5px; padding-top: 6px"
+          ><strong>QBO&nbsp;Account</strong></label
+        >
+        <div style="width: 20%" class="slds-form-element__control">
+          <ui:inputSelect aura:id="AccountDropDown" value="" />
+        </div>
+        <div style="display: flex; margin-left: 39%; float: right">
+          <lightning:button
+            class="slds-button slds-button--neutral"
+            onclick="{!c.closePopup}"
+            >Cancel</lightning:button
+          >
+          <lightning:button
+            class="slds-button slds-button--brand customb"
+            onclick="{!c.showWarning}"
+            >Convert&nbsp;To&nbsp;Estimate</lightning:button
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</aura:component>

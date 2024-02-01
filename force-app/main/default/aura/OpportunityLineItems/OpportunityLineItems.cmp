@@ -1,0 +1,900 @@
+<aura:component
+  controller="OpportunityLineItemsController"
+  implements="force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global"
+>
+  <aura:attribute name="recordId" type="Id" />
+  <aura:handler event="force:refreshView" action="{!c.doInit}" />
+  <aura:handler event="c:RefreshPresentationComponent" action="{!c.refresh}" />
+  <aura:handler event="c:applicationEvents" action="{!c.closeEstimatePopup}" />
+  <aura:handler event="c:openWarningPopup" action="{!c.showWarningPopup}" />
+  <aura:attribute name="deleteId" type="Id" />
+  <aura:attribute name="accountSelected" type="String" />
+  <aura:attribute name="showWarningPopup" type="Boolean" default="false" />
+  <aura:registerEvent name="convertToEstimate" type="c:convertToEstimate" />
+  <aura:attribute name="deletePopup" type="boolean" default="false" />
+  <aura:attribute name="shippingPopup" type="boolean" default="false" />
+  <aura:attribute name="viewAll" type="boolean" default="true" />
+  <aura:attribute name="numOfRecords" type="integer" default="6" />
+  <aura:attribute name="shippingRecordId" type="Id" />
+  <aura:attribute name="isDeletable" type="boolean" default="true" />
+  <aura:attribute name="RelatedOpportunityLineItems" type="String[]" />
+  <aura:attribute name="isOpen" type="boolean" default="false" />
+  <aura:attribute name="isDelDialogOpen" type="boolean" default="false" />
+  <aura:attribute name="Spinner" type="boolean" default="false" />
+  <aura:attribute name="errors" type="List" />
+  <aura:attribute name="isNew" type="boolean" />
+  <aura:attribute name="Error" type="String" />
+  <aura:attribute name="openConvertToEstimate" type="boolean" default="false" />
+  <aura:attribute name="estimateExist" type="Boolean" default="false" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="estimateStage" type="Boolean" default="false" />
+  <aura:attribute name="DeleteSpinner" type="boolean" default="false" />
+  <aura:attribute name="cloneId" type="Id" />
+  <aura:attribute name="clonePopup" type="boolean" default="false" />
+  <aura:attribute name="cloneSpinner" type="boolean" default="false" />
+  <aura:html tag="style"> </aura:html>
+  <!--   ////////////                 Show List View Component ATtributes                     //////////                  -->
+
+  <aura:attribute name="Size" type="String" default="0" />
+
+  <!--loading spinner start... style=Brand Medium (blue dots)-->
+  <aura:if isTrue="{!v.Spinner}">
+    <div class="slds-p-horizontal--small slds-size--1-of-1">
+      <div class="slds-p-horizontal--small slds-size--1-of-1 isActivityLoading">
+        <lightning:spinner variant="brand" size="small" />
+      </div>
+    </div>
+  </aura:if>
+
+  <!-- //Show Other Directorship List view Lightning Component -->
+
+  <article class="slds-card slds-card_boundary">
+    <div class="slds-card__header slds-grid">
+      <header class="slds-media slds-media_center slds-has-flexi-truncate">
+        <div class="slds-media__figure">
+          <span class="slds-icon_container slds-icon-standard-contact">
+            <lightning:icon iconName="standard:account" size="small" />
+          </span>
+        </div>
+        <div class="slds-media__body">
+          <h2>
+            <a
+              href="javascript:void(0)"
+              onclick="{!c.gotoRelatedList}"
+              class="slds-card__header-link slds-truncate"
+            >
+              <span class="slds-text-heading_small">Presentation Products</span>
+              <aura:if isTrue="{!v.viewAll}"
+                ><aura:if isTrue="{!greaterthan(v.Size,6)}">
+                  <span
+                    class="slds-text-heading--small slds-shrink-none slds-m-right--xx-small"
+                    title="Presentation Products"
+                  >
+                    (6+)</span
+                  >
+                  <aura:set attribute="else"
+                    ><span
+                      class="slds-text-heading--small slds-shrink-none slds-m-right--xx-small"
+                      title="Presentation Products"
+                    >
+                      ({!v.Size})</span
+                    >
+                  </aura:set>
+                </aura:if>
+                <aura:set attribute="else"
+                  ><span
+                    class="slds-text-heading--small slds-shrink-none slds-m-right--xx-small"
+                    title="Presentation Products"
+                  >
+                    ({!v.Size})</span
+                  ></aura:set
+                ></aura:if
+              >
+            </a>
+          </h2>
+        </div>
+
+        <div class="slds-card__body" onmouseleave="{!c.closeDropdownAction}">
+          <button
+            id="actionsButton"
+            onclick="{!c.openDropdown}"
+            class="slds-button slds-button_brand"
+          >
+            Actions
+          </button>
+          <div
+            id="dropdown"
+            class="slds-dropdown slds-dropdown--right"
+            style="margin-top: 0px; margin-right: 1%; width: 20%; display: none"
+          >
+            <ul class="slds-dropdown__list" role="menu">
+              <li
+                id="addProductOption"
+                class="slds-dropdown__item slds-is-selected"
+                onclick="{!c.newButton}"
+              >
+                <a>
+                  <span
+                    style="color: #006dcc; width: 100px !important; float: left"
+                  >
+                    Add New Product
+                  </span>
+                </a>
+              </li>
+              <li
+                class="slds-dropdown__item slds-is-selected"
+                onclick="{!c.openPreviewPresentationPage}"
+              >
+                <a>
+                  <span
+                    style="color: #006dcc; width: 100px !important; float: left"
+                  >
+                    Preview Presentation
+                  </span>
+                </a>
+              </li>
+
+              <aura:if isTrue="{!v.estimateStage == false}">
+                <li
+                  class="slds-dropdown__item slds-is-selected"
+                  onclick="{!c.openEstimatePopup}"
+                >
+                  <a>
+                    <span
+                      style="
+                        color: #006dcc;
+                        width: 100px !important;
+                        float: left;
+                      "
+                    >
+                      Convert To Estimate
+                    </span>
+                  </a>
+                </li>
+              </aura:if>
+            </ul>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <aura:if isTrue="{!not(empty(v.RelatedOpportunityLineItems))}">
+      <div class="slds-card__body">
+        <table
+          class="slds-table slds-table_fixed-layout slds-table_cell-buffer"
+        >
+          <thead>
+            <tr>
+              <th scope="col" style="width: 20%">
+                <div class="slds-truncate">Name</div>
+              </th>
+              <th style="width: 60%">
+                <table>
+                  <thead>
+                    <th scope="col" style="width: 20%">
+                      <div class="slds-truncate"></div>
+                    </th>
+                    <th scope="col" style="width: 20%">
+                      <div class="slds-truncate">Units</div>
+                    </th>
+                    <th scope="col" style="width: 20%">
+                      <div class="slds-truncate">Cost</div>
+                    </th>
+                    <th scope="col" style="width: 20%">
+                      <div class="slds-truncate">Margin</div>
+                    </th>
+                    <th scope="col">
+                      <div class="slds-truncate">Amount</div>
+                    </th>
+                  </thead>
+                </table>
+              </th>
+              <th scope="col" style="width: 20%; text-align: center">
+                <div class="slds-truncate">Action</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <aura:iteration
+              items="{!v.RelatedOpportunityLineItems}"
+              var="product"
+            >
+              <tr>
+                <td style="white-space: initial">
+                  <div class="slds-col">
+                    <div title="{!product.productName}">
+                      <p>
+                        <label
+                          class="txt"
+                          data-crudaction="Edit"
+                          style="color: #006dcc; cursor: pointer"
+                          data-value="{!product.oppLineItemId}"
+                          onclick="{!c.editOpportunityProductLineItem}"
+                          >{!product.productName}</label
+                        >
+                      </p>
+                    </div>
+                  </div>
+                  <div class="slds-col">
+                    <p>{!product.sku}</p>
+                  </div>
+                  <div class="slds-col">
+                    <p>{!product.supplier}</p>
+                  </div>
+                </td>
+                <td>
+                  <table>
+                    <tbody>
+                      <aura:iteration
+                        items="{!product.pricingDetails}"
+                        var="pricing"
+                      >
+                        <tr>
+                          <aura:if isTrue="{!pricing.Show_To_Client__c}">
+                            <td style="width: 20%">&nbsp;&nbsp;</td>
+                            <td style="width: 20%">
+                              <ui:outputCurrency
+                                value="{!pricing.Quantity__c}"
+                                format="#,###.##"
+                              />
+                            </td>
+                            <td style="width: 20%">
+                              <aura:if isTrue="{!pricing.Net_Cost__c}">
+                                <ui:outputCurrency
+                                  value="{!pricing.Net_Cost__c}"
+                                  format="$#,###.##"
+                                />
+                              </aura:if>
+                            </td>
+                            <td style="width: 20%">
+                              <aura:if isTrue="{!pricing.Show_To_Client__c}">
+                                {!pricing.Margin__c}%
+                              </aura:if>
+                            </td>
+                            <td style="width: 20%">
+                              <aura:if
+                                isTrue="{!pricing.Price_Per_Unit__c != null}"
+                              >
+                                <ui:outputCurrency
+                                  value="{!pricing.Price_Per_Unit__c}"
+                                  format="$#,###.##"
+                                />
+                              </aura:if>
+                            </td>
+                          </aura:if>
+                        </tr>
+                      </aura:iteration>
+
+                      <aura:iteration
+                        items="{!product.fixChargesWithoutArtWork}"
+                        var="fixedCharges"
+                      >
+                        <tr>
+                          <td style="width: 20%; white-space: initial">
+                            <aura:if isTrue="{!fixedCharges.Title__c}">
+                              {!fixedCharges.Title__c}
+                            </aura:if>
+                          </td>
+                          <td style="width: 20%"></td>
+                          <td style="width: 20%">
+                            <aura:if isTrue="{!fixedCharges.Cost__c}">
+                              ${!fixedCharges.Cost__c}
+                            </aura:if>
+                          </td>
+                          <td style="width: 20%">
+                            <aura:if isTrue="{!fixedCharges.Margin__c}">
+                              {!fixedCharges.Margin__c}%
+                            </aura:if>
+                          </td>
+                          <td style="width: 20%">
+                            <aura:if isTrue="{!fixedCharges.Retail_Price__c}">
+                              <ui:outputCurrency
+                                value="{!fixedCharges.Retail_Price__c}"
+                                format="$#,###.00"
+                              />
+                            </aura:if>
+                          </td>
+                        </tr>
+                      </aura:iteration>
+
+                      <aura:iteration
+                        items="{!product.runCharges}"
+                        var="runCharge"
+                      >
+                        <aura:if isTrue="{!runCharge.Value_1_show__c}">
+                          <tr>
+                            <aura:if
+                              isTrue="{!product.pricingDetails[0].Quantity__c}"
+                            >
+                              <td style="width: 20%; white-space: initial">
+                                <aura:if isTrue="{!runCharge.Title__c}">
+                                  {!runCharge.Title__c}
+                                </aura:if>
+                              </td>
+                              <td style="width: 20%">
+                                <ui:outputCurrency
+                                  value="{!product.pricingDetails[0].Quantity__c}"
+                                  format="#,###.##"
+                                />
+                              </td>
+                              <td style="width: 20%">
+                                <aura:if isTrue="{!runCharge.Value1__c}">
+                                  <ui:outputCurrency
+                                    value="{!runCharge.Value1__c}"
+                                    format="$#,###.00"
+                                  />
+                                  <aura:set attribute="else"> $0.00 </aura:set>
+                                </aura:if>
+                              </td>
+                            </aura:if>
+                          </tr>
+                        </aura:if>
+                        <aura:if isTrue="{!runCharge.Value_2_show__c}">
+                          <tr>
+                            <aura:if
+                              isTrue="{!product.pricingDetails[1].Quantity__c}"
+                            >
+                              <td style="width: 20%; white-space: initial">
+                                <aura:if isTrue="{!runCharge.Title__c}">
+                                  {!runCharge.Title__c}
+                                </aura:if>
+                              </td>
+                              <td style="width: 20%">
+                                <ui:outputCurrency
+                                  value="{!product.pricingDetails[1].Quantity__c}"
+                                  format="#,###.##"
+                                />
+                              </td>
+                              <td style="width: 20%">
+                                <aura:if isTrue="{!runCharge.Value2__c}">
+                                  <ui:outputCurrency
+                                    value="{!runCharge.Value2__c}"
+                                    format="$#,###.00"
+                                  />
+                                  <aura:set attribute="else"> $0.00 </aura:set>
+                                </aura:if>
+                              </td>
+                            </aura:if>
+                          </tr>
+                        </aura:if>
+                        <aura:if isTrue="{!runCharge.Value_3_show__c}">
+                          <tr>
+                            <aura:if
+                              isTrue="{!product.pricingDetails[2].Quantity__c}"
+                            >
+                              <td style="width: 20%; white-space: initial">
+                                <aura:if isTrue="{!runCharge.Title__c}">
+                                  {!runCharge.Title__c}
+                                </aura:if>
+                              </td>
+                              <td style="width: 20%">
+                                <ui:outputCurrency
+                                  value="{!product.pricingDetails[2].Quantity__c}"
+                                  format="#,###.##"
+                                />
+                              </td>
+                              <td style="width: 20%">
+                                <aura:if isTrue="{!runCharge.Value3__c}">
+                                  <ui:outputCurrency
+                                    value="{!runCharge.Value3__c}"
+                                    format="$#,###.00"
+                                  />
+                                  <aura:set attribute="else"> $0.00 </aura:set>
+                                </aura:if>
+                              </td>
+                            </aura:if>
+                          </tr>
+                        </aura:if>
+                        <aura:if isTrue="{!runCharge.Value_4_show__c}">
+                          <tr>
+                            <aura:if
+                              isTrue="{!product.pricingDetails[3].Quantity__c}"
+                            >
+                              <td style="width: 20%; white-space: initial">
+                                <aura:if isTrue="{!runCharge.Title__c}">
+                                  {!runCharge.Title__c}
+                                </aura:if>
+                              </td>
+                              <td style="width: 20%">
+                                <ui:outputCurrency
+                                  value="{!product.pricingDetails[3].Quantity__c}"
+                                  format="#,###.##"
+                                />
+                              </td>
+                              <td style="width: 20%">
+                                <aura:if isTrue="{!runCharge.Value4__c}">
+                                  <ui:outputCurrency
+                                    value="{!runCharge.Value4__c}"
+                                    format="$#,###.00"
+                                  />
+                                  <aura:set attribute="else"> $0.00 </aura:set>
+                                </aura:if>
+                              </td>
+                            </aura:if>
+                          </tr>
+                        </aura:if>
+                        <aura:if isTrue="{!runCharge.Value_5_show__c}">
+                          <tr>
+                            <aura:if
+                              isTrue="{!product.pricingDetails[4].Quantity__c}"
+                            >
+                              <td style="width: 20%; white-space: initial">
+                                <aura:if isTrue="{!runCharge.Title__c}">
+                                  {!runCharge.Title__c}
+                                </aura:if>
+                              </td>
+                              <td style="width: 20%">
+                                <ui:outputCurrency
+                                  value="{!product.pricingDetails[4].Quantity__c}"
+                                  format="#,###.##"
+                                />
+                              </td>
+                              <td style="width: 20%">
+                                <aura:if isTrue="{!runCharge.Value5__c}">
+                                  <ui:outputCurrency
+                                    value="{!runCharge.Value5__c}"
+                                    format="$#,###.00"
+                                  />
+                                  <aura:set attribute="else"> $0.00 </aura:set>
+                                </aura:if>
+                              </td>
+                            </aura:if>
+                          </tr>
+                        </aura:if>
+                      </aura:iteration>
+
+                      <aura:iteration
+                        items="{!product.extraChargesWithArtWork}"
+                        var="chargesWithArkwork"
+                      >
+                        <tr>
+                          <td colspan="4" style="font-weight: bold">
+                            {!chargesWithArkwork.artworkName}
+                          </td>
+                        </tr>
+                        <aura:iteration
+                          items="{!chargesWithArkwork.fixedCharges}"
+                          var="fixedCharges"
+                        >
+                          <tr>
+                            <td style="width: 20%; white-space: initial">
+                              <aura:if isTrue="{!fixedCharges.Title__c}">
+                                {!fixedCharges.Title__c}
+                              </aura:if>
+                            </td>
+                            <td style="width: 20%"></td>
+                            <td style="width: 20%">
+                              <aura:if isTrue="{!fixedCharges.Cost__c}">
+                                ${!fixedCharges.Cost__c}
+                              </aura:if>
+                            </td>
+                            <td style="width: 20%">
+                              <aura:if isTrue="{!fixedCharges.Margin__c}">
+                                {!fixedCharges.Margin__c}%
+                              </aura:if>
+                            </td>
+                            <td style="width: 20%">
+                              <aura:if isTrue="{!fixedCharges.Retail_Price__c}">
+                                <ui:outputCurrency
+                                  value="{!fixedCharges.Retail_Price__c}"
+                                  format="$#,###.00"
+                                />
+                              </aura:if>
+                            </td>
+                          </tr>
+                        </aura:iteration>
+                      </aura:iteration>
+                    </tbody>
+                  </table>
+                </td>
+
+                <td style="text-align: center">
+                  <div class="slds-no-flex">
+                    <div class="slds-shrink-none">
+                      <ui:menu>
+                        <ui:menuTriggerLink aura:id="trigger">
+                          <a
+                            class="slds-button slds-button--icon-x-small slds-button--icon-border-filled CIcon"
+                            role="button"
+                            title="Show more actions"
+                            href="javascript:void(0);"
+                          >
+                            <span
+                              class="slds-icon_container slds-icon-utility-down slds-button__icon forceIcon"
+                              data-aura-class="forceIcon"
+                            >
+                              <span
+                                class="lightningPrimitiveIcon"
+                                data-aura-class="lightningPrimitiveIcon"
+                              >
+                                <lightning:icon
+                                  iconName="utility:down"
+                                  size="xx-small"
+                                />
+                              </span>
+                              <span class="slds-assistive-text"
+                                >Show more actions</span
+                              >
+                            </span>
+                          </a>
+                        </ui:menuTriggerLink>
+                        <ui:menuList
+                          class="actionMenu CMenu"
+                          aura:id="actionMenu"
+                          autoPosition="true"
+                        >
+                          <span
+                            class="uiMenuItem"
+                            data-crudaction="Delete"
+                            data-value="{!product.oppLineItemId}"
+                            onclick="{!c.openDeletePopup}"
+                            ><a style="color: rgb(0, 112, 210)">Delete</a></span
+                          >
+                          <span
+                            class="uiMenuItem"
+                            data-crudaction="Edit"
+                            data-value="{!product.oppLineItemId}"
+                            onclick="{!c.editOpportunityLineItem}"
+                            ><a style="color: rgb(0, 112, 210)">Edit</a></span
+                          >
+                          <span
+                            class="uiMenuItem"
+                            data-crudaction="Edit"
+                            data-value="{!product.oppLineItemId}"
+                            onclick="{!c.openClonePopup}"
+                            ><a style="color: rgb(0, 112, 210)">Clone</a></span
+                          >
+                        </ui:menuList>
+                      </ui:menu>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </aura:iteration>
+          </tbody>
+        </table>
+      </div>
+
+      <aura:if isTrue="{!greaterthan(v.Size,6)}">
+        <aura:if isTrue="{!v.viewAll}">
+          <footer class="slds-card__footer">
+            <a href="javascript:void(0)" onclick="{!c.gotoRelatedList}"
+              >View All <span class="slds-assistive-text">entity type</span></a
+            >
+          </footer>
+        </aura:if>
+      </aura:if>
+    </aura:if>
+  </article>
+
+  <div
+    class="slds-m-around--xx-large"
+    style="margin:0px!important z-index : 1 "
+  >
+    <!-- DELETE POPUP  -->
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.deletePopup}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="height: 110% !important"
+          role="document"
+          tabindex="0"
+        >
+          <aura:if isTrue="{!v.DeleteSpinner}">
+            <lightning:spinner variant="brand" size="small" />
+          </aura:if>
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Delete Product
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeDeletePopup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+          <aura:if isTrue="{! v.Error != null}">
+            <div class="slds-modal__content slds-p-around_medium">
+              <p style="color: red">{!v.Error}</p>
+            </div>
+          </aura:if>
+          <div class="slds-modal__content slds-p-around--medium">
+            <form class="slds-form--stacked">
+              <div class="slds">
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col--padded slds-medium-size--1-of-2">
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        Are you sure you want to delete this product?
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closeDeletePopup}"
+              >Cancel</lightning:button
+            >
+            <lightning:button
+              class="slds-button slds-button--brand customb"
+              onclick="{!c.deleteOpportunityLineItem}"
+              >Delete</lightning:button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+
+  <aura:if isTrue="{!v.openConvertToEstimate}">
+    <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+    <aura:if isTrue="{!v.estimateExist == false}">
+      <div
+        style="align: center"
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          aura:id="popupclassId"
+          class="slds-modal__container"
+          style="
+            height: 100% !important;
+            width: 70% !important;
+            max-width: 70rem;
+          "
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Convert To Estimate
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeEstimatePopup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+          <div class="slds-modal__content slds-p-around--large">
+            <c:ConvertToEstimateMainComponent recordId="{!v.recordId}" />
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+      <aura:set attribute="else">
+        <div
+          style="align: center"
+          role="dialog"
+          tabindex="-1"
+          aria-labelledby="header99"
+          class="slds-modal slds-fade-in-open"
+        >
+          <div
+            class="slds-modal__container"
+            style="
+              height: 100% !important;
+              width: 35% !important;
+              max-width: 70rem;
+            "
+            role="document"
+            tabindex="0"
+          >
+            <div class="slds-modal__header">
+              <h2
+                id="modal-heading-01"
+                class="slds-text-heading_medium slds-hyphenate"
+              >
+                Convert To Estimate
+              </h2>
+              <button
+                class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+                title="Close"
+                onclick="{!c.closeEstimatePopup}"
+              >
+                <lightning:icon
+                  class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                  iconName="utility:close"
+                  size="small"
+                />
+                <span class="slds-assistive-text">Close this window</span>
+              </button>
+            </div>
+            <div
+              style="text-align: center"
+              class="slds-modal__content slds-p-around--large"
+            >
+              <h2 class="slds-text-heading_medium slds-hyphenate">
+                Estimate Already Exists
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+      </aura:set>
+    </aura:if>
+  </aura:if>
+
+  <div class="slds-m-around--xx-large" style="margin: 0px !important">
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.showWarningPopup}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="height: 100% !important; width: 70% !important"
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Warning
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeWarningPopup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+          <div class="slds-modal__content slds-p-around--medium">
+            <form class="slds-form--stacked">
+              <div class="slds">
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                      Are you sure you want to create estimate with
+                      <strong>{!v.accountSelected} QBO account</strong>?<br />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closeWarningPopup}"
+              >No</lightning:button
+            >
+            <lightning:button
+              class="slds-button slds-button--brand customb"
+              onclick="{!c.convertToestimateInchild}"
+              >Yes</lightning:button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+
+  <div
+    class="slds-m-around--xx-large"
+    style="margin:0px!important z-index : 1 "
+  >
+    <!-- Clone POPUP  -->
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.clonePopup}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="height: 110% !important"
+          role="document"
+          tabindex="0"
+        >
+          <aura:if isTrue="{!v.cloneSpinner}">
+            <lightning:spinner variant="brand" size="small" />
+          </aura:if>
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Clone Product
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeClonePopup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+          <aura:if isTrue="{! v.Error != null}">
+            <div class="slds-modal__content slds-p-around_medium">
+              <p style="color: red">{!v.Error}</p>
+            </div>
+          </aura:if>
+          <div class="slds-modal__content slds-p-around--medium">
+            <form class="slds-form--stacked">
+              <div class="slds">
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col--padded slds-medium-size--1-of-2">
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        Are you sure you want to Clone this product?
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closeClonePopup}"
+              >Cancel</lightning:button
+            >
+            <lightning:button
+              class="slds-button slds-button--brand customb"
+              onclick="{!c.cloneOpportunityLineItem}"
+              >Clone</lightning:button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+</aura:component>

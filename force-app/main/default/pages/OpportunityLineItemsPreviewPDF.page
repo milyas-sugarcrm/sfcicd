@@ -1,0 +1,265 @@
+<apex:page controller="OpportunityLineItemExtension" renderAs="pdf">
+  <table
+    style="
+      width: 750px;
+      margin: auto;
+      font-size: 14px;
+      font-family: &quot;Roboto&quot;, Arial, sans-serif;
+    "
+    cellpadding="0"
+  >
+    <tr>
+      <td colspan="2">
+        <table>
+          <tr>
+            <td align="left">
+              <apex:image
+                style="width: 90px; height: 90px; padding-right: 20px"
+                url="{!$Resource.TPLogo}"
+              />
+            </td>
+            <td align="left">
+              <apex:outputText value="5026 Cass St #B" /><br />
+              <apex:outputText value="San Diego, California 92109" /><br />
+              <apex:outputText value="United States" /><br />
+              <apex:outputText value="(858) 598-5563 x1" /><br />
+              <apex:outputText value="info@teamphun.com" /><br />
+              <apex:outputText value="www.teamphun.com" /><br />
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- All line Items -->
+    <apex:repeat value="{!LineItemsList}" var="lineItem">
+      <apex:repeat value="{!lineItem}" var="item">
+        <!-- Product Image -->
+        <tr>
+          <td colspan="2" align="center" style="text-align: center">
+            <apex:outputPanel
+              style="
+                display: inline-block;
+                width: 350px;
+                height: 350px;
+                margin-top: 14px;
+                margin-bottom: 20px;
+              "
+              rendered="{!if(!item.imageExits, false ,true)}"
+            >
+              <apex:image
+                style="width: 100%; height: 100%"
+                url="{!item.activeImage}"
+              />
+            </apex:outputPanel>
+            <apex:outputPanel
+              style="
+                display: inline-block;
+                width: 350px;
+                height: 350px;
+                margin-top: 14px;
+                margin-bottom: 20px;
+              "
+              rendered="{!if(!item.imageExits, true ,false)}"
+            >
+              <apex:image
+                style="width: 100%; height: 100%"
+                url="{!$Resource.No_Image_Available}"
+              />
+            </apex:outputPanel>
+          </td>
+        </tr>
+        <!-- Product Name -->
+        <tr>
+          <td colspan="2" style="font-size: 18px; padding-bottom: 6px">
+            <b><apex:outputText value="Product Name" /></b>
+            <span><apex:outputText value="{!item.name}" /></span>
+          </td>
+        </tr>
+        <!-- Product Description -->
+        <tr>
+          <td colspan="2" style="font-size: 14px; padding-bottom: 6px">
+            <b><apex:outputText value="Description" /></b>
+            <span>
+              <apex:outputText value="{!item.description}" />
+            </span>
+          </td>
+        </tr>
+        <!-- Product CPN -->
+        <tr>
+          <td colspan="2" style="font-size: 14px; padding-bottom: 6px">
+            <b><apex:outputText value="CPN" /></b>
+            <span><apex:outputText value="" /></span>
+          </td>
+        </tr>
+        <!-- Product Color -->
+        <tr>
+          <td colspan="2" style="font-size: 14px; padding-bottom: 6px">
+            <b><apex:outputText value="Color" /></b>
+            <apex:repeat value="{!item.lineItemColors}" var="colors">
+              <span><apex:outputText value="{!colors}" /></span>
+            </apex:repeat>
+          </td>
+        </tr>
+        <!-- Product Size -->
+        <tr>
+          <td colspan="2" style="font-size: 14px; padding-bottom: 6px">
+            <b><apex:outputText value="Size" /></b>
+            <apex:repeat value="{!item.lineItemSizes}" var="sizes">
+              <span><apex:outputText value="{!sizes}" /></span>
+            </apex:repeat>
+          </td>
+        </tr>
+        <!-- Product Pricing -->
+        <tr>
+          <td colspan="2">
+            <apex:outputPanel rendered="{!if(!item.pricingSize, false ,true)}">
+              <table
+                style="
+                  border-collapse: collapse;
+                  text-align: left;
+                  border-color: #c4c4c4;
+                "
+                border="1"
+                cellpadding="0"
+              >
+                <tr>
+                  <th style="padding: 6px; border-color: #c4c4c4">
+                    <apex:outputText value="Quantity" />
+                  </th>
+                  <apex:repeat value="{!item.lineItemPricing}" var="prices">
+                    <th style="padding: 6px; border-color: #c4c4c4">
+                      <apex:outputText value="{!prices.Quantity__c}" />
+                    </th>
+                  </apex:repeat>
+                </tr>
+                <tr>
+                  <th style="padding: 6px; border-color: #c4c4c4">
+                    <apex:outputText value="Price" />
+                  </th>
+                  <apex:repeat value="{!item.lineItemPricing}" var="prices">
+                    <td style="padding: 6px; border-color: #c4c4c4">
+                      <apex:outputText value="{0, number, ###,##0.000}">
+                        $<apex:param value="{!prices.Retail_Price__c}" />
+                      </apex:outputText>
+                    </td>
+                  </apex:repeat>
+                </tr>
+                <apex:repeat
+                  value="{!item.lineItemFixedCharges}"
+                  var="fixedCharges"
+                >
+                  <tr>
+                    <th style="padding: 6px; border-color: #c4c4c4">
+                      <apex:outputText value="{!fixedCharges.Title__c}" />
+                    </th>
+                    <th style="padding: 6px; border-color: #c4c4c4">
+                      <apex:outputText value="{0, number, ###,##0.000}">
+                        $<apex:param value="{!fixedCharges.Retail_Price__c}" />
+                      </apex:outputText>
+                    </th>
+                  </tr>
+                </apex:repeat>
+                <apex:repeat
+                  value="{!item.lineItemRunCharges}"
+                  var="runcharges"
+                >
+                  <tr>
+                    <th style="padding: 6px; border-color: #c4c4c4">
+                      <apex:outputText value="{!runcharges.Title__c}" />
+                    </th>
+                    <apex:variable
+                      var="v"
+                      value=""
+                      rendered="{!IF(runcharges.Value_1_show__c == false || runcharges.Value_1_show__c == NULL  ,false,true)}"
+                    >
+                      <apex:variable
+                        var="Dollar"
+                        value=""
+                        rendered="{!IF(runcharges.Value1__c == NULL ,false,true)}"
+                      >
+                        <td style="padding: 6px; border-color: #c4c4c4">
+                          <apex:outputText value="{0, number, ###,##0.000}">
+                            $<apex:param value="{!runcharges.Value1__c}" />
+                          </apex:outputText>
+                        </td>
+                      </apex:variable>
+                    </apex:variable>
+                    <apex:variable
+                      var="v"
+                      value=""
+                      rendered="{!IF(runcharges.Value_2_show__c == false || runcharges.Value_2_show__c == NULL  ,false,true)}"
+                    >
+                      <apex:variable
+                        var="Dollar"
+                        value=""
+                        rendered="{!IF(runcharges.Value2__c == NULL ,false,true)}"
+                      >
+                        <td style="padding: 6px; border-color: #c4c4c4">
+                          <apex:outputText value="{0, number, ###,##0.000}">
+                            $<apex:param value="{!runcharges.Value2__c}" />
+                          </apex:outputText>
+                        </td>
+                      </apex:variable>
+                    </apex:variable>
+                    <apex:variable
+                      var="v"
+                      value=""
+                      rendered="{!IF(runcharges.Value_3_show__c == false || runcharges.Value_3_show__c == NULL  ,false,true)}"
+                    >
+                      <apex:variable
+                        var="Dollar"
+                        value=""
+                        rendered="{!IF(runcharges.Value3__c == NULL ,false,true)}"
+                      >
+                        <td style="padding: 6px; border-color: #c4c4c4">
+                          <apex:outputText value="{0, number, ###,##0.000}">
+                            $<apex:param value="{!runcharges.Value3__c}" />
+                          </apex:outputText>
+                        </td>
+                      </apex:variable>
+                    </apex:variable>
+                    <apex:variable
+                      var="v"
+                      value=""
+                      rendered="{!IF(runcharges.Value_4_show__c == false || runcharges.Value_4_show__c == NULL  ,false,true)}"
+                    >
+                      <apex:variable
+                        var="Dollar"
+                        value=""
+                        rendered="{!IF(runcharges.Value4__c == NULL ,false,true)}"
+                      >
+                        <td style="padding: 6px; border-color: #c4c4c4">
+                          <apex:outputText value="{0, number, ###,##0.000}">
+                            $<apex:param value="{!runcharges.Value4__c}" />
+                          </apex:outputText>
+                        </td>
+                      </apex:variable>
+                    </apex:variable>
+                    <apex:variable
+                      var="v"
+                      value=""
+                      rendered="{!IF(runcharges.Value_5_show__c == false || runcharges.Value_5_show__c == NULL  ,false,true)}"
+                    >
+                      <apex:variable
+                        var="Dollar"
+                        value=""
+                        rendered="{!IF(runcharges.Value5__c == NULL ,false,true)}"
+                      >
+                        <td style="padding: 6px; border-color: #c4c4c4">
+                          <apex:outputText value="{0, number, ###,##0.000}">
+                            $<apex:param value="{!runcharges.Value5__c}" />
+                          </apex:outputText>
+                        </td>
+                      </apex:variable>
+                    </apex:variable>
+                  </tr>
+                </apex:repeat>
+              </table>
+            </apex:outputPanel>
+          </td>
+        </tr>
+      </apex:repeat>
+    </apex:repeat>
+  </table>
+</apex:page>

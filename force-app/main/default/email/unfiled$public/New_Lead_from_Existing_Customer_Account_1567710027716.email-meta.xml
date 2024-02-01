@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description
+  >Use this as an introduction to a new lead at an existing client, reference the previous contact, and make an introduction to Team Phun by offering a link to our Client page and Instagram page.</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>New Lead from Existing Customer Account</name>
+    <relatedEntityType>Lead</relatedEntityType>
+    <style>none</style>
+    <subject>AG Scientific Branded Merchandise, Gifts, or Apparel</subject>
+    <type>custom</type>
+    <uiType>SFX</uiType>
+</EmailTemplate>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Embroidery</fullName>
+        <default>false</default>
+        <label>Embroidery</label>
+    </customValue>
+    <customValue>
+        <fullName>Screen Printing</fullName>
+        <default>false</default>
+        <label>Screen Printing</label>
+    </customValue>
+    <customValue>
+        <fullName>Heat Transfer</fullName>
+        <default>false</default>
+        <label>Heat Transfer</label>
+    </customValue>
+    <customValue>
+        <fullName>Sublimation</fullName>
+        <default>false</default>
+        <label>Sublimation</label>
+    </customValue>
+    <customValue>
+        <fullName>Direct to Garment Printing</fullName>
+        <default>false</default>
+        <label>Direct to Garment Printing</label>
+    </customValue>
+    <customValue>
+        <fullName>Custom Pocket</fullName>
+        <default>false</default>
+        <label>Custom Pocket</label>
+    </customValue>
+    <customValue>
+        <fullName>Heat Application</fullName>
+        <default>false</default>
+        <label>Heat Application</label>
+    </customValue>
+    <customValue>
+        <fullName>Custom Patch</fullName>
+        <default>false</default>
+        <label>Custom Patch</label>
+    </customValue>
+    <customValue>
+        <fullName>Custom Interior/Clip Label</fullName>
+        <default>false</default>
+        <label>Custom Interior/Clip Label</label>
+    </customValue>
+    <masterLabel>Decoration Type</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

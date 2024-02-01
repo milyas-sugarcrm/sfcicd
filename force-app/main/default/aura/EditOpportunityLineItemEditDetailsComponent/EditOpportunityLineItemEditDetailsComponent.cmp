@@ -1,0 +1,2583 @@
+<aura:component
+  controller="EditOpportunityLineItemController"
+  implements="force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global"
+>
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="opportunityId" type="String" />
+  <aura:handler event="force:refreshView" action="{!c.doInit}" />
+  <aura:attribute name="updatedValuesOfFixedCharges" type="String[]" />
+  <aura:attribute name="recordToUpdateOfFixedCharges" type="String" />
+  <aura:attribute name="pricingRecordsCount" type="Integer" />
+  <aura:attribute name="SalesStage" type="Boolean" default="false" />
+  <aura:attribute name="pricesList" type="object[]" />
+  <aura:attribute name="recordId" type="String" />
+  <aura:attribute name="isOpen" type="boolean" default="false" />
+  <aura:attribute name="options" type="List" />
+  <aura:attribute name="opportunityLineItem" type="String[]" />
+  <aura:handler
+    name="change"
+    value="{!v.username}"
+    action="{!c.valuesChanged}"
+  />
+  <aura:attribute name="addRunCharge" type="boolean" default="false" />
+  <aura:attribute name="checkPricing" type="boolean" default="false" />
+  <aura:attribute name="checkProduct" type="boolean" default="false" />
+  <aura:attribute name="pricingFromEsp" type="String[]" />
+  <aura:attribute name="SpinnerPrice" type="boolean" default="false" />
+  <aura:attribute name="Spinner" type="boolean" default="false" />
+
+  <aura:if isTrue="{!v.Spinner}">
+    <lightning:spinner variant="brand" size="large" />
+  </aura:if>
+
+  <div class="slds-panel slds-grid slds-grid--vertical slds-nowrap">
+    <div class="slds-panel__header">
+      <h2
+        class="slds-panel__header-title slds-text-heading_small slds-truncate"
+      >
+        Edit Products
+      </h2>
+      <span class="slds-assistive-text"></span>
+      <div onclick="{!c.openActionWindow}">
+        <lightning:icon
+          class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+          iconName="utility:close"
+          aura:id="del"
+          size="small"
+        />
+      </div>
+    </div>
+
+    <div class="slds-panel__body">
+      <aura:iteration items="{!v.opportunityLineItem}" var="product">
+        <form class="slds-form--inline">
+          <div class="slds-grid slds-gutters">
+            <div style="padding-left: 34px" class="slds-col">
+              <div class="slds-form-element">
+                <label
+                  style="padding-left: 10px; font-weight: bold"
+                  class="slds-form-element__label"
+                >
+                  Product Name</label
+                >
+                <br />
+                <div class="slds-form-element__control">
+                  <aura:if isTrue="{!v.SalesStage}">
+                    <lightning:input
+                      disabled="true"
+                      type="text"
+                      aura:id="productName"
+                      value="{!product.name}"
+                      onfocusout="{!c.labelNotesValueChanged}"
+                    />
+
+                    <aura:set attribute="else">
+                      <lightning:input
+                        type="text"
+                        aura:id="productName"
+                        value="{!product.name}"
+                        onfocusout="{!c.labelNotesValueChanged}"
+                      />
+                    </aura:set>
+                  </aura:if>
+                </div>
+              </div>
+            </div>
+            <div class="slds-col">
+              <div class="slds-form-element">
+                <label
+                  style="font-weight: bold"
+                  class="slds-form-element__label"
+                >
+                  SKU</label
+                ><br />
+                <div style="color: #676a60" class="slds-form-element__control">
+                  <span> {!product.sku} </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="slds-col">
+              <div class="slds-form-element">
+                <label
+                  style="font-weight: bold"
+                  class="slds-form-element__label"
+                >
+                  Supplier</label
+                ><br />
+                <div style="color: #676a60" class="slds-form-element__control">
+                  <span> {!product.supplier} </span>
+                </div>
+              </div>
+            </div>
+            <div class="slds-col">
+              <div class="slds-form-element">
+                <label
+                  style="font-weight: bold"
+                  class="slds-form-element__label"
+                >
+                  Imprint Method</label
+                ><br />
+                <div style="color: #676a60" class="slds-form-element__control">
+                  <span> {!product.imprintMethods} </span>
+                </div>
+              </div>
+            </div>
+            <br />
+          </div>
+        </form>
+        <div class="slds-grid slds-gutters" style="width: 100%; display: flex">
+          <aura:if isTrue="{!product.additionalColors}">
+            <div
+              style="padding-top: 5px; padding-left: 43px; width: 50%"
+              class="slds-col"
+            >
+              <div class="slds-form-element">
+                <label
+                  style="font-weight: bold"
+                  class="slds-form-element__label"
+                  >Additional Colors</label
+                >
+                <div class="slds-form-element__control">
+                  <span
+                    style="color: #676a60"
+                    class="slds-form-element__static"
+                  >
+                    {!product.additionalColors}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </aura:if>
+          <aura:if isTrue="{!product.additionalLocations}">
+            <aura:if isTrue="{!product.additionalColors}">
+              <div class="slds-col" style="padding-top: 5px; width: 50%">
+                <div class="slds-form-element">
+                  <label
+                    style="font-weight: bold"
+                    class="slds-form-element__label"
+                    >Additional Locations</label
+                  >
+                  <div class="slds-form-element__control">
+                    <span
+                      style="color: #676a60"
+                      class="slds-form-element__static"
+                    >
+                      {!product.additionalLocations}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <aura:set attribute="else">
+                <div
+                  class="slds-col"
+                  style="padding-left: 43px; padding-top: 5px; width: 50%"
+                >
+                  <div class="slds-form-element">
+                    <label
+                      style="font-weight: bold"
+                      class="slds-form-element__label"
+                      >Additional Locations</label
+                    >
+                    <div class="slds-form-element__control">
+                      <span
+                        style="color: #676a60"
+                        class="slds-form-element__static"
+                      >
+                        {!product.additionalLocations}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </aura:set>
+            </aura:if>
+          </aura:if>
+        </div>
+
+        <table class="slds-table slds-no-row-hover slds-table_cell-buffer">
+          <tr>
+            <td>
+              <div class="slds-form slds-form_stacked">
+                <div class="slds-form-element__control">
+                  <aura:if isTrue="{!v.SalesStage}">
+                    <lightning:textarea
+                      disabled="true"
+                      aura:id="description"
+                      label="Description"
+                      value="{!product.description}"
+                      onfocusout="{!c.labelNotesValueChanged}"
+                    />
+                    <aura:set attribute="else">
+                      <lightning:textarea
+                        aura:id="description"
+                        label="Description"
+                        value="{!product.description}"
+                        onfocusout="{!c.labelNotesValueChanged}"
+                      />
+                    </aura:set>
+                  </aura:if>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <aura:iteration items="{!product.warnings}" var="warning">
+            <tr>
+              <td>
+                <form>
+                  <div class="slds-form slds-form_stacked">
+                    <div class="slds-grid">
+                      <div class="slds-size_11-of-12">
+                        <aura:if isTrue="{!v.SalesStage}">
+                          <lightning:input
+                            disabled="true"
+                            value="{!warning.Warning__c}"
+                            onfocusout="{!c.warningValueChanged}"
+                            name="{!warning.Id}"
+                            label="Warning"
+                          />
+
+                          <aura:set attribute="else">
+                            <lightning:input
+                              value="{!warning.Warning__c}"
+                              onfocusout="{!c.warningValueChanged}"
+                              name="{!warning.Id}"
+                              label="Warning"
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </div>
+
+                      <aura:if isTrue="{!v.SalesStage == false}">
+                        <div
+                          data-value="{!warning.Id}"
+                          onclick="{!c.deleteWarning}"
+                          class="slds-col slds-size_1-of-12"
+                          style="
+                            cursor: pointer;
+                            padding-top: 23px;
+                            padding-left: 5%;
+                          "
+                        >
+                          <lightning:icon
+                            iconName="action:delete"
+                            size="xx-small"
+                            aura:id="deleteWarning"
+                          />
+                        </div>
+                      </aura:if>
+                    </div>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          </aura:iteration>
+          <tr>
+            <td>
+              <aura:if isTrue="{!v.SalesStage}">
+                <button
+                  disabled="true"
+                  class="slds-button slds-button--brand"
+                  onclick="{!c.AddWarning}"
+                >
+                  Add Warning
+                </button>
+                <aura:set attribute="else">
+                  <button
+                    class="slds-button slds-button--brand"
+                    onclick="{!c.AddWarning}"
+                  >
+                    Add Warning
+                  </button>
+                </aura:set>
+              </aura:if>
+              <aura:if isTrue="{!product.ESPProductId == null}">
+                <aura:if isTrue="{!v.SalesStage}">
+                  <button
+                    disabled="true"
+                    class="slds-button slds-button--brand"
+                    value="{!product.ProductID}"
+                    onclick="{!c.openCheckProductPopup}"
+                  >
+                    View Product
+                  </button>
+                  <aura:set attribute="else">
+                    <button
+                      class="slds-button slds-button--brand"
+                      value="{!product.ProductID}"
+                      onclick="{!c.openCheckProductPopup}"
+                    >
+                      View Product
+                    </button>
+                  </aura:set>
+                </aura:if>
+                <aura:set attribute="else">
+                  <aura:if isTrue="{!v.SalesStage}">
+                    <button
+                      disabled="true"
+                      class="slds-button slds-button--brand"
+                      value="{!product.ESPProductId}"
+                      onclick="{!c.openDetailProductPage}"
+                    >
+                      View Product
+                    </button>
+                    <aura:set attribute="else">
+                      <button
+                        class="slds-button slds-button--brand"
+                        value="{!product.ESPProductId}"
+                        onclick="{!c.openDetailProductPage}"
+                      >
+                        View Product
+                      </button>
+                    </aura:set>
+                  </aura:if>
+                </aura:set>
+              </aura:if>
+              <aura:if isTrue="{!v.SalesStage}">
+                <button
+                  disabled="true"
+                  class="slds-button slds-button--brand slds-button--small"
+                  onclick="{!c.openPricingPopup}"
+                >
+                  Check Pricing
+                </button>
+                <aura:set attribute="else">
+                  <button
+                    class="slds-button slds-button--brand slds-button--small"
+                    onclick="{!c.openPricingPopup}"
+                  >
+                    Check Pricing
+                  </button>
+                </aura:set>
+              </aura:if>
+              <br />
+            </td>
+          </tr>
+        </table>
+        <span style="float: right">
+          <label style="font-weight: bold">Currency: </label>
+          <p style="display: inline-block">USD</p>
+        </span>
+        <div class="slds-text-heading_medium">Pricing:</div>
+        <br />
+
+        <table
+          class="slds-table slds-no-row-hover slds-table_cell-buffer slds-border_top"
+        >
+          <thead>
+            <tr>
+              <th scope="col">
+                <!--th></th>
+                                <th></th-->
+                <div class="slds-truncate"></div>
+              </th>
+              <th scope="col">
+                <div class="slds-truncate"></div>
+              </th>
+              <th scope="col">
+                <div class="slds-truncate"></div>
+              </th>
+              <th scope="col">
+                <div class="slds-truncate"></div>
+              </th>
+
+              <th scope="col">
+                <div class="slds-truncate"></div>
+              </th>
+              <th scope="col">
+                <div class="slds-truncate"></div>
+              </th>
+
+              <th scope="col">
+                <div class="slds-truncate"></div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 10%; vertical-align: bottom">
+                <div class="slds-grid slds-gutters">
+                  <div class="slds-col">
+                    <span>
+                      <div
+                        style="
+                          background: #ffffff;
+                          padding-top: 14px;
+                          padding-right: 15px;
+                          width: 28px;
+                          color: white;
+                          height: 38px;
+                        "
+                      >
+                        <h1></h1>
+                      </div>
+                    </span>
+                  </div>
+                  <div class="slds-col"></div>
+                </div>
+              </td>
+              <td style="width: 20%">
+                <span>QTY</span>
+              </td>
+
+              <td style="width: 13%">
+                <span>
+                  <lightning:input
+                    type="number"
+                    step="any"
+                    disabled="true"
+                    aura:id="quantity1"
+                    name="{!product.pricingDetails[0].Id}"
+                    onfocusout="{!c.quantityChanged}"
+                    value="{!product.pricingDetails[0].Quantity__c}"
+                  />
+                </span>
+              </td>
+              <td style="width: 13%">
+                <span>
+                  <lightning:input
+                    type="number"
+                    step="any"
+                    disabled="true"
+                    aura:id="quantity2"
+                    name="{!product.pricingDetails[1].Id}"
+                    onfocusout="{!c.quantityChanged}"
+                    value="{!product.pricingDetails[1].Quantity__c}"
+                /></span>
+              </td>
+              <td style="width: 13%">
+                <span>
+                  <lightning:input
+                    type="number"
+                    step="any"
+                    disabled="true"
+                    aura:id="quantity3"
+                    name="{!product.pricingDetails[2].Id}"
+                    onfocusout="{!c.quantityChanged}"
+                    value="{!product.pricingDetails[2].Quantity__c}"
+                /></span>
+              </td>
+              <td style="width: 13%">
+                <span>
+                  <lightning:input
+                    type="number"
+                    step="any"
+                    disabled="true"
+                    aura:id="quantity4"
+                    name="{!product.pricingDetails[3].Id}"
+                    onfocusout="{!c.quantityChanged}"
+                    value="{!product.pricingDetails[3].Quantity__c}"
+                /></span>
+              </td>
+              <td style="width: 13%">
+                <span>
+                  <lightning:input
+                    type="number"
+                    step="any"
+                    disabled="true"
+                    aura:id="quantity5"
+                    name="{!product.pricingDetails[4].Id}"
+                    onfocusout="{!c.quantityChanged}"
+                    value="{!product.pricingDetails[4].Quantity__c}"
+                /></span>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="width: 10%; vertical-align: bottom">
+                <div class="slds-grid slds-gutters">
+                  <div class="slds-col">
+                    <span>
+                      <div
+                        style="
+                          background: #ffffff;
+                          padding-top: 14px;
+                          padding-right: 15px;
+                          width: 28px;
+                          color: white;
+                          height: 38px;
+                        "
+                      >
+                        <h1></h1>
+                      </div>
+                    </span>
+                  </div>
+                  <div class="slds-col"></div>
+                </div>
+              </td>
+              <td style="width: 20%">
+                <span>Show to client?</span>
+              </td>
+
+              <td style="width: 13%">
+                <aura:if isTrue="{!product.pricingDetails[0].Id == null}">
+                  <span>
+                    <ui:inputCheckbox
+                      disabled="true"
+                      aura:id="showToClient0"
+                      value="{!product.pricingDetails[0].Show_To_Client__c}"
+                      name="{!product.pricingDetails[0].Id}"
+                      change="{!c.handleClientClick}"
+                    />
+                  </span>
+
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <ui:inputCheckbox
+                          disabled="true"
+                          aura:id="showToClient0"
+                          value="{!product.pricingDetails[0].Show_To_Client__c}"
+                          name="{!product.pricingDetails[0].Id}"
+                          change="{!c.handleClientClick}"
+                        />
+
+                        <aura:set attribute="else">
+                          <ui:inputCheckbox
+                            aura:id="showToClient0"
+                            value="{!product.pricingDetails[0].Show_To_Client__c}"
+                            name="{!product.pricingDetails[0].Id}"
+                            change="{!c.handleClientClick}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+
+              <td style="width: 13%">
+                <aura:if isTrue="{!product.pricingDetails[1].Id == null}">
+                  <span>
+                    <ui:inputCheckbox
+                      disabled="true"
+                      aura:id="showToClient1"
+                      value="{!product.pricingDetails[1].Show_To_Client__c}"
+                      name="{!product.pricingDetails[1].Id}"
+                      change="{!c.handleClientClick}"
+                    />
+                  </span>
+
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <ui:inputCheckbox
+                          disabled="true"
+                          aura:id="showToClient1"
+                          value="{!product.pricingDetails[1].Show_To_Client__c}"
+                          name="{!product.pricingDetails[1].Id}"
+                          change="{!c.handleClientClick}"
+                        />
+                        <aura:set attribute="else">
+                          <ui:inputCheckbox
+                            aura:id="showToClient1"
+                            value="{!product.pricingDetails[1].Show_To_Client__c}"
+                            name="{!product.pricingDetails[1].Id}"
+                            change="{!c.handleClientClick}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+              <td style="width: 13%">
+                <aura:if isTrue="{!product.pricingDetails[2].Id == null}">
+                  <span>
+                    <ui:inputCheckbox
+                      disabled="true"
+                      aura:id="showToClient2"
+                      value="{!product.pricingDetails[2].Show_To_Client__c}"
+                      name="{!product.pricingDetails[2].Id}"
+                      change="{!c.handleClientClick}"
+                    />
+                  </span>
+
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <ui:inputCheckbox
+                          disabled="true"
+                          aura:id="showToClient2"
+                          value="{!product.pricingDetails[2].Show_To_Client__c}"
+                          name="{!product.pricingDetails[2].Id}"
+                          change="{!c.handleClientClick}"
+                        />
+                        <aura:set attribute="else">
+                          <ui:inputCheckbox
+                            aura:id="showToClient2"
+                            value="{!product.pricingDetails[2].Show_To_Client__c}"
+                            name="{!product.pricingDetails[2].Id}"
+                            change="{!c.handleClientClick}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+
+              <td style="width: 13%">
+                <aura:if isTrue="{!product.pricingDetails[3].Id == null}">
+                  <span>
+                    <ui:inputCheckbox
+                      disabled="true"
+                      aura:id="showToClient3"
+                      value="{!product.pricingDetails[3].Show_To_Client__c}"
+                      name="{!product.pricingDetails[3].Id}"
+                      change="{!c.handleClientClick}"
+                    />
+                  </span>
+
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <ui:inputCheckbox
+                          disabled="true"
+                          aura:id="showToClient3"
+                          value="{!product.pricingDetails[3].Show_To_Client__c}"
+                          name="{!product.pricingDetails[3].Id}"
+                          change="{!c.handleClientClick}"
+                        />
+                        <aura:set attribute="else">
+                          <ui:inputCheckbox
+                            aura:id="showToClient3"
+                            value="{!product.pricingDetails[3].Show_To_Client__c}"
+                            name="{!product.pricingDetails[3].Id}"
+                            change="{!c.handleClientClick}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+
+              <td style="width: 13%">
+                <aura:if isTrue="{!product.pricingDetails[4].Id == null}">
+                  <span>
+                    <ui:inputCheckbox
+                      disabled="true"
+                      aura:id="showToClient4"
+                      value="{!product.pricingDetails[4].Show_To_Client__c }"
+                      name="{!product.pricingDetails[4].Id}"
+                      change="{!c.handleClientClick}"
+                    />
+                  </span>
+
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <ui:inputCheckbox
+                          disabled="true"
+                          aura:id="showToClient4"
+                          value="{!product.pricingDetails[4].Show_To_Client__c }"
+                          name="{!product.pricingDetails[4].Id}"
+                          change="{!c.handleClientClick}"
+                        />
+                        <aura:set attribute="else">
+                          <ui:inputCheckbox
+                            aura:id="showToClient4"
+                            value="{!product.pricingDetails[4].Show_To_Client__c }"
+                            name="{!product.pricingDetails[4].Id}"
+                            change="{!c.handleClientClick}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="vertical-align: bottom">
+                <div class="slds-grid slds-gutters">
+                  <div class="slds-col">
+                    <span>
+                      <div
+                        style="
+                          background: #ffffff;
+                          padding-top: 14px;
+                          padding-right: 15px;
+                          width: 28px;
+                          color: white;
+                          height: 38px;
+                        "
+                      >
+                        <h1></h1>
+                      </div>
+                    </span>
+                  </div>
+                  <div class="slds-col"></div>
+                </div>
+              </td>
+              <td>
+                <span>Cost</span>
+              </td>
+              <td>
+                <aura:if isTrue="{!product.pricingDetails[0].Id == null}">
+                  <span>
+                    <lightning:input
+                      type="number"
+                      step="0.001"
+                      disabled="true"
+                      aura:id="cost1"
+                      name="{!product.pricingDetails[0].Id}"
+                      onfocusout="{!c.costChanged}"
+                      value="{!product.pricingDetails[0].Net_Cost__c}"
+                    />
+                  </span>
+
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="0.001"
+                          aura:id="cost1"
+                          name="{!product.pricingDetails[0].Id}"
+                          onfocusout="{!c.costChanged}"
+                          value="{!product.pricingDetails[0].Net_Cost__c}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="0.001"
+                            aura:id="cost1"
+                            name="{!product.pricingDetails[0].Id}"
+                            onfocusout="{!c.costChanged}"
+                            value="{!product.pricingDetails[0].Net_Cost__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+              <td>
+                <aura:if isTrue="{!product.pricingDetails[1].Id == null}">
+                  <span>
+                    <lightning:input
+                      disabled="true"
+                      type="number"
+                      step="0.001"
+                      aura:id="cost2"
+                      name="{!product.pricingDetails[1].Id}"
+                      onfocusout="{!c.costChanged}"
+                      value="{!product.pricingDetails[1].Net_Cost__c}"
+                  /></span>
+
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="0.001"
+                          aura:id="cost2"
+                          name="{!product.pricingDetails[1].Id}"
+                          onfocusout="{!c.costChanged}"
+                          value="{!product.pricingDetails[1].Net_Cost__c}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="0.001"
+                            aura:id="cost2"
+                            name="{!product.pricingDetails[1].Id}"
+                            onfocusout="{!c.costChanged}"
+                            value="{!product.pricingDetails[1].Net_Cost__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+              <td>
+                <aura:if isTrue="{!product.pricingDetails[2].Id == null}">
+                  <span>
+                    <lightning:input
+                      disabled="true"
+                      type="number"
+                      step="0.001"
+                      aura:id="cost3"
+                      name="{!product.pricingDetails[2].Id}"
+                      onfocusout="{!c.costChanged}"
+                      value="{!product.pricingDetails[2].Net_Cost__c}"
+                  /></span>
+
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="0.001"
+                          aura:id="cost3"
+                          name="{!product.pricingDetails[2].Id}"
+                          onfocusout="{!c.costChanged}"
+                          value="{!product.pricingDetails[2].Net_Cost__c}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="0.001"
+                            aura:id="cost3"
+                            name="{!product.pricingDetails[2].Id}"
+                            onfocusout="{!c.costChanged}"
+                            value="{!product.pricingDetails[2].Net_Cost__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+              <td>
+                <aura:if isTrue="{!product.pricingDetails[3].Id == null}">
+                  <span>
+                    <lightning:input
+                      disabled="true"
+                      type="number"
+                      step="0.001"
+                      aura:id="cost4"
+                      name="{!product.pricingDetails[3].Id}"
+                      onfocusout="{!c.costChanged}"
+                      value="{!product.pricingDetails[3].Net_Cost__c}"
+                  /></span>
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="0.001"
+                          aura:id="cost4"
+                          name="{!product.pricingDetails[3].Id}"
+                          onfocusout="{!c.costChanged}"
+                          value="{!product.pricingDetails[3].Net_Cost__c}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="0.001"
+                            aura:id="cost4"
+                            name="{!product.pricingDetails[3].Id}"
+                            onfocusout="{!c.costChanged}"
+                            value="{!product.pricingDetails[3].Net_Cost__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+              <td>
+                <aura:if isTrue="{!product.pricingDetails[4].Id == null}">
+                  <span>
+                    <lightning:input
+                      disabled="true"
+                      type="number"
+                      step="0.001"
+                      aura:id="cost5"
+                      name="{!product.pricingDetails[4].Id}"
+                      onfocusout="{!c.costChanged}"
+                      value="{!product.pricingDetails[4].Net_Cost__c}"
+                  /></span>
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="0.001"
+                          aura:id="cost5"
+                          name="{!product.pricingDetails[4].Id}"
+                          onfocusout="{!c.costChanged}"
+                          value="{!product.pricingDetails[4].Net_Cost__c}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="0.001"
+                            aura:id="cost5"
+                            name="{!product.pricingDetails[4].Id}"
+                            onfocusout="{!c.costChanged}"
+                            value="{!product.pricingDetails[4].Net_Cost__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+            </tr>
+
+            <aura:iteration items="{!product.runCharges}" var="runCharge">
+              <tr>
+                <td style="vertical-align: bottom">
+                  <div
+                    class="slds-grid slds-gutters"
+                    style="align-items: baseline"
+                  >
+                    <div class="slds-col">
+                      <span>
+                        <aura:if
+                          isTrue="{!runCharge.Is_Associated_With_Artwork__c}"
+                        >
+                          <div
+                            style="
+                              background: #121213;
+                              padding-top: 10px;
+                              padding-right: 0px;
+                              padding-left: 10px;
+                              width: 27px;
+                              color: white;
+                              height: 33px;
+                            "
+                          >
+                            <h1>
+                              {!runCharge.OpportunityLineItem_ArtWork__r.Counter__c}
+                            </h1>
+                          </div>
+
+                          <aura:set attribute="else">
+                            <div
+                              style="
+                                background: #ffffff;
+                                padding-top: 14px;
+                                padding-right: 15px;
+                                width: 28px;
+                                color: white;
+                                height: 38px;
+                              "
+                            >
+                              <h1></h1>
+                            </div>
+                          </aura:set>
+                        </aura:if>
+                      </span>
+                    </div>
+                    <div
+                      style="cursor: pointer"
+                      onclick="{!c.deleteRunCharge}"
+                      id="delete"
+                      data-value="{!runCharge.Id}"
+                      class="slds-col"
+                    >
+                      <lightning:icon
+                        iconName="action:delete"
+                        size="xx-small"
+                        aura:id="delete"
+                      />
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <aura:if isTrue="{!v.SalesStage}">
+                    <lightning:input
+                      disabled="true"
+                      aura:id="runChargesTitle"
+                      onfocusout="{!c.valuesChanged}"
+                      name="{!runCharge.Id}"
+                      value="{!runCharge.Title__c}"
+                    />
+                    <aura:set attribute="else">
+                      <lightning:input
+                        aura:id="runChargesTitle"
+                        onfocusout="{!c.valuesChanged}"
+                        name="{!runCharge.Id}"
+                        value="{!runCharge.Title__c}"
+                      />
+                    </aura:set>
+                  </aura:if>
+                </td>
+
+                <td>
+                  <aura:if isTrue="{!product.pricingDetails[0].Id == null}">
+                    <span>
+                      <lightning:input
+                        disabled="true"
+                        type="number"
+                        step="0.001"
+                        aura:id="dynamicIdsValues1"
+                        name="{!runCharge.Id}"
+                        onfocusout="{!c.valuesChanged}"
+                        value=""
+                    /></span>
+                    <aura:set attribute="else">
+                      <span>
+                        <aura:if isTrue="{!v.SalesStage}">
+                          <lightning:input
+                            disabled="true"
+                            type="number"
+                            step="0.001"
+                            aura:id="dynamicIdsValues1"
+                            name="{!runCharge.Id}"
+                            onfocusout="{!c.valuesChanged}"
+                            value="{!runCharge.Value1__c}"
+                          />
+                          <aura:set attribute="else">
+                            <lightning:input
+                              type="number"
+                              step="0.001"
+                              aura:id="dynamicIdsValues1"
+                              name="{!runCharge.Id}"
+                              onfocusout="{!c.valuesChanged}"
+                              value="{!runCharge.Value1__c}"
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </span>
+                    </aura:set>
+                  </aura:if>
+                </td>
+                <td>
+                  <aura:if isTrue="{!product.pricingDetails[1].Id == null}">
+                    <span>
+                      <lightning:input
+                        disabled="true"
+                        type="number"
+                        step="0.001"
+                        aura:id="dynamicIdsValues2"
+                        name="{!runCharge.Id}"
+                        onfocusout="{!c.valuesChanged}"
+                        value=""
+                    /></span>
+                    <aura:set attribute="else">
+                      <span>
+                        <aura:if isTrue="{!v.SalesStage}">
+                          <lightning:input
+                            disabled="true"
+                            type="number"
+                            step="0.001"
+                            aura:id="dynamicIdsValues2"
+                            name="{!runCharge.Id}"
+                            onfocusout="{!c.valuesChanged}"
+                            value="{!runCharge.Value2__c}"
+                          />
+                          <aura:set attribute="else">
+                            <lightning:input
+                              type="number"
+                              step="0.001"
+                              aura:id="dynamicIdsValues2"
+                              name="{!runCharge.Id}"
+                              onfocusout="{!c.valuesChanged}"
+                              value="{!runCharge.Value2__c}"
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </span>
+                    </aura:set>
+                  </aura:if>
+                </td>
+                <td>
+                  <aura:if isTrue="{!product.pricingDetails[2].Id == null}">
+                    <span>
+                      <lightning:input
+                        disabled="true"
+                        type="number"
+                        step="0.001"
+                        aura:id="dynamicIdsValues3"
+                        name="{!runCharge.Id}"
+                        onfocusout="{!c.valuesChanged}"
+                        value=""
+                    /></span>
+                    <aura:set attribute="else">
+                      <span>
+                        <aura:if isTrue="{!v.SalesStage}">
+                          <lightning:input
+                            disabled="true"
+                            type="number"
+                            step="0.001"
+                            aura:id="dynamicIdsValues3"
+                            name="{!runCharge.Id}"
+                            onfocusout="{!c.valuesChanged}"
+                            value="{!runCharge.Value3__c}"
+                          />
+                          <aura:set attribute="else">
+                            <lightning:input
+                              type="number"
+                              step="0.001"
+                              aura:id="dynamicIdsValues3"
+                              name="{!runCharge.Id}"
+                              onfocusout="{!c.valuesChanged}"
+                              value="{!runCharge.Value3__c}"
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </span>
+                    </aura:set>
+                  </aura:if>
+                </td>
+                <td>
+                  <aura:if isTrue="{!product.pricingDetails[3].Id == null}">
+                    <span>
+                      <lightning:input
+                        disabled="true"
+                        type="number"
+                        step="0.001"
+                        aura:id="dynamicIdsValues4"
+                        name="{!runCharge.Id}"
+                        onfocusout="{!c.valuesChanged}"
+                        value=""
+                    /></span>
+                    <aura:set attribute="else">
+                      <span>
+                        <aura:if isTrue="{!v.SalesStage}">
+                          <lightning:input
+                            disabled="true"
+                            type="number"
+                            step="0.001"
+                            aura:id="dynamicIdsValues4"
+                            name="{!runCharge.Id}"
+                            onfocusout="{!c.valuesChanged}"
+                            value="{!runCharge.Value4__c}"
+                          />
+                          <aura:set attribute="else">
+                            <lightning:input
+                              type="number"
+                              step="0.001"
+                              aura:id="dynamicIdsValues4"
+                              name="{!runCharge.Id}"
+                              onfocusout="{!c.valuesChanged}"
+                              value="{!runCharge.Value4__c}"
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </span>
+                    </aura:set>
+                  </aura:if>
+                </td>
+                <td>
+                  <aura:if isTrue="{!product.pricingDetails[4].Id == null}">
+                    <span>
+                      <lightning:input
+                        disabled="true"
+                        type="number"
+                        step="0.001"
+                        aura:id="dynamicIdsValues5"
+                        name="{!runCharge.Id}"
+                        onfocusout="{!c.valuesChanged}"
+                        value=""
+                    /></span>
+                    <aura:set attribute="else">
+                      <span>
+                        <aura:if isTrue="{!v.SalesStage}">
+                          <lightning:input
+                            disabled="true"
+                            type="number"
+                            step="0.001"
+                            aura:id="dynamicIdsValues5"
+                            name="{!runCharge.Id}"
+                            onfocusout="{!c.valuesChanged}"
+                            value="{!runCharge.Value5__c}"
+                          />
+                          <aura:set attribute="else">
+                            <lightning:input
+                              type="number"
+                              step="0.001"
+                              aura:id="dynamicIdsValues5"
+                              name="{!runCharge.Id}"
+                              onfocusout="{!c.valuesChanged}"
+                              value="{!runCharge.Value5__c}"
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </span>
+                    </aura:set>
+                  </aura:if>
+                </td>
+              </tr>
+            </aura:iteration>
+            <tr>
+              <td></td>
+              <td>
+                <span>Margin</span>
+              </td>
+
+              <td>
+                <aura:if isTrue="{!product.pricingDetails[0].Id == null}">
+                  <span>
+                    <lightning:input
+                      disabled="true"
+                      type="number"
+                      step="any"
+                      aura:id="margin1"
+                      name="{!product.pricingDetails[0].Id}"
+                      onfocusout="{!c.marginChanged}"
+                      value=""
+                    />
+                  </span>
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="any"
+                          aura:id="margin1"
+                          name="{!product.pricingDetails[0].Id}"
+                          onfocusout="{!c.marginChanged}"
+                          value="{!product.pricingDetails[0].Margin__c}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="any"
+                            aura:id="margin1"
+                            name="{!product.pricingDetails[0].Id}"
+                            onfocusout="{!c.marginChanged}"
+                            value="{!product.pricingDetails[0].Margin__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+              <td>
+                <aura:if isTrue="{!product.pricingDetails[1].Id == null}">
+                  <span>
+                    <lightning:input
+                      type="number"
+                      step="any"
+                      disabled="true"
+                      aura:id="margin2"
+                      name="{!product.pricingDetails[1].Id}"
+                      onfocusout="{!c.marginChanged}"
+                      value=""
+                  /></span>
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="any"
+                          aura:id="margin2"
+                          name="{!product.pricingDetails[1].Id}"
+                          onfocusout="{!c.marginChanged}"
+                          value="{!product.pricingDetails[1].Margin__c}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="any"
+                            aura:id="margin2"
+                            name="{!product.pricingDetails[1].Id}"
+                            onfocusout="{!c.marginChanged}"
+                            value="{!product.pricingDetails[1].Margin__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+              <td>
+                <aura:if isTrue="{!product.pricingDetails[2].Id == null}">
+                  <span>
+                    <lightning:input
+                      type="number"
+                      step="any"
+                      aura:id="margin3"
+                      name="{!product.pricingDetails[2].Id}"
+                      onfocusout="{!c.marginChanged}"
+                      disabled="true"
+                      value=""
+                  /></span>
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="any"
+                          aura:id="margin3"
+                          name="{!product.pricingDetails[2].Id}"
+                          onfocusout="{!c.marginChanged}"
+                          value="{!product.pricingDetails[2].Margin__c}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="any"
+                            aura:id="margin3"
+                            name="{!product.pricingDetails[2].Id}"
+                            onfocusout="{!c.marginChanged}"
+                            value="{!product.pricingDetails[2].Margin__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+              <td>
+                <aura:if isTrue="{!product.pricingDetails[3].Id == null}">
+                  <span>
+                    <lightning:input
+                      disabled="true"
+                      type="number"
+                      step="any"
+                      aura:id="margin4"
+                      name="{!product.pricingDetails[3].Id}"
+                      onfocusout="{!c.marginChanged}"
+                      value=""
+                  /></span>
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="any"
+                          aura:id="margin4"
+                          name="{!product.pricingDetails[3].Id}"
+                          onfocusout="{!c.marginChanged}"
+                          value="{!product.pricingDetails[3].Margin__c}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="any"
+                            aura:id="margin4"
+                            name="{!product.pricingDetails[3].Id}"
+                            onfocusout="{!c.marginChanged}"
+                            value="{!product.pricingDetails[3].Margin__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+              <td>
+                <aura:if isTrue="{!product.pricingDetails[4].Id == null}">
+                  <span>
+                    <lightning:input
+                      disabled="true"
+                      type="number"
+                      step="any"
+                      aura:id="margin5"
+                      name="{!product.pricingDetails[4].Id}"
+                      onfocusout="{!c.marginChanged}"
+                      value=""
+                  /></span>
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="any"
+                          aura:id="margin5"
+                          name="{!product.pricingDetails[4].Id}"
+                          onfocusout="{!c.marginChanged}"
+                          value="{!product.pricingDetails[4].Margin__c}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="any"
+                            aura:id="margin5"
+                            name="{!product.pricingDetails[4].Id}"
+                            onfocusout="{!c.marginChanged}"
+                            value="{!product.pricingDetails[4].Margin__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+            </tr>
+
+            <tr>
+              <td></td>
+              <td>
+                <span>Price Per Unit</span>
+              </td>
+              <td>
+                <aura:if isTrue="{!product.pricingDetails[0].Id == null}">
+                  <span>
+                    <lightning:input
+                      disabled="true"
+                      type="number"
+                      step="0.001"
+                      aura:id="total1"
+                      name="{!product.pricingDetails[0].Id}"
+                      value=""
+                      onfocusout="{!c.pricePerUnitChanged}"
+                    />
+                  </span>
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="0.001"
+                          aura:id="total1"
+                          name="{!product.pricingDetails[0].Id}"
+                          value="{!product.pricingDetails[0].Price_Per_Unit__c}"
+                          onfocusout="{!c.pricePerUnitChanged}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="0.001"
+                            aura:id="total1"
+                            name="{!product.pricingDetails[0].Id}"
+                            value="{!product.pricingDetails[0].Price_Per_Unit__c}"
+                            onfocusout="{!c.pricePerUnitChanged}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+              <td>
+                <aura:if isTrue="{!product.pricingDetails[1].Id == null}">
+                  <span>
+                    <lightning:input
+                      disabled="true"
+                      type="number"
+                      step="0.001"
+                      aura:id="total2"
+                      name="{!product.pricingDetails[1].Id}"
+                      value=""
+                      onfocusout="{!c.pricePerUnitChanged}"
+                  /></span>
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="0.001"
+                          aura:id="total2"
+                          name="{!product.pricingDetails[1].Id}"
+                          value="{!product.pricingDetails[1].Price_Per_Unit__c}"
+                          onfocusout="{!c.pricePerUnitChanged}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="0.001"
+                            aura:id="total2"
+                            name="{!product.pricingDetails[1].Id}"
+                            value="{!product.pricingDetails[1].Price_Per_Unit__c}"
+                            onfocusout="{!c.pricePerUnitChanged}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+              <td>
+                <aura:if isTrue="{!product.pricingDetails[2].Id == null}">
+                  <span>
+                    <lightning:input
+                      type="number"
+                      step="0.001"
+                      aura:id="total3"
+                      name="{!product.pricingDetails[2].Id}"
+                      value=""
+                      disabled="true"
+                      onfocusout="{!c.pricePerUnitChanged}"
+                  /></span>
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="0.001"
+                          aura:id="total3"
+                          name="{!product.pricingDetails[2].Id}"
+                          value="{!product.pricingDetails[2].Price_Per_Unit__c}"
+                          onfocusout="{!c.pricePerUnitChanged}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="0.001"
+                            aura:id="total3"
+                            name="{!product.pricingDetails[2].Id}"
+                            value="{!product.pricingDetails[2].Price_Per_Unit__c}"
+                            onfocusout="{!c.pricePerUnitChanged}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+              <td>
+                <aura:if isTrue="{!product.pricingDetails[3].Id == null}">
+                  <span>
+                    <lightning:input
+                      type="number"
+                      step="0.001"
+                      aura:id="total4"
+                      name="{!product.pricingDetails[3].Id}"
+                      value=""
+                      disabled="true"
+                      onfocusout="{!c.pricePerUnitChanged}"
+                  /></span>
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="0.001"
+                          aura:id="total4"
+                          name="{!product.pricingDetails[3].Id}"
+                          value="{!product.pricingDetails[3].Price_Per_Unit__c}"
+                          onfocusout="{!c.pricePerUnitChanged}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="0.001"
+                            aura:id="total4"
+                            name="{!product.pricingDetails[3].Id}"
+                            value="{!product.pricingDetails[3].Price_Per_Unit__c}"
+                            onfocusout="{!c.pricePerUnitChanged}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+              <td>
+                <aura:if isTrue="{!product.pricingDetails[4].Id == null}">
+                  <span>
+                    <lightning:input
+                      type="number"
+                      step="0.001"
+                      aura:id="total5"
+                      name="{!product.pricingDetails[4].Id}"
+                      value=""
+                      disabled="true"
+                      onfocusout="{!c.pricePerUnitChanged}"
+                  /></span>
+                  <aura:set attribute="else">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="0.001"
+                          aura:id="total5"
+                          name="{!product.pricingDetails[4].Id}"
+                          value="{!product.pricingDetails[4].Price_Per_Unit__c}"
+                          onfocusout="{!c.pricePerUnitChanged}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="0.001"
+                            aura:id="total5"
+                            name="{!product.pricingDetails[4].Id}"
+                            value="{!product.pricingDetails[4].Price_Per_Unit__c}"
+                            onfocusout="{!c.pricePerUnitChanged}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </aura:set>
+                </aura:if>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <aura:if isTrue="{!v.SalesStage}">
+                  <lightning:button
+                    disabled="true"
+                    variant="brand"
+                    label="Add&nbsp;Run&nbsp;Charges"
+                    onclick="{!c.openRunCharges}"
+                  />
+                  <aura:set attribute="else">
+                    <lightning:button
+                      variant="brand"
+                      label="Add&nbsp;Run&nbsp;Charges"
+                      onclick="{!c.openRunCharges}"
+                    />
+                  </aura:set>
+                </aura:if>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table
+          class="slds-table slds-table_fixed-layout slds-no-row-hover slds-table_cell-buffer"
+        >
+          <thead>
+            <aura:if isTrue="{!product.extraChargesExists}">
+              <tr>
+                <th scope="col">
+                  <div class="slds-truncate" title="Cost"></div>
+                </th>
+
+                <th scope="col">
+                  <div class="slds-truncate" title="Title">Title</div>
+                </th>
+
+                <th scope="col">
+                  <div class="slds-truncate" title="Cost">Cost</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" title="Margin">Margin</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" title="Retail">Retail</div>
+                </th>
+              </tr>
+            </aura:if>
+          </thead>
+
+          <tbody>
+            <aura:iteration items="{!product.fixedCharges}" var="fixedCharges">
+              <tr>
+                <td style="vertical-align: bottom">
+                  <div class="slds-grid">
+                    <div class="slds-col">
+                      <span>
+                        <aura:if
+                          isTrue="{!fixedCharges.Is_Associated_With_Artwork_c__c}"
+                        >
+                          <div
+                            class="slds-col"
+                            style="
+                              background: #121213;
+                              padding-top: 10px;
+                              padding-right: 15px;
+                              width: 27px;
+                              color: white;
+                              height: 34px;
+                            "
+                          >
+                            <h1>
+                              {!fixedCharges.OpportunityLineItem_ArtWork__r.Counter__c}
+                            </h1>
+                          </div>
+
+                          <aura:set attribute="else">
+                            <div
+                              style="
+                                background: #ffffff;
+                                padding-top: 14px;
+                                padding-right: 15px;
+                                width: 28px;
+                                color: white;
+                                height: 38px;
+                              "
+                            >
+                              <h1></h1>
+                            </div>
+                          </aura:set>
+                        </aura:if>
+                      </span>
+                    </div>
+                    <div
+                      style="cursor: pointer"
+                      id="delete"
+                      onclick="{!c.deleteFixedCharge}"
+                      data-value="{!fixedCharges.Id}"
+                      class="slds-col slds-size_1-of-1"
+                    >
+                      <lightning:icon
+                        iconName="action:delete"
+                        size="xx-small"
+                        aura:id="delete"
+                      />
+                    </div>
+                  </div>
+                </td>
+
+                <td style="width: 20%">
+                  <div class="slds-grid">
+                    <div class="slds-grid"></div>
+
+                    <div class="slds-size_10-of-12">
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          aura:id="fixedChargestitle"
+                          onfocusout="{!c.fixedChargesValuesChanged}"
+                          name="{!fixedCharges.Id}"
+                          value="{!fixedCharges.Title__c}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            aura:id="fixedChargestitle"
+                            onfocusout="{!c.fixedChargesValuesChanged}"
+                            name="{!fixedCharges.Id}"
+                            value="{!fixedCharges.Title__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </div>
+                  </div>
+                </td>
+
+                <td style="width: 20%">
+                  <div class="slds-size_10-of-12">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="0.001"
+                          aura:id="fixedChargesCost"
+                          onfocusout="{!c.fixedChargesValuesChanged}"
+                          name="{!fixedCharges.Id}"
+                          value="{!fixedCharges.Cost__c}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="0.001"
+                            aura:id="fixedChargesCost"
+                            onfocusout="{!c.fixedChargesValuesChanged}"
+                            name="{!fixedCharges.Id}"
+                            value="{!fixedCharges.Cost__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </div>
+                </td>
+                <td style="width: 20%">
+                  <div class="slds-size_10-of-12">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="0.001"
+                          aura:id="fixedChargesMargin"
+                          onfocusout="{!c.fixedChargesValuesChanged}"
+                          name="{!fixedCharges.Id}"
+                          value="{!fixedCharges.Margin__c}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="0.001"
+                            aura:id="fixedChargesMargin"
+                            onfocusout="{!c.fixedChargesValuesChanged}"
+                            name="{!fixedCharges.Id}"
+                            value="{!fixedCharges.Margin__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </div>
+                </td>
+                <td style="width: 20%">
+                  <div class="slds-size_10-of-12">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          type="number"
+                          step="0.001"
+                          aura:id="fixedChargesRetail"
+                          onfocusout="{!c.fixedChargesValuesChanged}"
+                          name="{!fixedCharges.Id}"
+                          value="{!fixedCharges.Retail_Price__c}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="0.001"
+                            aura:id="fixedChargesRetail"
+                            onfocusout="{!c.fixedChargesValuesChanged}"
+                            name="{!fixedCharges.Id}"
+                            value="{!fixedCharges.Retail_Price__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </aura:iteration>
+
+            <tr>
+              <td style="width: 30%">
+                <aura:if isTrue="{!v.SalesStage}">
+                  <lightning:button
+                    disabled="true"
+                    variant="brand"
+                    label="Add&nbsp;Fixed&nbsp;Charges"
+                    onclick="{!c.openFixedChargesModel}"
+                  />
+                  <aura:set attribute="else">
+                    <lightning:button
+                      variant="brand"
+                      label="Add&nbsp;Fixed&nbsp;Charges"
+                      onclick="{!c.openFixedChargesModel}"
+                    />
+                  </aura:set>
+                </aura:if>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table
+          class="slds-table slds-table_fixed-layout slds-no-row-hover slds-table_cell-buffer"
+        >
+          <tr>
+            <td scope="col" style="width: 100%">
+              <div class="slds-form slds-form_stacked">
+                <div class="slds-form-element">
+                  <div class="slds-form-element__control">
+                    <aura:if isTrue="{!v.SalesStage}">
+                      <lightning:textarea
+                        disabled="true"
+                        aura:id="privateNotes"
+                        label="Private Notes:"
+                        onfocusout="{!c.labelNotesValueChanged}"
+                        value="{!product.privateNotes}"
+                      ></lightning:textarea>
+                      <aura:set attribute="else">
+                        <lightning:textarea
+                          aura:id="privateNotes"
+                          label="Private Notes:"
+                          onfocusout="{!c.labelNotesValueChanged}"
+                          value="{!product.privateNotes}"
+                        ></lightning:textarea>
+                      </aura:set>
+                    </aura:if>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td scope="col" style="width: 100%">
+              <div class="slds-form slds-form_stacked">
+                <div class="slds-form-element">
+                  <div class="slds-form-element__control">
+                    <lightning:textarea
+                      disabled="true"
+                      aura:id="ImprintingInfo"
+                      label="Imprinting Info:"
+                      value="{!product.imprintingInfo}"
+                    ></lightning:textarea>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td scope="col" style="width: 100%">
+              <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                  <aura:if isTrue="{!v.SalesStage}">
+                    <lightning:input
+                      disabled="true"
+                      type="text"
+                      label="Price Label:"
+                      aura:id="priceLabel"
+                      onfocusout="{!c.labelNotesValueChanged}"
+                      value="{!product.priceLabel}"
+                    />
+                    <aura:set attribute="else">
+                      <lightning:input
+                        type="text"
+                        label="Price Label:"
+                        aura:id="priceLabel"
+                        onfocusout="{!c.labelNotesValueChanged}"
+                        value="{!product.priceLabel}"
+                      />
+                    </aura:set>
+                  </aura:if>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td scope="col" style="width: 100%">
+              <aura:if isTrue="{!v.SalesStage}">
+                <lightning:textarea
+                  disabled="true"
+                  aura:id="commentBox"
+                  label="Personal Comment:"
+                  placeholder="Personal Comment"
+                ></lightning:textarea>
+                <aura:set attribute="else">
+                  <lightning:textarea
+                    aura:id="commentBox"
+                    label="Personal Comment:"
+                    placeholder="Personal Comment"
+                  ></lightning:textarea>
+                </aura:set>
+              </aura:if>
+            </td>
+          </tr>
+          <tr>
+            <td scope="col" style="width: 100%">
+              <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                  <aura:if isTrue="{!v.SalesStage}">
+                    <lightning:input
+                      disabled="true"
+                      type="text"
+                      aura:id="username"
+                      label="User Name:"
+                      placeholder="User name for Comment"
+                    />
+                    <aura:set attribute="else">
+                      <lightning:input
+                        type="text"
+                        aura:id="username"
+                        label="User Name:"
+                        placeholder="User name for Comment"
+                      />
+                    </aura:set>
+                  </aura:if>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td scope="col" style="width: 100%">
+              <aura:if isTrue="{!v.SalesStage}">
+                <button
+                  disabled="true"
+                  class="slds-button slds-button--brand"
+                  onclick="{!c.addComment}"
+                >
+                  Add Comment
+                </button>
+
+                <aura:set attribute="else">
+                  <button
+                    class="slds-button slds-button--brand"
+                    onclick="{!c.addComment}"
+                  >
+                    Add Comment
+                  </button>
+                </aura:set>
+              </aura:if>
+            </td>
+          </tr>
+        </table>
+
+        <table
+          class="slds-table slds-table_fixed-layout slds-no-row-hover slds-table_cell-buffer"
+        >
+          <thead>
+            <aura:if isTrue="{!not(empty(product.comments))}">
+              <tr>
+                <th scope="col" style="padding-left: 35px">
+                  <div class="slds-truncate" title="Username">Username:</div>
+                </th>
+                <th scope="col" style="padding-left: 18px">
+                  <div class="slds-truncate" title="Date">Date:</div>
+                </th>
+                <th scope="col" style="padding-left: 18px">
+                  <div class="slds-truncate" title="Comment">Comment:</div>
+                </th>
+              </tr>
+            </aura:if>
+          </thead>
+          <tbody>
+            <aura:iteration items="{!product.comments}" var="comment">
+              <tr>
+                <td>
+                  <div class="slds-col">
+                    <span class="slds-form-element__static">
+                      {!comment.User__c}
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div class="slds-col">
+                    <span class="slds-form-element__static">
+                      {!comment.Date__c}
+                    </span>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="slds-col">
+                    <span class="slds-form-element__static">
+                      {!comment.Comment__c}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </aura:iteration>
+          </tbody>
+        </table>
+      </aura:iteration>
+    </div>
+  </div>
+
+  <!-- //Show Modal Popup Lightning Component for fixed charges  -->
+
+  <div class="slds-m-around--xx-large" style="margin: 0px !important">
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.isOpen}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="height: 110% !important"
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Add Fixed Charges
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeFixedChargesModel}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+          <aura:if isTrue="{! v.Error != null}">
+            <div class="slds-modal__content slds-p-around_medium">
+              <p style="color: red">{!v.Error}</p>
+            </div>
+          </aura:if>
+          <div class="slds-modal__content slds-p-around--medium">
+            <form class="slds-form--stacked">
+              <div class="slds">
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col--padded slds-medium-size--1-of-2">
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <lightning:input
+                          aura:id="Popup_Title"
+                          type="text"
+                          placeholder="Title"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-col--padded slds-medium-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="slds-form-element__label">Artworks</label>
+                      <div class="slds-form-element__control">
+                        <ui:inputSelect aura:id="artworkDropdown" value="" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closeFixedChargesModel}"
+              >Cancel</lightning:button
+            >
+            <lightning:button
+              class="slds-button slds-button--brand customb"
+              onclick="{!c.addFixedChargesInDb}"
+              >Save</lightning:button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+
+  <!--    THIS IS RUN CHARGE POPUP   -->
+
+  <div class="slds-m-around--xx-large" style="margin: 0px !important">
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.addRunCharge}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="height: 110% !important"
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Add Run Charges
+            </h2>
+            <button
+              disabled="true"
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeRunCharges}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+          <aura:if isTrue="{! v.Error != null}">
+            <div class="slds-modal__content slds-p-around_medium">
+              <p style="color: red">{!v.Error}</p>
+            </div>
+          </aura:if>
+          <div class="slds-modal__content slds-p-around--medium">
+            <form class="slds-form--stacked">
+              <div class="slds">
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col--padded slds-medium-size--1-of-2">
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <lightning:input
+                          aura:id="runCharge_Title"
+                          type="text"
+                          placeholder="Title"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <aura:if isTrue="{!v.pricingRecordsCount >= '1'}">
+                          <lightning:input
+                            type="text"
+                            aura:id="runCharge_Cost1"
+                            value=""
+                            maxlength="18"
+                            placeholder="Cost for Quantity 1"
+                          />
+
+                          <aura:set attribute="else">
+                            <lightning:input
+                              type="text"
+                              disabled="true"
+                              value=""
+                              aura:id="runCharge_Cost1_disabled"
+                              maxlength="18"
+                              placeholder="Cost for Quantity 1"
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </div>
+                    </div>
+
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <aura:if isTrue="{!v.pricingRecordsCount >= '2'}">
+                          <aura:if isTrue="{!v.SalesStage}">
+                            <lightning:input
+                              disabled="true"
+                              type="text"
+                              aura:id="runCharge_Cost2"
+                              value=""
+                              maxlength="18"
+                              placeholder="Cost for Quantity 2"
+                            />
+                            <aura:set attribute="else">
+                              <lightning:input
+                                type="text"
+                                aura:id="runCharge_Cost2"
+                                value=""
+                                maxlength="18"
+                                placeholder="Cost for Quantity 2"
+                              />
+                            </aura:set>
+                          </aura:if>
+                          <aura:set attribute="else">
+                            <lightning:input
+                              type="text"
+                              disabled="true"
+                              value=""
+                              aura:id="runCharge_Cost2_disabled"
+                              maxlength="18"
+                              placeholder="Cost for Quantity 2"
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </div>
+                    </div>
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <aura:if isTrue="{!v.pricingRecordsCount >= '3'}">
+                          <aura:if isTrue="{!v.SalesStage}">
+                            <lightning:input
+                              disabled="true"
+                              type="text"
+                              aura:id="runCharge_Cost3"
+                              value=""
+                              maxlength="18"
+                              placeholder="Cost for Quantity 3"
+                            />
+                            <aura:set attribute="else">
+                              <lightning:input
+                                type="text"
+                                aura:id="runCharge_Cost3"
+                                value=""
+                                maxlength="18"
+                                placeholder="Cost for Quantity 3"
+                              />
+                            </aura:set>
+                          </aura:if>
+                          <aura:set attribute="else">
+                            <lightning:input
+                              type="text"
+                              disabled="true"
+                              value=""
+                              aura:id="runCharge_Cost3_disabled"
+                              maxlength="18"
+                              placeholder="Cost for Quantity 3"
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </div>
+                    </div>
+                    <br /><br /><br />
+                  </div>
+                  <div class="slds-col--padded slds-medium-size--1-of-2">
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <aura:if isTrue="{!v.pricingRecordsCount >= '4'}">
+                          <aura:if isTrue="{!v.SalesStage}">
+                            <lightning:input
+                              disabled="true"
+                              type="text"
+                              aura:id="runCharge_Cost4"
+                              value=""
+                              maxlength="18"
+                              placeholder="Cost for Quantity 4"
+                            />
+                            <aura:set attribute="else">
+                              <lightning:input
+                                type="text"
+                                aura:id="runCharge_Cost4"
+                                value=""
+                                maxlength="18"
+                                placeholder="Cost for Quantity 4"
+                              />
+                            </aura:set>
+                          </aura:if>
+                          <aura:set attribute="else">
+                            <lightning:input
+                              disabled="true"
+                              type="text"
+                              value=""
+                              aura:id="runCharge_Cost4_disabled"
+                              maxlength="18"
+                              placeholder="Cost for Quantity 4"
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </div>
+                    </div>
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <aura:if isTrue="{!v.pricingRecordsCount >= '5'}">
+                          <aura:if isTrue="{!v.SalesStage}">
+                            <lightning:input
+                              disabled="true"
+                              type="text"
+                              aura:id="runCharge_Cost5"
+                              value=""
+                              maxlength="18"
+                              placeholder="Cost for Quantity 5"
+                            />
+                            <aura:set attribute="else">
+                              <lightning:input
+                                type="text"
+                                aura:id="runCharge_Cost5"
+                                value=""
+                                maxlength="18"
+                                placeholder="Cost for Quantity 5"
+                              />
+                            </aura:set>
+                          </aura:if>
+                          <aura:set attribute="else">
+                            <lightning:input
+                              disabled="true"
+                              type="text"
+                              value=""
+                              aura:id="runCharge_Cost5_disabled"
+                              maxlength="18"
+                              placeholder="Cost for Quantity 5"
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </div>
+                    </div>
+                    <div class="slds-form-element">
+                      <label class="slds-form-element__label">Artworks</label>
+                      <div class="slds-form-element__control">
+                        <aura:if isTrue="{!v.SalesStage}">
+                          <ui:inputSelect
+                            disabled="true"
+                            aura:id="artworkDropdown1"
+                            value=""
+                          />
+                          <aura:set attribute="else">
+                            <ui:inputSelect
+                              aura:id="artworkDropdown1"
+                              value=""
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closeRunCharges}"
+              >Cancel</lightning:button
+            >
+            <lightning:button
+              class="slds-button slds-button--brand customb"
+              onclick="{!c.addRunChargesInDb}"
+              >Save</lightning:button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+
+  <!--    THIS IS  Check Pricing POPUP   -->
+
+  <div class="slds-m-around--xx-large" style="margin: 0px !important">
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.checkPricing}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="
+            height: 110% !important;
+            width: 100% !important;
+            max-width: 80rem;
+          "
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <h2
+              style="text-align: left; display: inline; float: left"
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Update Net Costs
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closePricingPopup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+
+          <div class="slds-modal__content slds-p-around--medium">
+            <aura:if isTrue="{!v.SpinnerPrice}">
+              <lightning:spinner variant="brand" size="large" />
+            </aura:if>
+            <aura:if isTrue="{! not(empty(v.pricesList))}">
+              <h1 style="font-size: 17px">
+                The selected costs and quantities will be applied to this item
+                when you click Update.
+              </h1>
+
+              <br />
+              <h1 style="font-size: 17px">Item Currency: USD</h1>
+              <br />
+              <table
+                style="padding: 5px"
+                class="slds-table slds-table_fixed-layout slds-no-row-hover slds-table_cell-buffer"
+              >
+                <tr>
+                  <td
+                    style="
+                      background-color: #f8f8f8;
+                      padding: 8px;
+                      font-weight: bold;
+                      font-size: 18px;
+                    "
+                  >
+                    Source
+                  </td>
+                  <aura:iteration items="{!v.pricesList}" var="priceObject">
+                    <td
+                      style="
+                        background-color: #e6e6e6;
+                        padding: 8px;
+                        font-weight: bold;
+                        text-align: center;
+                        font-size: 18px;
+                      "
+                    >
+                      {!priceObject.Quantity.From_Z}
+                    </td>
+                  </aura:iteration>
+                </tr>
+
+                <tr>
+                  <td
+                    style="
+                      background-color: #e6e6e6;
+                      padding: 8px;
+                      font-weight: bold;
+                      font-size: 18px;
+                    "
+                  >
+                    ESP (USD)
+                  </td>
+                  <aura:iteration items="{!v.pricesList}" var="priceObject">
+                    <td
+                      style="
+                        background-color: #5ca3b6;
+                        padding: 8px;
+                        text-align: center;
+                        font-size: 18px;
+                      "
+                    >
+                      {!priceObject.Cost}
+                    </td>
+                  </aura:iteration>
+                </tr>
+              </table>
+            </aura:if>
+            <br /><br />
+          </div>
+
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closePricingPopup}"
+              >Cancel</lightning:button
+            >
+            <lightning:button
+              class="slds-button slds-button--brand"
+              onclick="{!c.updatePricingPopup}"
+              >Update</lightning:button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+
+  <!--    THIS IS  View Product POPUP   -->
+
+  <div class="slds-m-around--xx-large" style="margin: 0px !important">
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.checkProduct}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="height: 110% !important"
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeCheckProductPopup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+
+          <div class="slds-modal__content slds-p-around--medium">
+            <span class="slds-form-element__static">
+              Live Data will be fetched from ESP(in progress)
+            </span>
+          </div>
+
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closeCheckProductPopup}"
+              >Cancel</lightning:button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+</aura:component>

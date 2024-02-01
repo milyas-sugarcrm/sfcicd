@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Order_Date__c</fullName>
+    <description>When do you plan on placing this order? 
+Used to potentially drive Opportunity Close Date</description>
+    <externalId>false</externalId>
+    <inlineHelpText>When do you plan on placing this order?</inlineHelpText>
+    <label>Order Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

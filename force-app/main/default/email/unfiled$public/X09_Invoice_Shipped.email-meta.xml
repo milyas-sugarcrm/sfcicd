@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>09 - Invoice Shipped</name>
+    <style>none</style>
+    <subject>Invoice {!Order.Invoice_Number__c} Has Shipped</subject>
+    <textOnly>Hello {!Order.Primary_Contact_Name__c},
+
+Invoice {!Order.Invoice_Number__c} has shipped by {!Order.Invoice_Ship_Via__c} on {!Order.Invoice_Tracking_Number__c} to:
+{!Order.ShippingAddress}
+
+We are excited for you to receive your shipment of Phun, and we hope you had Phun working with us. If so, please leave us a positive review on Google or Facebook. Remember to tag your photos @teamphun and/or #teamphun and you might get pheatured in our social media marketing!</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>PO Sent Notification</name>
+    <style>none</style>
+    <subject
+  >Follow Up on PO - {!PurchaseOrder_LineItem__c.Name} Pending Confirmation</subject>
+    <textOnly>Hello Operations Team:
+
+12 Hours has passed since {!PurchaseOrder_LineItem__c.PONameLink__c} has been sent, and it has not yet been confirmed by {!PurchaseOrder_LineItem__c.SupplierNameLink__c}. Please reach out to {!PurchaseOrder_LineItem__c.SupplierNameLink__c} for confirmation that the PO is received and all details listed below are accurate:
+
+Product code and decoration description are confirmed to be accurate
+Quantity is confirmed to be in stock and available to fulfill this order
+Estimated ship date is confirmed to be accurate with no additional rush fees
+All pricing is confirmed to be accurate
+Ship method and carrier is confirmed with no additional handling charges
+Supplied artwork is confirmed to be formatted for production
+
+Upon confirmation, please fill in the appropriate fields on the PO to move to the In Production Status.
+
+{!PurchaseOrder_LineItem__c.PONameLink__c}
+
+Thanks,
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

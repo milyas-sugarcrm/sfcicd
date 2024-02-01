@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>American Express</fullName>
+        <default>false</default>
+        <label>American Express</label>
+    </customValue>
+    <customValue>
+        <fullName>Authorize.Net</fullName>
+        <default>false</default>
+        <label>Authorize.Net</label>
+    </customValue>
+    <customValue>
+        <fullName>Cash</fullName>
+        <default>false</default>
+        <label>Cash</label>
+    </customValue>
+    <customValue>
+        <fullName>Check</fullName>
+        <default>false</default>
+        <label>Check</label>
+    </customValue>
+    <customValue>
+        <fullName>Debit Card</fullName>
+        <default>false</default>
+        <label>Debit Card</label>
+    </customValue>
+    <customValue>
+        <fullName>Discover</fullName>
+        <default>false</default>
+        <label>Discover</label>
+    </customValue>
+    <customValue>
+        <fullName>E-Check</fullName>
+        <default>false</default>
+        <label>E-Check</label>
+    </customValue>
+    <customValue>
+        <fullName>Gift Card</fullName>
+        <default>false</default>
+        <label>Gift Card</label>
+    </customValue>
+    <customValue>
+        <fullName>Mastercard</fullName>
+        <default>false</default>
+        <label>Mastercard</label>
+    </customValue>
+    <customValue>
+        <fullName>Paypal</fullName>
+        <default>false</default>
+        <label>Paypal</label>
+    </customValue>
+    <customValue>
+        <fullName>Quickbooks Payments-Bank</fullName>
+        <default>false</default>
+        <label>Quickbooks Payments-Bank</label>
+    </customValue>
+    <customValue>
+        <fullName>Quickbooks Payments-Credit Card</fullName>
+        <default>false</default>
+        <label>Quickbooks Payments-Credit Card</label>
+    </customValue>
+    <customValue>
+        <fullName>Quickbooks Payments-PayPal</fullName>
+        <default>false</default>
+        <label>Quickbooks Payments-PayPal</label>
+    </customValue>
+    <customValue>
+        <fullName>Visa</fullName>
+        <default>false</default>
+        <label>Visa</label>
+    </customValue>
+    <description
+  >This is the standard payment method preferred from the account. This can be changed at the estimate or invoice object.</description>
+    <masterLabel>Preferred Payment Method</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

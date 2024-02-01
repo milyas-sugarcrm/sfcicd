@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Reorder and Reprint</fullName>
+        <default>false</default>
+        <label>Reorder and Reprint</label>
+    </customValue>
+    <customValue>
+        <fullName>Shortage Accepted by Client - Credit Client</fullName>
+        <default>false</default>
+        <label>Shortage Accepted by Client - Credit Client</label>
+    </customValue>
+    <customValue>
+        <fullName>Critical Shortage</fullName>
+        <default>false</default>
+        <label>Critical Shortage</label>
+    </customValue>
+    <customValue>
+        <fullName>Delay Acceptable to Client</fullName>
+        <default>false</default>
+        <label>Delay Acceptable to Client</label>
+    </customValue>
+    <customValue>
+        <fullName>Expedite at Team Phun Expense</fullName>
+        <default>false</default>
+        <label>Expedite at Team Phun Expense</label>
+    </customValue>
+    <customValue>
+        <fullName>Expedite at Client Expense</fullName>
+        <default>false</default>
+        <label>Expedite at Client Expense</label>
+    </customValue>
+    <customValue>
+        <fullName>No Resolution - Discount Client</fullName>
+        <default>false</default>
+        <label>No Resolution - Discount Client</label>
+    </customValue>
+    <customValue>
+        <fullName>Act of God</fullName>
+        <default>false</default>
+        <label>Act of God</label>
+    </customValue>
+    <customValue>
+        <fullName>Critical Delay - Refund Client</fullName>
+        <default>false</default>
+        <label>Critical Delay - Refund Client</label>
+    </customValue>
+    <customValue>
+        <fullName>Accepted by Client</fullName>
+        <default>false</default>
+        <label>Accepted by Client</label>
+    </customValue>
+    <customValue>
+        <fullName>Credit Client for Damages</fullName>
+        <default>false</default>
+        <label>Credit Client for Damages</label>
+    </customValue>
+    <customValue>
+        <fullName>Total Loss, Credit Client</fullName>
+        <default>false</default>
+        <label>Total Loss, Credit Client</label>
+    </customValue>
+    <customValue>
+        <fullName>Client Unhappy but According to Mockups</fullName>
+        <default>false</default>
+        <label>Client Unhappy but According to Mockups</label>
+    </customValue>
+    <customValue>
+        <fullName
+    >Client Unhappy and Varies Slightly - Negotiate Discount</fullName>
+        <default>false</default>
+        <label>Client Unhappy and Varies Slightly - Negotiate Discount</label>
+    </customValue>
+    <customValue>
+        <fullName
+    >Client Unhappy and Varies Dramatically - Negotiate Discount</fullName>
+        <default>false</default>
+        <label
+    >Client Unhappy and Varies Dramatically - Negotiate Discount</label>
+    </customValue>
+    <customValue>
+        <fullName>Client Unhappy and Approved Product is not</fullName>
+        <default>false</default>
+        <label>Client Unhappy and Approved Product is not</label>
+    </customValue>
+    <description>Reasons the Case was resolved</description>
+    <masterLabel>Case Close Reasons</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

@@ -1,0 +1,228 @@
+<aura:component
+  controller="ConvertToSalesOrderQuickActionController"
+  implements="force:lightningQuickActionWithoutHeader,force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,lightning:isUrlAddressable"
+  access="global"
+>
+  <aura:attribute name="recordId" type="Id" />
+
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="RelatedOpportunityLineItems" type="String[]" />
+  <aura:registerEvent name="RefreshTabs" type="c:RefreshTabs" />
+  <aura:registerEvent name="RefreshEstimate" type="c:RefreshEstimate" />
+  <aura:registerEvent
+    name="CloseSalesOrderPopup"
+    type="c:CloseSalesOrderPopup"
+  />
+  <aura:attribute name="Spinner" type="Boolean" default="false" />
+  <aura:if isTrue="{!v.Spinner}">
+    <lightning:spinner variant="brand" size="large" />
+  </aura:if>
+
+  <aura:html tag="style">
+    .slds-modal__container{ height : auto; width: 70%; max-width: 70rem; }
+    .modal-body{ height : 500px !important; max-height: 500px !important; }
+    .customFooter{ display: inline !important; } .slds-carousel__content{
+    display:none; } .slds-carousel__indicators { display:none;} }
+  </aura:html>
+
+  <div
+    class="slds-modal__content slds-p-around_x-small"
+    style="max-height: 400px; overflow-y: scroll"
+  >
+    <div class="slds-card__body">
+      <table
+        class="slds-table slds-table_fixed-layout slds-no-row-hover slds-table_cell-buffer"
+      >
+        <thead>
+          <tr>
+            <th scope="col" style="width: 10%">
+              <div class="slds-truncate" title="Select All">
+                <lightning:input
+                  onchange="{!c.checkAll}"
+                  aura:id="checkall"
+                  type="checkbox"
+                  name="check-all"
+                />
+              </div>
+            </th>
+            <th scope="col" style="width: 20%">
+              <div class="slds-truncate" label="Products">Products</div>
+            </th>
+            <th scope="col">
+              <div class="slds-truncate" label="Image"></div>
+            </th>
+            <th scope="col" style="width: 100px">
+              <div
+                style="text-align: center"
+                class="slds-truncate"
+                label="Units"
+              >
+                Units
+              </div>
+            </th>
+
+            <th scope="col" style="width: 100px">
+              <div
+                style="text-align: center; padding-left: 10px"
+                class="slds-truncate"
+                label="Amount"
+              >
+                Amount
+              </div>
+            </th>
+
+            <th scope="col" style="width: 100px; padding-left: 0px">
+              <div
+                style="padding-left: 15px; text-align: center"
+                class="slds-truncate"
+                label="Margin"
+              >
+                Margin
+              </div>
+            </th>
+            <th scope="col" style="width: 100px">
+              <div style="text-align: center" class="slds-truncate" label="Tax">
+                Tax
+              </div>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <aura:iteration
+            items="{!v.RelatedOpportunityLineItems}"
+            var="product"
+          >
+            <tr>
+              <td>
+                <lightning:input
+                  name="{!product.oppLineItemId}"
+                  aura:id="opportunityLineItemQuantity"
+                  checked="false"
+                  type="checkbox"
+                />
+              </td>
+
+              <td style="white-space: initial">
+                <div class="slds-col">
+                  <div title="ProductLine Item">
+                    <p>
+                      <lightning:formattedUrl
+                        value="{!'/lightning/r/Product2/'+product.productId+'/view'}"
+                        tooltip="{!product.productName}"
+                        label="{!product.productName}"
+                        target="_blank"
+                      />
+                    </p>
+                  </div>
+                </div>
+                <div class="slds-col">
+                  <p>{!product.sku}</p>
+                </div>
+                <div class="slds-col">
+                  <p>{!product.supplier}</p>
+                </div>
+              </td>
+
+              <td>
+                <aura:if isTrue="{!product.isContentDocumentExist}">
+                  <div style="width: 50%; height: 50%">
+                    <lightning:carousel disableAutoScroll="true">
+                      <lightning:carouselImage
+                        src="{!$Label.c.ContentVersionImage+product.contentVerionId}"
+                        class="slds-p-top_none"
+                        header=""
+                        description=""
+                        alternativeText="Artwork Image"
+                        style="width: 30%; height: 30%"
+                      >
+                      </lightning:carouselImage>
+                    </lightning:carousel>
+                  </div>
+
+                  <aura:set attribute="else">
+                    <div style="width: 50%; height: 50%">
+                      <img
+                        src="{!$Resource.No_Image_Available}"
+                        style="width: 100px; height: 100px"
+                      />
+                    </div>
+                  </aura:set>
+                </aura:if>
+              </td>
+
+              <td>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <aura:if isTrue="{!product.units != null}">
+                          <ui:outputCurrency
+                            value="{!product.units}"
+                            format="#,###"
+                          />
+                        </aura:if>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+
+              <td>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <aura:if isTrue="{!product.total != null}">
+                          <ui:outputCurrency
+                            value="{!product.total}"
+                            format="$#,###.##"
+                          />
+                        </aura:if>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <aura:if isTrue="{!product.marginPercentage != null}">
+                          {!product.marginPercentage}%
+                        </aura:if>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+
+              <td>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>{!product.tax}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </aura:iteration>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="slds-modal__footer" style="background-color: white">
+    <lightning:button
+      class="slds-button slds-button--neutral"
+      onclick="{!c.closePopup}"
+      >Cancel</lightning:button
+    >
+    <lightning:button
+      class="slds-button slds-button--brand customb"
+      onclick="{!c.convertToEstimateJS}"
+      >Convert To Sales Order</lightning:button
+    >
+  </div>
+</aura:component>

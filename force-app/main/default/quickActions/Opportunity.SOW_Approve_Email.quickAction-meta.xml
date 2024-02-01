@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldOverrides>
+        <field>HtmlBody</field>
+        <formula>&quot;&lt;/!DOCTYPE html&gt;&quot;+
+&quot;&lt;html&gt;&quot;+
+&quot;&lt;head&gt;&quot;+
+&quot;&lt;/head&gt;&quot;+
+
+&quot;&lt;body&gt;&quot; +
+&quot;Hello &quot;+  Opportunity.Legal_Company_Name_PFA__c  +&quot;,&quot;+&quot;&lt;br&gt;&lt;BR&gt;&quot;+
+
+&quot;We need your swift action to approve the attached Statement of Work (SOW) for our collaboration with PFA Company.&quot; +&quot;&lt;br&gt;&lt;BR&gt;&quot;+
+
+
+&quot;Please review the attached SOW and click the &quot;+
+
+&quot;&lt;button&gt;&lt;a style=&apos;text-decoration: none; border: 1px solid royalblue; padding: 3px; background-color: royalblue; color: white; border-radius: 5px;&apos; href=&apos;https://teamphun--qa2.sandbox.my.salesforce-sites.com/ApproveSOW?opportunityId=&quot;+Opportunity.Id+&quot;&apos;&gt;Approve&lt;/a&gt;&lt;/button&gt;&quot;+
+
+&quot; button to give us the green light.&quot; +&quot;&lt;br&gt;&lt;BR&gt;&quot;+
+
+
+&quot;Cheers,&quot; +&quot;&lt;br&gt;&lt;BR&gt;&quot;+
+
+&quot;Lesley Smith&quot; +&quot;&lt;br&gt;&quot;+
+&quot;National Accounts Manager&quot; +&quot;&lt;br&gt;&quot;+ 
+&quot;Phun for All&quot; +&quot;&lt;br&gt;&quot;+
+&quot;5026 Cass St. San Diego CA&quot; +&quot;&lt;br&gt;&quot;+
+&quot;o. 803-616-6885&quot; +&quot;&lt;br&gt;&quot;+
+&quot;&lt;a href=&apos;https://www.phunforall.com/&apos;&gt;https://www.phunforall.com/&lt;/a&gt;&quot; +&quot;&lt;br&gt;&quot;+
+
+
+&quot;&lt;/body&gt;&quot;+
+&quot;&lt;/html&gt;&quot;</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>Subject</field>
+        <formula>&quot;Phun For All: Approve &quot;+Opportunity.Name</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>ToAddress</field>
+        <formula>Opportunity.Signor_Email_PFA__c</formula>
+    </fieldOverrides>
+    <label>SOW Approve Email</label>
+    <optionsCreateFeedItem>true</optionsCreateFeedItem>
+    <quickActionLayout>
+        <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
+        <quickActionLayoutColumns>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>ValidatedFromAddress</field>
+                <uiBehavior>Required</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>ToAddress</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>CcAddress</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>BccAddress</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>Subject</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>HtmlBody</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>RelatedToId</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>EmailTemplateId</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+        </quickActionLayoutColumns>
+        <quickActionLayoutColumns />
+    </quickActionLayout>
+    <targetObject>OutgoingEmail</targetObject>
+    <targetParentField>RelatedTo</targetParentField>
+    <type>SendEmail</type>
+</QuickAction>

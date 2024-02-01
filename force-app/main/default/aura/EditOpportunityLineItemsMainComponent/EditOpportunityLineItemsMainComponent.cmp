@@ -1,0 +1,26 @@
+<aura:component>
+  <aura:handler event="c:teamPhunEventHandler" action="{!c.containEvent}" />
+  <aura:attribute name="opportunityId" type="String" access="public" />
+
+  <aura:attribute name="recordId" type="String" access="public" />
+
+  <div class="slds-grid slds-gutters">
+    <div class="slds-col slds-col slds-size_2-of-3">
+      <c:EditOpportunityLineItemEditDetailsComponent
+        opportunityId="{!v.opportunityId}"
+        recordId="{!v.recordId}"
+      />
+    </div>
+    <div class="slds-col slds-col slds-size_1-of-3">
+      <c:EditOpportunityLineItemArtWorkComponent
+        recordId="{!v.recordId}"
+        opportunityId="{!v.opportunityId}"
+      />
+      <br />
+      <c:presentationPreviewProductImages
+        recordId="{!v.recordId}"
+        opportunityId="{!v.opportunityId}"
+      />
+    </div>
+  </div>
+</aura:component>

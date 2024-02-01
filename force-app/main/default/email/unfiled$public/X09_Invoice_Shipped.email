@@ -1,0 +1,6 @@
+Hello {!Order.Primary_Contact_Name__c}, <br/><br/>
+
+Invoice {!Order.Invoice_Number__c} has shipped by {!Order.Invoice_Ship_Via__c} on {!Order.Invoice_Tracking_Number__c} to: <br/>
+{!Order.ShippingAddress} <br/><br/>
+
+We are excited for you to receive your shipment of Phun, and we hope you had Phun working with us. If so, please leave us a positive review on Google or Facebook. Remember to tag your photos @teamphun and/or #teamphun and you might get pheatured in our social media marketing!

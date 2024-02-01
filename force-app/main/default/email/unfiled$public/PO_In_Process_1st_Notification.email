@@ -1,0 +1,7 @@
+</!DOCTYPE html>
+<html>
+<head>
+</head>
+<p>To Whom It May Concern:</p><p>You are listed as the primary contact for {!PurchaseOrder_LineItem__c.SupplierNameLink__c}. Purchase Order {!PurchaseOrder_LineItem__c.PONameLink__c} is confirmed to be shipped on {!PurchaseOrder_LineItem__c.PO_Estimated_Ship_Date__c}. Please Reply All with confirmation that this PO is on schedule and will be shipped by {!PurchaseOrder_LineItem__c.Carrier__c} on {!PurchaseOrder_LineItem__c.PO_Estimated_Ship_Date__c}. </p><p>Thank you,</p><p>Team Phun Purchasing</p>
+</body>
+</html>

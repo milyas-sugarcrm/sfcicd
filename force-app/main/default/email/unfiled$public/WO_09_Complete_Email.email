@@ -1,0 +1,11 @@
+<p>Dear Phunion,</p>
+
+<p>{!Order.OrderNumber} for {!Order.WOAccountLink__c} has been marked as complete. If shipped, please notify the client with the tracking below. </p>
+
+<p>Tracking Number:  {!Order.Invoice_Tracking_Number__c} </p>
+
+
+<p>{!Order.WONameLink__c}</p>
+
+<p>Thanks,</p>
+<p>Ralph the Rooster</p>

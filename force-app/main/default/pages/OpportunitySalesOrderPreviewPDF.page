@@ -1,0 +1,364 @@
+<apex:page controller="OpportunitySalesOrderPreviewController" renderAs="pdf">
+  <table
+    style="
+      width: 750px;
+      margin: auto;
+      font-size: 14px;
+      font-family: &quot;Roboto&quot;, Arial, sans-serif;
+    "
+    cellpadding="5"
+  >
+    <tr>
+      <td colspan="3">
+        <table>
+          <tr>
+            <td align="left">
+              <apex:image
+                style="width: 90px; height: 90px; padding-right: 20px"
+                url="{!$Resource.TPLogo}"
+              />
+            </td>
+            <td align="left">
+              <apex:outputText value="5026 Cass St #B" /><br />
+              <apex:outputText value="San Diego, California 92109" /><br />
+              <apex:outputText value="United States" /><br />
+              <apex:outputText value="(858) 598-5563 x1" /><br />
+              <apex:outputText value="info@teamphun.com" /><br />
+              <apex:outputText value="www.teamphun.com" /><br />
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <!-- Billing Address -->
+      <td valign="middle" style="text-align: left; width: 20%">
+        <b
+          ><apex:outputText
+            style="text-transform: uppercase"
+            value="Bill To" /></b
+        ><br />
+        <apex:outputText value="{!BillingAddress['billingstreet']}" /><br />
+        <apex:outputText
+          value="{!BillingAddress['billingcity']} {!BillingAddress['billingstate']}"
+        /><br />
+        <apex:outputText value="{!BillingAddress['billingCountry']}" /><br />
+      </td>
+      <!-- Shipping Address -->
+      <td valign="middle" style="text-align: left; width: 20%">
+        <b
+          ><apex:outputText
+            style="text-transform: uppercase"
+            value="Ship To" /></b
+        ><br />
+        <apex:outputText value="{!ShippingAddress['shippingstreet']}" /><br />
+        <apex:outputText
+          value="{!ShippingAddress['shippingcity']} {!ShippingAddress['shippingstate']}"
+        /><br />
+        <apex:outputText value="{!ShippingAddress['shippingCountry']}" /><br />
+      </td>
+      <td valign="top" style="width: 60%">
+        <div
+          style="
+            background-color: #636363;
+            color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+          "
+        >
+          <apex:outputText
+            style="
+              font-size: 20px;
+              font-weight: bold;
+              text-transform: uppercase;
+            "
+            value="Invoice "
+          />
+          <apex:outputText
+            style="
+              font-size: 20px;
+              font-weight: bold;
+              text-transform: uppercase;
+            "
+            value="{!SalesOrderDetails.Invoice_Number__c}"
+          />
+        </div>
+        <div
+          style="
+            background-color: #636363;
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+          "
+        >
+          <apex:outputText style="text-transform: uppercase" value="DATE " />
+          <span style="font-weight: normal">
+            <apex:outputText
+              style="
+                margin-top: 0;
+                color: white;
+                font-size: 1rem;
+                line-height: 1.15rem;
+                margin-bottom: 0.5rem;
+              "
+              value="{0,date,MM'/'dd'/'yyyy}"
+            >
+              <apex:param value="{!SalesOrderDetails.Invoice_Date__c}" />
+            </apex:outputText>
+          </span>
+          <br />
+          <apex:outputText style="text-transform: uppercase" value="Terms " />
+          <span style="font-weight: normal">
+            <apex:outputText value="{!SalesOrderDetails.Invoice_Terms__c}" />
+          </span>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" valign="bottom" style="width: 40%">
+        <div style="background-color: #636363; height: 10px"></div>
+      </td>
+      <td colspan="1" valign="top" style="width: 60%">
+        <div
+          style="
+            background-color: #636363;
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+          "
+        >
+          <apex:outputText value="DUE DATE" />
+          <span style="font-weight: normal">
+            <apex:outputText
+              style="
+                margin-top: 0;
+                color: white;
+                font-size: 1rem;
+                line-height: 1.15rem;
+                margin-bottom: 0.5rem;
+              "
+              value="{0,date,MM'/'dd'/'yyyy}"
+            >
+              <apex:param value="{!SalesOrderDetails.Invoice_Due_Date__c}" />
+            </apex:outputText>
+          </span>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <b><apex:outputText value="SHIP DATE" /></b> <br />
+        <span style="font-weight: normal">
+          <apex:outputText
+            style="
+              margin-top: 0;
+              color: white;
+              font-size: 1rem;
+              line-height: 1.15rem;
+              margin-bottom: 0.5rem;
+            "
+            value="{0,date,MM'/'dd'/'yyyy}"
+          >
+            <apex:outputText
+              value="{!SalesOrderDetails.Invoice_Ship_Date__c}"
+            />
+          </apex:outputText>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <!-- Opp Line Items -->
+      <td colspan="3">
+        <table style="width: 750px" cellspacing="0" cellpadding="10">
+          <tr style="background-color: #636363; color: white">
+            <th align="left"><apex:outputText value="DATE" /></th>
+            <th align="left" style="width: 40%">
+              <apex:outputText value="ACTIVITY" />
+            </th>
+            <th align="left"><apex:outputText value="QTY" /></th>
+            <th align="left"><apex:outputText value="RATE" /></th>
+            <th align="left"><apex:outputText value="AMOUNT" /></th>
+          </tr>
+          <tr></tr>
+          <apex:repeat value="{!LineItemsList}" var="lineItem">
+            <apex:repeat value="{!lineItem}" var="item">
+              <apex:repeat value="{!item.lineItemPricings}" var="pricings">
+                <tr>
+                  <td></td>
+                  <td>
+                    <b><apex:outputText value="{!item.name}" /></b> <br />
+                    <apex:outputText value="{!item.description}" /> <br />
+                  </td>
+                  <td>
+                    <apex:outputText value="{0, number, ###,##0.##}">
+                      <apex:param value="{!pricings.Estimated_Quantity__c}" />
+                    </apex:outputText>
+                  </td>
+                  <td>
+                    <apex:outputText value="{0, number, ###,##0.##}">
+                      <apex:param value="{!pricings.Retail_Price__c}" />
+                    </apex:outputText>
+                  </td>
+                  <td>
+                    <apex:outputText value="{0, number, ###,##0.##}">
+                      <apex:param value="{!pricings.Total__c}" />
+                    </apex:outputText>
+                  </td>
+                </tr>
+              </apex:repeat>
+              <apex:repeat
+                value="{!item.lineItemExtraCharges}"
+                var="runcharges"
+              >
+                <tr>
+                  <td></td>
+                  <td>
+                    <b><apex:outputText value="{!runcharges.Title__c}" /></b>
+                    <br />
+                  </td>
+                  <td>
+                    <apex:outputText value="{0, number, ###,##0.##}">
+                      <apex:param value="{!runcharges.Quantity__c}" />
+                    </apex:outputText>
+                  </td>
+                  <td>
+                    <apex:outputText value="{0, number, ###,##0.##}">
+                      <apex:param value="{!runcharges.Retail_Price__c}" />
+                    </apex:outputText>
+                  </td>
+                  <td>
+                    <apex:outputText value="{0, number, ###,##0.##}">
+                      <apex:param value="{!runcharges.Total__c}" />
+                    </apex:outputText>
+                  </td>
+                </tr>
+              </apex:repeat>
+              <tr>
+                <td colspan="5" style="border-bottom: 1px solid #636363"></td>
+              </tr>
+            </apex:repeat>
+          </apex:repeat>
+          <tr>
+            <td style="padding-bottom: 0" colspan="2"></td>
+            <td
+              style="
+                text-transform: uppercase;
+                font-size: 12px;
+                padding-bottom: 0;
+              "
+            >
+              <apex:outputText value="Subtotal" />
+            </td>
+            <td style="padding-bottom: 0"></td>
+            <td style="padding-bottom: 0">
+              <apex:outputText value="{0, number, $###,##0.##}">
+                <apex:param value="{!PageTotal}" />
+              </apex:outputText>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-top: 6px; padding-bottom: 0" colspan="2"></td>
+            <td
+              style="
+                padding-top: 6px;
+                padding-bottom: 0;
+                text-transform: uppercase;
+                font-size: 12px;
+              "
+            >
+              <apex:outputText value="Tax" />
+            </td>
+            <td style="padding-top: 6px; padding-bottom: 0"></td>
+            <td style="padding-top: 6px; padding-bottom: 0">
+              <apex:outputText value="{0, number, 00.00}%">
+                <apex:param value="{!SalesOrderDetails.Invoice_Tax__c}" />
+              </apex:outputText>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-top: 6px; padding-bottom: 0" colspan="2"></td>
+            <td
+              style="
+                padding-top: 6px;
+                padding-bottom: 0;
+                text-transform: uppercase;
+                font-size: 12px;
+              "
+            >
+              <apex:outputText value="Total" />
+            </td>
+            <td style="padding-top: 6px; padding-bottom: 0"></td>
+            <td style="padding-top: 6px; padding-bottom: 0">
+              <apex:outputText value="{0, number, $###,##0.##}">
+                <apex:param value="{!TotalPlusTax}" />
+              </apex:outputText>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-top: 6px" colspan="2"></td>
+            <td
+              style="
+                padding-top: 6px;
+                text-transform: uppercase;
+                font-size: 12px;
+              "
+            >
+              <apex:outputText value="Payment" />
+            </td>
+            <td style="padding-top: 6px"></td>
+            <td style="padding-top: 6px">
+              <apex:outputText value="{0, number, $###,##0.##}">
+                <apex:param value="{!SalesOrderDetails.Amount_Received__c}" />
+              </apex:outputText>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2"></td>
+            <td
+              style="
+                background-color: #636363;
+                color: white;
+                text-transform: uppercase;
+              "
+            >
+              <apex:outputText value="Total Due" />
+            </td>
+            <td style="background-color: #636363; color: white"></td>
+            <td
+              style="
+                background-color: #636363;
+                color: white;
+                font-weight: 800;
+                font-size: 20px;
+              "
+            >
+              <apex:outputText value="{0, number, $###,##0.##}">
+                <apex:param value="{!TotalDue}" />
+              </apex:outputText>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="5" style="padding-top: 110px; font-size: 12px">
+              <apex:outputText
+                value="Over/Under Policy: Policy is +/- 3% of purchased goods."
+              />
+              <br />
+              <apex:outputText
+                value="It is the customer's responsibility to ensure that the proof and quantities are correct. There are no refunds for decorated products."
+              />
+              <br />
+              <apex:outputText
+                value="8% added of total order value for late penalty for invoices aging more than 15 days. 16% added at 30 days."
+              />
+              <br />
+              <apex:outputText
+                value="*Visit teamphun.com for more terms and conditions and our privacy policy."
+              />
+              <br />
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</apex:page>

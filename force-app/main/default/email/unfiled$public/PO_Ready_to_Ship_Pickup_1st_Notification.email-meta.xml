@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>PO Ready to Ship/Pickup 1st Notification</name>
+    <style>none</style>
+    <subject
+  >Confirm Ship or Pickup of PO - {!PurchaseOrder_LineItem__c.Name} is Communicated to Operations</subject>
+    <textOnly>Hello {!PurchaseOrder_LineItem__c.POOrderOwner__c}:
+
+Please note that PO {!PurchaseOrder_LineItem__c.PONameLink__c} from {!PurchaseOrder_LineItem__c.SupplierNameLink__c} related to {!PurchaseOrder_LineItem__c.Account__c} has been QC&apos;d and is Ready to Ship or Pickup. If you haven’t already, please communicate with the Operations Team to determine whether:
+
+{!PurchaseOrder_LineItem__c.Name} should be held until order is complete before client is notified
+{!PurchaseOrder_LineItem__c.Name} should be shipped to client
+{!PurchaseOrder_LineItem__c.Name} will be picked up by the client
+
+If you have already indicated how the Operations Team should proceed on the Work Order notes, this message is for your information only.
+
+
+{!PurchaseOrder_LineItem__c.PONameLink__c}
+
+Thanks a bunch,
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

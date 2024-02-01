@@ -1,0 +1,7 @@
+<p>Hello Phunions,</p>
+
+<p>Work Order {!Order.WONameLink__c} for {!Order.WOAccountLink__c} has been moved to ON HOLD.
+Please coordinate as a team to make sure all parties understand why the order is on hold and who will be following up to make sure it moves forward in a timely manner.</p> 
+
+<p>Thanks,</p>
+<p>Ralph the Rooster</p>

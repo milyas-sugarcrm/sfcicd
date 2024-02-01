@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldOverrides>
+        <field>CcAddress</field>
+        <formula
+    >Order.Account.Account_Owner_Email__c+&quot;;inboundartapprovalfeedback@a-27082oyb9i1drpdyvr13cv4sospdsd9gz8s5qxo5tnldwxrxi1.f4-4m72ieaq.na46.apex.salesforce.com&quot;</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>HtmlBody</field>
+        <formula>&quot;&lt;/!DOCTYPE html&gt;&quot;+
+&quot;&lt;html&gt;&quot;+
+&quot;&lt;head&gt;&quot;+
+&quot;&lt;/head&gt;&quot;+
+&quot;&lt;body&gt;&quot;+
+&quot;Hello:&quot;+
+&quot;&lt;br/&gt;&lt;br/&gt;&quot;+
+&quot;&lt;b&gt;YOU MUST REPLY ALL IN ORDER FOR OUR ENTIRE TEAM TO BE NOTIFIED OF CHANGE REQUESTS.&lt;/b&gt;&quot;+
+&quot;&lt;br/&gt;&lt;br/&gt;&quot;+
+&quot;You are listed as the Artwork Approval Contact for &lt;b&gt;&quot;+Order.Account.Name+&quot;&lt;/b&gt;.&quot;+
+&quot;    	&lt;p&gt;Please review carefully the digital proof attached and order details for Invoice &lt;b&gt;&quot;+(Order.Invoice_Number__c)+&quot;&lt;/b&gt;. &lt;/p&gt;&quot;+
+&quot;    	&lt;p&gt;If any changes are required please &lt;b&gt;&amp;#34;REPLY ALL&amp;#34;&lt;/b&gt; to this email and an updated proof will be sent to you.&lt;/p&gt;&quot;+
+&quot;    	&lt;p&gt;If no further changes are required to click the &lt;b&gt;&amp;#34;APPROVED&amp;#34;&lt;/b&gt; button below or sign the proof and return it to us via Fax or Email.&lt;/p&gt;&quot;+
+&quot;    	&lt;b&gt;&lt;u&gt;Notice For Digital Proof Recipients:&lt;/u&gt;&lt;/b&gt;&quot;+
+&quot;        &lt;br/&gt;&quot;+
+&quot;    	By clicking the APPROVED button below, you are confirming the accuracy of the artwork and your acknowledgement of the statements below;&quot;+
+&quot;    	&lt;ol&gt;&quot;+
+&quot;        	&lt;li&gt; You are the final proof reviewer. Your approval will mean that all aspects are accurate, including but not limited to: spelling, placement, color etc. Once approved, the order will go into production and cannot be modified or cancelled once production has begun.&lt;/li&gt;&quot;+
+&quot;        	&lt;li&gt; Production will begin after proof approval and payment details have been received. Approval and payment are required before production can begin on all orders. NET term accounts will be billed accordingly.&lt;/li&gt;&quot;+
+&quot;        	&lt;li&gt; The digital layout will supersede all other communication of any form. Team Phun will not be responsible for any errors when the item has been produced as approved in the layout.&lt;/li&gt;&quot;+
+&quot;        	&lt;li&gt; Team Phun cannot be held responsible for differences in color due to computer monitor color configuration/display. Samples are highly recommended to check color accuracy before ordering.&lt;/li&gt;&quot;+
+&quot;        	&lt;li&gt; By submitting your artwork to Team Phun you are acknowledging full compliance with all laws regarding trademark, copyright, and or licensing of artwork.&lt;/li&gt;&quot;+
+&quot;        &lt;/ol&gt;   &quot;+
+&quot;    	&lt;p&gt;Once proof approval and payment (if applicable) have been received; order will be placed into production. If you have yet to sent payment in please do so as soon as possible in order to avoid any delays.&lt;/p&gt;&quot;+
+&quot;&quot;+
+&quot;    	&lt;p&gt;Let us know if you have any questions.&lt;/p&gt;&quot;+
+&quot;&lt;div align=&apos;center&apos;&gt;&lt;div align=&apos;center&apos; style=&apos;width: 10rem;height: 2rem;border: none;color: #fff;background-color: #5cb85c;border-color: #4cae4c;border-radius: 10px;padding-top:15px&apos;&gt;&quot;+
+&quot;    	   &lt;a href=&apos;http://approveorder.force.com/OrderActions?Id=&quot;+Order.Id+&quot;&apos; style=&apos;color: white;text-decoration: none;&apos;&gt;APPROVED&lt;/a&gt;&quot;+
+&quot;        &lt;/div&gt;&lt;/div&gt;&quot;+
+&quot;    &lt;/body&gt;&quot;+
+&quot;&lt;/html&gt;&quot;</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>Subject</field>
+        <formula
+    >Order.Account.Name + &quot;: Your Order is Waiting for Your Approval&quot;</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>ToAddress</field>
+        <formula
+    >Order.Art_Approval_Email__c+&quot;;art@teamphun.com&quot;</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>ValidatedFromAddress</field>
+        <literalValue>rttest1994@gmail.com</literalValue>
+    </fieldOverrides>
+    <label>Send Approval Email</label>
+    <optionsCreateFeedItem>true</optionsCreateFeedItem>
+    <quickActionLayout>
+        <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
+        <quickActionLayoutColumns>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>ValidatedFromAddress</field>
+                <uiBehavior>Required</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>ToAddress</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>CcAddress</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>BccAddress</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>Subject</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>HtmlBody</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>RelatedToId</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>EmailTemplateId</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+        </quickActionLayoutColumns>
+        <quickActionLayoutColumns />
+    </quickActionLayout>
+    <targetObject>OutgoingEmail</targetObject>
+    <targetParentField>RelatedTo</targetParentField>
+    <type>SendEmail</type>
+</QuickAction>

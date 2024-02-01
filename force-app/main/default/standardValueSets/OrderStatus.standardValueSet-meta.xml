@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <groupingStringEnum>OrderStatusCode</groupingStringEnum>
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>99_-_Design Projects</fullName>
+        <default>false</default>
+        <label>00 - On Hold / Pending Info</label>
+        <groupingString>Activated</groupingString>
+    </standardValue>
+    <standardValue>
+        <fullName>01_-_Waiting_for_Client_Payment</fullName>
+        <default>false</default>
+        <label>01 - Waiting for Client Payment</label>
+        <groupingString>Draft</groupingString>
+    </standardValue>
+    <standardValue>
+        <fullName>02_-_Send_Mock_Up_to_Client_for_Approval</fullName>
+        <default>false</default>
+        <label>02 - Send Mockup</label>
+        <groupingString>Draft</groupingString>
+    </standardValue>
+    <standardValue>
+        <fullName>03_-_Proof_Sent_-_Waiting_for_Approval</fullName>
+        <default>false</default>
+        <label>03 - Mockup Sent / Awaiting Approval</label>
+        <groupingString>Activated</groupingString>
+    </standardValue>
+    <standardValue>
+        <fullName>04_-_Order_Blanks-Approved/Deposit</fullName>
+        <default>false</default>
+        <label>04 - Purchasing</label>
+        <groupingString>Activated</groupingString>
+    </standardValue>
+    <standardValue>
+        <fullName>05_-_Waiting_for_Blanks/Patches/Etc</fullName>
+        <default>false</default>
+        <label>05 - Waiting for Blanks/Trims/Confirmation</label>
+        <groupingString>Activated</groupingString>
+    </standardValue>
+    <standardValue>
+        <fullName>06_-_In_Process-OTHER</fullName>
+        <default>false</default>
+        <label>06 - In Production</label>
+        <groupingString>Draft</groupingString>
+    </standardValue>
+    <standardValue>
+        <fullName>07 - Post Production</fullName>
+        <default>false</default>
+        <label>07 - Post Production</label>
+        <groupingString>Activated</groupingString>
+    </standardValue>
+    <standardValue>
+        <fullName>08.1_-_On_Shelf_for_Local_Delivery/Pickup</fullName>
+        <default>false</default>
+        <label>08.1 - On Shelf for Local Delivery/Pickup</label>
+        <groupingString>Activated</groupingString>
+    </standardValue>
+    <standardValue>
+        <fullName>08.2 - On Shelf to Ship to Client</fullName>
+        <default>false</default>
+        <label>08.2 - On Shelf to Ship to Client</label>
+        <groupingString>Activated</groupingString>
+    </standardValue>
+    <standardValue>
+        <fullName>09_-_Complete</fullName>
+        <default>false</default>
+        <label>09 - Complete</label>
+        <groupingString>Activated</groupingString>
+    </standardValue>
+</StandardValueSet>

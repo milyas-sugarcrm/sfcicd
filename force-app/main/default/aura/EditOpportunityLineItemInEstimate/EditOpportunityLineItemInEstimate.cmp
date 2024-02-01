@@ -1,0 +1,3230 @@
+<aura:component
+  controller="EditOpporLineItemInEstimateController"
+  implements="force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global"
+>
+  <aura:attribute name="recordId" type="String" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="checkPricing" type="boolean" default="false" />
+  <aura:attribute name="totalPrice" type="String" default="0.00" />
+  <aura:attribute name="subtotal" type="String" default="0.00" />
+  <aura:attribute name="pricesList" type="object[]" />
+  <aura:attribute
+    name="filetype"
+    type="List"
+    default="['.png', '.jpg', '.jpeg', '.ai', '.eps', '.svg']"
+  />
+  <aura:attribute name="SalesStage" type="Boolean" default="false" />
+  <aura:attribute name="marginPercentage" type="String" default="0" />
+  <aura:attribute name="marginAmount" type="String" default="0.00" />
+  <aura:attribute name="opportunityId" type="String" />
+  <aura:attribute name="SpinnerPrice" type="boolean" default="false" />
+  <aura:attribute name="addSizeColorPopup" type="boolean" default="false" />
+  <aura:attribute name="updateSizePopup" type="boolean" default="false" />
+  <aura:attribute name="updateColorPopup" type="boolean" default="false" />
+  <aura:attribute
+    name="colorList"
+    type="List"
+    default="[]"
+    description="Color Picklist Values"
+  />
+  <aura:attribute
+    name="selectedColorList"
+    type="List"
+    default="[]"
+    description="Selected Color Picklist Values"
+  />
+  <aura:attribute
+    name="sizeList"
+    type="List"
+    default="[]"
+    description="Size Picklist Values"
+  />
+  <aura:attribute
+    name="selectedSizeList"
+    type="List"
+    default="[]"
+    description="Selected Size Picklist Values"
+  />
+  <aura:attribute name="colorListInText" type="List" default="[]" />
+  <aura:attribute name="sizeListInText" type="List" default="[]" />
+  <aura:attribute name="selectedColor" type="String" />
+  <aura:attribute name="selectedColorId" type="String" />
+
+  <aura:attribute name="updatedValuesOfFixedChargePricing" type="String[]" />
+  <aura:attribute name="recordToUpdateOfFixedChargePricing" type="String" />
+  <aura:attribute name="checkProduct" type="boolean" default="false" />
+  <aura:attribute name="updatedValuesOfPricing" type="String[]" />
+  <aura:attribute name="recordToUpdateOfPricing" type="String" />
+  <aura:attribute name="recordToUpdateOfextraCharge" type="String" />
+  <aura:attribute name="updatedValuesOfextraCharge" type="String[]" />
+  <aura:attribute name="additionalCostPopup" type="boolean" default="false" />
+  <aura:attribute name="extraChargesExists" type="boolean" default="false" />
+  <aura:attribute name="pricingDetailsExists" type="boolean" default="false" />
+  <aura:attribute
+    name="internationalCostExists"
+    type="boolean"
+    default="false"
+  />
+  <aura:attribute name="internationalCost" type="boolean" default="false" />
+  <aura:attribute
+    name="isInternationalCostUpdated"
+    type="boolean"
+    default="false"
+  />
+  <aura:attribute name="recordToUpdateOfduty" type="String" />
+  <aura:attribute name="updatedValuesOfduty" type="String[]" />
+  <aura:attribute name="editArtworkPopup" type="boolean" default="false" />
+  <aura:attribute name="artworkEdit" type="String[]" />
+  <aura:attribute name="recordToEdit" type="id" />
+  <aura:attribute name="fileName" type="String" default="No File Selected.." />
+  <aura:attribute name="fileUploaded" type="boolean" default="false" />
+  <aura:attribute name="documentId" type="String" default="" />
+  <aura:attribute name="Spinner" type="boolean" default="false" />
+  <aura:attribute name="opportunityLineItem" type="String[]" />
+  <aura:attribute name="breakDownCount" type="Integer" default="0" />
+  <aura:attribute
+    name="message"
+    type="String"
+    default="All changes are saved"
+  />
+  <aura:attribute name="lastModifiedDate" type="String" default="" />
+
+  <body style="overflow: hidden">
+    <div class="slds-grid">
+      <aura:if isTrue="{!v.Spinner}">
+        <div class="slds-p-horizontal--small slds-size--1-of-1">
+          <div
+            class="slds-p-horizontal--small slds-size--1-of-1 isActivityLoading"
+          >
+            <lightning:spinner variant="brand" size="large" />
+          </div>
+        </div>
+      </aura:if>
+      <div class="slds-col slds-size_2-of-3">
+        <span>
+          <div class="slds-panel slds-grid slds-grid--vertical slds-nowrap">
+            <div
+              class="header"
+              id="myHeader"
+              style="position: fixed; z-index: 1; width: 98.7%"
+            >
+              <div class="slds-panel__header">
+                <h2
+                  class="slds-panel__header-title slds-text-heading_small slds-truncate"
+                >
+                  Edit Products
+                </h2>
+                <span
+                  style="
+                    width: 100px;
+                    white-space: nowrap;
+                    margin-right: 70%;
+                    border: 1px;
+                  "
+                >
+                  Last Update : {!v.message} : {!v.lastModifiedDate}
+                </span>
+                <div onclick="{!c.openActionWindow}">
+                  <lightning:icon
+                    class="crossButton pointer slds-button__icon slds-button__icon--large"
+                    iconName="utility:close"
+                    aura:id="del"
+                    size="small"
+                  />
+                </div>
+                <span class="slds-assistive-text"></span>
+              </div>
+            </div>
+            <div class="slds-panel__body" style="margin-top: 70px">
+              <aura:iteration items="{!v.opportunityLineItem}" var="product">
+                <form class="slds-form--inline">
+                  <div class="slds-grid slds-gutters">
+                    <div class="slds-col" style="padding-left: 34px">
+                      <div class="slds-form-element">
+                        <label
+                          style="padding-left: 10px; font-weight: bold"
+                          class="slds-form-element__label"
+                          >Name</label
+                        >
+                        <br />
+                        <div class="slds-form-element__control">
+                          <aura:if isTrue="{!v.SalesStage}">
+                            <lightning:input
+                              aura:id="productName"
+                              value="{!product.name}"
+                              onfocusout="{!c.labelNotesValueChanged}"
+                              disabled="true"
+                            />
+
+                            <aura:set attribute="else">
+                              <lightning:input
+                                aura:id="productName"
+                                value="{!product.name}"
+                                onfocusout="{!c.labelNotesValueChanged}"
+                              />
+                            </aura:set>
+                          </aura:if>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="slds-col">
+                      <div class="slds-form-element">
+                        <label
+                          style="font-weight: bold"
+                          class="slds-form-element__label"
+                          >SKU</label
+                        ><br />
+                        <div
+                          style="color: #676a60"
+                          class="slds-form-element__control"
+                        >
+                          <span
+                            style="color: #676a60"
+                            class="slds-form-element__static"
+                          >
+                            {!product.sku}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="slds-col">
+                      <div class="slds-form-element">
+                        <label
+                          style="font-weight: bold"
+                          class="slds-form-element__label"
+                          >Supplier</label
+                        >
+                        <br />
+                        <div
+                          style="color: #676a60"
+                          class="slds-form-element__control"
+                        >
+                          <span
+                            style="color: #676a60"
+                            class="slds-form-element__static"
+                          >
+                            {!product.supplier}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="slds-col">
+                      <div class="slds-form-element">
+                        <label
+                          style="font-weight: bold"
+                          class="slds-form-element__label"
+                          >Imprint Methods</label
+                        >
+                        <br />
+                        <div class="slds-form-element__control">
+                          <span
+                            style="color: #676a60"
+                            class="slds-form-element__static"
+                          >
+                            {!product.imprintMethods}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+                <div
+                  class="slds-grid slds-gutters"
+                  style="width: 100%; display: flex"
+                >
+                  <aura:if isTrue="{!product.additionalColors}">
+                    <div
+                      style="padding-top: 5px; padding-left: 43px; width: 50%"
+                      class="slds-col"
+                    >
+                      <div class="slds-form-element">
+                        <label
+                          style="font-weight: bold"
+                          class="slds-form-element__label"
+                          >Additional Colors</label
+                        >
+                        <div class="slds-form-element__control">
+                          <span
+                            style="color: #676a60"
+                            class="slds-form-element__static"
+                          >
+                            {!product.additionalColors}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </aura:if>
+                  <aura:if isTrue="{!product.additionalLocations}">
+                    <aura:if isTrue="{!product.additionalColors}">
+                      <div
+                        class="slds-col"
+                        style="padding-top: 5px; width: 50%"
+                      >
+                        <div class="slds-form-element">
+                          <label
+                            style="font-weight: bold"
+                            class="slds-form-element__label"
+                            >Additional Locations</label
+                          >
+                          <div class="slds-form-element__control">
+                            <span
+                              style="color: #676a60"
+                              class="slds-form-element__static"
+                            >
+                              {!product.additionalLocations}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <aura:set attribute="else">
+                        <div
+                          class="slds-col"
+                          style="
+                            padding-left: 43px;
+                            padding-top: 5px;
+                            width: 50%;
+                          "
+                        >
+                          <div class="slds-form-element">
+                            <label
+                              style="font-weight: bold"
+                              class="slds-form-element__label"
+                              >Additional Locations</label
+                            >
+                            <div class="slds-form-element__control">
+                              <span
+                                style="color: #676a60"
+                                class="slds-form-element__static"
+                              >
+                                {!product.additionalLocations}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </aura:set>
+                    </aura:if>
+                  </aura:if>
+                </div>
+
+                <table
+                  class="slds-table slds-no-row-hover slds-table_cell-buffer"
+                >
+                  <tr>
+                    <td>
+                      <div class="slds-form slds-form_stacked">
+                        <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <aura:if isTrue="{!v.SalesStage}">
+                              <lightning:textarea
+                                disabled="true"
+                                aura:id="description"
+                                label="Description"
+                                value="{!product.description}"
+                                onfocusout="{!c.labelNotesValueChanged}"
+                              />
+                              <aura:set attribute="else">
+                                <lightning:textarea
+                                  aura:id="description"
+                                  label="Description"
+                                  value="{!product.description}"
+                                  onfocusout="{!c.labelNotesValueChanged}"
+                                />
+                              </aura:set>
+                            </aura:if>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="slds-form slds-form_stacked">
+                        <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <aura:if isTrue="{!v.SalesStage}">
+                              <lightning:textarea
+                                disabled="true"
+                                aura:id="privateNotes"
+                                label="Private Notes"
+                                onfocusout="{!c.labelNotesValueChanged}"
+                                value="{!product.privateNotes}"
+                              ></lightning:textarea>
+                              <aura:set attribute="else">
+                                <lightning:textarea
+                                  aura:id="privateNotes"
+                                  label="Private Notes"
+                                  onfocusout="{!c.labelNotesValueChanged}"
+                                  value="{!product.privateNotes}"
+                                ></lightning:textarea>
+                              </aura:set>
+                            </aura:if>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td scope="col" style="width: 100%">
+                      <div class="slds-form slds-form_stacked">
+                        <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <lightning:textarea
+                              disabled="true"
+                              aura:id="ImprintingInfo"
+                              label="Imprinting Info:"
+                              value="{!product.imprintingInfo}"
+                            ></lightning:textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <aura:iteration items="{!product.warnings}" var="warning">
+                    <tr>
+                      <td>
+                        <form>
+                          <div class="slds-form slds-form_stacked">
+                            <div class="slds-grid">
+                              <div class="slds-size_11-of-12">
+                                <aura:if isTrue="{!v.SalesStage}">
+                                  <lightning:input
+                                    value="{!warning.Warning__c}"
+                                    onfocusout="{!c.warningValueChanged}"
+                                    name="{!warning.Id}"
+                                    label="Warning"
+                                    disabled="true"
+                                  />
+                                  <aura:set attribute="else">
+                                    <lightning:input
+                                      value="{!warning.Warning__c}"
+                                      onfocusout="{!c.warningValueChanged}"
+                                      name="{!warning.Id}"
+                                      label="Warning"
+                                    />
+                                  </aura:set>
+                                </aura:if>
+                              </div>
+
+                              <div
+                                class="slds-col slds-size_1-of-12"
+                                style="padding-top: 23px; padding-left: 5%"
+                              >
+                                <lightning:icon
+                                  iconName="action:delete"
+                                  size="xx-small"
+                                  alternativeText="{!warning.Id}"
+                                  aura:id="deleteWarning"
+                                  onclick="{!c.deleteWarning}"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </td>
+                    </tr>
+                  </aura:iteration>
+
+                  <tr>
+                    <td>
+                      <aura:if isTrue="{!v.SalesStage == false}">
+                        <button
+                          class="slds-button slds-button--brand"
+                          onclick="{!c.AddWarning}"
+                        >
+                          Add Warning
+                        </button>
+                      </aura:if>
+                      <aura:if isTrue="{!product.ESPProductId == null}">
+                        <aura:if isTrue="{!v.SalesStage == false}">
+                          <button
+                            class="slds-button slds-button--brand"
+                            value="{!product.ProductID}"
+                            onclick="{!c.openCheckProductPopup}"
+                          >
+                            View Product
+                          </button>
+                        </aura:if>
+                        <aura:set attribute="else">
+                          <aura:if isTrue="{!v.SalesStage == false}">
+                            <button
+                              class="slds-button slds-button--brand"
+                              value="{!product.ESPProductId}"
+                              onclick="{!c.openDetailProductPage}"
+                            >
+                              View Product
+                            </button>
+                          </aura:if>
+                        </aura:set>
+                      </aura:if>
+                      <aura:if isTrue="{!v.SalesStage == false}">
+                        <button
+                          class="slds-button slds-button--brand slds-button--small"
+                          onclick="{!c.openPricingPopup}"
+                        >
+                          Check Pricing
+                        </button>
+                      </aura:if>
+                      <br />
+                    </td>
+                  </tr>
+                </table>
+                <span style="float: right">
+                  <label style="font-weight: bold">Currency: </label>
+                  <p style="display: inline-block">USD</p>
+                </span>
+              </aura:iteration>
+            </div>
+          </div>
+        </span>
+
+        <table
+          class="slds-table slds-no-row-hover slds-table_cell-buffer slds-border_top"
+        >
+          <thead>
+            <aura:if isTrue="{!v.pricingDetailsExists}">
+              <tr>
+                <th scope="col">
+                  <div class="slds-truncate" label="Size/Color">Size/Color</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" label="Sku">Sku</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" label="Quantity">Quantity</div>
+                </th>
+
+                <th scope="col">
+                  <div class="slds-truncate" label="Net Cost">Net Cost</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" label="Margin">Margin (%)</div>
+                </th>
+
+                <th scope="col">
+                  <div class="slds-truncate" label="Retail Price">
+                    Retail Price
+                  </div>
+                </th>
+
+                <th scope="col">
+                  <div class="slds-truncate" label="Client Price">
+                    Client Price
+                  </div>
+                </th>
+
+                <th scope="col">
+                  <div class="slds-truncate" label="Total">Total</div>
+                </th>
+              </tr>
+            </aura:if>
+          </thead>
+
+          <tbody>
+            <aura:iteration items="{!v.opportunityLineItem}" var="product">
+              <aura:iteration
+                items="{!product.pricingDetails}"
+                var="priceRecord"
+              >
+                <tr>
+                  <td style="width: 12%">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          onclick="{!c.openAddSizeColorPopup}"
+                          aura:id="sizeColor"
+                          name="{!priceRecord.Id}"
+                          value="{!priceRecord.Size__c}"
+                          disabled="true"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            onclick="{!c.openAddSizeColorPopup}"
+                            aura:id="sizeColor"
+                            name="{!priceRecord.Id}"
+                            value="{!priceRecord.Size__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </td>
+                  <td style="width: 12%">
+                    <span>
+                      <lightning:input
+                        aura:id="sku"
+                        name="{!priceRecord.Id}"
+                        value="{!product.sku}"
+                        disabled="true"
+                      />
+                    </span>
+                  </td>
+                  <td style="width: 12%">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          type="number"
+                          step="any"
+                          aura:id="quantity"
+                          onfocusout="{!c.pricingvaluesChanged}"
+                          name="{!priceRecord.Id}"
+                          value="{!priceRecord.Estimated_Quantity__c}"
+                          disabled="true"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="any"
+                            aura:id="quantity"
+                            onfocusout="{!c.pricingvaluesChanged}"
+                            name="{!priceRecord.Id}"
+                            value="{!priceRecord.Estimated_Quantity__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </td>
+                  <td style="width: 12%">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          type="number"
+                          step="any"
+                          aura:id="netCost"
+                          onfocusout="{!c.pricingvaluesChanged}"
+                          name="{!priceRecord.Id}"
+                          value="{!priceRecord.Net_Cost__c}"
+                          disabled="true"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="any"
+                            aura:id="netCost"
+                            onfocusout="{!c.pricingvaluesChanged}"
+                            name="{!priceRecord.Id}"
+                            value="{!priceRecord.Net_Cost__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </td>
+                  <td style="width: 12%">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          type="number"
+                          step="any"
+                          aura:id="margin"
+                          onfocusout="{!c.pricingvaluesChanged}"
+                          name="{!priceRecord.Id}"
+                          value="{!priceRecord.Margin__c}"
+                          disabled="true"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="any"
+                            aura:id="margin"
+                            onfocusout="{!c.pricingvaluesChanged}"
+                            name="{!priceRecord.Id}"
+                            value="{!priceRecord.Margin__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </td>
+                  <td style="width: 12%">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          type="number"
+                          step="any"
+                          aura:id="retailPrice"
+                          onfocusout="{!c.pricingvaluesChanged}"
+                          name="{!priceRecord.Id}"
+                          value="{!priceRecord.Retail_Price__c}"
+                          disabled="true"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="any"
+                            aura:id="retailPrice"
+                            onfocusout="{!c.pricingvaluesChanged}"
+                            name="{!priceRecord.Id}"
+                            value="{!priceRecord.Retail_Price__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </td>
+                  <td style="width: 12%">
+                    <span>
+                      <lightning:input
+                        disabled="true"
+                        type="number"
+                        step="any"
+                        aura:id="clientPrice"
+                        name="{!priceRecord.Id}"
+                        value="{!priceRecord.Retail_Price__c}"
+                      />
+                    </span>
+                  </td>
+                  <td style="width: 12%">
+                    <span>
+                      <lightning:input
+                        disabled="true"
+                        type="number"
+                        step="any"
+                        aura:id="total"
+                        name="{!priceRecord.Id}"
+                        value="{!priceRecord.Total__c}"
+                      />
+                    </span>
+                  </td>
+                  <td>
+                    <aura:if isTrue="{!v.breakDownCount > 1}">
+                      <div
+                        onclick="{!c.deleteBreakdown}"
+                        data-value="{!priceRecord.Id}"
+                        class="slds-col slds-size_1-of-12"
+                        style="padding-top: 23px; padding-left: 5%"
+                      >
+                        <lightning:icon
+                          iconName="action:delete"
+                          size="xx-small"
+                          aura:id="deleteWarning"
+                        />
+                      </div>
+                    </aura:if>
+                  </td>
+                </tr>
+              </aura:iteration>
+            </aura:iteration>
+          </tbody>
+        </table>
+
+        <table
+          class="slds-table slds-no-row-hover slds-table_cell-buffer slds-border_top"
+        >
+          <thead>
+            <aura:if isTrue="{!v.extraChargesExists}">
+              <tr>
+                <th scope="col">
+                  <div class="slds-truncate" label="Title">Title</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" label="QTY">QTY</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" label="Net Cost">Net Cost</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" label="Margin">Margin (%)</div>
+                </th>
+
+                <th scope="col">
+                  <div class="slds-truncate" label="Retail Price">
+                    Retail Price
+                  </div>
+                </th>
+
+                <th scope="col">
+                  <div class="slds-truncate" label="Status">Status</div>
+                </th>
+
+                <th scope="col">
+                  <div class="slds-truncate" label="Total">Total</div>
+                </th>
+              </tr>
+            </aura:if>
+          </thead>
+          <tbody>
+            <aura:iteration items="{!v.opportunityLineItem}" var="product">
+              <aura:iteration
+                items="{!product.extraCharges}"
+                var="chargesRecord"
+              >
+                <tr>
+                  <td>
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          aura:id="extraChargesTitle"
+                          name="{!chargesRecord.Id}"
+                          onfocusout="{!c.extraChargesValuesChanged}"
+                          value="{!chargesRecord.Title__c}"
+                          disabled="true"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            aura:id="extraChargesTitle"
+                            name="{!chargesRecord.Id}"
+                            onfocusout="{!c.extraChargesValuesChanged}"
+                            value="{!chargesRecord.Title__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </td>
+                  <td style="width: 12%">
+                    <aura:if
+                      isTrue="{!chargesRecord.Charge_Type__c != 'AdditionalCost_RunCharge' }"
+                    >
+                      <span>
+                        <aura:if isTrue="{!v.SalesStage}">
+                          <lightning:input
+                            type="number"
+                            step="any"
+                            aura:id="extraChargesQuantity"
+                            name="{!chargesRecord.Id}"
+                            onfocusout="{!c.extraChargesValuesChanged}"
+                            value="{!chargesRecord.Quantity__c}"
+                            disabled="true"
+                          />
+                          <aura:set attribute="else">
+                            <lightning:input
+                              type="number"
+                              step="any"
+                              aura:id="extraChargesQuantity"
+                              name="{!chargesRecord.Id}"
+                              onfocusout="{!c.extraChargesValuesChanged}"
+                              value="{!chargesRecord.Quantity__c}"
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </span>
+                      <aura:set attribute="else">
+                        <span>
+                          <aura:if isTrue="{!v.SalesStage}">
+                            <lightning:input
+                              type="number"
+                              step="any"
+                              aura:id="extraChargesQuantity"
+                              name="{!chargesRecord.Id}"
+                              onfocusout="{!c.extraChargesValuesChanged}"
+                              value="{!chargesRecord.Quantity__c}"
+                              disabled="true"
+                            />
+                            <aura:set attribute="else">
+                              <lightning:input
+                                type="number"
+                                step="any"
+                                aura:id="extraChargesQuantity"
+                                name="{!chargesRecord.Id}"
+                                onfocusout="{!c.extraChargesValuesChanged}"
+                                value="{!chargesRecord.Quantity__c}"
+                              />
+                            </aura:set>
+                          </aura:if>
+                        </span>
+                      </aura:set>
+                    </aura:if>
+                  </td>
+                  <td style="width: 12%">
+                    <span>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          type="number"
+                          step="any"
+                          aura:id="extraChargesNetCost"
+                          name="{!chargesRecord.Id}"
+                          onfocusout="{!c.extraChargesValuesChanged}"
+                          value="{!chargesRecord.Net_Cost__c}"
+                          disabled="true"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="number"
+                            step="any"
+                            aura:id="extraChargesNetCost"
+                            name="{!chargesRecord.Id}"
+                            onfocusout="{!c.extraChargesValuesChanged}"
+                            value="{!chargesRecord.Net_Cost__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </span>
+                  </td>
+                  <td style="width: 12%">
+                    <aura:if
+                      isTrue="{!chargesRecord.Display__c == 'Display To Client' }"
+                    >
+                      <span>
+                        <aura:if isTrue="{!v.SalesStage}">
+                          <lightning:input
+                            disabled="true"
+                            type="number"
+                            step="any"
+                            aura:id="extraChargesMargin"
+                            name="{!chargesRecord.Id}"
+                            onfocusout="{!c.extraChargesValuesChanged}"
+                            value="{!chargesRecord.Margin__c}"
+                          />
+                          <aura:set attribute="else">
+                            <lightning:input
+                              type="number"
+                              step="any"
+                              aura:id="extraChargesMargin"
+                              name="{!chargesRecord.Id}"
+                              onfocusout="{!c.extraChargesValuesChanged}"
+                              value="{!chargesRecord.Margin__c}"
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </span>
+                    </aura:if>
+                  </td>
+                  <td style="width: 12%">
+                    <aura:if
+                      isTrue="{!chargesRecord.Display__c == 'Display To Client' }"
+                    >
+                      <span>
+                        <aura:if isTrue="{!v.SalesStage}">
+                          <lightning:input
+                            disabled="true"
+                            type="number"
+                            step="any"
+                            aura:id="extraChargesRetailPrice"
+                            name="{!chargesRecord.Id}"
+                            onfocusout="{!c.extraChargesValuesChanged}"
+                            value="{!chargesRecord.Retail_Price__c}"
+                          />
+                          <aura:set attribute="else">
+                            <lightning:input
+                              type="number"
+                              step="any"
+                              aura:id="extraChargesRetailPrice"
+                              name="{!chargesRecord.Id}"
+                              onfocusout="{!c.extraChargesValuesChanged}"
+                              value="{!chargesRecord.Retail_Price__c}"
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </span>
+                    </aura:if>
+                  </td>
+                  <td style="width: 12%">
+                    <aura:if isTrue="{!v.SalesStage}">
+                      <aura:if
+                        isTrue="{!chargesRecord.Charge_Type__c == 'AdditionalCost_RunCharge' }"
+                      >
+                        <lightning:select
+                          disabled="true"
+                          aura:id="extraChargeStatus"
+                          onchange="{!c.chargesStatusChanged}"
+                          value="{!chargesRecord.Display__c}"
+                          name="{!chargesRecord.Id}"
+                          required="false"
+                        >
+                          <option value="Display To Client">
+                            Display To Client
+                          </option>
+                          <option value="Include In Price">
+                            Include In Price
+                          </option>
+                        </lightning:select>
+                        <aura:set attribute="else">
+                          <tr>
+                            <lightning:select
+                              disabled="true"
+                              aura:id="extraChargeStatus"
+                              onchange="{!c.chargesStatusChanged}"
+                              value="{!chargesRecord.Display__c}"
+                              name="{!chargesRecord.Id}"
+                              required="false"
+                            >
+                              <option value="Display To Client">
+                                Display To Client
+                              </option>
+                              <option value="Subtract From Margin">
+                                Subtract From Margin
+                              </option>
+                            </lightning:select>
+                          </tr>
+                        </aura:set>
+                      </aura:if>
+                      <aura:set attribute="else">
+                        <aura:if
+                          isTrue="{!chargesRecord.Charge_Type__c == 'AdditionalCost_RunCharge' }"
+                        >
+                          <lightning:select
+                            aura:id="extraChargeStatus"
+                            onchange="{!c.chargesStatusChanged}"
+                            value="{!chargesRecord.Display__c}"
+                            name="{!chargesRecord.Id}"
+                            required="false"
+                          >
+                            <option value="Display To Client">
+                              Display To Client
+                            </option>
+                            <option value="Include In Price">
+                              Include In Price
+                            </option>
+                          </lightning:select>
+                          <aura:set attribute="else">
+                            <tr>
+                              <lightning:select
+                                aura:id="extraChargeStatus"
+                                onchange="{!c.chargesStatusChanged}"
+                                value="{!chargesRecord.Display__c}"
+                                name="{!chargesRecord.Id}"
+                                required="false"
+                              >
+                                <option value="Display To Client">
+                                  Display To Client
+                                </option>
+                                <option value="Subtract From Margin">
+                                  Subtract From Margin
+                                </option>
+                              </lightning:select>
+                            </tr>
+                          </aura:set>
+                        </aura:if>
+                      </aura:set>
+                    </aura:if>
+                  </td>
+
+                  <td style="width: 12%">
+                    <aura:if
+                      isTrue="{!chargesRecord.Display__c == 'Display To Client' }"
+                    >
+                      <span>
+                        <lightning:input
+                          type="number"
+                          step="any"
+                          disabled="true"
+                          aura:id="extraChargesTotal"
+                          name="{!chargesRecord.Id}"
+                          value="{!chargesRecord.Total__c}"
+                      /></span>
+                    </aura:if>
+                  </td>
+                  <td>
+                    <div
+                      data-value="{!chargesRecord.Id}"
+                      onclick="{!c.deleteExtraCharges}"
+                      class="slds-col slds-size_1-of-12"
+                      style="padding-top: 23px; padding-left: 5%"
+                    >
+                      <lightning:icon
+                        iconName="action:delete"
+                        size="xx-small"
+                        aura:id="deleteCharges"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              </aura:iteration>
+
+              <aura:if isTrue="{!v.internationalCostExists}">
+                <tr>
+                  <td>
+                    <aura:if isTrue="{!v.SalesStage == false}">
+                      <lightning:button
+                        class="slds-button slds-button--brand customb"
+                        onclick="{!c.addDefaultRowAtTheEnd}"
+                        >Add Variant</lightning:button
+                      >
+                      <lightning:button
+                        class="slds-button slds-button--brand customb"
+                        onclick="{!c.openAdditionalCostPopup}"
+                        >Decoration&nbsp;Cost</lightning:button
+                      >
+                    </aura:if>
+                  </td>
+                </tr>
+                <aura:set attribute="else">
+                  <tr>
+                    <td>
+                      <aura:if isTrue="{!v.SalesStage == false}">
+                        <lightning:button
+                          class="slds-button slds-button--brand customb"
+                          onclick="{!c.addDefaultRowAtTheEnd}"
+                          >Add Variant</lightning:button
+                        >
+                        <lightning:button
+                          class="slds-button slds-button--brand customb"
+                          onclick="{!c.openAdditionalCostPopup}"
+                          >Decoration&nbsp;Cost</lightning:button
+                        >
+                        <lightning:button
+                          class="slds-button slds-button--brand customb"
+                          onclick="{!c.openInternationalCost}"
+                          >Fulfillment&nbsp;Cost</lightning:button
+                        >
+                      </aura:if>
+                    </td>
+                  </tr>
+                </aura:set>
+              </aura:if>
+            </aura:iteration>
+          </tbody>
+        </table>
+        <aura:if isTrue="{!v.internationalCostExists}">
+          <table
+            class="slds-table slds-no-row-hover slds-table_cell-buffer slds-border_top"
+          >
+            <thead>
+              <tr>
+                <th scope="col">
+                  <div class="slds-truncate" label="Title">Title</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" label="Percentage Dut">
+                    Percentage Duty
+                  </div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" label="Quantity">Quantity</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" label="Net Cost">Net Cost</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" label="Margin">Margin (%)</div>
+                </th>
+
+                <th scope="col">
+                  <div class="slds-truncate" label="Retail Price">
+                    Retail Price
+                  </div>
+                </th>
+
+                <th scope="col">
+                  <div class="slds-truncate" label="Status">Status</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" label="Total">Total</div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <aura:iteration items="{!v.opportunityLineItem}" var="product">
+                <aura:iteration
+                  items="{!product.internationalCosts}"
+                  var="intCost"
+                >
+                  <aura:if
+                    isTrue="{!intCost.Charge_Type__c != 'InternationalCost_Duty'}"
+                  >
+                    <tr>
+                      <td>
+                        <span>
+                          <aura:if isTrue="{!v.SalesStage}">
+                            <lightning:input
+                              disabled="true"
+                              aura:id="intCostExtraChargesTitle"
+                              name="{!intCost.Id}"
+                              onfocusout="{!c.extraChargesValuesChanged}"
+                              value="{!intCost.Title__c}"
+                            />
+                            <aura:set attribute="else">
+                              <lightning:input
+                                aura:id="intCostExtraChargesTitle"
+                                name="{!intCost.Id}"
+                                onfocusout="{!c.extraChargesValuesChanged}"
+                                value="{!intCost.Title__c}"
+                              />
+                            </aura:set>
+                          </aura:if>
+                        </span>
+                      </td>
+                      <td></td>
+                      <td style="width: 12%">
+                        <span>
+                          <aura:if isTrue="{!v.SalesStage}">
+                            <lightning:input
+                              disabled="true"
+                              type="number"
+                              step="any"
+                              aura:id="intCostExtraChargesQuantity"
+                              name="{!intCost.Id}"
+                              onfocusout="{!c.extraChargesValuesChanged}"
+                              value="{!intCost.Quantity__c}"
+                            />
+                            <aura:set attribute="else">
+                              <lightning:input
+                                type="number"
+                                step="any"
+                                aura:id="intCostExtraChargesQuantity"
+                                name="{!intCost.Id}"
+                                onfocusout="{!c.extraChargesValuesChanged}"
+                                value="{!intCost.Quantity__c}"
+                              />
+                            </aura:set>
+                          </aura:if>
+                        </span>
+                      </td>
+                      <td style="width: 12%">
+                        <span>
+                          <aura:if isTrue="{!v.SalesStage}">
+                            <lightning:input
+                              disabled="true"
+                              type="number"
+                              step="any"
+                              aura:id="intCostExtraChargesNetCost"
+                              name="{!intCost.Id}"
+                              onfocusout="{!c.extraChargesValuesChanged}"
+                              value="{!intCost.Net_Cost__c}"
+                            />
+                            <aura:set attribute="else">
+                              <lightning:input
+                                type="number"
+                                step="any"
+                                aura:id="intCostExtraChargesNetCost"
+                                name="{!intCost.Id}"
+                                onfocusout="{!c.extraChargesValuesChanged}"
+                                value="{!intCost.Net_Cost__c}"
+                              />
+                            </aura:set>
+                          </aura:if>
+                        </span>
+                      </td>
+                      <td style="width: 12%">
+                        <aura:if
+                          isTrue="{!intCost.Display__c == 'Display To Client' }"
+                        >
+                          <span>
+                            <aura:if isTrue="{!v.SalesStage}">
+                              <lightning:input
+                                disabled="true"
+                                type="number"
+                                step="any"
+                                aura:id="intCostExtraChargesMargin"
+                                name="{!intCost.Id}"
+                                onfocusout="{!c.extraChargesValuesChanged}"
+                                value="{!intCost.Margin__c}"
+                              />
+                              <aura:set attribute="else">
+                                <lightning:input
+                                  type="number"
+                                  step="any"
+                                  aura:id="intCostExtraChargesMargin"
+                                  name="{!intCost.Id}"
+                                  onfocusout="{!c.extraChargesValuesChanged}"
+                                  value="{!intCost.Margin__c}"
+                                />
+                              </aura:set>
+                            </aura:if>
+                          </span>
+                        </aura:if>
+                      </td>
+                      <td style="width: 12%">
+                        <aura:if
+                          isTrue="{!intCost.Display__c == 'Display To Client' }"
+                        >
+                          <span>
+                            <aura:if isTrue="{!v.SalesStage}">
+                              <lightning:input
+                                disabled="true"
+                                type="number"
+                                step="any"
+                                aura:id="intCostExtraChargesRetailPrice"
+                                name="{!intCost.Id}"
+                                onfocusout="{!c.extraChargesValuesChanged}"
+                                value="{!intCost.Retail_Price__c}"
+                              />
+                              <aura:set attribute="else">
+                                <lightning:input
+                                  type="number"
+                                  step="any"
+                                  aura:id="intCostExtraChargesRetailPrice"
+                                  name="{!intCost.Id}"
+                                  onfocusout="{!c.extraChargesValuesChanged}"
+                                  value="{!intCost.Retail_Price__c}"
+                                />
+                              </aura:set>
+                            </aura:if>
+                          </span>
+                        </aura:if>
+                      </td>
+                      <td style="width: 12%">
+                        <tr>
+                          <aura:if isTrue="{!v.SalesStage}">
+                            <lightning:select
+                              disabled="true"
+                              aura:id="intCostExtraChargeStatus"
+                              onchange="{!c.chargesStatusChanged}"
+                              value="{!intCost.Display__c}"
+                              name="{!intCost.Id}"
+                              required="false"
+                            >
+                              <option value="Display To Client">
+                                Display To Client
+                              </option>
+                              <option value="Subtract From Margin">
+                                Subtract From Margin
+                              </option>
+                            </lightning:select>
+                            <aura:set attribute="else">
+                              <lightning:select
+                                aura:id="intCostExtraChargeStatus"
+                                onchange="{!c.chargesStatusChanged}"
+                                value="{!intCost.Display__c}"
+                                name="{!intCost.Id}"
+                                required="false"
+                              >
+                                <option value="Display To Client">
+                                  Display To Client
+                                </option>
+                                <option value="Subtract From Margin">
+                                  Subtract From Margin
+                                </option>
+                              </lightning:select>
+                            </aura:set>
+                          </aura:if>
+                        </tr>
+                      </td>
+                      <td style="width: 12%">
+                        <aura:if
+                          isTrue="{!intCost.Display__c == 'Display To Client' }"
+                        >
+                          <span>
+                            <lightning:input
+                              disabled="true"
+                              type="number"
+                              step="any"
+                              aura:id="intCostExtraChargesTotal"
+                              name="{!intCost.Id}"
+                              value="{!intCost.Total__c}"
+                            />
+                          </span>
+                        </aura:if>
+                      </td>
+                      <td>
+                        <div
+                          data-value="{!intCost.Id}"
+                          onclick="{!c.deleteExtraCharges}"
+                          class="slds-col slds-size_1-of-12"
+                          style="padding-top: 23px; padding-left: 5%"
+                        >
+                          <lightning:icon
+                            iconName="action:delete"
+                            size="xx-small"
+                            aura:id="deleteCharges"
+                          />
+                        </div>
+                      </td>
+                    </tr>
+
+                    <aura:set attribute="else">
+                      <tr>
+                        <td>
+                          <span>
+                            <aura:if isTrue="{!v.SalesStage}">
+                              <lightning:input
+                                disabled="true"
+                                aura:id="dutyExtraChargesTitle"
+                                name="{!intCost.Id}"
+                                onfocusout="{!c.dutyValuesChanged}"
+                                value="{!intCost.Title__c}"
+                              />
+                              <aura:set attribute="else">
+                                <lightning:input
+                                  aura:id="dutyExtraChargesTitle"
+                                  name="{!intCost.Id}"
+                                  onfocusout="{!c.dutyValuesChanged}"
+                                  value="{!intCost.Title__c}"
+                                />
+                              </aura:set>
+                            </aura:if>
+                          </span>
+                        </td>
+                        <td>
+                          <span>
+                            <aura:if isTrue="{!v.SalesStage}">
+                              <lightning:input
+                                disabled="true"
+                                type="number"
+                                step="any"
+                                aura:id="dutyPercentage"
+                                name="{!intCost.Id}"
+                                onfocusout="{!c.dutyValuesChanged}"
+                                value="{!intCost.Duty_Percentage__c}"
+                              />
+                              <aura:set attribute="else">
+                                <lightning:input
+                                  type="number"
+                                  step="any"
+                                  aura:id="dutyPercentage"
+                                  name="{!intCost.Id}"
+                                  onfocusout="{!c.dutyValuesChanged}"
+                                  value="{!intCost.Duty_Percentage__c}"
+                                />
+                              </aura:set>
+                            </aura:if>
+                          </span>
+                        </td>
+                        <td style="width: 12%">
+                          <span> </span>
+                        </td>
+                        <td style="width: 12%">
+                          <span>
+                            <aura:if isTrue="{!v.SalesStage}">
+                              <lightning:input
+                                disabled="true"
+                                type="number"
+                                step="any"
+                                aura:id="dutyExtraChargesNetCost"
+                                name="{!intCost.Id}"
+                                onfocusout="{!c.dutyValuesChanged}"
+                                value="{!intCost.Net_Cost__c}"
+                              />
+                              <aura:set attribute="else">
+                                <lightning:input
+                                  type="number"
+                                  step="any"
+                                  aura:id="dutyExtraChargesNetCost"
+                                  name="{!intCost.Id}"
+                                  onfocusout="{!c.dutyValuesChanged}"
+                                  value="{!intCost.Net_Cost__c}"
+                                />
+                              </aura:set>
+                            </aura:if>
+                          </span>
+                        </td>
+                        <td style="width: 12%">
+                          <aura:if
+                            isTrue="{!intCost.Display__c == 'Display To Client' }"
+                          >
+                            <span>
+                              <aura:if isTrue="{!v.SalesStage}">
+                                <lightning:input
+                                  disabled="true"
+                                  type="number"
+                                  step="any"
+                                  aura:id="dutyExtraChargesMargin"
+                                  name="{!intCost.Id}"
+                                  onfocusout="{!c.dutyValuesChanged}"
+                                  value="{!intCost.Margin__c}"
+                                />
+                                <aura:set attribute="else">
+                                  <lightning:input
+                                    type="number"
+                                    step="any"
+                                    aura:id="dutyExtraChargesMargin"
+                                    name="{!intCost.Id}"
+                                    onfocusout="{!c.dutyValuesChanged}"
+                                    value="{!intCost.Margin__c}"
+                                  />
+                                </aura:set>
+                              </aura:if>
+                            </span>
+                          </aura:if>
+                        </td>
+                        <td style="width: 12%">
+                          <aura:if
+                            isTrue="{!intCost.Display__c == 'Display To Client' }"
+                          >
+                            <span>
+                              <aura:if isTrue="{!v.SalesStage}">
+                                <lightning:input
+                                  disabled="true"
+                                  type="number"
+                                  step="any"
+                                  aura:id="dutyExtraChargesRetailPrice"
+                                  name="{!intCost.Id}"
+                                  onfocusout="{!c.dutyValuesChanged}"
+                                  value="{!intCost.Retail_Price__c}"
+                                />
+                                <aura:set attribute="else">
+                                  <lightning:input
+                                    type="number"
+                                    step="any"
+                                    aura:id="dutyExtraChargesRetailPrice"
+                                    name="{!intCost.Id}"
+                                    onfocusout="{!c.dutyValuesChanged}"
+                                    value="{!intCost.Retail_Price__c}"
+                                  />
+                                </aura:set>
+                              </aura:if>
+                            </span>
+                          </aura:if>
+                        </td>
+                        <td style="width: 12%">
+                          <aura:if
+                            isTrue="{!intCost.Charge_Type__c == 'InternationalCost_Duty'}"
+                          >
+                            <aura:if isTrue="{!v.SalesStage}">
+                              <lightning:select
+                                aura:id="dutyExtraChargeStatus"
+                                disabled="true"
+                                onchange="{!c.chargesStatusChanged}"
+                                value="{!intCost.Display__c}"
+                                name="{!intCost.Id}"
+                                required="false"
+                              >
+                                <option value="Display To Client">
+                                  Display To Client
+                                </option>
+                                <option value="Include In Price">
+                                  Include In Price
+                                </option>
+                              </lightning:select>
+                              <aura:set attribute="else">
+                                <lightning:select
+                                  aura:id="dutyExtraChargeStatus"
+                                  onchange="{!c.chargesStatusChanged}"
+                                  value="{!intCost.Display__c}"
+                                  name="{!intCost.Id}"
+                                  required="false"
+                                >
+                                  <option value="Display To Client">
+                                    Display To Client
+                                  </option>
+                                  <option value="Include In Price">
+                                    Include In Price
+                                  </option>
+                                </lightning:select>
+                              </aura:set>
+                            </aura:if>
+                          </aura:if>
+                        </td>
+                        <td style="width: 12%">
+                          <aura:if
+                            isTrue="{!intCost.Display__c == 'Display To Client' }"
+                          >
+                            <span>
+                              <lightning:input
+                                type="number"
+                                step="any"
+                                disabled="true"
+                                aura:id="dutyExtraChargesTotal"
+                                name="{!intCost.Id}"
+                                value="{!intCost.Total__c}"
+                            /></span>
+                          </aura:if>
+                        </td>
+                        <td>
+                          <div
+                            data-value="{!intCost.Id}"
+                            onclick="{!c.deleteExtraCharges}"
+                            class="slds-col slds-size_1-of-12"
+                            style="padding-top: 23px; padding-left: 5%"
+                          >
+                            <lightning:icon
+                              iconName="action:delete"
+                              size="xx-small"
+                              aura:id="deleteCharges"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    </aura:set>
+                  </aura:if>
+                </aura:iteration>
+                <aura:if isTrue="{!v.internationalCostExists}">
+                  <tr>
+                    <td>
+                      <aura:if isTrue="{!v.SalesStage == false}">
+                        <lightning:button
+                          class="slds-button slds-button--brand customb"
+                          onclick="{!c.openInternationalCost}"
+                          >Fulfillment&nbsp;Cost</lightning:button
+                        >
+                      </aura:if>
+                    </td>
+                  </tr>
+                </aura:if>
+              </aura:iteration>
+            </tbody>
+          </table>
+        </aura:if>
+
+        <aura:iteration items="{!v.opportunityLineItem}" var="product">
+          <table
+            style="table-layout: fixed"
+            class="slds-table slds-no-row-hover slds-table_cell-buffer slds-border_top"
+          >
+            <aura:if isTrue="{!product.artworkDetails != null}">
+              <tbody>
+                <aura:iteration items="{!product.artworkDetails}" var="art">
+                  <tr>
+                    <td style="width: 22%" align="center">
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          disabled="true"
+                          aura:id="artworkTitle"
+                          name="{!art.artwork.Id}"
+                          value="{!art.artwork.Title__c}"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            aura:id="artworkTitle"
+                            name="{!art.artwork.Id}"
+                            value="{!art.artwork.Title__c}"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </td>
+
+                    <div
+                      style="cursor: pointer"
+                      onclick="{!c.openEditArtworkPopup}"
+                      data-value="{!art.artwork.Id}"
+                    >
+                      <td valign="top" style="height: 200px; width: 200px">
+                        <aura:if isTrue="{!art.contentVersionId != null }">
+                          <aura:if
+                            isTrue="{!art.artworkImageSupportExtension == true }"
+                          >
+                            <lightning:carousel disableAutoScroll="true">
+                              <lightning:carouselImage
+                                src="{!$Label.c.ContentVersionImage+art.contentVersionId}"
+                                class="slds-p-top_none"
+                                header=""
+                                description=""
+                                alternativeText="Please Insert Image"
+                                style="width: 180px; height: 180px"
+                              ></lightning:carouselImage>
+                            </lightning:carousel>
+                          </aura:if>
+                          <aura:if
+                            isTrue="{!art.artworkImageSupportExtension == false }"
+                          >
+                            <img
+                              src="{!$Resource.noImageSupport}"
+                              style="width: 100%; height: 100%"
+                            />
+                          </aura:if>
+                          <aura:set attribute="else">
+                            <img
+                              src="{!$Resource.No_Image_Available}"
+                              style="width: 100%; height: 100%"
+                            />
+                          </aura:set>
+                        </aura:if>
+                      </td>
+                    </div>
+                    <td style="width: 10%"></td>
+                    <td style="width: 10%"></td>
+                    <td style="width: 10%"></td>
+                    <td style="width: 15%"></td>
+                    <td style="width: 10%"></td>
+                    <td
+                      onclick="{!c.deleteArtwork}"
+                      data-value="{!art.artwork.Id}"
+                      style="vertical-align: top; width: 5%"
+                    >
+                      <aura:if isTrue="{!v.SalesStage == false}">
+                        <lightning:icon
+                          class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                          iconName="utility:close"
+                          aura:id="del"
+                          size="small"
+                        />
+                      </aura:if>
+                    </td>
+                  </tr>
+
+                  <tr
+                    style="
+                      color: darkslategray;
+                      font-weight: bold;
+                      background-color: #fafaf9;
+                    "
+                  >
+                    <th scope="col" style="font-weight: bold">
+                      <div class="slds-truncate" label="Title">Title</div>
+                    </th>
+                    <th scope="col" style="font-weight: bold">
+                      <div class="slds-truncate" label="QTY">QTY</div>
+                    </th>
+                    <th scope="col" style="font-weight: bold">
+                      <div class="slds-truncate" label="Net Cost">Net Cost</div>
+                    </th>
+                    <th scope="col" style="font-weight: bold">
+                      <div class="slds-truncate" label="Margin">Margin (%)</div>
+                    </th>
+
+                    <th scope="col" style="font-weight: bold">
+                      <div class="slds-truncate" label="Retail Price">
+                        Retail Price
+                      </div>
+                    </th>
+
+                    <th scope="col" style="font-weight: bold">
+                      <div class="slds-truncate" label="Status">Status</div>
+                    </th>
+
+                    <th scope="col" style="font-weight: bold">
+                      <div class="slds-truncate" label="Total">Total</div>
+                    </th>
+                  </tr>
+
+                  <aura:iteration
+                    items="{!art.extraCharges}"
+                    var="chargesRecord"
+                  >
+                    <tr>
+                      <td>
+                        <span>
+                          <aura:if isTrue="{!v.SalesStage}">
+                            <lightning:input
+                              disabled="true"
+                              aura:id="extraChargesTitle"
+                              name="{!chargesRecord.Id}"
+                              onfocusout="{!c.extraChargesValuesChanged}"
+                              value="{!chargesRecord.Title__c}"
+                            />
+                            <aura:set attribute="else">
+                              <lightning:input
+                                aura:id="extraChargesTitle"
+                                name="{!chargesRecord.Id}"
+                                onfocusout="{!c.extraChargesValuesChanged}"
+                                value="{!chargesRecord.Title__c}"
+                              />
+                            </aura:set>
+                          </aura:if>
+                        </span>
+                      </td>
+
+                      <td style="width: 12%">
+                        <aura:if
+                          isTrue="{!chargesRecord.Charge_Type__c != 'AdditionalCost_RunCharge' }"
+                        >
+                          <span>
+                            <aura:if isTrue="{!v.SalesStage}">
+                              <lightning:input
+                                disabled="true"
+                                type="number"
+                                step="any"
+                                aura:id="extraChargesQuantity"
+                                name="{!chargesRecord.Id}"
+                                onfocusout="{!c.extraChargesValuesChanged}"
+                                value="{!chargesRecord.Quantity__c}"
+                              />
+                              <aura:set attribute="else">
+                                <lightning:input
+                                  type="number"
+                                  step="any"
+                                  aura:id="extraChargesQuantity"
+                                  name="{!chargesRecord.Id}"
+                                  onfocusout="{!c.extraChargesValuesChanged}"
+                                  value="{!chargesRecord.Quantity__c}"
+                                />
+                              </aura:set>
+                            </aura:if>
+                          </span>
+                          <aura:set attribute="else">
+                            <span>
+                              <lightning:input
+                                type="number"
+                                step="any"
+                                aura:id="extraChargesQuantity"
+                                disabled="true"
+                                name="{!chargesRecord.Id}"
+                                onfocusout="{!c.extraChargesValuesChanged}"
+                                value="{!chargesRecord.Quantity__c}"
+                              />
+                            </span>
+                          </aura:set>
+                        </aura:if>
+                      </td>
+                      <td style="width: 12%">
+                        <span>
+                          <aura:if isTrue="{!v.SalesStage}">
+                            <lightning:input
+                              disabled="true"
+                              type="number"
+                              step="any"
+                              aura:id="extraChargesNetCost"
+                              name="{!chargesRecord.Id}"
+                              onfocusout="{!c.extraChargesValuesChanged}"
+                              value="{!chargesRecord.Net_Cost__c}"
+                            />
+                            <aura:set attribute="else">
+                              <lightning:input
+                                type="number"
+                                step="any"
+                                aura:id="extraChargesNetCost"
+                                name="{!chargesRecord.Id}"
+                                onfocusout="{!c.extraChargesValuesChanged}"
+                                value="{!chargesRecord.Net_Cost__c}"
+                              />
+                            </aura:set>
+                          </aura:if>
+                        </span>
+                      </td>
+                      <td style="width: 12%">
+                        <aura:if
+                          isTrue="{!chargesRecord.Display__c == 'Display To Client' }"
+                        >
+                          <span>
+                            <aura:if isTrue="{!v.SalesStage}">
+                              <lightning:input
+                                disabled="true"
+                                type="number"
+                                step="any"
+                                aura:id="extraChargesMargin"
+                                name="{!chargesRecord.Id}"
+                                onfocusout="{!c.extraChargesValuesChanged}"
+                                value="{!chargesRecord.Margin__c}"
+                              />
+                              <aura:set attribute="else">
+                                <lightning:input
+                                  type="number"
+                                  step="any"
+                                  aura:id="extraChargesMargin"
+                                  name="{!chargesRecord.Id}"
+                                  onfocusout="{!c.extraChargesValuesChanged}"
+                                  value="{!chargesRecord.Margin__c}"
+                                />
+                              </aura:set>
+                            </aura:if>
+                          </span>
+                        </aura:if>
+                      </td>
+                      <td style="width: 12%">
+                        <aura:if
+                          isTrue="{!chargesRecord.Display__c == 'Display To Client' }"
+                        >
+                          <span>
+                            <aura:if isTrue="{!v.SalesStage}">
+                              <lightning:input
+                                disabled="true"
+                                type="number"
+                                step="any"
+                                aura:id="extraChargesRetailPrice"
+                                name="{!chargesRecord.Id}"
+                                onfocusout="{!c.extraChargesValuesChanged}"
+                                value="{!chargesRecord.Retail_Price__c}"
+                              />
+                              <aura:set attribute="else">
+                                <lightning:input
+                                  type="number"
+                                  step="any"
+                                  aura:id="extraChargesRetailPrice"
+                                  name="{!chargesRecord.Id}"
+                                  onfocusout="{!c.extraChargesValuesChanged}"
+                                  value="{!chargesRecord.Retail_Price__c}"
+                                />
+                              </aura:set>
+                            </aura:if>
+                          </span>
+                        </aura:if>
+                      </td>
+
+                      <td style="width: 12%">
+                        <aura:if
+                          isTrue="{!chargesRecord.Charge_Type__c == 'AdditionalCost_RunCharge' }"
+                        >
+                          <aura:if isTrue="{!v.SalesStage}">
+                            <lightning:select
+                              aura:id="extraChargeStatus"
+                              disabled="true"
+                              onchange="{!c.chargesStatusChanged}"
+                              value="{!chargesRecord.Display__c}"
+                              name="{!chargesRecord.Id}"
+                              required="false"
+                            >
+                              <option value="Display To Client">
+                                Display To Client
+                              </option>
+                              <option value="Include In Price">
+                                Include In Price
+                              </option>
+                            </lightning:select>
+                            <aura:set attribute="else">
+                              <lightning:select
+                                aura:id="extraChargeStatus"
+                                onchange="{!c.chargesStatusChanged}"
+                                value="{!chargesRecord.Display__c}"
+                                name="{!chargesRecord.Id}"
+                                required="false"
+                              >
+                                <option value="Display To Client">
+                                  Display To Client
+                                </option>
+                                <option value="Include In Price">
+                                  Include In Price
+                                </option>
+                              </lightning:select>
+                            </aura:set>
+                          </aura:if>
+
+                          <aura:set attribute="else">
+                            <tr>
+                              <aura:if isTrue="{!v.SalesStage}">
+                                <lightning:select
+                                  aura:id="extraChargeStatus"
+                                  disabled="true"
+                                  onchange="{!c.chargesStatusChanged}"
+                                  value="{!chargesRecord.Display__c}"
+                                  name="{!chargesRecord.Id}"
+                                  required="false"
+                                >
+                                  <option value="Display To Client">
+                                    Display To Client
+                                  </option>
+                                  <option value="Subtract From Margin">
+                                    Subtract From Margin
+                                  </option>
+                                </lightning:select>
+                                <aura:set attribute="else">
+                                  <lightning:select
+                                    aura:id="extraChargeStatus"
+                                    onchange="{!c.chargesStatusChanged}"
+                                    value="{!chargesRecord.Display__c}"
+                                    name="{!chargesRecord.Id}"
+                                    required="false"
+                                  >
+                                    <option value="Display To Client">
+                                      Display To Client
+                                    </option>
+                                    <option value="Subtract From Margin">
+                                      Subtract From Margin
+                                    </option>
+                                  </lightning:select>
+                                </aura:set>
+                              </aura:if>
+                            </tr>
+                          </aura:set>
+                        </aura:if>
+                      </td>
+
+                      <td style="width: 12%">
+                        <aura:if
+                          isTrue="{!chargesRecord.Display__c == 'Display To Client' }"
+                        >
+                          <span>
+                            <lightning:input
+                              type="number"
+                              step="any"
+                              disabled="true"
+                              aura:id="extraChargesTotal"
+                              name="{!chargesRecord.Id}"
+                              value="{!chargesRecord.Total__c}"
+                            />
+                          </span>
+                        </aura:if>
+                      </td>
+                      <td>
+                        <aura:if isTrue="{!v.SalesStage == false}">
+                          <div
+                            data-value="{!chargesRecord.Id}"
+                            onclick="{!c.deleteExtraCharges}"
+                            class="slds-col slds-size_1-of-12"
+                            style="padding-top: 23px; padding-left: 5%"
+                          >
+                            <lightning:icon
+                              iconName="action:delete"
+                              size="xx-small"
+                              aura:id="deleteCharges"
+                            />
+                          </div>
+                        </aura:if>
+                      </td>
+                    </tr>
+                  </aura:iteration>
+
+                  <tr>
+                    <td style="text-align: center">
+                      <aura:if isTrue="{!v.SalesStage == false}">
+                        <lightning:button
+                          class="slds-button slds-button--brand customb"
+                          name="{!art.artwork.Id}"
+                          onclick="{!c.addFixedChargesRowForArtwork}"
+                          >Add&nbsp;Fixed&nbsp;Charges</lightning:button
+                        >
+                        <lightning:button
+                          class="slds-button slds-button--brand customb"
+                          name="{!art.artwork.Id}"
+                          onclick="{!c.addRunChargesRowForArtwork}"
+                          >Add&nbsp;Run&nbsp;Charges</lightning:button
+                        >
+                      </aura:if>
+                    </td>
+                  </tr>
+                </aura:iteration>
+              </tbody>
+            </aura:if>
+            <tr>
+              <td>
+                <aura:if isTrue="{!v.SalesStage == false}">
+                  <lightning:button
+                    class="slds-button slds-button--brand customb"
+                    onclick="{!c.addNewDecorationLocation}"
+                    >Add&nbsp;Decoration&nbsp;Location</lightning:button
+                  >
+                </aura:if>
+              </td>
+            </tr>
+          </table>
+        </aura:iteration>
+      </div>
+      <div class="slds-col slds-size_1-of-3">
+        <div class="slds-panel slds-grid slds-grid--vertical slds-nowrap">
+          <div class="slds-panel__body" style="text-align: center">
+            <div
+              style="
+                width: 70%;
+                margin-top: 15px;
+                margin-bottom: 10px;
+                margin-top: 100px;
+                display: inline-grid;
+              "
+            >
+              <table
+                style="
+                  text-align: left;
+                  width: 100%;
+                  background: #808384;
+                  margin-bottom: 20px;
+                "
+              >
+                <tbody>
+                  <tr>
+                    <th
+                      style="
+                        padding-top: 20px;
+                        padding-left: 20px;
+                        border: none !important;
+                        font-size: 1rem;
+                        color: #fff;
+                        text-transform: uppercase;
+                        font-weight: 400;
+                        background: #808384;
+                      "
+                      width="50%"
+                    >
+                      Subtotal
+                    </th>
+                    <td
+                      style="
+                        font-size: 1rem;
+                        color: #fff;
+                        padding: 0 30px;
+                        background: #808384;
+                        padding-top: 20px;
+                        text-align: right !important;
+                      "
+                    >
+                      <ui:outputCurrency
+                        value="{!v.subtotal}"
+                        format="$#,###.##"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      style="
+                        border: none !important;
+                        padding-left: 20px;
+                        font-size: 1rem;
+                        color: #fff;
+                        text-transform: uppercase;
+                        font-weight: 400;
+                        background: #808384;
+                      "
+                      width="50%"
+                    >
+                      Margin&nbsp;Amount
+                    </th>
+                    <td
+                      style="
+                        font-size: 1rem;
+                        color: #fff;
+                        padding: 0 30px;
+                        background: #808384;
+                        text-align: right !important;
+                      "
+                    >
+                      <ui:outputCurrency
+                        value="{!v.marginAmount}"
+                        format="#,###.##"
+                      />
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th
+                      style="
+                        border: none !important;
+                        padding-left: 20px;
+                        font-size: 1rem;
+                        color: #fff;
+                        text-transform: uppercase;
+                        font-weight: 400;
+                        background: #808384;
+                      "
+                      width="50%"
+                    >
+                      Margin
+                    </th>
+                    <td
+                      style="
+                        font-size: 1rem;
+                        color: #fff;
+                        padding: 0 30px;
+                        background: #808384;
+                        text-align: right !important;
+                      "
+                    >
+                      {!v.marginPercentage}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      style="
+                        border: none !important;
+                        padding-left: 20px;
+                        font-size: 1rem;
+                        color: #fff;
+                        text-transform: uppercase;
+                        font-weight: 400;
+                        background: #808384;
+                      "
+                      width="50%"
+                    >
+                      Tax
+                    </th>
+                    <td
+                      style="
+                        font-size: 1rem;
+                        color: #fff;
+                        padding: 0 30px;
+                        background: #808384;
+                        text-align: right !important;
+                      "
+                    >
+                      $0.00
+                    </td>
+                  </tr>
+                  <tr>
+                    <th width="75%"></th>
+                    <td
+                      style="color: #fff; padding: 0 30px; background: #808384"
+                    >
+                      <hr />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      style="
+                        border: none !important;
+                        padding-left: 20px;
+                        font-size: 1rem;
+                        color: #fff;
+                        text-transform: uppercase;
+                        font-weight: 400;
+                        background: #808384;
+                      "
+                      width="50%"
+                    >
+                      Total
+                    </th>
+                    <td
+                      style="
+                        font-size: 1rem;
+                        color: #fff;
+                        padding: 0 30px;
+                        background: #808384;
+                        text-align: right !important;
+                      "
+                    >
+                      <ui:outputCurrency
+                        value="{!v.totalPrice}"
+                        format="$#,###.##"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-panel slds-grid slds-gridvertical slds-nowrap">
+          <div class="slds-panel__body">
+            <c:presentationPreviewProductImages
+              recordId="{!v.recordId}"
+              opportunityId="{!v.opportunityId}"
+            />
+          </div>
+        </div>
+        <!--<span>
+                    <div class="slds-panel slds-grid slds-gridvertical slds-nowrap">
+                        <div class="slds-panel__body">
+                            <div style="text-align: center;">
+                                
+                                <aura:iteration items="{!v.opportunityLineItem}" var="product">
+                                    <aura:if isTrue="{!product.productImageExist ==true }">
+                                        <lightning:carousel disableAutoScroll="true" >
+                                            <aura:iteration items="{!product.ImageContentVersionIds}" var="image">
+                                                
+                                                <lightning:carouselImage  src="{!$Label.c.ContentVersionImage+image}"   class="slds-p-top_none"
+                                                                         header = "" description = ""  alternativeText = "" style="width:300; height: 300;">
+                                                </lightning:carouselImage>
+                                                
+                                            </aura:iteration>
+                                        </lightning:carousel>
+                                    </aura:if>
+                                    <aura:if isTrue="{!product.productImageExist == false }">
+                                        <img class="slds-p-top_none" src="{!$Resource.No_Image_Available}"  style="width:300px; height: 300px;"/>
+                                    </aura:if>
+                                </aura:iteration>
+                            </div>
+                        </div>
+                    </div>
+                </span>-->
+      </div>
+    </div>
+
+    <!--    THIS IS  Additional Cost POPUP   -->
+
+    <div class="slds-m-around--xx-large" style="margin: 0px !important">
+      <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+      <aura:if isTrue="{!v.additionalCostPopup}">
+        <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+        <div
+          role="dialog"
+          tabindex="-1"
+          aria-labelledby="header99"
+          class="slds-modal slds-fade-in-open"
+        >
+          <div
+            class="slds-modal__container"
+            style="height: 110% !important"
+            role="document"
+            tabindex="0"
+          >
+            <div class="slds-modal__header">
+              <h2
+                id="modal-heading-01"
+                class="slds-text-heading_medium slds-hyphenate"
+              >
+                Decoration Cost
+              </h2>
+              <aura:if isTrue="{!v.SalesStage == false}">
+                <button
+                  class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+                  title="Close"
+                  onclick="{!c.closeAdditionCostPopup}"
+                >
+                  <lightning:icon
+                    class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                    iconName="utility:close"
+                    size="small"
+                  />
+                  <span class="slds-assistive-text">Close this window</span>
+                </button>
+              </aura:if>
+            </div>
+
+            <div class="slds-modal__content slds-p-around--medium">
+              <table>
+                <tbody>
+                  <tr>
+                    <td style="text-align: center">
+                      <aura:if isTrue="{!v.SalesStage == false}">
+                        <lightning:button
+                          class="slds-button slds-button--brand customb"
+                          onclick="{!c.addFixedChargesRow}"
+                          >Add&nbsp;Fixed&nbsp;Charges</lightning:button
+                        >
+                        <lightning:button
+                          class="slds-button slds-button--brand customb"
+                          onclick="{!c.addRunChargesRow}"
+                          >Add&nbsp;Run&nbsp;Charges</lightning:button
+                        >
+                      </aura:if>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="slds-modal__footer">
+              <aura:if isTrue="{!v.SalesStage == false}">
+                <lightning:button
+                  class="slds-button slds-button--neutral"
+                  onclick="{!c.closeAdditionCostPopup}"
+                  >Cancel</lightning:button
+                >
+              </aura:if>
+            </div>
+          </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+      </aura:if>
+    </div>
+
+    <!--    THIS IS  ADD SIZE AND COLORS POPUP   -->
+
+    <div class="slds-m-around--xx-large" style="margin: 0px !important">
+      <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+      <aura:if isTrue="{!v.addSizeColorPopup}">
+        <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+        <div
+          role="dialog"
+          tabindex="-1"
+          aria-labelledby="header99"
+          class="slds-modal slds-fade-in-open"
+        >
+          <div
+            class="slds-modal__container"
+            style="height: 110% !important"
+            role="document"
+            tabindex="0"
+          >
+            <div class="slds-modal__header">
+              <h2
+                id="modal-heading-01"
+                class="slds-text-heading_medium slds-hyphenate"
+              >
+                Add Size or Color
+              </h2>
+              <aura:if isTrue="{!v.SalesStage == false}">
+                <button
+                  class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+                  title="Close"
+                  onclick="{!c.closeAddSizeColorPopup}"
+                >
+                  <lightning:icon
+                    class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                    iconName="utility:close"
+                    size="small"
+                  />
+                  <span class="slds-assistive-text">Close this window</span>
+                </button>
+              </aura:if>
+            </div>
+
+            <div class="slds-modal__content slds-p-around--medium">
+              <table>
+                <tbody>
+                  <tr>
+                    <td style="text-align: center">
+                      <aura:if isTrue="{!v.SalesStage == false}">
+                        <lightning:button
+                          class="slds-button slds-button--brand customb"
+                          onclick="{!c.openUpdateSizePopup}"
+                          >Add&nbsp;Size</lightning:button
+                        >
+                        <lightning:button
+                          class="slds-button slds-button--brand customb"
+                          onclick="{!c.openUpdateColorPopup}"
+                          >Add&nbsp;Color</lightning:button
+                        >
+                      </aura:if>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="slds-modal__footer">
+              <aura:if isTrue="{!v.SalesStage == false}">
+                <lightning:button
+                  class="slds-button slds-button--neutral"
+                  onclick="{!c.closeAddSizeColorPopup}"
+                  >Cancel</lightning:button
+                >
+              </aura:if>
+            </div>
+          </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+      </aura:if>
+    </div>
+
+    <!--    THIS IS  Internation Cost POPUP   -->
+
+    <div class="slds-m-around--xx-large" style="margin: 0px !important">
+      <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+      <aura:if isTrue="{!v.internationalCost}">
+        <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+        <div
+          role="dialog"
+          tabindex="-1"
+          aria-labelledby="header99"
+          class="slds-modal slds-fade-in-open"
+        >
+          <div
+            class="slds-modal__container"
+            style="height: 110% !important"
+            role="document"
+            tabindex="0"
+          >
+            <div class="slds-modal__header">
+              <h2
+                id="modal-heading-01"
+                class="slds-text-heading_medium slds-hyphenate"
+              >
+                Fulfillment Cost
+              </h2>
+              <aura:if isTrue="{!v.SalesStage == false}">
+                <button
+                  class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+                  title="Close"
+                  onclick="{!c.closeInternationalCost}"
+                >
+                  <lightning:icon
+                    class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                    iconName="utility:close"
+                    size="small"
+                  />
+                  <span class="slds-assistive-text">Close this window</span>
+                </button>
+              </aura:if>
+            </div>
+
+            <div class="slds-modal__content slds-p-around--medium">
+              <table>
+                <tbody>
+                  <tr>
+                    <td style="text-align: center">
+                      <aura:if isTrue="{!v.SalesStage == false}">
+                        <lightning:button
+                          class="slds-button slds-button--brand customb"
+                          onclick="{!c.addInboundFreight}"
+                          >Add&nbsp;Inbound&nbsp;Freight</lightning:button
+                        >
+                        <lightning:button
+                          class="slds-button slds-button--brand customb"
+                          onclick="{!c.addBrokerage}"
+                          >Add&nbsp;Brokerage</lightning:button
+                        >
+                        <lightning:button
+                          class="slds-button slds-button--brand customb"
+                          onclick="{!c.addDuty}"
+                          >Add&nbsp;Duty</lightning:button
+                        >
+                      </aura:if>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="slds-modal__footer">
+              <aura:if isTrue="{!v.SalesStage == false}">
+                <lightning:button
+                  class="slds-button slds-button--neutral"
+                  onclick="{!c.closeInternationalCost}"
+                  >Cancel</lightning:button
+                >
+              </aura:if>
+            </div>
+          </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+      </aura:if>
+    </div>
+
+    <!-- Edit Artwork Popup -->
+
+    <div class="slds-m-around--xx-large" style="margin: 0px !important">
+      <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+      <aura:if isTrue="{!v.editArtworkPopup}">
+        <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+        <div
+          role="dialog"
+          tabindex="-1"
+          aria-labelledby="header99"
+          class="slds-modal slds-fade-in-open"
+        >
+          <div
+            class="slds-modal__container"
+            style="height: 110% !important"
+            role="document"
+            tabindex="0"
+          >
+            <div class="slds-modal__header">
+              <h2
+                id="modal-heading-01"
+                class="slds-text-heading_medium slds-hyphenate"
+              >
+                Edit Artwork
+              </h2>
+              <aura:if isTrue="{!v.SalesStage == false}">
+                <button
+                  class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+                  title="Close"
+                  onclick="{!c.closeEditArtworkPopup}"
+                >
+                  <lightning:icon
+                    class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                    iconName="utility:close"
+                    size="small"
+                  />
+                  <span class="slds-assistive-text">Close this window</span>
+                </button>
+              </aura:if>
+            </div>
+
+            <aura:if isTrue="{! v.Error != null}">
+              <div class="slds-modal__content slds-p-around_medium">
+                <p style="color: red">{!v.Error}</p>
+              </div>
+            </aura:if>
+            <div class="slds-modal__content slds-p-around--medium">
+              <aura:iteration items="{!v.artworkEdit}" var="art">
+                <form class="slds-form--stacked">
+                  <div class="slds">
+                    <div class="slds-grid slds-wrap">
+                      <div class="slds-col--padded slds-medium-size--1-of-2">
+                        <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <aura:if isTrue="{!v.SalesStage}">
+                              <lightning:input
+                                disabled="true"
+                                type="text"
+                                label="Title"
+                                value="{!art.Title__c}"
+                                aura:id="editTitle"
+                                placeholder="Title"
+                                required="true"
+                              />
+                              <aura:set attribute="else">
+                                <lightning:input
+                                  type="text"
+                                  label="Title"
+                                  value="{!art.Title__c}"
+                                  aura:id="editTitle"
+                                  placeholder="Title"
+                                  required="true"
+                                />
+                              </aura:set>
+                            </aura:if>
+                          </div>
+                        </div>
+                        <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <aura:if isTrue="{!v.SalesStage}">
+                              <lightning:select
+                                aura:id="editImprintType"
+                                disabled="true"
+                                value="{!art.Imprint_Type__c}"
+                                label="Imprint Type"
+                                name="imprintType"
+                                required="true"
+                              >
+                                <option value="">-- --</option>
+                                <option value="3D Laser Engraving">
+                                  3D Laser Engraving
+                                </option>
+                                <option value="Custom Febric Label">
+                                  Custom Febric Label
+                                </option>
+                                <option value="Custom PVC Shape">
+                                  Custom PVC Shape
+                                </option>
+                                <option value="Cut and Sew">Cut and Sew</option>
+                                <option value="Cutting">Cutting</option>
+                                <option value="Deep Etch Sandblast">
+                                  Deep Etch Sandblast
+                                </option>
+                                <option value="Dye Sublimation">
+                                  Dye Sublimation
+                                </option>
+                                <option value="Embossing/Debossing">
+                                  Embossing/Debossing
+                                </option>
+                                <option value="Embroidery">Embroidery</option>
+                                <option value="Flocking">Flocking</option>
+                                <option value="Graphic Desgin/Art Redraw">
+                                  Graphic Desgin/Art Redraw
+                                </option>
+                                <option value="Heat Transfer Applique">
+                                  Heat Transfer Applique
+                                </option>
+                                <option value="Hot Stamping">
+                                  Hot Stamping
+                                </option>
+                                <option value="Jaquard Weave">
+                                  Jaquard Weave
+                                </option>
+                                <option value="Laser Engraving">
+                                  Laser Engraving
+                                </option>
+                                <option value="Lextra">Lextra</option>
+                                <option value="Logo Dome">Logo Dome</option>
+                                <option value="Logo Magic">Logo Magic</option>
+                                <option value="No Imprint (Blank Goods)">
+                                  No Imprint (Blank Goods)
+                                </option>
+                                <option value="Offset/Litho Printing">
+                                  Offset/Litho Printing
+                                </option>
+                                <option value="Pad Printing">
+                                  Pad Printing
+                                </option>
+                                <option value="Perma Patch">Perma Patch</option>
+                                <option value="Sewing">Sewing</option>
+                                <option value="Silk Screening">
+                                  Silk Screening
+                                </option>
+                                <option value="Sublimated Transfer">
+                                  Sublimated Transfer
+                                </option>
+                                <option value="Sublimation">Sublimation</option>
+                                <option value="Tackle Twill">
+                                  Tackle Twill
+                                </option>
+                                <option value="Transfer Print">
+                                  Transfer Print
+                                </option>
+                              </lightning:select>
+                              <aura:set attribute="else">
+                                <lightning:select
+                                  aura:id="editImprintType"
+                                  value="{!art.Imprint_Type__c}"
+                                  label="Imprint Type"
+                                  name="imprintType"
+                                  required="true"
+                                >
+                                  <option value="">-- --</option>
+                                  <option value="3D Laser Engraving">
+                                    3D Laser Engraving
+                                  </option>
+                                  <option value="Custom Febric Label">
+                                    Custom Febric Label
+                                  </option>
+                                  <option value="Custom PVC Shape">
+                                    Custom PVC Shape
+                                  </option>
+                                  <option value="Cut and Sew">
+                                    Cut and Sew
+                                  </option>
+                                  <option value="Cutting">Cutting</option>
+                                  <option value="Deep Etch Sandblast">
+                                    Deep Etch Sandblast
+                                  </option>
+                                  <option value="Dye Sublimation">
+                                    Dye Sublimation
+                                  </option>
+                                  <option value="Embossing/Debossing">
+                                    Embossing/Debossing
+                                  </option>
+                                  <option value="Embroidery">Embroidery</option>
+                                  <option value="Flocking">Flocking</option>
+                                  <option value="Graphic Desgin/Art Redraw">
+                                    Graphic Desgin/Art Redraw
+                                  </option>
+                                  <option value="Heat Transfer Applique">
+                                    Heat Transfer Applique
+                                  </option>
+                                  <option value="Hot Stamping">
+                                    Hot Stamping
+                                  </option>
+                                  <option value="Jaquard Weave">
+                                    Jaquard Weave
+                                  </option>
+                                  <option value="Laser Engraving">
+                                    Laser Engraving
+                                  </option>
+                                  <option value="Lextra">Lextra</option>
+                                  <option value="Logo Dome">Logo Dome</option>
+                                  <option value="Logo Magic">Logo Magic</option>
+                                  <option value="No Imprint (Blank Goods)">
+                                    No Imprint (Blank Goods)
+                                  </option>
+                                  <option value="Offset/Litho Printing">
+                                    Offset/Litho Printing
+                                  </option>
+                                  <option value="Pad Printing">
+                                    Pad Printing
+                                  </option>
+                                  <option value="Perma Patch">
+                                    Perma Patch
+                                  </option>
+                                  <option value="Sewing">Sewing</option>
+                                  <option value="Silk Screening">
+                                    Silk Screening
+                                  </option>
+                                  <option value="Sublimated Transfer">
+                                    Sublimated Transfer
+                                  </option>
+                                  <option value="Sublimation">
+                                    Sublimation
+                                  </option>
+                                  <option value="Tackle Twill">
+                                    Tackle Twill
+                                  </option>
+                                  <option value="Transfer Print">
+                                    Transfer Print
+                                  </option>
+                                </lightning:select>
+                              </aura:set>
+                            </aura:if>
+                          </div>
+                        </div>
+
+                        <!--
+                                                  <div class="slds-form-element">
+                                                    
+                                                    <div class="slds-form-element__control">
+                                                        
+                                                        <aura:if isTrue="{!v.SalesStage}">
+                                                            
+                                                            <lightning:select aura:id="editProofRequired" disabled="true" label="Proof Requiredddd"  value="{!art.Proof_Required__c}"  name="Proof Required" required="true">
+                                                                <option value="">NONE</option>
+                                                                <option value="None">None</option>
+                                                                <option value="Email Proof">Email Proof</option>
+                                                                <option value="Digitel Photo">Digitel Photo</option>
+                                                                <option value="Pre-Production">Pre-Production</option>
+                                                                
+                                                            </lightning:select> 
+                                                            <aura:set attribute="else">
+                                                                <lightning:select aura:id="editProofRequired" label="Proof Required"  value="{!art.Proof_Required__c}"  name="Proof Required" required="true">
+                                                                    <option value="">-</option>
+                                                                    <option value="None">None</option>
+                                                                    <option value="Email Proof">Email Proof</option>
+                                                                    <option value="Digitel Photo">Digitel Photo</option>
+                                                                    <option value="Pre-Production">Pre-Production</option>
+                                                                    
+                                                                </lightning:select>                                                                    </aura:set>
+                                                        </aura:if>
+                                                    </div>	 
+                                                </div>   
+                                                -->
+                        <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <lightning:Textarea
+                              type="text"
+                              label="Logo Name"
+                              value="{!art.logo_Name__c}"
+                              aura:id="editLogoName"
+                              placeholder="Logo Name"
+                              required="true"
+                            />
+                          </div>
+                        </div>
+                        <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <lightning:input
+                              type="text"
+                              aura:id="editLogoSize"
+                              value="{!art.Logo_Size__c}"
+                              label="Logo Size"
+                              required="true"
+                            />
+                          </div>
+                        </div>
+                        <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <lightning:Textarea
+                              type="text"
+                              aura:id="editLogoColor"
+                              value="{!art.Logo_Color__c}"
+                              label="Logo Color"
+                              required="true"
+                            />
+                          </div>
+                        </div>
+
+                        <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <aura:if isTrue="{!v.SalesStage}">
+                              <lightning:select
+                                aura:id="editRepeatLogo"
+                                disabled="true"
+                                value="{!art.Repeat_Logo__c}"
+                                label="Repeat Logo"
+                                name="Repeat Logo"
+                                required="true"
+                              >
+                                <option value="">-- --</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                              </lightning:select>
+                              <aura:set attribute="else">
+                                <lightning:select
+                                  aura:id="editRepeatLogo"
+                                  value="{!art.Repeat_Logo__c}"
+                                  label="Repeat Logo"
+                                  name="Repeat Logo"
+                                  required="true"
+                                >
+                                  <option value="">-- --</option>
+                                  <option value="Yes">Yes</option>
+                                  <option value="No">No</option>
+                                </lightning:select>
+                              </aura:set>
+                            </aura:if>
+                          </div>
+                        </div>
+
+                        <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <lightning:Textarea
+                              type="text"
+                              value="{!art.Supplier_Notes__c}"
+                              aura:id="editSupplierNotes"
+                              label="Supplier Notes"
+                            />
+                          </div>
+                        </div>
+                        <br /><br /><br />
+                      </div>
+                      <div class="slds-col--padded slds-medium-size--1-of-2">
+                        <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <lightning:fileUpload
+                              label="Upload File"
+                              multiple="false"
+                              accept="{!v.filetype}"
+                              required="true"
+                              recordId="{!v.recordToEdit}"
+                              aura:id="editfileId"
+                              onuploadfinished="{!c.handleUploadFinished}"
+                            />
+                            <aura:if isTrue="{!v.fileUploaded}">
+                              <div>{!v.fileName}</div>
+                            </aura:if>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </aura:iteration>
+            </div>
+
+            <div class="slds-modal__footer">
+              <lightning:button
+                class="slds-button slds-button--neutral"
+                onclick="{!c.closeEditArtworkPopup}"
+                >Cancel</lightning:button
+              >
+              <lightning:button
+                class="slds-button slds-button--brand customb"
+                onclick="{!c.editArtwork}"
+                >Save</lightning:button
+              >
+            </div>
+          </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+      </aura:if>
+    </div>
+
+    <!--    THIS IS  Check Pricing POPUP   -->
+
+    <div class="slds-m-around--xx-large" style="margin: 0px !important">
+      <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+      <aura:if isTrue="{!v.checkPricing}">
+        <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+        <div
+          role="dialog"
+          tabindex="-1"
+          aria-labelledby="header99"
+          class="slds-modal slds-fade-in-open"
+        >
+          <div
+            class="slds-modal__container"
+            style="
+              height: 110% !important;
+              width: 100% !important;
+              max-width: 80rem;
+            "
+            role="document"
+            tabindex="0"
+          >
+            <div class="slds-modal__header">
+              <h2
+                style="text-align: left; display: inline; float: left"
+                id="modal-heading-01"
+                class="slds-text-heading_medium slds-hyphenate"
+              >
+                Update Net Costs
+              </h2>
+              <button
+                class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+                title="Close"
+                onclick="{!c.closePricingPopup}"
+              >
+                <lightning:icon
+                  class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                  iconName="utility:close"
+                  size="small"
+                />
+                <span class="slds-assistive-text">Close this window</span>
+              </button>
+            </div>
+
+            <div class="slds-modal__content slds-p-around--medium">
+              <aura:if isTrue="{!v.SpinnerPrice}">
+                <lightning:spinner variant="brand" size="large" />
+              </aura:if>
+              <aura:if isTrue="{! not(empty(v.pricesList))}">
+                <h1 style="font-size: 17px">
+                  The selected costs and quantities will be applied to this item
+                  when you click Update.
+                </h1>
+
+                <br />
+                <h1 style="font-size: 17px">Item Currency: USD</h1>
+                <br />
+                <table
+                  style="padding: 5px"
+                  class="slds-table slds-table_fixed-layout slds-no-row-hover slds-table_cell-buffer"
+                >
+                  <tr>
+                    <td
+                      style="
+                        background-color: #f8f8f8;
+                        padding: 8px;
+                        font-weight: bold;
+                        font-size: 18px;
+                      "
+                    >
+                      Source
+                    </td>
+                    <aura:iteration items="{!v.pricesList}" var="priceObject">
+                      <td
+                        style="
+                          background-color: #e6e6e6;
+                          padding: 8px;
+                          font-weight: bold;
+                          text-align: center;
+                          font-size: 18px;
+                        "
+                      >
+                        {!priceObject.Quantity.From_Z}
+                      </td>
+                    </aura:iteration>
+                  </tr>
+
+                  <tr>
+                    <td
+                      style="
+                        background-color: #e6e6e6;
+                        padding: 8px;
+                        font-weight: bold;
+                        font-size: 18px;
+                      "
+                    >
+                      ESP (USD)
+                    </td>
+                    <aura:iteration items="{!v.pricesList}" var="priceObject">
+                      <td
+                        style="
+                          background-color: #5ca3b6;
+                          padding: 8px;
+                          text-align: center;
+                          font-size: 18px;
+                        "
+                      >
+                        {!priceObject.Cost}
+                      </td>
+                    </aura:iteration>
+                  </tr>
+                </table>
+              </aura:if>
+              <br /><br />
+            </div>
+
+            <div class="slds-modal__footer">
+              <lightning:button
+                class="slds-button slds-button--neutral"
+                onclick="{!c.closePricingPopup}"
+                >Cancel</lightning:button
+              >
+              <lightning:button
+                class="slds-button slds-button--brand"
+                onclick="{!c.updatePricingPopup}"
+                >Update</lightning:button
+              >
+            </div>
+          </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+      </aura:if>
+    </div>
+
+    <!--    THIS IS  View Product POPUP   -->
+
+    <div class="slds-m-around--xx-large" style="margin: 0px !important">
+      <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+      <aura:if isTrue="{!v.checkProduct}">
+        <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+        <div
+          role="dialog"
+          tabindex="-1"
+          aria-labelledby="header99"
+          class="slds-modal slds-fade-in-open"
+        >
+          <div
+            class="slds-modal__container"
+            style="height: 110% !important"
+            role="document"
+            tabindex="0"
+          >
+            <div class="slds-modal__header">
+              <button
+                class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+                title="Close"
+                onclick="{!c.closeCheckProductPopup}"
+              >
+                <lightning:icon
+                  class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                  iconName="utility:close"
+                  size="small"
+                />
+                <span class="slds-assistive-text">Close this window</span>
+              </button>
+            </div>
+
+            <div class="slds-modal__content slds-p-around--medium">
+              <span class="slds-form-element__static">
+                Live Data will be fetched from ESP(in progress)
+              </span>
+            </div>
+
+            <div class="slds-modal__footer">
+              <lightning:button
+                class="slds-button slds-button--neutral"
+                onclick="{!c.closeCheckProductPopup}"
+                >Cancel</lightning:button
+              >
+            </div>
+          </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+      </aura:if>
+    </div>
+
+    <!-- UPDATE COLOR  -->
+
+    <div class="slds-m-around--xx-large" style="margin: 0px !important">
+      <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+      <aura:if isTrue="{!v.updateColorPopup}">
+        <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+        <div
+          role="dialog"
+          tabindex="-1"
+          aria-labelledby="header99"
+          class="slds-modal slds-fade-in-open"
+        >
+          <div
+            class="slds-modal__container"
+            style="height: 110% !important"
+            role="document"
+            tabindex="0"
+          >
+            <div class="slds-modal__header">
+              <h2
+                id="modal-heading-01"
+                class="slds-text-heading_medium slds-hyphenate"
+              >
+                Select Variations
+              </h2>
+              <button
+                class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+                title="Close"
+                onclick="{!c.closeUpdateColorPopup}"
+              >
+                <lightning:icon
+                  class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                  iconName="utility:close"
+                  size="small"
+                />
+                <span class="slds-assistive-text">Close this window</span>
+              </button>
+            </div>
+            <aura:if isTrue="{!v.Spinner}">
+              <div class="slds-p-horizontal--small slds-size--1-of-1">
+                <div
+                  class="slds-p-horizontal--small slds-size--1-of-1 isActivityLoading"
+                >
+                  <lightning:spinner variant="brand" size="large" />
+                </div>
+              </div>
+            </aura:if>
+            <div class="slds-modal__content slds-p-around--medium">
+              <table>
+                <tbody class="slds-brand-band">
+                  <tr style="width: 100%; padding-left: 5%; padding-bottom: 3%">
+                    <lightning:dualListbox
+                      aura:id="selectColor"
+                      name="Color"
+                      label="Select Color"
+                      max="1"
+                      disableReordering="true"
+                      sourceLabel="Available Colors"
+                      selectedLabel="Selected Colors"
+                      options="{!v.colorList }"
+                      value="{!v.selectedColorList}"
+                    />
+                  </tr>
+
+                  <tr style="padding-left: 5%">
+                    <td>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          type="text"
+                          label="Add New Color"
+                          aura:id="colorAddField"
+                          disabled="true"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="text"
+                            label="Add New Color"
+                            aura:id="colorAddField"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </td>
+                    <td style="vertical-align: bottom; padding-left: 4%">
+                      <lightning:button
+                        label="Add&nbsp;New&nbsp;Color"
+                        variant="brand"
+                        onclick="{!c.addColor}"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="slds-modal__footer">
+              <lightning:button
+                class="slds-button slds-button--neutral"
+                onclick="{!c.closeUpdateColorPopup}"
+                >Cancel</lightning:button
+              >
+              <lightning:button
+                class="slds-button slds-button--brand customb"
+                onclick="{!c.saveSelectedColor}"
+                >Save</lightning:button
+              >
+            </div>
+          </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+      </aura:if>
+    </div>
+
+    <!-- UPDATE SIZE  -->
+
+    <div class="slds-m-around--xx-large" style="margin: 0px !important">
+      <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+      <aura:if isTrue="{!v.updateSizePopup}">
+        <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+        <div
+          role="dialog"
+          tabindex="-1"
+          aria-labelledby="header99"
+          class="slds-modal slds-fade-in-open"
+        >
+          <div
+            class="slds-modal__container"
+            style="height: 110% !important"
+            role="document"
+            tabindex="0"
+          >
+            <div class="slds-modal__header">
+              <h2
+                id="modal-heading-01"
+                class="slds-text-heading_medium slds-hyphenate"
+              >
+                Select Variations
+              </h2>
+              <button
+                class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+                title="Close"
+                onclick="{!c.closeUpdateSizePopup}"
+              >
+                <lightning:icon
+                  class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                  iconName="utility:close"
+                  size="small"
+                />
+                <span class="slds-assistive-text">Close this window</span>
+              </button>
+            </div>
+
+            <aura:if isTrue="{! v.Error !=  null}">
+              <div class="slds-modal__content slds-p-around_medium">
+                <p style="color: red">{!v.Error}</p>
+              </div>
+            </aura:if>
+            <aura:if isTrue="{!v.Spinner}">
+              <div class="slds-p-horizontal--small slds-size--1-of-1">
+                <div
+                  class="slds-p-horizontal--small slds-size--1-of-1 isActivityLoading"
+                >
+                  <lightning:spinner variant="brand" size="large" />
+                </div>
+              </div>
+            </aura:if>
+            <div class="slds-modal__content slds-p-around--medium">
+              <table>
+                <tbody class="slds-brand-band">
+                  <tr style="width: 100%; padding-left: 5%; padding-bottom: 3%">
+                    <lightning:dualListbox
+                      aura:id="selectSize"
+                      name="Size"
+                      max="1"
+                      disableReordering="true"
+                      label="Select Size"
+                      sourceLabel="Available Sizes"
+                      selectedLabel="Selected Sizes"
+                      options="{!v.sizeList }"
+                      value="{!v.selectedSizeList}"
+                    />
+                  </tr>
+
+                  <tr style="padding-left: 5%">
+                    <td>
+                      <aura:if isTrue="{!v.SalesStage}">
+                        <lightning:input
+                          type="text"
+                          label="Add New Size"
+                          aura:id="sizeAddField"
+                          disabled="true"
+                        />
+                        <aura:set attribute="else">
+                          <lightning:input
+                            type="text"
+                            label="Add New Size"
+                            aura:id="sizeAddField"
+                          />
+                        </aura:set>
+                      </aura:if>
+                    </td>
+                    <td style="vertical-align: bottom; padding-left: 4%">
+                      <lightning:button
+                        variant="brand"
+                        label="Add&nbsp;New&nbsp;Size"
+                        onclick="{!c.addSize}"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="slds-modal__footer">
+              <lightning:button
+                class="slds-button slds-button--neutral"
+                onclick="{!c.closeUpdateSizePopup}"
+                >Cancel</lightning:button
+              >
+              <lightning:button
+                class="slds-button slds-button--brand customb"
+                onclick="{!c.saveSelectedSize}"
+                >Save</lightning:button
+              >
+            </div>
+          </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+      </aura:if>
+    </div>
+  </body>
+</aura:component>

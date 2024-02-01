@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>Employee Referral</fullName>
+        <default>false</default>
+        <label>Employee Referral</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Google AdWords</fullName>
+        <default>false</default>
+        <label>Google AdWords</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Other</fullName>
+        <default>false</default>
+        <label>Other</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Purchased List</fullName>
+        <default>false</default>
+        <label>Purchased List</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Trade Show</fullName>
+        <default>false</default>
+        <label>Trade Show</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Seamless.AI</fullName>
+        <default>false</default>
+        <label>Seamless.AI</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Inbound Email, Call, Walk In</fullName>
+        <default>false</default>
+        <label>Inbound Email, Call, Walk In</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Outbound Email</fullName>
+        <default>false</default>
+        <label>Outbound Email</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Outbound Sales</fullName>
+        <default>false</default>
+        <label>Outbound Sales</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Webform</fullName>
+        <default>false</default>
+        <label>Webform</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Referral</fullName>
+        <default>false</default>
+        <label>Referral</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Social Media</fullName>
+        <default>false</default>
+        <label>Social Media</label>
+    </standardValue>
+</StandardValueSet>

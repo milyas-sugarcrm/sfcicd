@@ -1,0 +1,3 @@
+Hello, <br/><br/>
+
+Please prepare shipping labels for Invoice {!Order.Invoice_Number__c} and copy the carrier and tracking information to Invoice {!Order.Invoice_Number__c}. Shipping information should be included on the invoice and added to Work Order {!Order.OrderNumber}. If there are any questions, please forward them to {!Order.OwnerEmail}. Please confirm in hands date for this job and adjust shipping rates/times as necessary.

@@ -1,0 +1,607 @@
+<aura:component controller="ShippingMainComponentController">
+  <aura:html tag="style">
+    { box-sizing: border-box; } /* Create two equal columns that floats next to
+    each other */ .column { float: left; width: 50%; padding: 10px; height:
+    300px; /* Should be removed. Only for demonstration */ } /* Clear floats
+    after the columns */ .row:after { content: ""; display: table; clear: both;
+    }
+  </aura:html>
+  <aura:attribute name="parent" type="Aura.Component" required="true" />
+  <aura:attribute name="Spinner" type="boolean" default="false" />
+  <aura:attribute name="today" type="Date" default="" />
+  <aura:attribute
+    name="ShippingObject"
+    type="Shipping__c"
+    default="{ 'sobjectType' : 'Shipping__c' }"
+  />
+  <aura:attribute
+    name="Shipping_InformationItems"
+    type="Shipping_Information__c"
+    default="{ 'sobjectType' : 'Shipping_Information__c' }"
+  />
+  <aura:attribute name="Shipping_CompanyAddresses" type="CompAddress__c[]" />
+  <aura:attribute
+    name="Decorator_Shipping_CompanyAddresses"
+    type="CompAddress__c[]"
+  />
+  <aura:attribute name="AccountAddresses" type="Address__c[]" />
+  <aura:attribute
+    name="Shipping_CompanyAddresses_Selected"
+    type="CompAddress__c"
+  />
+  <aura:attribute name="DecoratorSelectedAddress" type="CompAddress__c" />
+  <aura:attribute name="SelectedClientAddress" type="String" default="" />
+  <aura:attribute name="SelectedOtherAddress" type="String" default="" />
+  <aura:attribute name="SelectedDecoratorAddress" type="String" default="" />
+  <aura:attribute name="SelectedDecoratorClientAddress" type="Address__c" />
+  <aura:attribute name="SelectedAccountAddress" type="String" default="" />
+  <aura:attribute name="recordId" type="Id" />
+  <aura:attribute name="showBool" type="Boolean" default="false" />
+  <aura:attribute name="showDecoratorTeamPhun" type="Boolean" default="false" />
+  <aura:attribute name="showDecoratorClientRt" type="Boolean" default="true" />
+  <aura:attribute name="Error" type="String" />
+  <aura:attribute name="showTeamPhun" type="Boolean" default="false" />
+  <aura:attribute name="otherAddress" type="Boolean" default="false" />
+  <aura:attribute name="showClientRt" type="Boolean" default="true" />
+  <aura:attribute name="showClientWarning" type="Boolean" default="false" />
+  <aura:attribute name="showAccountAddress" type="Boolean" default="false" />
+  <aura:attribute
+    name="showTeamPhunAddressBlock"
+    type="Boolean"
+    default="false"
+  />
+  <aura:handler
+    name="selectedRecordEvent"
+    event="c:selectedLookUpEvent"
+    action="{!c.handleComponentEvent}"
+  />
+  <aura:handler
+    name="selectedRecordEventChoose"
+    event="c:selectedLookUpEvent"
+    action="{!c.handleComponentEventChoose}"
+  />
+
+  <aura:method name="callShippingSave" action="{!c.callSaveMethod}" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <aura:if isTrue="{!v.Spinner}">
+    <div class="slds-p-horizontal--small slds-size--1-of-1">
+      <div class="slds-p-horizontal--small slds-size--1-of-1 isActivityLoading">
+        <lightning:spinner variant="brand" size="small" />
+      </div>
+    </div>
+  </aura:if>
+  <aura:if isTrue="{! v.Error != null}">
+    <div class="slds-modal__content slds-p-around_medium">
+      <p style="color: red">{!v.Error}</p>
+    </div>
+  </aura:if>
+
+  <div class="row">
+    <form class="slds-form--stacked">
+      <div class="column">
+        <table
+          class="slds-table slds-table_fixed-layout slds-no-row-hover slds-table_cell-buffer"
+          border="0"
+        >
+          <tbody>
+            <tr>
+              <td>
+                <div class="slds-col labelNames requiredFields">
+                  <label>Supplier</label>
+                </div>
+              </td>
+              <td>
+                <div class="slds-col requiredFields">
+                  <c:customLookup
+                    aura:id="supplierlookup"
+                    objectAPIName="account"
+                    IconName="standard:account"
+                    orgstatusid="{!v.recordId}"
+                    accountType="vendor"
+                    selectedRecord="{!v.Shipping_InformationItems.Supplier__c}"
+                    fieldRequired="true"
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="table_label_padding">
+                <div class="slds-col labelNames">
+                  <label>In Hands Date</label>
+                </div>
+              </td>
+              <td class="table_label_padding">
+                <div class="slds-col">
+                  <aura:if isTrue="{!v.showClientWarning == true}">
+                    <label>Warning: After sales order in hands date.</label>
+                  </aura:if>
+                  <ui:inputDate
+                    aura:id="expdate"
+                    class="field"
+                    value="{!v.Shipping_InformationItems.In_Hands_Date__c}"
+                    displayDatePicker="true"
+                  />
+                  <div class="showBlock" aura:id="checkboxFirm">
+                    <ui:inputCheckbox
+                      class="checkboxFirm"
+                      label="Firm "
+                      value="{!v.Shipping_InformationItems.Firm__c}"
+                    />
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="table_label_padding">
+                <div class="slds-col labelNames requiredFields">
+                  <label>Ship To</label>
+                </div>
+              </td>
+              <td class="table_label_padding">
+                <div class="slds-col">
+                  <ui:inputSelect
+                    aura:id="Shipping_Information"
+                    value="{!v.Shipping_InformationItems.Ship_To__c}"
+                    change="{!c.onChangeShippingTo}"
+                  />
+                </div>
+              </td>
+            </tr>
+            <aura:if isTrue="{!v.showTeamPhun == true}">
+              <tr class="">
+                <td>
+                  <div
+                    class="slds-col labelNames requiredFields"
+                    aura:id="address_information_block_label"
+                  >
+                    <label>Address</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="slds-col slds-form-element__control">
+                    <lightning:select
+                      aura:id="ShippingMethodsAddress"
+                      onchange="{!c.onChangeCompanyAddress}"
+                      required="true"
+                      value="{!v.Shipping_InformationItems.Company_Address__c}"
+                    >
+                      <aura:iteration
+                        items="{!v.Shipping_CompanyAddresses}"
+                        var="companyAddress"
+                      >
+                        <aura:if
+                          isTrue="{!companyAddress.Id == v.Shipping_CompanyAddresses_Selected.Id}"
+                        >
+                          <option value="{!companyAddress.Id}" selected="true">
+                            {!companyAddress.Name}
+                          </option>
+                        </aura:if>
+                        <aura:if
+                          isTrue="{!companyAddress.Id != v.Shipping_CompanyAddresses_Selected.Id}"
+                        >
+                          <option value="{!companyAddress.Id}" selected="false">
+                            {!companyAddress.Name}
+                          </option>
+                        </aura:if>
+                      </aura:iteration>
+                    </lightning:select>
+                  </div>
+                </td>
+              </tr>
+              <aura:if
+                isTrue="{!not(empty(v.Shipping_CompanyAddresses_Selected))}"
+              >
+                <tr>
+                  <td></td>
+                  <td>
+                    <div class="slds-col" aura:id="ShippingMethodsRealAddress">
+                      <aura:unescapedHtml
+                        value="{!v.Shipping_CompanyAddresses_Selected.Address__c}"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              </aura:if>
+            </aura:if>
+            <aura:if isTrue="{!v.showClientRt == true}">
+              <aura:if isTrue="{!not(empty(v.SelectedClientAddress))}">
+                <tr>
+                  <td>
+                    <div class="slds-col labelNames requiredFields">
+                      <label>Address</label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="slds-col" aura:id="ShippingAccountRealAddress">
+                      <lightning:Textarea
+                        type="text"
+                        aura:id="selectedClientAdd"
+                        rows="2"
+                        value="{!v.SelectedClientAddress}"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              </aura:if>
+            </aura:if>
+            <aura:if isTrue="{!v.otherAddress == true}">
+              <tr>
+                <td>
+                  <div class="slds-col labelNames requiredFields">
+                    <label>Address</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="slds-col">
+                    <lightning:Textarea
+                      type="text"
+                      aura:id="otherAdd"
+                      rows="2"
+                      value="{!v.SelectedOtherAddress}"
+                    />
+                  </div>
+                </td>
+              </tr>
+            </aura:if>
+            <tr>
+              <td class="table_label_padding">
+                <div class="slds-col labelNames requiredFields">
+                  <label>Shipping Method</label>
+                </div>
+              </td>
+              <td class="table_label_padding">
+                <div class="slds-col">
+                  <ui:inputSelect
+                    aura:id="ShippingMethods"
+                    value="{!v.Shipping_InformationItems.Shipping_Method__c}"
+                    required="true"
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="table_label_padding">
+                <div class="slds-col labelNames">
+                  <label>Supplier Notes</label>
+                </div>
+              </td>
+              <td class="table_label_padding">
+                <div class="slds-col">
+                  <ui:inputTextArea
+                    aura:id="comments"
+                    rows="2"
+                    value="{!v.Shipping_InformationItems.Supplier_Notes__c}"
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="table_label_padding">
+                <div class="slds-col labelNames">
+                  <label>Shipping Method (Others)</label>
+                </div>
+              </td>
+              <td class="table_label_padding">
+                <div class="slds-col">
+                  <ui:inputText
+                    aura:id="shippingMethodsOthers"
+                    value="{!v.Shipping_InformationItems.Shipping_Method_Others__c}"
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="table_label_padding">
+                <div class="slds-col labelNames">
+                  <label>Shipping Method (Details)</label>
+                </div>
+              </td>
+              <td class="table_label_padding">
+                <div class="slds-col">
+                  <ui:inputTextArea
+                    aura:id="shippingMethodsDetails"
+                    rows="2"
+                    value="{!v.Shipping_InformationItems.Shipping_Method_Details__c}"
+                  />
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="column">
+        <div aura:id="other_supplier" class="hideBlock otherSupplierStyles">
+          <table>
+            <tr>
+              <td class="">
+                <div class="slds-col labelNames requiredFields">
+                  <label>Supplier</label>
+                </div>
+              </td>
+              <td>
+                <div class="slds-col slds-form-element__control">
+                  <c:customLookup
+                    aura:id="supplierlookup2"
+                    objectAPIName="account"
+                    IconName="standard:account"
+                    orgstatusid="{!v.recordId}"
+                    accountType="vendor"
+                    selectedRecord="{!v.ShippingObject.Supplier__c}"
+                    fieldRequired="true"
+                    dependentComponentId="supplierAddresslookup"
+                    supplierAdd="{!v.SelectedAccountAddress}"
+                  />
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="table_label_padding">
+                <div class="slds-col labelNames requiredFields">
+                  <label>Supplier Address</label>
+                </div>
+              </td>
+              <td class="table_label_padding">
+                <div class="slds-col slds-form-element__control">
+                  <lightning:Textarea
+                    fieldRequired="true"
+                    type="text"
+                    aura:id="supplierAddresslookup"
+                    value="{!v.SelectedAccountAddress}"
+                  />
+                  <!--      <c:customLookup  aura:id="supplierAddresslookup" objectAPIName="address__c" IconName="standard:address" orgstatusid="{!v.recordId}"  accountType="{!v.ShippingObject.Supplier__c}" selectedRecord="{!v.ShippingObject.Supplier_Address__c }"/>   -->
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div aura:id="decorator_block" class="hideBlock otherSupplierStyles">
+          <table>
+            <tr>
+              <td>
+                <div class="slds-col labelNames requiredFields">
+                  <label>Decorator</label>
+                </div>
+              </td>
+              <td>
+                <div class="slds-col">
+                  <c:customLookup
+                    fieldRequired="true"
+                    aura:id="decoratorlookup"
+                    objectAPIName="account"
+                    IconName="standard:account"
+                    orgstatusid="{!v.recordId}"
+                    accountType="vendor,decorator"
+                    selectedRecord="{!v.ShippingObject.Decorator__c}"
+                    dependentComponentId="decoratorAddresslookup"
+                    supplierAdd="{!v.SelectedDecoratorAddress}"
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="table_label_padding">
+                <div class="slds-col labelNames requiredFields">
+                  <label>Decorator Address</label>
+                </div>
+              </td>
+              <td class="table_label_padding">
+                <div class="slds-col">
+                  <lightning:Textarea
+                    fieldRequired="true"
+                    type="text"
+                    aura:id="DecoratorAddresslookup"
+                    value="{!v.SelectedDecoratorAddress}"
+                  />
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="table_label_padding">
+                <div class="slds-col labelNames">
+                  <label>Ship To</label>
+                </div>
+              </td>
+              <td class="table_label_padding">
+                <div class="slds-col">
+                  <ui:inputSelect
+                    aura:id="DecorartorShipping_Information"
+                    value="{!v.ShippingObject.Ship_To__c}"
+                    change="{!c.onChangingDecoratorShippingTo}"
+                  />
+                </div>
+              </td>
+            </tr>
+            <aura:if isTrue="{!v.showDecoratorTeamPhun == true}">
+              <tr>
+                <td>
+                  <div
+                    class="slds-col labelNames requiredFields"
+                    aura:id="decorator_address_information_block_label"
+                  >
+                    <label>Client Address</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="slds-col">
+                    <lightning:select
+                      required="false"
+                      aura:id="decorator_ShippingMethodsAddress"
+                      onchange="{!c.onChangeDecoratorCompanyAddress}"
+                      value="{!v.ShippingObject.Company_Address__c}"
+                    >
+                      <aura:iteration
+                        items="{!v.Decorator_Shipping_CompanyAddresses}"
+                        var="companyAddress"
+                      >
+                        <aura:if
+                          isTrue="{!companyAddress.Id == v.DecoratorSelectedAddress.Id}"
+                        >
+                          <option value="{!companyAddress.Id}" selected="true">
+                            {!companyAddress.Name}
+                          </option>
+                        </aura:if>
+                        <aura:if
+                          isTrue="{!companyAddress.Id != v.DecoratorSelectedAddress.Id}"
+                        >
+                          <option value="{!companyAddress.Id}" selected="false">
+                            {!companyAddress.Name}
+                          </option>
+                        </aura:if>
+                      </aura:iteration>
+                    </lightning:select>
+                  </div>
+                </td>
+              </tr>
+              <aura:if isTrue="{!not(empty(v.DecoratorSelectedAddress))}">
+                <tr>
+                  <td class="table_label_padding"></td>
+                  <td class="table_label_padding">
+                    <div
+                      class="slds-col"
+                      aura:id="decorator_ShippingMethodsRealAddress"
+                    >
+                      <aura:unescapedHtml
+                        value="{!v.DecoratorSelectedAddress.Address__c}"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              </aura:if>
+            </aura:if>
+
+            <aura:if isTrue="{!v.showDecoratorClientRt == true}">
+              <tr aura:id="company_address_information">
+                <td>
+                  <div class="slds-col labelNames requiredFields">
+                    <label>Client Address</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="slds-col">
+                    <div class="slds-col" aura:id="ShippingAccountRealAddress">
+                      <lightning:Textarea
+                        type="text"
+                        aura:id="decorator_ShippingAccountMethodsAddress"
+                        rows="2"
+                        value="{!v.SelectedClientAddress}"
+                      />
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <aura:if isTrue="{!not(empty(v.SelectedDecoratorClientAddress))}">
+                <tr>
+                  <td class="table_label_padding"></td>
+                  <td class="table_label_padding">
+                    <div
+                      class="slds-col"
+                      aura:id="decorator_ShippingAccountRealAddress"
+                    >
+                      <aura:unescapedHtml
+                        value="{!v.SelectedDecoratorClientAddress.DisplayAddress__c}"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              </aura:if>
+            </aura:if>
+
+            <tr>
+              <td class="table_label_padding">
+                <div class="slds-col labelNames">
+                  <label>In Hands Date</label>
+                </div>
+              </td>
+              <td class="table_label_padding">
+                <div class="slds-col">
+                  <label>Warning: After sales order in hands date.</label>
+                  <ui:inputDate
+                    aura:id="expdate"
+                    class="field"
+                    displayDatePicker="true"
+                    value="{!v.ShippingObject.In_Hands_Date__c}"
+                  />
+                  <div class="showBlock" aura:id="checkboxFirmDecorator">
+                    <ui:inputCheckbox
+                      class="checkboxFirm"
+                      label="Firm "
+                      value="{!v.ShippingObject.Firm__c}"
+                    />
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="table_label_padding">
+                <div class="slds-col labelNames">
+                  <label>Shipping Method</label>
+                </div>
+              </td>
+              <td class="table_label_padding">
+                <div class="slds-col">
+                  <ui:inputSelect
+                    aura:id="DecoratorShippingMethods"
+                    value="{!v.ShippingObject.Shipping_Method__c}"
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="table_label_padding">
+                <div class="slds-col labelNames">
+                  <label>Supplier Notes</label>
+                </div>
+              </td>
+              <td class="table_label_padding">
+                <div class="slds-col">
+                  <ui:inputTextArea
+                    aura:id="commentsDecorator"
+                    rows="2"
+                    value="{!v.ShippingObject.Decorator_Notes__c}"
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="table_label_padding">
+                <div class="slds-col labelNames">
+                  <label>Shipping Method (Others)</label>
+                </div>
+              </td>
+              <td class="table_label_padding">
+                <div class="slds-col">
+                  <ui:inputText
+                    aura:id="decoratorshippingMethodsOthers"
+                    value="{!v.ShippingObject.Shipping_Method_Others__c}"
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="table_label_padding">
+                <div class="slds-col labelNames">
+                  <label>Shipping Method (Details)</label>
+                </div>
+              </td>
+              <td class="table_label_padding">
+                <div class="slds-col">
+                  <ui:inputTextArea
+                    aura:id="decoratorshippingMethodsDetails"
+                    rows="2"
+                    value="{!v.ShippingObject.Shipping_Method_Details__c}"
+                  />
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </form>
+  </div>
+</aura:component>

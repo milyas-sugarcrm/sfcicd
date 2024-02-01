@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  .info {
+    margin-left: 20px;
+  }
+  .bullet {
+    list-style-type: disc;
+    margin-left: 20px;
+  }
+  .bold {
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+<p>Hello Eric,</p>
+<p>Salesforce could not create the lead for {!Contact.FirstName} {!Contact.LastName} at {!Opportunity.Company__c}. The email for this individual already exists in the Salesforce system as a lead or contact. A new Distributor Booking Opportunity was created for this account.</p>
+<p>Please follow up at this <a href="{!URL}">Link</a> and proceed with qualifying {!Opportunity.Company__c} per the details below:</p>
+<ul class="bullet">
+  <li><span class="bold">First Name:</span> {!Contact.FirstName}</li>
+  <li><span class="bold">Last Name:</span> {!Contact.LastName}</li>
+  <li><span class="bold">Title:</span> {!Opportunity.Title__c}</li>
+  <li><span class="bold">Phone:</span> {!Opportunity.Phone__c}</li>
+  <li><span class="bold">Email:</span> {!Opportunity.Email__c}</li>
+  <li><span class="bold">Company:</span> {!Opportunity.Company__c}</li>
+  <li><span class="bold">Address:</span> {!Opportunity.Billing_Address__c}</li>
+  <li><span class="bold">Industry Number:</span> {!Opportunity.Industry_Number__c}</li>
+  <li><span class="bold">Events Requested:</span> {!Opportunity.Event_Name__c}</li>
+  <li><span class="bold">How did you hear about EME?:</span> {!Opportunity.How_did_you_hear_about_EME__c}</li>
+</ul>
+</body>
+</html>

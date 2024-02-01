@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PathAssistant xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <entityName>Lead</entityName>
+    <fieldName>Status</fieldName>
+    <masterLabel>Vendor Lead</masterLabel>
+    <pathAssistantSteps>
+        <fieldNames>LeadSource</fieldNames>
+        <fieldNames>Company</fieldNames>
+        <fieldNames>Website</fieldNames>
+        <fieldNames>Industry</fieldNames>
+        <fieldNames>AnnualRevenue</fieldNames>
+        <info
+    >&lt;p&gt;Use &lt;b&gt;Salesforce leads&lt;/b&gt; to separate &lt;b&gt;prospects&lt;/b&gt; from the &lt;b&gt;contacts&lt;/b&gt; you’ve already sold to.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Respond to your lead within five minutes to increase your chances of converting the lead record to an opportunity. &lt;/p&gt;&lt;ul&gt;&lt;li&gt;Visit your lead’s website to learn about your lead’s business and industry.&lt;/li&gt;&lt;li&gt;Find your lead on social networks to determine how to best engage and connect.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</info>
+        <picklistValueName>New</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>Billing_Email__c</fieldNames>
+        <fieldNames>Address</fieldNames>
+        <fieldNames>Sent_Resale_Certificate__c</fieldNames>
+        <fieldNames>Received_W9__c</fieldNames>
+        <info
+    >&lt;p&gt;&lt;b style=&quot;font-size: 13px;&quot;&gt;Congratulations! &lt;/b&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;Now it’s time to convert the lead record to an opportunity. Then, continue the qualification process with your new contact.&lt;/span&gt;&lt;/p&gt;</info>
+        <picklistValueName>Qualified</picklistValueName>
+    </pathAssistantSteps>
+    <recordTypeName>Vendor_Lead</recordTypeName>
+</PathAssistant>

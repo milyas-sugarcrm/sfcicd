@@ -1,0 +1,53 @@
+<apex:page standardController="Opportunity" extensions="GenerateSowWrapper">
+  <apex:slds />
+
+  <style>
+    .centered-panel {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+
+  <apex:form>
+    <apex:actionStatus id="pageStatus">
+      <apex:facet name="start">
+        <apex:outputPanel styleClass="centered-panel">
+          <img src="/img/loading32.gif" width="25" height="25" />
+          <apex:outputLabel value="Loading..." />
+        </apex:outputPanel>
+      </apex:facet>
+    </apex:actionStatus>
+
+    <apex:actionFunction
+      name="uploadFunction"
+      action="{!genPdfSow}"
+      rerender="none"
+      status="pageStatus"
+      oncomplete="hideSpinner('{!success}', '{!msg}')"
+    />
+
+    <script>
+      window.onload = function () {
+        uploadFunction();
+      };
+
+      function hideSpinner(success, msg) {
+        success == "true"
+          ? showToast("Success...", msg, "success")
+          : showToast("Error...", msg, "error");
+        window.location.href = "/{!oppId}";
+      }
+
+      function showToast(title, message, type) {
+        sforce.one.showToast({
+          title: title,
+          message: message,
+          type: type,
+          duration: 3000
+        });
+      }
+    </script>
+  </apex:form>
+</apex:page>

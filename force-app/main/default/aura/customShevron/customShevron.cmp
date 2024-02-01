@@ -1,0 +1,486 @@
+<aura:component
+  implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId"
+  controller="OpportunityStageUpdate"
+>
+  <aura:attribute name="variant" type="String" default="linear" />
+  <aura:attribute name="hideUpdateButton" type="Boolean" default="true" />
+  <aura:handler event="force:refreshView" action="{!c.doInit}" />
+  <aura:attribute name="selectedAccount" type="String" />
+  <aura:attribute name="stage" type="String" default="true" />
+  <aura:attribute name="changeClosedPopup" type="boolean" default="false" />
+  <aura:attribute name="markStageAsComplete" type="boolean" default="false" />
+  <aura:attribute name="options" type="List" />
+  <aura:attribute name="noOfAccounts" type="Integer" />
+  <aura:attribute name="Selectedstage" type="String" default="null" />
+  <aura:attribute name="closeLostSelected" type="Boolean" default="false" />
+
+  <aura:attribute name="estimateExist" type="Boolean" default="false" />
+  <aura:handler
+    event="c:applicationEvents"
+    action="{!c.CloseMarkStageAsComplete}"
+  />
+  <aura:attribute name="markPrStageAsComplete" type="boolean" default="false" />
+
+  <aura:attribute name="showWarningPopup" type="Boolean" default="false" />
+  <aura:attribute name="Spinner" type="Boolean" default="false" />
+  <aura:attribute name="EstimateSpinner1" type="Boolean" default="false" />
+  <aura:if isTrue="{!v.Spinner}">
+    <lightning:spinner variant="brand" size="Medium" />
+  </aura:if>
+
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <div
+    style="
+      display: flex;
+      background: var(--lwc-cardColorBackground, rgb(255, 255, 255));
+    "
+  >
+    <div style="width: 80%">
+      <lightning:path
+        aura:id="path"
+        recordId="{!v.recordId}"
+        variant="{!v.variant}"
+        hideUpdateButton="{!v.hideUpdateButton}"
+        onselect="{!c.handleSelect}"
+      />
+    </div>
+    <div style="margin-top: 12px; margin-left: 3%">
+      <aura:if isTrue="{!v.stage == 'Closed Won'}">
+        <lightning:button
+          class="slds-button slds-button--brand"
+          onclick="{!c.openChangeClosedStagePopup}"
+          >Change&nbsp;Closed&nbsp;Stage</lightning:button
+        >
+        <aura:set attribute="else">
+          <aura:if isTrue="{!v.stage == 'Closed'}">
+            <lightning:button
+              class="slds-button slds-button--brand"
+              onclick="{!c.openChangeClosedStagePopup}"
+              >Change&nbsp;Closed&nbsp;Stage</lightning:button
+            >
+
+            <aura:set attribute="else">
+              <aura:if isTrue="{!v.stage == 'Closed Lost'}">
+                <lightning:button
+                  class="slds-button slds-button--brand"
+                  onclick="{!c.openChangeClosedStagePopup}"
+                  >Change&nbsp;Closed&nbsp;Stage</lightning:button
+                >
+
+                <aura:set attribute="else">
+                  <lightning:button
+                    class="slds-button slds-button--brand"
+                    onclick="{!c.markStageAsComplete}"
+                    >Mark&nbsp;Stage&nbsp;as&nbsp;Complete</lightning:button
+                  >
+                </aura:set>
+              </aura:if>
+            </aura:set>
+          </aura:if>
+        </aura:set>
+      </aura:if>
+    </div>
+  </div>
+
+  <div class="slds-m-around--xx-large" style="margin: 0px !important">
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.changeClosedPopup}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="height: 110% !important"
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Edit Dependencies
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeChangeClosedStagePopup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+
+          <aura:if isTrue="{! v.Error != null}">
+            <div class="slds-modal__content slds-p-around_medium">
+              <p style="color: red">{!v.Error}</p>
+            </div>
+          </aura:if>
+          <div class="slds-modal__content slds-p-around--medium">
+            <form class="slds-form--stacked">
+              <div class="slds">
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col--padded slds-medium-size--1-of-2">
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <lightning:select
+                          name="stageSelect"
+                          value=""
+                          aura:id="StageList"
+                          label="Stage"
+                          required="true"
+                          onchange="{!c.selectedStageChanged}"
+                        >
+                          <option value="">-- None --</option>
+                          <option value="Needs Analysis">Needs Analysis</option>
+                          <option value="Presentation">Presentation</option>
+                          <option value="Estimate">Estimate</option>
+                          <option value="Sales">Sales</option>
+                          <option value="Closed Won">Closed Won</option>
+                          <option value="Closed Lost">Closed Lost</option>
+                        </lightning:select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="slds-col--padded slds-medium-size--1-of-2">
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        <aura:if isTrue="{!v.closeLostSelected == false}">
+                          <lightning:select
+                            name="lossReasonSelectDisabled"
+                            disabled="true"
+                            label="Loss Reason"
+                            required="true"
+                          >
+                            <option value="">-- None --</option>
+                            <option value="Lost to Competitor">
+                              Lost to Competitor
+                            </option>
+                            <option value="No Budget / Lost Funding">
+                              No Budget / Lost Funding
+                            </option>
+                            <option value="No Decision / Non-Responsive">
+                              No Decision / Non-Responsive
+                            </option>
+                            <option value="Price">Price</option>
+                            <option value="Other">Other</option>
+                          </lightning:select>
+
+                          <aura:set attribute="else">
+                            <lightning:select
+                              aura:id="lossReasonSelect"
+                              name="lossReasonSelect"
+                              label="Loss Reason"
+                            >
+                              <option value="">-- None --</option>
+                              <option value="Lost to Competitor">
+                                Lost to Competitor
+                              </option>
+                              <option value="No Budget / Lost Funding">
+                                No Budget / Lost Funding
+                              </option>
+                              <option value="No Decision / Non-Responsive">
+                                No Decision / Non-Responsive
+                              </option>
+                              <option value="Price">Price</option>
+                              <option value="Other">Other</option>
+                            </lightning:select>
+                          </aura:set>
+                        </aura:if>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closeChangeClosedStagePopup}"
+              >Cancel</lightning:button
+            >
+            <lightning:button
+              class="slds-button slds-button--brand customb"
+              onclick="{!c.changeStateOfOpportunity}"
+              >Save</lightning:button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+
+  <div class="slds-m-around--xx-large" style="margin: 0px !important">
+    <!--Use aura:To handle the stage form need analysis to Estimate -->
+    <aura:if isTrue="{!v.markStageAsComplete}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          aura:id="popupclassId"
+          class="slds-modal__container"
+          style="height: 118% !important"
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Convert To Estimate
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.CloseMarkStageAsComplete}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+
+          <aura:if isTrue="{! v.Error != null}">
+            <div class="slds-modal__content slds-p-around_medium">
+              <p style="color: red">{!v.Error}</p>
+            </div>
+          </aura:if>
+          <div class="slds-modal__content slds-p-around--medium">
+            <aura:if isTrue="{!v.EstimateSpinner1}">
+              <lightning:spinner variant="brand" size="Medium" />
+            </aura:if>
+            <div></div>
+            <div class="slds">
+              <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                  Are you sure you want to create an estimate without products?
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-modal__footer">
+            <div style="width: 100%">
+              <div class="slds-form-element" style="display: flex">
+                <label style="padding-right: 5px; padding-top: 6px"
+                  ><strong>QBO&nbsp;Account</strong></label
+                >
+                <div style="width: 20%" class="slds-form-element__control">
+                  <ui:inputSelect aura:id="AccountDropDown" value="" />
+                </div>
+                <div style="display: flex; margin-left: 43%; float: right">
+                  <lightning:button
+                    class="slds-button slds-button--neutral"
+                    onclick="{!c.CloseMarkStageAsComplete}"
+                    >Cancel</lightning:button
+                  >
+                  <lightning:button
+                    class="slds-button slds-button--brand customb"
+                    onclick="{!c.makeEstimateWithoutProducts}"
+                    >Yes</lightning:button
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+    <!--Use aura:To handle the stage from presentation to estimate -->
+    <aura:if isTrue="{!v.markPrStageAsComplete}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+      <!--<aura:if isTrue="{!v.openConvertToEstimate}">-->
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+      <aura:if isTrue="{!v.estimateExist == false}">
+        <div
+          style="align: center"
+          role="dialog"
+          tabindex="-1"
+          aria-labelledby="header99"
+          class="slds-modal slds-fade-in-open"
+        >
+          <div
+            aura:id="popupclassId"
+            class="slds-modal__container"
+            style="
+              height: 100% !important;
+              width: 70% !important;
+              max-width: 70rem;
+            "
+            role="document"
+            tabindex="0"
+          >
+            <div class="slds-modal__header">
+              <h2
+                id="modal-heading-01"
+                class="slds-text-heading_medium slds-hyphenate"
+              >
+                Convert To Estimate
+              </h2>
+              <button
+                class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+                title="Close"
+                onclick="{!c.CloseMarkStageAsComplete}"
+              >
+                <lightning:icon
+                  class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                  iconName="utility:close"
+                  size="small"
+                />
+                <span class="slds-assistive-text">Close this window</span>
+              </button>
+            </div>
+            <div class="slds-modal__content slds-p-around--large">
+              <c:ConvertToEstimateMainComponent recordId="{!v.recordId}" />
+            </div>
+          </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+        <aura:set attribute="else">
+          <div
+            style="align: center"
+            role="dialog"
+            tabindex="-1"
+            aria-labelledby="header99"
+            class="slds-modal slds-fade-in-open"
+          >
+            <div
+              class="slds-modal__container"
+              style="
+                height: 100% !important;
+                width: 35% !important;
+                max-width: 70rem;
+              "
+              role="document"
+              tabindex="0"
+            >
+              <div class="slds-modal__header">
+                <h2
+                  id="modal-heading-01"
+                  class="slds-text-heading_medium slds-hyphenate"
+                >
+                  Convert To Estimate
+                </h2>
+                <button
+                  class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+                  title="Close"
+                  onclick="{!c.CloseMarkStageAsComplete}"
+                >
+                  <lightning:icon
+                    class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                    iconName="utility:close"
+                    size="small"
+                  />
+                  <span class="slds-assistive-text">Close this window</span>
+                </button>
+              </div>
+              <div
+                style="text-align: center"
+                class="slds-modal__content slds-p-around--large"
+              >
+                <h2 class="slds-text-heading_medium slds-hyphenate">
+                  Estimate Already Exists
+                </h2>
+              </div>
+            </div>
+          </div>
+          <div class="slds-backdrop slds-backdrop--open"></div>
+        </aura:set>
+      </aura:if>
+      <!--</aura:if>-->
+    </aura:if>
+  </div>
+
+  <div class="slds-m-around--xx-large" style="margin: 0px !important">
+    <!-- DELETE POPUP  -->
+    <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->
+    <aura:if isTrue="{!v.showWarningPopup}">
+      <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+      <div
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="header99"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div
+          class="slds-modal__container"
+          style="height: 110% !important"
+          role="document"
+          tabindex="0"
+        >
+          <div class="slds-modal__header">
+            <h2
+              id="modal-heading-01"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              Warning
+            </h2>
+            <button
+              class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+              title="Close"
+              onclick="{!c.closeWarningPopup}"
+            >
+              <lightning:icon
+                class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+                iconName="utility:close"
+                size="small"
+              />
+              <span class="slds-assistive-text">Close this window</span>
+            </button>
+          </div>
+          <div class="slds-modal__content slds-p-around--medium">
+            <form class="slds-form--stacked">
+              <div class="slds">
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col--padded slds-medium-size--1-of-">
+                    <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                        Are you sure you want to sync estimate with
+                        <strong>{!v.selectedAccount} QBO account</strong>
+                        ?<br />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="slds-modal__footer">
+            <lightning:button
+              class="slds-button slds-button--neutral"
+              onclick="{!c.closeWarningPopup}"
+              >No</lightning:button
+            >
+            <lightning:button
+              class="slds-button slds-button--brand customb"
+              onclick="{!c.makeEstimateWithoutProductsFromWarningPopup}"
+              >Yes</lightning:button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+  </div>
+</aura:component>

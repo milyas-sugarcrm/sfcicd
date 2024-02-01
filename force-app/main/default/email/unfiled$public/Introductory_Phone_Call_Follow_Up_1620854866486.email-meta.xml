@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description
+  >Use to Introduce Yourself to a New Contact at an Account that Changed to Your Ownership</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Introductory Phone Call Follow Up</name>
+    <relatedEntityType>Contact</relatedEntityType>
+    <style>none</style>
+    <subject>Pleasure Speaking With You, {{{Recipient.FirstName}}}</subject>
+    <type>custom</type>
+    <uiType>SFX</uiType>
+</EmailTemplate>

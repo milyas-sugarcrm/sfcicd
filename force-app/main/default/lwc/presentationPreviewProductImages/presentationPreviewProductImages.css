@@ -1,0 +1,17 @@
+.outerDivImage {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1%;
+  position: relative;
+}
+.innerDivImage {
+  width: 30%;
+  margin: 1%;
+}
+.highlight_default {
+  border: 3px solid #0e609f;
+}
+.iconPosition {
+  position: absolute;
+  --lwc-colorTextIconDefault: #0e609f;
+}

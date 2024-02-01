@@ -1,0 +1,36 @@
+<aura:component
+  controller="AddProductMainController"
+  implements="force:lightningQuickActionWithoutHeader,force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+  access="global"
+>
+  <aura:attribute name="setMeOnInit" type="String" default="default value" />
+  <aura:attribute name="recordId" type="String" access="public" />
+  <aura:attribute name="opportunityId" type="String" />
+  <aura:attribute name="recordFrom" type="String" access="public" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <ui:button aura:id="backButton" press="{!c.openActionWindow}" />
+  <div class="slds-box slds-theme_default">
+    <lightning:tabset selectedTabId="two">
+      <lightning:tab label="ESP" id="two">
+        <c:AddProductESPTab
+          recordId="{!v.recordId}"
+          recordFrom="{!v.recordFrom}"
+        />
+      </lightning:tab>
+      <lightning:tab label="Team Phun" id="one">
+        <c:AddProductTeamPhunTab
+          tabname="teamphun"
+          recordId="{!v.recordId}"
+          recordFrom="{!v.recordFrom}"
+        />
+      </lightning:tab>
+      <lightning:tab label="Design Products" id="three">
+        <c:AddProductTeamPhunTab
+          tabname="designproduct"
+          recordId="{!v.recordId}"
+          recordFrom="{!v.recordFrom}"
+        />
+      </lightning:tab>
+    </lightning:tabset>
+  </div>
+</aura:component>

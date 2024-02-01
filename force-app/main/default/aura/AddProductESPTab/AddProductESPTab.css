@@ -1,0 +1,32 @@
+.THIS.slds-spinner_container {
+  z-index: 10000;
+  position: fixed;
+}
+
+.THIS .checkboxNew {
+  display: inline-block;
+  float: left;
+}
+
+.THIS .form-element__label {
+  padding: 10px;
+}
+
+.THIS .more_options {
+  display: none;
+}
+
+.THIS .dyn-height {
+  padding: 7px;
+  max-height: 60px;
+  overflow-y: auto;
+}
+
+.THIS .show_details {
+  display: block;
+}
+
+.THIS .hideButton {
+  padding-right: 0px;
+  padding-left: 7px;
+}

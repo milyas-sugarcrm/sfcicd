@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Work Order is moved to 8.1 On Shelf for Local Pickup/Delivery</name>
+    <style>none</style>
+    <subject
+  >Work Order {!Order.OrderNumber} - 8.1 On Shelf for Local Pickup/Delivery</subject>
+    <textOnly>Dear Phunion,
+
+{!Order.OrderNumber} for {!Order.WOAccountLink__c} has been QC&apos;d and is ready for pickup/delivery on the pickup shelves. Please coordinate with the client and add any Thank You items to the boxes as needed.
+
+{!Order.WONameLink__c}
+
+Thanks,
+
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

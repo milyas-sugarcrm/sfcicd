@@ -1,0 +1,16 @@
+.THIS {
+}
+.THIS .txt:hover {
+  text-decoration: underline;
+}
+
+.THIS .slds-modal__container {
+  max-width: 90rem !important;
+  width: 80% !important;
+  max-height: 100rem !important;
+  height: 100% !important;
+}
+.THIS .popupclassUpdated {
+  opacity: 0.5;
+  z-index: 0;
+}

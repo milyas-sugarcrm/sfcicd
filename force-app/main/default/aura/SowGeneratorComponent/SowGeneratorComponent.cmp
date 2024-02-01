@@ -1,0 +1,14 @@
+<aura:component
+  controller="GenerateSOW"
+  implements="force:lightningQuickActionWithoutHeader,force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,lightning:isUrlAddressable"
+  access="global"
+>
+  <!-- Attributes -->
+  <aura:attribute name="opportunityId" type="Id" />
+  <aura:attribute name="showSpinner" type="Boolean" default="false" />
+
+  <lightning:card title="Generating SOW..."> </lightning:card>
+
+  <!-- Handle processing on loading aura component -->
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+</aura:component>

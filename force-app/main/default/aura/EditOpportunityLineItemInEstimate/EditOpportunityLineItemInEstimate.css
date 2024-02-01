@@ -1,0 +1,25 @@
+.THIS {
+}
+.THIS .slds-carousel__content {
+  display: none;
+}
+.THIS .crossButton {
+  background-color: white !important;
+}
+
+.THIS.crossButton svg {
+  fill: orange !important;
+}
+
+.THIS svg {
+  cursor: pointer;
+}
+
+.THIS .scrollable {
+  overflow-y: auto;
+}
+.THIS .header {
+  padding: 10px 16px;
+  background: #555;
+  color: #f1f1f1;
+}

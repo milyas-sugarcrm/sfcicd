@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Straight</fullName>
+        <default>false</default>
+        <label>Straight</label>
+    </customValue>
+    <customValue>
+        <fullName>Offset Clockwise X Degrees</fullName>
+        <default>false</default>
+        <label>Offset Clockwise X Degrees</label>
+    </customValue>
+    <customValue>
+        <fullName>Offset Counterclockwise X Degrees</fullName>
+        <default>false</default>
+        <label>Offset Counterclockwise X Degrees</label>
+    </customValue>
+    <masterLabel>Orientation</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

@@ -1,0 +1,7 @@
+Hello {!Order.Primary_Contact_Name__c}, <br/><br/>
+
+Invoice {!Order.Invoice_Number__c} is ready for pickup at Team Phun. Please arrange a pickup or delivery time with {!Order.OwnerFullName}. You can contact {!Order.OwnerFullName} at {!Order.OwnerEmail} with any questions or call us during normal business hours 619-491-7822. <br/><br/>
+
+We hope you had Phun working with us. If so, please leave us a positive review on Google or Facebook. Remember to tag your photos @teamphun and/or #teamphun and you might get pheatured in our social media marketing! <br/><br/>
+
+Thank you for your business!

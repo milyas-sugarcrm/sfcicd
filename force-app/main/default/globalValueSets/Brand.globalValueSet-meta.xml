@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>180s</fullName>
+        <default>false</default>
+        <label>180s</label>
+    </customValue>
+    <customValue>
+        <fullName>A4</fullName>
+        <default>false</default>
+        <label>A4</label>
+    </customValue>
+    <customValue>
+        <fullName>Adams</fullName>
+        <default>false</default>
+        <label>Adams</label>
+    </customValue>
+    <customValue>
+        <fullName>Adidas</fullName>
+        <default>false</default>
+        <label>Adidas</label>
+    </customValue>
+    <customValue>
+        <fullName>Adidas Golf</fullName>
+        <default>false</default>
+        <label>Adidas Golf</label>
+    </customValue>
+    <customValue>
+        <fullName>All Sport</fullName>
+        <default>false</default>
+        <label>All Sport</label>
+    </customValue>
+    <customValue>
+        <fullName>Alpine Fleece</fullName>
+        <default>false</default>
+        <label>Alpine Fleece</label>
+    </customValue>
+    <customValue>
+        <fullName>Alstyle</fullName>
+        <default>false</default>
+        <label>Alstyle</label>
+    </customValue>
+    <customValue>
+        <fullName>Alternative</fullName>
+        <default>false</default>
+        <label>Alternative</label>
+    </customValue>
+    <customValue>
+        <fullName>Alternative Apparel</fullName>
+        <default>false</default>
+        <label>Alternative Apparel</label>
+    </customValue>
+    <customValue>
+        <fullName>American Apparel</fullName>
+        <default>false</default>
+        <label>American Apparel</label>
+    </customValue>
+    <customValue>
+        <fullName>Anvil</fullName>
+        <default>false</default>
+        <label>Anvil</label>
+    </customValue>
+    <customValue>
+        <fullName>Artisan Collection by Reprime</fullName>
+        <default>false</default>
+        <label>Artisan Collection by Reprime</label>
+    </customValue>
+    <customValue>
+        <fullName>Ash City</fullName>
+        <default>false</default>
+        <label>Ash City</label>
+    </customValue>
+    <customValue>
+        <fullName>Asics</fullName>
+        <default>false</default>
+        <label>Asics</label>
+    </customValue>
+    <customValue>
+        <fullName>Augusta</fullName>
+        <default>false</default>
+        <label>Augusta</label>
+    </customValue>
+    <customValue>
+        <fullName>Augusta Sportswear</fullName>
+        <default>false</default>
+        <label>Augusta Sportswear</label>
+    </customValue>
+    <customValue>
+        <fullName>Authentic Pigment</fullName>
+        <default>false</default>
+        <label>Authentic Pigment</label>
+    </customValue>
+    <customValue>
+        <fullName>Backpacker</fullName>
+        <default>false</default>
+        <label>Backpacker</label>
+    </customValue>
+    <customValue>
+        <fullName>Badger</fullName>
+        <default>false</default>
+        <label>Badger</label>
+    </customValue>
+    <customValue>
+        <fullName>BAGedge</fullName>
+        <default>false</default>
+        <label>BAGedge</label>
+    </customValue>
+    <customValue>
+        <fullName>Bayside</fullName>
+        <default>false</default>
+        <label>Bayside</label>
+    </customValue>
+    <customValue>
+        <fullName>Beimar</fullName>
+        <default>false</default>
+        <label>Beimar</label>
+    </customValue>
+    <customValue>
+        <fullName>Bella + Canvas</fullName>
+        <default>false</default>
+        <label>Bella + Canvas</label>
+    </customValue>
+    <customValue>
+        <fullName>Belmar</fullName>
+        <default>false</default>
+        <label>Belmar</label>
+    </customValue>
+    <customValue>
+        <fullName>Big Accessories</fullName>
+        <default>false</default>
+        <label>Big Accessories</label>
+    </customValue>
+    <customValue>
+        <fullName>Bright Shield</fullName>
+        <default>false</default>
+        <label>Bright Shield</label>
+    </customValue>
+    <customValue>
+        <fullName>Bulwark</fullName>
+        <default>false</default>
+        <label>Bulwark</label>
+    </customValue>
+    <customValue>
+        <fullName>Burnside</fullName>
+        <default>false</default>
+        <label>Burnside</label>
+    </customValue>
+    <customValue>
+        <fullName>C2</fullName>
+        <default>false</default>
+        <label>C2</label>
+    </customValue>
+    <customValue>
+        <fullName>Callaway</fullName>
+        <default>false</default>
+        <label>Callaway</label>
+    </customValue>
+    <customValue>
+        <fullName>Cap America</fullName>
+        <default>false</default>
+        <label>Cap America</label>
+    </customValue>
+    <customValue>
+        <fullName>Carhartt</fullName>
+        <default>false</default>
+        <label>Carhartt</label>
+    </customValue>
+    <customValue>
+        <fullName>Carmel Towel Company</fullName>
+        <default>false</default>
+        <label>Carmel Towel Company</label>
+    </customValue>
+    <customValue>
+        <fullName>Champion</fullName>
+        <default>false</default>
+        <label>Champion</label>
+    </customValue>
+    <customValue>
+        <fullName>Code Five</fullName>
+        <default>false</default>
+        <label>Code Five</label>
+    </customValue>
+    <customValue>
+        <fullName>Collegiate Cotton</fullName>
+        <default>false</default>
+        <label>Collegiate Cotton</label>
+    </customValue>
+    <customValue>
+        <fullName>Columbia</fullName>
+        <default>false</default>
+        <label>Columbia</label>
+    </customValue>
+    <customValue>
+        <fullName>Comfort Colors</fullName>
+        <default>false</default>
+        <label>Comfort Colors</label>
+    </customValue>
+    <customValue>
+        <fullName>ComfortWash by Hanes</fullName>
+        <default>false</default>
+        <label>ComfortWash by Hanes</label>
+    </customValue>
+    <customValue>
+        <fullName>Core 365</fullName>
+        <default>false</default>
+        <label>Core 365</label>
+    </customValue>
+    <customValue>
+        <fullName>CornerStone</fullName>
+        <default>false</default>
+        <label>CornerStone</label>
+    </customValue>
+    <customValue>
+        <fullName>Cotton Heritage</fullName>
+        <default>false</default>
+        <label>Cotton Heritage</label>
+    </customValue>
+    <customValue>
+        <fullName>Cutter &amp; Buck</fullName>
+        <default>false</default>
+        <label>Cutter &amp; Buck</label>
+    </customValue>
+    <customValue>
+        <fullName>Decky</fullName>
+        <default>false</default>
+        <label>Decky</label>
+    </customValue>
+    <customValue>
+        <fullName>Devon &amp; Jones</fullName>
+        <default>false</default>
+        <label>Devon &amp; Jones</label>
+    </customValue>
+    <customValue>
+        <fullName>Dickies</fullName>
+        <default>false</default>
+        <label>Dickies</label>
+    </customValue>
+    <customValue>
+        <fullName>Dickies Chef</fullName>
+        <default>false</default>
+        <label>Dickies Chef</label>
+    </customValue>
+    <customValue>
+        <fullName>District</fullName>
+        <default>false</default>
+        <label>District</label>
+    </customValue>
+    <customValue>
+        <fullName>Doggie Skins</fullName>
+        <default>false</default>
+        <label>Doggie Skins</label>
+    </customValue>
+    <customValue>
+        <fullName>Dri Duck</fullName>
+        <default>false</default>
+        <label>Dri Duck</label>
+    </customValue>
+    <customValue>
+        <fullName>Dyenomite</fullName>
+        <default>false</default>
+        <label>Dyenomite</label>
+    </customValue>
+    <customValue>
+        <fullName>econscious</fullName>
+        <default>false</default>
+        <label>econscious</label>
+    </customValue>
+    <customValue>
+        <fullName>Eddie Bauer</fullName>
+        <default>false</default>
+        <label>Eddie Bauer</label>
+    </customValue>
+    <customValue>
+        <fullName>ETS Express</fullName>
+        <default>false</default>
+        <label>ETS Express</label>
+    </customValue>
+    <customValue>
+        <fullName>Extreme</fullName>
+        <default>false</default>
+        <label>Extreme</label>
+    </customValue>
+    <customValue>
+        <fullName>Fahrenheit</fullName>
+        <default>false</default>
+        <label>Fahrenheit</label>
+    </customValue>
+    <customValue>
+        <fullName>Flexfit</fullName>
+        <default>false</default>
+        <label>Flexfit</label>
+    </customValue>
+    <customValue>
+        <fullName>Fortress</fullName>
+        <default>false</default>
+        <label>Fortress</label>
+    </customValue>
+    <customValue>
+        <fullName>Fruit of the Loom</fullName>
+        <default>false</default>
+        <label>Fruit of the Loom</label>
+    </customValue>
+    <customValue>
+        <fullName>FUL</fullName>
+        <default>false</default>
+        <label>FUL</label>
+    </customValue>
+    <customValue>
+        <fullName>Gemline</fullName>
+        <default>false</default>
+        <label>Gemline</label>
+    </customValue>
+    <customValue>
+        <fullName>Gildan</fullName>
+        <default>false</default>
+        <label>Gildan</label>
+    </customValue>
+    <customValue>
+        <fullName>Greg Norman</fullName>
+        <default>false</default>
+        <label>Greg Norman</label>
+    </customValue>
+    <customValue>
+        <fullName>Hall of Fame</fullName>
+        <default>false</default>
+        <label>Hall of Fame</label>
+    </customValue>
+    <customValue>
+        <fullName>Hanes</fullName>
+        <default>false</default>
+        <label>Hanes</label>
+    </customValue>
+    <customValue>
+        <fullName>Hardware</fullName>
+        <default>false</default>
+        <label>Hardware</label>
+    </customValue>
+    <customValue>
+        <fullName>Harriton</fullName>
+        <default>false</default>
+        <label>Harriton</label>
+    </customValue>
+    <customValue>
+        <fullName>Headsweats</fullName>
+        <default>false</default>
+        <label>Headsweats</label>
+    </customValue>
+    <customValue>
+        <fullName>Helly Hansen</fullName>
+        <default>false</default>
+        <label>Helly Hansen</label>
+    </customValue>
+    <customValue>
+        <fullName>Holloway</fullName>
+        <default>false</default>
+        <label>Holloway</label>
+    </customValue>
+    <customValue>
+        <fullName>Hydroflask</fullName>
+        <default>false</default>
+        <label>Hydroflask</label>
+    </customValue>
+    <customValue>
+        <fullName>Il Migliore</fullName>
+        <default>false</default>
+        <label>Il Migliore</label>
+    </customValue>
+    <customValue>
+        <fullName>Independent Trading Co.</fullName>
+        <default>false</default>
+        <label>Independent Trading Co.</label>
+    </customValue>
+    <customValue>
+        <fullName>J America</fullName>
+        <default>false</default>
+        <label>J America</label>
+    </customValue>
+    <customValue>
+        <fullName>Jansport</fullName>
+        <default>false</default>
+        <label>Jansport</label>
+    </customValue>
+    <customValue>
+        <fullName>Jerzees</fullName>
+        <default>false</default>
+        <label>Jerzees</label>
+    </customValue>
+    <customValue>
+        <fullName>Johnnie-O</fullName>
+        <default>false</default>
+        <label>Johnnie-O</label>
+    </customValue>
+    <customValue>
+        <fullName>Just Hoods By AWDis</fullName>
+        <default>false</default>
+        <label>Just Hoods By AWDis</label>
+    </customValue>
+    <customValue>
+        <fullName>Land&apos;s End</fullName>
+        <default>false</default>
+        <label>Land&apos;s End</label>
+    </customValue>
+    <customValue>
+        <fullName>LAT</fullName>
+        <default>false</default>
+        <label>LAT</label>
+    </customValue>
+    <customValue>
+        <fullName>Legendary</fullName>
+        <default>false</default>
+        <label>Legendary</label>
+    </customValue>
+    <customValue>
+        <fullName>Libby</fullName>
+        <default>false</default>
+        <label>Libby</label>
+    </customValue>
+    <customValue>
+        <fullName>Liberty Bags</fullName>
+        <default>false</default>
+        <label>Liberty Bags</label>
+    </customValue>
+    <customValue>
+        <fullName>Marmot</fullName>
+        <default>false</default>
+        <label>Marmot</label>
+    </customValue>
+    <customValue>
+        <fullName>New Era</fullName>
+        <default>false</default>
+        <label>New Era</label>
+    </customValue>
+    <customValue>
+        <fullName>Next Level</fullName>
+        <default>false</default>
+        <label>Next Level</label>
+    </customValue>
+    <customValue>
+        <fullName>Nike</fullName>
+        <default>false</default>
+        <label>Nike</label>
+    </customValue>
+    <customValue>
+        <fullName>North End</fullName>
+        <default>false</default>
+        <label>North End</label>
+    </customValue>
+    <customValue>
+        <fullName>North Face</fullName>
+        <default>false</default>
+        <label>North Face</label>
+    </customValue>
+    <customValue>
+        <fullName>OAD</fullName>
+        <default>false</default>
+        <label>OAD</label>
+    </customValue>
+    <customValue>
+        <fullName>OccuNomix</fullName>
+        <default>false</default>
+        <label>OccuNomix</label>
+    </customValue>
+    <customValue>
+        <fullName>OGIO</fullName>
+        <default>false</default>
+        <label>OGIO</label>
+    </customValue>
+    <customValue>
+        <fullName>Ottocap</fullName>
+        <default>false</default>
+        <label>Ottocap</label>
+    </customValue>
+    <customValue>
+        <fullName>Outdoor Cap</fullName>
+        <default>false</default>
+        <label>Outdoor Cap</label>
+    </customValue>
+    <customValue>
+        <fullName>Pacific Headwear</fullName>
+        <default>false</default>
+        <label>Pacific Headwear</label>
+    </customValue>
+    <customValue>
+        <fullName>Patagonia</fullName>
+        <default>false</default>
+        <label>Patagonia</label>
+    </customValue>
+    <customValue>
+        <fullName>Peter Millar</fullName>
+        <default>false</default>
+        <label>Peter Millar</label>
+    </customValue>
+    <customValue>
+        <fullName>Port &amp; Company</fullName>
+        <default>false</default>
+        <label>Port &amp; Company</label>
+    </customValue>
+    <customValue>
+        <fullName>Port Authority</fullName>
+        <default>false</default>
+        <label>Port Authority</label>
+    </customValue>
+    <customValue>
+        <fullName>Pro Towels</fullName>
+        <default>false</default>
+        <label>Pro Towels</label>
+    </customValue>
+    <customValue>
+        <fullName>Puma Golf</fullName>
+        <default>false</default>
+        <label>Puma Golf</label>
+    </customValue>
+    <customValue>
+        <fullName>Puma Sport</fullName>
+        <default>false</default>
+        <label>Puma Sport</label>
+    </customValue>
+    <customValue>
+        <fullName>Rabbit Skins</fullName>
+        <default>false</default>
+        <label>Rabbit Skins</label>
+    </customValue>
+    <customValue>
+        <fullName>Rawlings</fullName>
+        <default>false</default>
+        <label>Rawlings</label>
+    </customValue>
+    <customValue>
+        <fullName>Red House</fullName>
+        <default>false</default>
+        <label>Red House</label>
+    </customValue>
+    <customValue>
+        <fullName>Red Kap</fullName>
+        <default>false</default>
+        <label>Red Kap</label>
+    </customValue>
+    <customValue>
+        <fullName>Richardson</fullName>
+        <default>false</default>
+        <label>Richardson</label>
+    </customValue>
+    <customValue>
+        <fullName>Richardson Headwear</fullName>
+        <default>false</default>
+        <label>Richardson Headwear</label>
+    </customValue>
+    <customValue>
+        <fullName>Russell Athletic</fullName>
+        <default>false</default>
+        <label>Russell Athletic</label>
+    </customValue>
+    <customValue>
+        <fullName>Russell Outdoors</fullName>
+        <default>false</default>
+        <label>Russell Outdoors</label>
+    </customValue>
+    <customValue>
+        <fullName>Shaka Wear</fullName>
+        <default>false</default>
+        <label>Shaka Wear</label>
+    </customValue>
+    <customValue>
+        <fullName>Simplex Apparel</fullName>
+        <default>false</default>
+        <label>Simplex Apparel</label>
+    </customValue>
+    <customValue>
+        <fullName>Soffe</fullName>
+        <default>false</default>
+        <label>Soffe</label>
+    </customValue>
+    <customValue>
+        <fullName>Southern Tide</fullName>
+        <default>false</default>
+        <label>Southern Tide</label>
+    </customValue>
+    <customValue>
+        <fullName>Soybu</fullName>
+        <default>false</default>
+        <label>Soybu</label>
+    </customValue>
+    <customValue>
+        <fullName>Sport-Tek</fullName>
+        <default>false</default>
+        <label>Sport-Tek</label>
+    </customValue>
+    <customValue>
+        <fullName>Spyder</fullName>
+        <default>false</default>
+        <label>Spyder</label>
+    </customValue>
+    <customValue>
+        <fullName>Stanley</fullName>
+        <default>false</default>
+        <label>Stanley</label>
+    </customValue>
+    <customValue>
+        <fullName>StarTee</fullName>
+        <default>false</default>
+        <label>StarTee</label>
+    </customValue>
+    <customValue>
+        <fullName>Stormtech</fullName>
+        <default>false</default>
+        <label>Stormtech</label>
+    </customValue>
+    <customValue>
+        <fullName>Sublivie</fullName>
+        <default>false</default>
+        <label>Sublivie</label>
+    </customValue>
+    <customValue>
+        <fullName>Swell</fullName>
+        <default>false</default>
+        <label>Swell</label>
+    </customValue>
+    <customValue>
+        <fullName>Team 365</fullName>
+        <default>false</default>
+        <label>Team 365</label>
+    </customValue>
+    <customValue>
+        <fullName>TerryTown</fullName>
+        <default>false</default>
+        <label>TerryTown</label>
+    </customValue>
+    <customValue>
+        <fullName>Threadfast</fullName>
+        <default>false</default>
+        <label>Threadfast</label>
+    </customValue>
+    <customValue>
+        <fullName>Threadfast Apparel</fullName>
+        <default>false</default>
+        <label>Threadfast Apparel</label>
+    </customValue>
+    <customValue>
+        <fullName>Tie-Dye</fullName>
+        <default>false</default>
+        <label>Tie-Dye</label>
+    </customValue>
+    <customValue>
+        <fullName>Top Of The World</fullName>
+        <default>false</default>
+        <label>Top Of The World</label>
+    </customValue>
+    <customValue>
+        <fullName>Towels Plus</fullName>
+        <default>false</default>
+        <label>Towels Plus</label>
+    </customValue>
+    <customValue>
+        <fullName>Tri-Mountain</fullName>
+        <default>false</default>
+        <label>Tri-Mountain</label>
+    </customValue>
+    <customValue>
+        <fullName>Tumi</fullName>
+        <default>false</default>
+        <label>Tumi</label>
+    </customValue>
+    <customValue>
+        <fullName>UltraClub</fullName>
+        <default>false</default>
+        <label>UltraClub</label>
+    </customValue>
+    <customValue>
+        <fullName>Under Armour</fullName>
+        <default>false</default>
+        <label>Under Armour</label>
+    </customValue>
+    <customValue>
+        <fullName>Union Made</fullName>
+        <default>false</default>
+        <label>Union Made</label>
+    </customValue>
+    <customValue>
+        <fullName>US Blanks</fullName>
+        <default>false</default>
+        <label>US Blanks</label>
+    </customValue>
+    <customValue>
+        <fullName>Van Heusen</fullName>
+        <default>false</default>
+        <label>Van Heusen</label>
+    </customValue>
+    <customValue>
+        <fullName>Walls Outdoor</fullName>
+        <default>false</default>
+        <label>Walls Outdoor</label>
+    </customValue>
+    <customValue>
+        <fullName>Wet Products</fullName>
+        <default>false</default>
+        <label>Wet Products</label>
+    </customValue>
+    <customValue>
+        <fullName>Xpress</fullName>
+        <default>false</default>
+        <label>Xpress</label>
+    </customValue>
+    <customValue>
+        <fullName>Yeti</fullName>
+        <default>false</default>
+        <label>Yeti</label>
+    </customValue>
+    <customValue>
+        <fullName>Yupoong</fullName>
+        <default>false</default>
+        <label>Yupoong</label>
+    </customValue>
+    <customValue>
+        <fullName>Yupoong (Flexfit)</fullName>
+        <default>false</default>
+        <label>Yupoong (Flexfit)</label>
+    </customValue>
+    <description>List of brands for Primary Categories</description>
+    <masterLabel>Brand</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

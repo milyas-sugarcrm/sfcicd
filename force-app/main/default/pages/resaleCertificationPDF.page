@@ -1,0 +1,1934 @@
+<apex:page controller="resaleCertificateController" renderAs="pdf">
+  <table
+    style="
+      width: 100%;
+      margin: auto;
+      font-size: 11px;
+      font-family: &quot;Roboto&quot;, Arial, sans-serif;
+      margin-top: 0;
+      padding-top: 0;
+    "
+    cellspacing="0"
+    cellpadding="5"
+  >
+    <tr>
+      <td colspan="2" align="center" style="font-size: 16px">
+        <b
+          ><apex:outputText
+            value="UNIFORM SALES USE TAX RESALE CERTIFICATE — MULTIJURISDICTION"
+        /></b>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <apex:outputText
+          value="The below-listed states have indicated that this certificate is acceptable as a resale/exemption certificate for sales/use tax, subject to the instructions and notes on pages 2 - 6. The issuing Buyer and the recipient Seller have the responsibility to determine the proper use of this certificate under applicable laws in each state, as these may change from time to time. This form was revised as of June 21, 2022."
+        />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="padding-bottom: 0">
+        <apex:outputText value="Issued to Seller: " />
+        <span
+          style="
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 545px;
+          "
+          >{!VendorAccountName}</span
+        >
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="padding-bottom: 0; padding-top: 12px">
+        <apex:outputText value="Address: " />
+        <span
+          style="
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 585px;
+          "
+        >
+          {!VendorAddress['billingstreet']} {!VendorAddress['billingcity']}
+          {!VendorAddress['billingstate']} {!VendorAddress['billingPostalCode']}
+          {!VendorAddress['billingCountry']}
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 55%" valign="top">
+        <br /> <apex:outputText value="I certify that: " /> <br />
+
+        <apex:outputText value="Name of Firm (Buyer):" />
+        <span
+          style="
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 210px;
+          "
+          >&nbsp;Team Phun LLC</span
+        >
+        <br />
+
+        <apex:outputText value="Address: " />
+        <span
+          style="
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 280px;
+            padding-top: 5px;
+          "
+          >&nbsp;5026 Cass St. STE B</span
+        >
+        <span
+          style="
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 330px;
+            padding-top: 5px;
+          "
+          >San Diego, CA 92109</span
+        >
+        <span
+          style="
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 330px;
+            padding-top: 15px;
+          "
+        ></span>
+        <br />
+        <span
+          style="
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 330px;
+            padding-top: 15px;
+          "
+        ></span>
+        <br />
+      </td>
+      <td style="width: 45%" valign="top">
+        <br /> <apex:outputText value="is engaged or is registered as a" />
+        <br />
+
+        <span
+          style="
+            width: 12px;
+            height: 12px;
+            border: 1px solid black;
+            display: inline-block;
+          "
+        >
+          <span
+            style="
+              width: 8px;
+              height: 8px;
+              margin: 1px 2px 2px;
+              display: inline-block;
+              background: #333;
+            "
+          ></span>
+        </span>
+        <apex:outputText value=" Wholesaler" /> <br />
+
+        <span
+          style="
+            width: 12px;
+            height: 12px;
+            border: 1px solid black;
+            display: inline-block;
+          "
+        >
+          <span
+            style="
+              width: 8px;
+              height: 8px;
+              margin: 1px 2px 2px;
+              display: inline-block;
+              background: #333;
+            "
+          ></span>
+        </span>
+        <apex:outputText value=" Retailer" /> <br />
+
+        <span
+          style="
+            width: 12px;
+            height: 12px;
+            border: 1px solid black;
+            display: inline-block;
+          "
+        >
+          <span
+            style="
+              width: 8px;
+              height: 8px;
+              margin: 1px 2px 2px;
+              display: inline-block;
+              background: #333;
+            "
+          ></span>
+        </span>
+        <apex:outputText value=" Manufacturer" /> <br />
+
+        <span
+          style="
+            width: 12px;
+            height: 12px;
+            border: 1px solid black;
+            display: inline-block;
+          "
+        ></span>
+        <apex:outputText value=" Seller" /> <br />
+
+        <span
+          style="
+            width: 12px;
+            height: 12px;
+            border: 1px solid black;
+            display: inline-block;
+          "
+        ></span>
+        <apex:outputText value=" Lessor (see notes on pages 2─4)" /> <br />
+
+        <span
+          style="
+            width: 12px;
+            height: 12px;
+            border: 1px solid black;
+            display: inline-block;
+          "
+        >
+          <span
+            style="
+              width: 8px;
+              height: 8px;
+              margin: 1px 2px 2px;
+              display: inline-block;
+              background: #333;
+            "
+          ></span>
+        </span>
+        <apex:outputText value=" Other (Specify)" />
+        <span
+          style="
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 130px;
+          "
+          >DISTRIBUTOR</span
+        >
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <apex:outputText
+          value="And is registered for sales/use tax with the below-listed states and cities within which Seller would deliver purchases to Buyer and that any such purchases are for wholesale, resale, or ingredients or components of a new product or service to be resold, leased, or rented in the normal course of business. Buyer is in the business of wholesaling, retailing, manufacturing, leasing (renting), or selling the following:"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <apex:outputText value="Description of Business:" />
+        <span
+          style="
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 500px;
+          "
+          >Wholesale Trade, manufacture, and distribution of branded of
+          marketing products</span
+        >
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <apex:outputText
+          style="
+            padding-bottom: 4px;
+            padding-top: 4px;
+            display: inline-block;
+            padding-bottom: 5px;
+          "
+          value="General description of tangible property or taxable services to be purchased from the Seller: "
+        />
+        <span
+          style="
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 140px;
+            padding-bottom: 5px;
+          "
+          >Custom Merchandise,</span
+        >
+        <br />
+        <span
+          style="
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 630px;
+            padding-bottom: 5px;
+          "
+          >Branded Apparel, Sign &amp; Displays, and Resale Products</span
+        >
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table
+          style="
+            width: 100%;
+            font-family: &quot;Roboto&quot;, Arial, sans-serif;
+            border-collapse: collapse;
+          "
+          border="1"
+          cellspacing="0"
+        >
+          <tr style="background-color: #d4e1ba">
+            <th style="min-width: 50px; text-align: center">
+              <apex:outputText value="State" />
+            </th>
+            <th align="left" style="padding-left: 6px">
+              <apex:outputText
+                value="State Registration, Seller’s Permit, or ID"
+              />
+              <br />
+              <apex:outputText value="Number of Purchaser" />
+            </th>
+            <th style="min-width: 50px; text-align: center">
+              <apex:outputText value="State" />
+            </th>
+            <th align="left" style="padding-left: 6px">
+              <apex:outputText
+                value="State Registration, Seller’s Permit, or ID"
+              />
+              <br />
+              <apex:outputText value="Number of Purchaser" />
+            </th>
+          </tr>
+
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="AL" />
+              <sup> <apex:outputText value="1" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="NE" />
+              <sup> <apex:outputText value="" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="AR" />
+              <sup> <apex:outputText value="" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="NV" />
+              <sup> <apex:outputText value="19" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="AZ" />
+              <sup> <apex:outputText value="2" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="NJ" />
+              <sup> <apex:outputText value="" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="CA" />
+              <sup> <apex:outputText value="3" /> </sup>
+            </td>
+            <td style="text-align: center">102-197974</td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="NM" />
+              <sup> <apex:outputText value="4,20" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="CO" />
+              <sup> <apex:outputText value="4,5" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="NC" />
+              <sup> <apex:outputText value="21" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="CT" />
+              <sup> <apex:outputText value="6" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="ND" />
+              <sup> <apex:outputText value="" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="FL" />
+              <sup> <apex:outputText value="7" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="OH" />
+              <sup> <apex:outputText value="22" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="GA" />
+              <sup> <apex:outputText value="8" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="OK" />
+              <sup> <apex:outputText value="23" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="HI" />
+              <sup> <apex:outputText value="4,9" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="PA" />
+              <sup> <apex:outputText value="24" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="ID" />
+              <sup> <apex:outputText value="10" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="RI" />
+              <sup> <apex:outputText value="25" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="IL" />
+              <sup> <apex:outputText value="4,11" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="SC" />
+              <sup> <apex:outputText value="" /> </sup>
+            </td>
+            <td style="text-align: center">117955604</td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="IA" />
+              <sup> <apex:outputText value="5,6" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="SD" />
+              <sup> <apex:outputText value="26" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="KS" />
+              <sup> <apex:outputText value="12" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="TN" />
+              <sup> <apex:outputText value="27" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="KY" />
+              <sup> <apex:outputText value="13" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="TX" />
+              <sup> <apex:outputText value="28" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="ME" />
+              <sup> <apex:outputText value="14" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="UT" />
+              <sup> <apex:outputText value="" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="MD" />
+              <sup> <apex:outputText value="15" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="VT" />
+              <sup> <apex:outputText value="29" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="MI" />
+              <sup> <apex:outputText value="16" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="WA" />
+              <sup> <apex:outputText value="30" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="MN" />
+              <sup> <apex:outputText value="17" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="WI" />
+              <sup> <apex:outputText value="31" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="MO" />
+              <sup> <apex:outputText value="18" /> </sup>
+            </td>
+            <td></td>
+            <td style="padding-left: 10px; text-align: left">
+              <apex:outputText value="" />
+              <sup> <apex:outputText value="" /> </sup>
+            </td>
+            <td></td>
+          </tr>
+          <tr style="background-color: #d4e1ba">
+            <td colspan="4" style="padding: 8px 0"></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="padding-top: 12px">
+        <apex:outputText
+          value="I further certify that if any property or service so purchased tax-free is used or consumed by Buyer so as to make it subject to sales/use tax, Buyer will pay the tax due directly to the proper taxing authority when state law so provides or inform the Seller for added tax billing. This certificate shall be a part of each order that Buyer may hereafter give to Seller, unless otherwise specified, and shall be valid until canceled by Buyer in writing or revoked by the city or state."
+        />
+        <br /> <br />
+
+        <apex:outputText
+          value="Under penalties of perjury, I swear or affirm that the information on this form is true and correct as to every material matter."
+        />
+        <br />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="right">
+        <apex:outputText value="Authorized Signature:" />
+        <span
+          style="
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 350px;
+            text-align: center;
+          "
+        >
+          <apex:image
+            style=""
+            url="{!$Resource.resalePdfSignature}"
+            width="125"
+            height="125"
+          />
+        </span>
+        <br />
+        <apex:outputText
+          value="(Owner, Partner, or Corporate Officer, or other authorized signer of Buyer)"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="right">
+        <apex:outputText value="Title: " />
+        <span
+          style="
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 350px;
+            text-align: left;
+          "
+          >Operations Manager</span
+        >
+        <br />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="right">
+        <apex:outputText value="Date: " />
+        <span
+          style="
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 350px;
+            text-align: left;
+          "
+          >{!CurrentDate}</span
+        >
+        <br />
+      </td>
+    </tr>
+  </table>
+  <table
+    style="
+      width: 100%;
+      margin: auto;
+      font-size: 11px;
+      font-family: &quot;Roboto&quot;, Arial, sans-serif;
+    "
+    cellspacing="0"
+    cellpadding="3"
+  >
+    <tr>
+      <td align="center" style="font-size: 16px">
+        <b> <apex:outputText value="INSTRUCTIONS" /> </b>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <apex:outputText
+          value="In order to comply with state and local sales tax law requirements, the Seller must have in its files a properly completed exemption certificate from all of its customers (Buyers) who claim a sales/use tax exemption. If the Seller does not have this certificate, it is obliged to collect the tax for the state in which the property or service is delivered."
+        />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <apex:outputText
+          value="Generally, a Buyer must be registered as a retailer for sales/use tax in states where the Buyer has sales/use tax nexus. The sales/use tax registration number for the state should be entered on this certificate in the box for that state. A Buyer has sales/use tax nexus in a state if the Buyer has physical presence in that state or has made sufficient sales to customers in that state to have sales/use tax economic nexus. The threshold of sales activity needed to establish sales/use tax economic nexus may differ by state. If the Buyer is entitled to claim a resale sales tax exemption or exclusion, the Buyer should complete the certificate and send it to the Seller at the time of purchase or as soon thereafter as possible. If the Buyer purchases tax free for a reason other than resale, ingredient or component exemption, the Buyer cannot use this form and must provide to the Seller the proper state exemption certificate for that specific exemption."
+        />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <apex:outputText
+          value="Caution: Misuse of this certificate by Buyer, Seller, lessor, lessee, or the representative thereof may be punishable by fine, imprisonment or loss of right to issue or accept a certificate in some states or cities."
+        />
+
+        <div style="padding-top: 12px">
+          <apex:outputText value="Notes:" />
+          <span
+            style="
+              display: inline-block;
+              border-bottom: 1px solid #000;
+              width: 200px;
+            "
+          ></span>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table
+          style="
+            width: 100%;
+            font-family: &quot;Roboto&quot;, Arial, sans-serif;
+          "
+        >
+          <tr>
+            <td valign="top" style="width: 30px">
+              <apex:outputText value="1." />
+            </td>
+            <td valign="top">
+              <apex:outputText
+                value="Alaska Remote Sellers Sales Tax Commission (ARSSTC): This certificate is valid as a resale certificate only if it contains the purchaser’s name, address, signature and either the purchaser’s ARSSTC Remote Reseller Certificate of Exemption number or the purchaser’s resale certificate number issued by the local taxing jurisdiction. The purchaser should also provide a general description of the tangible personal property or taxable services that are being purchased from the seller. The purchaser’s claim for exemption may be verified by calling the ARSSTC at 907-790-5300."
+              />
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table
+          style="
+            width: 100%;
+            font-family: &quot;Roboto&quot;, Arial, sans-serif;
+          "
+        >
+          <tr>
+            <td valign="top" style="width: 30px">
+              <apex:outputText value="2." />
+            </td>
+            <td valign="top">
+              <apex:outputText
+                value="Alabama: Each retailer shall be responsible for determining the validity of a purchaser’s claim for exemption."
+              />
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">
+              <apex:outputText value="3." />
+            </td>
+            <td valign="top">
+              <apex:outputText
+                value="Arizona: This certificate may be used only when making purchases of tangible personal property for resale in the ordinary course of business, and not for any other statutory deduction or exemption. It is valid as a resale certificate only if it contains the purchaser’s name, address, signature, and Arizona transaction privilege tax (or other state sales tax) license number, as required by Arizona Revised Statutes § 42-5022, Burden of proving sales not at retail."
+              />
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%" cellspacing="0" cellpadding="0">
+          <tr>
+            <td valign="top" style="width: 30px">
+              <apex:outputText value="4." />
+            </td>
+            <td valign="top">
+              <table style="width: 100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td valign="top" style="width: 70px">
+                    <apex:outputText value="California:" />
+                  </td>
+                  <td valign="top">
+                    <table style="width: 100%" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td
+                          valign="top"
+                          style="width: 20px; padding-bottom: 6px"
+                        >
+                          a)
+                        </td>
+                        <td valign="top" style="padding-bottom: 6px">
+                          <apex:outputText
+                            value="This certificate is not valid as an exemption certificate. Its use is limited to use as a resale certificate subject to the provisions of Title 18, California Code of Regulations, Section 1668 (Sales and Use Tax Regulation 1668, Resale Certificate)."
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          valign="top"
+                          style="width: 20px; padding-bottom: 6px"
+                        >
+                          <apex:outputText value="b)" />
+                        </td>
+                        <td valign="top" style="padding-bottom: 6px">
+                          <apex:outputText
+                            value="By use of this certificate, the purchaser certifies that the property is purchased for resale in the regular course of business in the form of tangible personal property, which includes property incorporated as an ingredient or component of an item manufactured for resale in the regular course of business."
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          valign="top"
+                          style="width: 20px; padding-bottom: 6px"
+                        >
+                          c)
+                        </td>
+                        <td valign="top" style="padding-bottom: 6px">
+                          <apex:outputText
+                            value="This certificate is not valid as an exemption certificate. Its use is limited to use as a resale certificate subject to the provisions of Title 18, California Code of Regulations, Section 1668 (Sales and Use Tax Regulation 1668, Resale Certificate)."
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          valign="top"
+                          style="width: 20px; padding-bottom: 6px"
+                        >
+                          d)
+                        </td>
+                        <td valign="top" style="padding-bottom: 6px">
+                          <apex:outputText
+                            value="A valid resale certificate is effective until the issuer revokes the certificate."
+                          />
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">5.</td>
+            <td valign="top">
+              Colorado, Hawaii, Illinois, and New Mexico: these states do not
+              permit the use of this certificate to claim a resale exemption for
+              the purchase of a taxable service for resale.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">6.</td>
+            <td valign="top">
+              Colorado: Sellers should review 1 Code Colo. Regs. 201-1, Rule
+              39-26-105-3 (Documenting Exempt Sales) prior to accepting this
+              form. The Colorado Department of Revenue collects and administers
+              the state sales and use taxes and the sales and use taxes of
+              certain cities, counties, and special districts (see department
+              publication DR 1002). Use of this form (along with the other
+              documentation required by department rule) is acceptable for taxes
+              administered by the Colorado Department of Revenue. This form may
+              not be accepted by self-collecting Colorado home-rule cities.
+              Sellers are advised to contact those cities directly for further
+              instruction.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">7.</td>
+            <td valign="top">
+              Connecticut: This certificate is not valid as an exemption
+              certificate. Its use is limited to use as a resale certificate
+              subject to Conn. Gen. State §§12-410(5) and 12-411(14) and
+              regulations and administrative pronouncements pertaining to resale
+              certificates. The good faith of the seller will be questioned if
+              it has knowledge of facts which give rise to a reasonable
+              inference that the purchaser does not intend to resell the
+              property, as, for example, knowledge that the purchaser of
+              particular merchandise (or service) is not engaged in the business
+              of selling that kind of merchandise (or service).
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">8.</td>
+            <td valign="top">
+              Florida: Allows the Multistate Tax Commission’s Uniform Sales and
+              Use Tax Resale Certificate – Multijurisdiction for tax-exempt
+              purchases for resale; however, the selling dealer must also obtain
+              a resale authorization number from the Florida Department of
+              Revenue at floridarevenue.com/taxes/certificates, or by calling
+              877-357-3725, and entering the purchaser’s Florida Annual Resale
+              Certificate number.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">9.</td>
+            <td valign="top">
+              Georgia: a) The purchaser’s state-of-registration number will be
+              accepted in lieu of Georgia’s registration number when the
+              purchaser is located outside Georgia, does not have nexus with
+              Georgia, and the tangible personal property is delivered by drop
+              shipment to the purchaser’s customer located in Georgia. <br />
+              <br />
+
+              b) The certificate relieves the seller from the burden of proof on
+              sales for resale if the seller acquires from the purchaser a
+              properly completed certificate, taken in good faith, from a
+              purchaser who: <br /> <br />
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" valign="top" style="padding-left: 50px">
+              <div style="margin-bottom: 6px">
+                (i) Is engaged in the business of selling tangible personal
+                property;
+              </div>
+              <div style="margin-bottom: 6px">
+                (ii) Has a valid sales tax registration number at the time of
+                purchase and has listed his or her sales tax number on the
+                certificate.
+              </div>
+              <div style="margin-bottom: 6px">
+                (iii) At the time of purchasing the tangible personal property,
+                the seller has no reason to believe that the purchaser does not
+                intend to resell it in his or her regular course of business.
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">10.</td>
+            <td valign="top">
+              Hawaii: Allows this certificate to be used by the seller to claim
+              a lower general excise tax rate or no general excise tax, rather
+              than the buyer claiming an exemption. The no tax situation occurs
+              when the purchaser of imported goods certifies to the seller, who
+              originally imported the goods into Hawaii, that the purchaser will
+              resell the imported goods at wholesale. If the lower rate or
+              no-tax does not in fact apply to the sale, the purchaser is liable
+              to pay the seller the additional tax imposed. See Hawaii Dept. of
+              Taxation Tax Information Release No. 93-5, November 10, 1993, and
+              Tax Information Release No. 98-8, October 30, 1998.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">11.</td>
+            <td valign="top">
+              Idaho: This certificate may be used only when making purchases of
+              tangible personal property for resale in the ordinary course of
+              business, and not for any other statutory deduction or exemption.
+              It is valid as a resale certificate only if it complies with Idaho
+              Code Section 63-3622(c).
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">12.</td>
+            <td valign="top">
+              Illinois: Use of this certificate in Illinois is subject to the
+              provisions of 86 Ill. Adm. Code Ch.I, Sec. 130.1405 (Seller’s
+              Responsibility to Obtain Certificates of Resale and Requirements
+              for Certificates of Resale) . Illinois does not have an exemption
+              for sales of property for subsequent lease or rental, except as
+              follows: (i) a motor vehicle that is used for automobile renting
+              subject to the Automobile Renting Occupation and Use tax Act (35
+              ILCS 120/2-5(7)) and (ii) merchandise that the purchaser certifies
+              is purchased to be rented subject to the Rental Purchase Agreement
+              Occupation and Use Tax Act (35 ILCS 120/2-5(43)). Buyers
+              purchasing items for lease or rental that meet either of these two
+              exceptions should not use this Uniform Sales and Use Tax Resale
+              Certificate, but instead must provide to Sellers proof of
+              registration for the Automobile Renting Occupation and Use Tax or
+              the Rental Purchase Agreement Occupation and Use Tax, as
+              appropriate, and, in the case of the Rental Purchase Agreement
+              Occupation and Use Tax, should use Form ST-261 (Exemption
+              Certificate for Property Subject to Rental Purchase Agreement
+              Tax). The use of this certificate for claiming resale purchases of
+              services does not have any application in Illinois. <br /><br />
+              The registration number to be supplied next to Illinois on page 1
+              of this certificate must be the Illinois registration or re sale
+              number; no other state’s registration number is acceptable.
+              <br /><br />
+
+              “Good faith” is not the standard of care to be exercised by a
+              retailer in Illinois. A retailer in Illinois is not required to
+              determine whether the purchaser actually intends to resell the
+              item. Instead, a retailer must confirm that the purchaser has a
+              valid registration or resale number at the time of purchase. If a
+              purchaser fails to provide a certificate of resale at the time of
+              sale in Illinois, the seller must charge the purchaser tax.
+              <br /><br />
+
+              While there is no statutory requirement that blanket certificates
+              of resale be renewed at certain intervals, blanket certificates
+              should be updated periodically, and no less frequently than every
+              three years.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">13.</td>
+            <td valign="top">
+              Kansas: Purchaser must enter a valid Kansas Registration Number
+              issued by the Kansas Department of Revenue. Exemption certificates
+              must be obtained from the purchaser at the time of the sale, but
+              no later than 90 days subsequent to the date of sale. This resale
+              certificate may only be used as a resale exemption certificate or
+              ingredient or component part exemption certificate. This resale
+              certificate may not be used by contractors to purchase materials
+              without sales tax. This resale certificate may not be used by
+              Manufacturing Companies to purchase machinery and equipment
+              without sales tax. See Kansas Certificate ST-201. This resale
+              certificate need not be renewed or updated when there is a
+              recurring business relationship between the buyer and seller. A
+              recurring business relationship exists when a period of no more
+              than 12 months elapses between sales transactions. This resale
+              certificate cannot be used by contractors to purchase labor
+              services from other contractors without tax.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">14.</td>
+            <td valign="top">
+              Kentucky: a) Kentucky does not permit the use of this certificate
+              to claim a resale exclusion for the purchase of admissions.
+              <br /> <br />
+
+              b) This certificate is not valid as an exemption certificate. Its
+              use is limited to use as a resale certificate subject to the
+              provisions of Kentucky Revised Statute 139.270.<br /> <br />
+
+              c) The use of this certificate by the purchaser constitutes the
+              issuance of a blanket certificate in accordance with Kentucky
+              Administrative Regulation 103 KAR 31:111.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">15.</td>
+            <td valign="top">
+              Maine: This state does not have an exemption for sales of property
+              for subsequent lease or rental. This certificate is not valid for
+              use by manufacturers purchasing tangible personal property that
+              becomes an ingredient or component part of a product manufactured
+              by the manufacturer. Please use Maine’s Industrial Users Exemption
+              Certificate (ST-A-117).
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">16.</td>
+            <td valign="top">
+              Maryland: This certificate is not valid as an exemption
+              certificate. Its use is limited to use as a resale certificate
+              subject to the provisions of Md Tax – Gen §11-408(b).All claims
+              for the resale exclusion, even those made with this certificate,
+              must include the Buyer’s Maryland sales and use tax registration
+              number. Certificates without a Maryland sales and use tax
+              registration number will not be honored by the State. However, in
+              lieu of a sale and use tax registration number, sellers may accept
+              resale certificates that bear the exemption number issued to a
+              religious organization. Exemption certifications issued to
+              religious organizations consist of 8 digits, the first two of
+              which are always “29”. Maryland sales and use tax registration
+              numbers, exemptions, and direct pay numbers may be verified on the
+              website of the Comptroller of the Treasury at
+              <a href="www.marylandtaxes.gov">www.marylandtaxes.gov</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">17.</td>
+            <td valign="top">
+              Michigan: Blanket certificates are effective for a period of four
+              years unless a lesser period is mutually agreed to and stated on
+              this certificate. A seller who receives and maintains a record of
+              a properly completed certificate is not generally liable for sales
+              or use tax on the transaction, even if a purchaser improperly
+              claims an exemption. There are certain limited situations in which
+              a seller can be liable for the tax, such as those involving fraud
+              on the part of the seller. For more information, see revenue
+              Administrative Bulletin (RAB) 2016 -14.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%" cellspacing="0" cellpadding="0">
+          <tr>
+            <td valign="top" style="width: 30px">18.</td>
+            <td valign="top">
+              <table style="width: 100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td valign="top" style="width: 70px">Minnesota:</td>
+                  <td valign="top">
+                    <table style="width: 100%" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td valign="top" style="padding-bottom: 6px">
+                          Purchaser’s Minnesota tax identification number should
+                          be inserted into the row labeled “MN" in the state
+                          chart on page 1. If purchaser does not have a
+                          Minnesota tax identification number, the following are
+                          acceptable:
+                        </td>
+                      </tr>
+                      <tr>
+                        <td valign="top" style="padding-bottom: 6px">
+                          Purchaser’s tax identification number issued by a
+                          state other than Minnesota and the name of the state;
+                        </td>
+                      </tr>
+                      <tr>
+                        <td valign="top" style="padding-bottom: 6px">
+                          Purchaser’s federal Employer identification Number;
+                          The number of Purchaser's valid state-issued driver's
+                          license, or a valid state-issued identification
+                          number, along with the state of issue.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td valign="top" style="padding-bottom: 6px">
+                          Purchaser must identify purchaser's type of business
+                          using Minnesota’s business-type coding | system. Check
+                          the correct box near the (0p of page 1. If you check
+                          the box Iabeled \ “Other,” provide the appropriate
+                          Minnesota business code in the space following the |
+                          “Other” check box. You can find a list of Minnesots
+                          business codes on the Minnesots 3 exemption
+                          certificate (Form ST3). 3
+                        </td>
+                      </tr>
+                      <tr>
+                        <td valign="top" style="padding-bottom: 6px">
+                          Purchaser must update the certificate data, as
+                          necessary, if this certificate is to be used as a
+                          blanket exemption certificate for continuing future
+                          purchases ; Note that Minnesota allows this
+                          certificate to be used to claim a resale exemption
+                          only. It does not permit this certificate to be used
+                          to claim any other type of exemption. To claim an
+                          exemption other than resale, use the Minnesota
+                          exemption certificate (Form ST3) or the Streamlined
+                          Sales Tax Governing Board exemption certificate (Form
+                          F0003). 1
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%" cellspacing="0" cellpadding="0">
+          <tr>
+            <td valign="top" style="width: 30px">19.</td>
+            <td valign="top">
+              <table style="width: 100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td valign="top" style="width: 70px">Missouri:</td>
+                  <td valign="top">
+                    <table style="width: 100%" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td
+                          valign="top"
+                          style="width: 20px; padding-bottom: 6px"
+                        >
+                          a)
+                        </td>
+                        <td valign="top" style="padding-bottom: 6px">
+                          Purchasers who improperly purchase property or
+                          services sales-tax free using this certificate may be
+                          required to pay the tax, interest, additions to tax,
+                          or penalty.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          valign="top"
+                          style="width: 20px; padding-bottom: 6px"
+                        >
+                          b)
+                        </td>
+                        <td valign="top" style="padding-bottom: 6px">
+                          Even if property is delivered outside Missouri, facts
+                          and circumstances may subject it to Missouri tax,
+                          contrary to the second sentence of the first paragraph
+                          of the above instructions.
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%" cellspacing="0" cellpadding="0">
+          <tr>
+            <td valign="top" style="width: 30px">20.</td>
+            <td valign="top">
+              <table style="width: 100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td valign="top" style="width: 70px">Nevada:</td>
+                  <td valign="top">
+                    <table style="width: 100%" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td
+                          valign="top"
+                          style="width: 20px; padding-bottom: 6px"
+                        >
+                          a)
+                        </td>
+                        <td valign="top" style="padding-bottom: 6px">
+                          This certificate is not valid as an exemption
+                          certificate. Its use is limited to use as a resale
+                          certificate subject to the provisions of NRS 372.165,
+                          NRS 372.170, NRS 372.175 and NRS 372.180 regarding
+                          sales tax, and NRS 372.235, NRS 372.240 and NRS
+                          372.245 regarding use tax .
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          valign="top"
+                          style="width: 20px; padding-bottom: 6px"
+                        >
+                          b)
+                        </td>
+                        <td valign="top" style="padding-bottom: 6px">
+                          By use of this certificate, the purchaser certifies
+                          that the property is purchased for resale in the
+                          regular course of business in the form of tangible
+                          personal property, which includes property
+                          incorporated as an ingredient or component of an item
+                          manufactured for resale in the regular course of
+                          business.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          valign="top"
+                          style="width: 20px; padding-bottom: 6px"
+                        >
+                          c)
+                        </td>
+                        <td valign="top" style="padding-bottom: 6px">
+                          When the applicable tax would be sales tax, it is the
+                          Seller who owes that tax unless the Seller takes a
+                          timely and valid resale certificate.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          valign="top"
+                          style="width: 20px; padding-bottom: 6px"
+                        >
+                          d)
+                        </td>
+                        <td valign="top" style="padding-bottom: 6px">
+                          A valid resale certificate is typically effective
+                          until the issuer revokes the certificate, but periodic
+                          renewal of the certificate is recommended.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          valign="top"
+                          style="width: 20px; padding-bottom: 6px"
+                        >
+                          e)
+                        </td>
+                        <td valign="top" style="padding-bottom: 6px">
+                          Contractors are generally considered consumers of
+                          tangible personal property pursuant to NAC 372.200 and
+                          are unable and should not use this certificate, and
+                          Sellers should not accept it from a contractor.
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">21.</td>
+            <td valign="top">
+              New Mexico: For transactions occurring on or after July 1, 1998,
+              New Mexico will accept this certificate in lieu of a New Mexico
+              nontaxable transaction certificate and as evidence of the
+              deductibility of a sale of tangible personal property provided:
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" valign="top" style="padding-left: 50px">
+              <div style="margin-bottom: 6px">
+                (a) this certificate was not issued by the State of New Mexico;
+              </div>
+              <div style="margin-bottom: 6px">
+                (b) the buyer is not required to be registered in New Mexico;
+                and
+              </div>
+              <div style="margin-bottom: 6px">
+                c) the buyer is purchasing tangible personal property for resale
+                or incorporation as an ingredient or component of a manufactured
+                product.
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">22.</td>
+            <td valign="top">
+              North Carolina: This certificate is not valid as an exemption
+              certificate if signed by a person such as a contractor who intends
+              to use the property. Its use is subject to G.S. 105-164.28 and any
+              administrative rules or directives pertaining to resale
+              certificates.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">23.</td>
+            <td valign="top">
+              <table style="width: 100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td valign="top" style="width: 70px">Ohio:</td>
+                  <td valign="top">
+                    <table style="width: 100%" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td
+                          valign="top"
+                          style="width: 20px; padding-bottom: 6px"
+                        >
+                          a)
+                        </td>
+                        <td valign="top" style="padding-bottom: 6px">
+                          The buyer must specify which one of the reasons for
+                          exemption on the certificate applies. This may be done
+                          by circling or underlining the appropriate reason or
+                          writing it on the form above the state registration
+                          section. Failure to specify the exemption reason will,
+                          on audit, result in disallowance of the certificate.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          valign="top"
+                          style="width: 20px; padding-bottom: 6px"
+                        >
+                          b)
+                        </td>
+                        <td valign="top" style="padding-bottom: 6px">
+                          If no certificate is provided or obtained from the
+                          buyer at the time of the sale or within ninety days
+                          after the date on which such sale is consummated, it
+                          shall be presumed that the tax applies.
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">24.</td>
+            <td valign="top">
+              Oklahoma: Oklahoma would allow this certificate in lieu of a copy
+              of the purchaser’s sales tax permit as one of the elements of
+              “properly completed documents” which is one of the three
+              requirements which must be met prior to the vendor being relieved
+              of liability. The other two requirements are that the vendor must
+              have the certificate in his possession within ninety (90) days
+              subsequent to the date of sale and must accept the documentation
+              in good faith. The specific documentation required under OAC 710
+              :65-7-6 is: Written certification containing the purchaser’s name,
+              address, type of business, sales tax permit number, and the
+              signature of the purchaser. OAC 710:65-7-8. <br /> <br />
+
+              Absent strict compliance with these requirements, Oklahoma holds a
+              seller liable for sales tax due on sales where the claimed
+              exemption is found to be invalid, for whatever reason, unless the
+              Tax Commission determines that purchaser should be pursued for
+              collection of the tax resulting from improper presentation of a
+              certificate.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">25.</td>
+            <td valign="top">
+              <table style="width: 100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td valign="top" style="width: 70px">Pennsylvania:</td>
+                  <td valign="top">
+                    <table style="width: 100%" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td
+                          valign="top"
+                          style="width: 20px; padding-bottom: 6px"
+                        >
+                          a)
+                        </td>
+                        <td valign="top" style="padding-bottom: 6px">
+                          This certificate is not valid as an exemption
+                          certificate. It is valid as a resale certificate
+                          subject to the provisions of 61PA Code §32.3. The
+                          buyer should enter their eight-digit Pennsylvania
+                          Sales and Use Tax license number. If the buyer does
+                          not have a Pennsylvania Sales and Use Tax license
+                          number, they must provide an explanation as to why
+                          they are not licensed.
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">26.</td>
+            <td valign="top">
+              Rhode Island: Rhode Island allows this certificate to be used to
+              claim a resale exemption only when the item will be resold in the
+              same form. It does not permit this certificate to be used to claim
+              any other type of exemption.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">27.</td>
+            <td valign="top">
+              South Dakota: Services which are purchased by a service provider
+              and delivered to a current customer in conjunction with the
+              services contracted to be provided to the customer are claimed to
+              be for resale. Receipts from the sale of a service for resale by
+              the purchaser are not subject to sales tax if the purchaser
+              furnishes a resale certificate which the seller accepts in good
+              faith. In order for the transaction to be a sale for resale, the
+              following conditions must be present: <br /><br />
+
+              (a) The service is purchased for or on behalf of a current
+              customer; <br /> (b) The purchaser of the service does not use the
+              service in any manner; and <br /> (c) The service is delivered or
+              resold to the customer without any alteration or change. <br />
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">28.</td>
+            <td valign="top">
+              Tennessee: Third-Party drop shipment – A seller registered in
+              Tennessee, who sells to an unregistered out-of-state retailer but
+              delivers the product in Tennessee to the retailer’s customer who
+              is a consumer, must charge the sales tax on the sale to the
+              out-of-state retailer unless the out-of-state retailer provides
+              the seller with a resale exemption certificate that includes a
+              Tennessee resale number. <br /> <br />
+              Any tangible personal property or other taxable item or service
+              purchased without the payment of tax upon this resale certificate
+              that is used or consumed in any manner by the buyer,
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">29.</td>
+            <td valign="top">
+              Texas: Items purchased for resale must be for resale within the
+              geographical limits of the United States, its territories, and
+              possessions.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">30.</td>
+            <td valign="top">
+              Vermont: The reseller must be registered to collect Vermont sales
+              tax. Vermont allows this certificate to be used to claim a resale
+              exemption for goods only, not component parts to a service. It is
+              not to be used by contractors. Vermont’s manufacturing exemption
+              is limited to property consumed in the manufacturing process, used
+              directly and exclusively in the manufacturing process, or
+              packaging or shipping materials for use by a manufacturer or
+              wholesale distributor. Any other uses and the use for any other
+              exemptions is not permitted. <br /> <br />
+
+              While there is no statutory requirement that blanket certificates
+              of resale be renewed at certain intervals, blanket certificates
+              should be updated periodically, and no less frequently than every
+              three years.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">30.</td>
+            <td valign="top">
+              Vermont: The reseller must be registered to collect Vermont sales
+              tax. Vermont allows this certificate to be used to claim a resale
+              exemption for goods only, not component parts to a service. It is
+              not to be used by contractors. Vermont’s manufacturing exemption
+              is limited to property consumed in the manufacturing process, used
+              directly and exclusively in the manufacturing process, or
+              packaging or shipping materials for use by a manufacturer or
+              wholesale distributor. Any other uses and the use for any other
+              exemptions is not permitted. <br /> <br />
+
+              While there is no statutory requirement that blanket certificates
+              of resale be renewed at certain intervals, blanket certificates
+              should be updated periodically, and no less frequently than every
+              three years.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">31.</td>
+            <td valign="top">
+              Washington: Buyer acknowledges that in addition to the amount of
+              tax due, the misuse of this form may result in interest and
+              penalties being imposed by law.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <table style="width: 100%">
+          <tr>
+            <td valign="top" style="width: 30px">32.</td>
+            <td valign="top">
+              Wisconsin: Allows this certificate to be used to claim a resale
+              exemption only. It does not permit this certificate to be used to
+              claim any other type of exemption.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="height: 470px"></td>
+    </tr>
+    <tr>
+      <td
+        valign="top"
+        align="center"
+        style="text-align: center; font-size: 16px; font-weight: bold"
+      >
+        Frequently Asked Questions <br /> Uniform Sales and Use Tax Certificate
+        – Multijurisdictional <br />
+      </td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold">
+        <ul>
+          <li>To whom do I give this certificate?</li>
+          <li>Can I register for multiple states simultaneously?</li>
+          <li>
+            I have received this certificate from my customer. What do I do with
+            it?
+          </li>
+          <li>Am I the Buyer or the Seller?</li>
+          <li>What is the purpose of this certificate?</li>
+          <li>How do I fill out the certificate?</li>
+          <li>
+            What information goes on the line next to each state abbreviation?
+          </li>
+          <li>What if I don’t have an ID number for any (or some) state(s)?</li>
+          <li>Who should use this certificate?</li>
+          <li>Can I use this certificate?</li>
+          <li>Which states accept the certificate?</li>
+          <li>
+            I am based in, buying from, or selling into Maine. Can I use this
+            certificate?
+          </li>
+          <li>I am a drop shipper. Can I use this certificate?</li>
+          <li>Do I have to fill this certificate out for every purchase?</li>
+          <li>Can this certificate be used as a blanket certificate?</li>
+          <li>Who determines whether this certificate will be accepted?</li>
+          <li>
+            I have been asked to accept this certificate. How do I know whether
+            I should accept it?
+          </li>
+          <li>Is there a more recent version of this certificate?</li>
+          <li>To whom should I talk to for more information?</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          To whom do I give this certificate?
+        </div>
+        If you are purchasing goods for resale, you will give this certificate
+        to your vendor, so that your vendor will not charge you sales tax.
+        <br /> <br />
+        If you are selling goods for resale, and you have received this
+        certificate from your buyer, you will keep the certificate on file.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          Can I register for multiple states simultaneously?
+        </div>
+        A buyer must be registered as a retailer for sales/use tax in states
+        where the buyer has sales/use tax nexus in a state. Registration in each
+        state must be done separately with that state. See the state tax
+        agency’s website. The Federal Tax Administrators (FTA) maintains a
+        centralized list of links to state agency websites:
+        https://taxadmin.memberclicks.net/state-tax-agencies. The Streamlined
+        Sales Tax Governing Board, Inc. maintains a centralized registration
+        system that can be used to register in states that are members. For more
+        information, see www.streramlinedsalestax.org.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          I have received this certificate from my customer. What do I do with
+          it?
+        </div>
+        Once you have examined the certificate and you have accepted it, you
+        will keep it on file as prescribed by applicable state laws. The
+        relevant state will generally be the state where you are located, or the
+        state where the sales transaction took place.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          Am I the Buyer or the Seller?
+        </div>
+        If you are purchasing goods for resale, you are the Buyer. If you are
+        selling goods to a buyer who is purchasing them for resale, you are the
+        Seller.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          What is the purpose of this certificate?
+        </div>
+        This certificate is to be used as supporting documentation that the
+        Seller should not collect sales tax because the good or service sold to
+        the Buyer, is exempt from the tax as a sale for resale or as an
+        ingredient or component of a product manufactured by the Buyer and to be
+        resold.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          How do I fill out the certificate?
+        </div>
+        The individual filling out the certificate is referred to as the Buyer.
+        The first two lines, “Issued to Seller” an “Address”,should be filled in
+        with the name and address of the Seller. The rest of the information
+        refers to the Buyer (name and address of Buyer, business engaged in,
+        description of business, property or services to be purchased). The line
+        next to each state abbreviation should be filled out with the relevant
+        state ID number.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          What information goes on the line next to each state abbreviation?
+        </div>
+        The line next to each state abbreviation should be filled in with the
+        relevant state ID number. This will be the sales/use tax registration or
+        resale authorization number issued by the state (see next FAQ for an
+        exception). For example, on the line next to AL, provide the sales/use
+        tax registration number issued by Alabama. The relevant registration
+        number may be given various names in the different states. Some of the
+        terms for this number are State Registration or Seller’s Permit Number.
+        Regardless of the name, this will be a number that has been issued by
+        the state to the Buyer (see next FAQ for an exception). This number is
+        generally associated with the reseller’s authority to collect and remit
+        sales/use tax.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          What if I don’t have a registration number for any (or some) state(s)?
+        </div>
+        The states vary in their rules regarding requirements for a reseller
+        exemption or exclusion. Some states require that the reseller (Buyer) be
+        registered to collect sales tax in the state where the reseller makes
+        its purchase. Other states will accept the certificate if the
+        registration number is provided for some other state (such as the
+        resident state of the Buyer). You should check with the relevant state
+        to determine whether you meet the requirements of that state.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          Who should use this resale certificate?
+        </div>
+        A Buyer who is registered in one of the states listed on the resale
+        certificate may be able to use this certificate to make purchases of
+        tangible property or taxable services that are for resale tax-exempt.
+        States vary in their policies for use of this certificate. Questions
+        regarding your specific eligibility to use this certificate should be
+        addressed to the revenue department of the relevant state.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          Can I use this resale certificate?
+        </div>
+        The states vary in their rules for use of this resale certificate. You
+        should check with the relevant state to determine whether you can use
+        this resale certificate for purchases from sellers registered in that
+        state. The footnotes to the certificate provide some guidance; however,
+        the Multistate Tax Commission cannot guarantee that any state will
+        accept this certificate. States may change their policies without
+        informing the Multistate Tax Commission.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          Which states accept the certificate?
+        </div>
+        States listed on the certificate have accepted this certificate. States
+        may change their policies for acceptance of the certificate without
+        notifying the Multistate Tax Commission. You may check with the relevant
+        state to determine the current status of the state’s acceptance policy.
+        See next FAQ.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          I am based in, buying from, or selling into Maine. Can I use this
+          certificate?
+        </div>
+        Please contact Maine Revenue Services.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          I am a drop shipper. Can I use this certificate?
+        </div>
+        If you are the Buyer and your Seller ships directly to your customers,
+        you may be able to use this certificate because you are a reseller.
+        However, your Seller may be unwilling to accept this certificate if you
+        are not registered to collect sales tax in the state(s) where your
+        customers are located. If you are the Seller, and you have nexus with
+        the state(s) into which you are shipping to your Buyer’s customers, you
+        may be required by such state(s) to remit sales tax on those sales if
+        your Buyer is not registered to collect sales tax.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          Do I have to fill this resale certificate out for every purchase?
+        </div>
+        In many cases, this certificate can be used as a blanket certificate, so
+        that you will only need to fill it out once for each of your Sellers.
+        Some states require periodic replacement with a renewed certificate (see
+        notes on certificate).
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          Can this resale certificate be used as a blanket certificate?
+        </div>
+        In many states this certificate can be used as a blanket certificate.
+        You should verify this with the applicable state. A blanket certificate
+        is one that can be kept on file for multiple transactions between a
+        specific Buyer and specific Seller.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          Who determines whether this resale certificate will be accepted?
+        </div>
+        The Seller will determine whether it will accept the certificate from
+        the Buyer. The applicable state will determine whether a certificate is
+        acceptable for the purpose of demonstrating that sales tax was properly
+        exempted. The applicable state will generally be the state where the
+        Seller is located or has nexus or the state where the sales transaction
+        took place, or where the Buyer is located. The Multistate Tax Commission
+        does not determine whether this certificate will be accepted either by
+        the Seller or the applicable state.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          I have been asked to accept this resale certificate. How do I know
+          whether I should accept it?
+        </div>
+        You should contact your state revenue department if you are not familiar
+        with the policies regarding acceptance of resale certificates. <br />
+        <br />
+        In order for the certificate to be accepted in good faith by the Seller,
+        Seller must exercise care that the property or service being sold is of
+        a type normally sold wholesale, resold, leased, rented or incorporated
+        as an ingredient or component of a product manufactured by Buyer and
+        then resold in the usual course of its business. A Seller failing to
+        exercise care could be held liable for the sales tax due in some states.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          Is there a more recent version of this certificate?
+        </div>
+        No. The most recent version is posted on our website (revised as of June
+        21, 2022). You may have seen a version that has been modified in an
+        unauthorized manner. You should not use any version other than the one
+        available on our website.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="padding-top: 10px; font-weight: bold">
+          Whom should I talk to for more information?
+        </div>
+        For information regarding whether the certificate will be accepted in
+        the applicable state, you should contact the revenue department of that
+        state. The Multistate Tax Commission’s
+        <a href="https://www.mtc.gov/The-Commission/Member-States"
+          >Member States</a
+        >
+        webpage has links to revenue department websites.
+      </td>
+    </tr>
+  </table>
+</apex:page>

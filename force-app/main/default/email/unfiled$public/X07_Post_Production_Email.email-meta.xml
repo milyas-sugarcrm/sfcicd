@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>07 - Post Production Email</name>
+    <style>none</style>
+    <subject>07 - Post Production</subject>
+    <textOnly>Dear Phunion,
+
+{!Order.OrderNumber} for {!Order.WOAccountLink__c} has completed Production and is in Post Production.
+
+{!Order.WONameLink__c}
+
+Thanks,
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

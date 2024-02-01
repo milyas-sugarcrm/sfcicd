@@ -1,0 +1,127 @@
+<aura:component
+  controller="OppLineItemNavController"
+  implements="force:lightningQuickActionWithoutHeader,force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+  access="global"
+>
+  <aura:attribute name="recordId" type="String" />
+  <aura:attribute name="imageURL" type="String" />
+  <aura:attribute name="notesDataList" type="String[]" />
+  <aura:attribute name="fileName" type="String" default="No File Selected.." />
+  <aura:attribute name="fileUploaded" type="boolean" default="false" />
+  <aura:attribute name="documentId" type="String" default=" " />
+  <aura:attribute name="filetype" type="List" default="['.png', '.jpg']" />
+  <aura:attribute name="commentsData" type="String[]" default="" />
+  <aura:attribute name="opportunityName" type="String" default="" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="Spinner" type="boolean" default="false" />
+  <aura:html tag="style">
+    .slds-modal__container{ height : auto; width: 70%; max-width: 70rem; }
+    .modal-body{ height : 500px !important; max-height: 500px !important; }
+    .customFooter{ display: inline !important; } .slds-carousel__content{
+    display:none; } .slds-carousel__indicators { display:none;} }
+  </aura:html>
+  <div
+    class="slds-modal__content slds-p-around_x-small"
+    style="max-height: 400px; overflow-y: scroll"
+  >
+    <div
+      style="
+        padding: 1rem;
+        padding-bottom: 75px;
+        margin-bottom: 2rem;
+        background: #edf2f4;
+      "
+    >
+      <div style="position: relative; display: block">
+        <lightning:textarea
+          name="input1"
+          aura:id="noteTextArea"
+          value=""
+          placeholder="Post a note about this PO"
+        />
+      </div>
+
+      <button
+        onclick="{!c.addNote}"
+        class="slds-button slds-button_brand"
+        style="
+          height: 40px;
+          border: none;
+          width: 12%;
+          text-align: center;
+          float: right;
+          font-size: 0.9rem;
+        "
+      >
+        Add&nbsp;Note
+      </button>
+      <div style="height: 40px; border: none; font-size: 0.9rem; float: left">
+        <lightning:fileUpload
+          label="Upload File"
+          multiple="false"
+          accept="{!v.filetype}"
+          required="true"
+          recordId="{!v.recordId}"
+          aura:id="editfileId"
+          onuploadfinished="{!c.handleUploadFinished}"
+        />
+      </div>
+    </div>
+    <aura:if isTrue="{! v.fileUploaded}">
+      <div>{!v.fileName}</div>
+    </aura:if>
+    <aura:if isTrue="{!v.Spinner}">
+      <lightning:spinner variant="brand" size="large" />
+    </aura:if>
+
+    <table
+      class="slds-table slds-table_cell-buffer slds-no-row-hover slds-is-selected"
+    >
+      <body>
+        <aura:iteration items="{!v.notesDataList}" var="notesDetails">
+          <tr>
+            <td style="vertical-align: top; width: 30%">
+              <!-- <img src="https://files.commonsku.com/small/d5386dd4-f47b-4106-a964-3ed5d99cc996"/>  -->
+              <aura:if isTrue="{!v.imageURL != null }">
+                <img src="{!v.imageURL}" style="width: 120px; height: 120px" />
+                <aura:set attribute="else">
+                  <img src="{!$Resource.No_Image_Available}" />
+                </aura:set>
+              </aura:if>
+            </td>
+            <td style="vertical-align: top; width: 30%">
+              <div>
+                <p style="font-weight: bold; float: left">Sean Burns</p>
+                <p style="font-weight: 400; font-size: small">
+                  &nbsp;— PO{!notesDetails.poNumber} - {!notesDetails.supplier}
+                  - {!v.opportunityName}
+                </p>
+              </div>
+              <div>
+                <p style="float: left">
+                  {!notesDetails.user} &nbsp; added a note to
+                </p>
+                <p style="color: #2687df">
+                  &nbsp;{!notesDetails.opportunityName}
+                </p>
+              </div>
+              <p>{!notesDetails.comment}</p>
+              <p
+                style="
+                  color: rgb(170, 170, 170);
+                  font-size: 0.8em;
+                  font-weight: 400;
+                "
+              >
+                {!notesDetails.commentDate}
+              </p>
+            </td>
+            <td style="width: 30%">
+              <lightning:fileCard fileId="{!notesDetails.documentId}" />
+            </td>
+          </tr>
+        </aura:iteration>
+      </body>
+    </table>
+  </div>
+</aura:component>

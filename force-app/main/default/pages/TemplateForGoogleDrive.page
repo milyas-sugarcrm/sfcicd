@@ -1,0 +1,154 @@
+<apex:page
+  showHeader="false"
+  sidebar="false"
+  standardStylesheets="false"
+  applyBodyTag="false"
+  applyHtmlTag="false"
+  renderAs="pdf"
+  controller="TemplateForGoogleDriveController"
+>
+  <html>
+    <head>
+      <style>
+        @page {
+          size: 11in 8.5in;
+          margin: 0;
+        }
+
+        .page {
+          background-color: white;
+          padding: 3.55in;
+          border: 0.15in solid #f1eb26;
+          border-width: 1.2in 0.2in 0.2in 0.2in;
+          color: black;
+          box-sizing: border-box;
+          position: relative;
+        }
+
+        .corner-logo {
+          position: absolute;
+          width: 235px;
+          top: -1.05in; /* Adjusted top position */
+          left: 0.02in;
+        }
+
+        .corner-text {
+          position: absolute;
+          top: -0.8in; /* Adjusted top position */
+          right: 0.08in;
+          font-size: 12px;
+          text-align: right;
+          font-family: "Arial", sans-serif;
+          font-weight: bold;
+        }
+
+        .additional-info {
+          position: absolute;
+          top: -0.95in; /* Adjusted top position */
+          right: 1.2in;
+          left: -9.5in;
+          font-size: 12px;
+          text-align: left;
+          font-family: "Arial", sans-serif;
+        }
+
+        .additional-info span {
+          display: inline-block;
+          text-align: right;
+          width: 70%;
+          font-weight: bold;
+        }
+
+        .Product-info {
+          position: absolute;
+          bottom: 0.1in;
+          /*  top: 4.8in;  Adjusted top position */
+          left: 0;
+          right: 4.2in;
+          font-size: 13px;
+          text-align: left;
+          font-family: "Arial", sans-serif;
+          line-height: 1.2;
+          margin-top: 20px; /* Added margin top for spacing */
+        }
+
+        .Product-info table {
+          font-weight: bold;
+          width: 100%;
+        }
+
+        .Product-info td {
+          text-align: left; /* Align data to the left */
+          padding-right: 10px;
+        }
+
+        .Product-info td.label {
+          text-align: right; /* Align labels to the right */
+          font-weight: bold;
+          padding-right: 1px;
+        }
+
+        .Top-aligned-label {
+          vertical-align: top; /* Align the content to the top of the cell */
+        }
+
+        .Product-info .description-text {
+          text-align: left; /* Update to right alignment */
+          width: 70%; /* Adjust the width as needed */
+        }
+
+        .Product-info .description {
+          margin-top: 20px;
+        }
+
+        body {
+          margin: 0;
+        }
+      </style>
+    </head>
+    <body>
+      <apex:repeat value="{!pageNumbers}" var="pageNumber">
+        <div class="page">
+          <img class="corner-logo" src="{!URLFOR($Resource.TeamPhunLogo)}" />
+          <div class="corner-text">
+            *PLEASE REVIEW ARTWORK USED, SIZES, QUANTITY, COLOR AND
+            PLACEMENT.<br /> IF EVERYTHING LOOKS GOOD, PLEASE RESPOND WITH
+            "APPROVED" AND<br /> WE'LL PUT YOUR ORDER INTO PRODUCTION.<br /><br />
+
+            *ALL APPAREL ART MOCKUPS ARE BASED ON SIZE "LARGE"
+          </div>
+          <div class="additional-info">
+            <span>CLIENT:</span> {!client}<br />
+            <span>WORK ORDER NO:</span> {!workOrderNo}<br />
+            <span>INVOICE NO:</span> {!invoiceNo}<br />
+            <span>DATE DUE:</span> {!dateDue}<br />
+          </div>
+          <apex:outputPanel rendered="{!NOT(isNull)}">
+            <div class="Product-info">
+              <table>
+                <tr>
+                  <td class="label">PRODUCT NAME:</td>
+                  <td>{!products[pageNumber-1].productName}</td>
+                </tr>
+                <tr>
+                  <td class="label">COLOR:</td>
+                  <td>{!products[pageNumber-1].color}</td>
+                </tr>
+                <tr>
+                  <td class="label">SIZES:</td>
+                  <td>{!products[pageNumber-1].size}</td>
+                </tr>
+                <tr>
+                  <td class="label Top-aligned-label">DESCRIPTION:</td>
+                  <td class="description-text">
+                    {!products[pageNumber-1].Description}
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </apex:outputPanel>
+        </div>
+      </apex:repeat>
+    </body>
+  </html>
+</apex:page>

@@ -1,0 +1,11 @@
+<p>Hello Phunions,</p>
+
+<p>THIS WORK ORDER IS MARKED AS CRITICAL.</p>
+
+<p>It's been 12 hours since Invoice {!Order.Invoice_Number__c} was sent to the customer and we haven't received payment. Please follow up with {!Order.WOAccountLink__c} immediately.
+Delays in payment will delay the order and may cause the due date to not be met.<p/>
+
+<p>{!Order.WONameLink__c}</p>
+
+<p>Thanks,</p>
+<p>Ralph the Rooster</p>

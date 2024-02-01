@@ -1,0 +1,10 @@
+</!DOCTYPE html>
+<html>
+<head>
+</head>
+<p>Hello Phunions,</p>
+<p> {!Order.OrderNumber} for {!Order.WOAccountLink__c} has been QC'd and is ready to ship to the client. Please coordinate with the client and add any Thank You items to the boxes as needed. </p>
+<p>{!Order.WONameLink__c}</p>
+<p>Thanks,</p><p>Ralph the Rooster</p>
+</body>
+</html>

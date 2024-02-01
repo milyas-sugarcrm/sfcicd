@@ -1,0 +1,9 @@
+</!DOCTYPE html>
+<html>
+<head>
+</head>
+<p>Hello Operations Team:</p><p>This is a courtesy reminder that 24 hours have passed since {!PurchaseOrder_LineItem__c.PONameLink__c} from {!PurchaseOrder_LineItem__c.SupplierNameLink__c} has been in the Ready to Ship/Pickup status. If this PO has shipped to the client directly, please fill in the tracking number, and confirm that the client has been notified.</p><p>If this PO is Ready to Pickup, please ensure the client has been notified, and schedule a pickup date and time with the client. Once confirmed, please move the PO status to Complete by filling in the appropriate fields to close the PO. </p>
+{!PurchaseOrder_LineItem__c.PONameLink__c} <br/>
+<p>Thanks a bunch,<br/>Ralph the Rooster</p>
+</body>
+</html

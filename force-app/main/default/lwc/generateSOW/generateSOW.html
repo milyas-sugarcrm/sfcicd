@@ -1,0 +1,15 @@
+<template>
+  <lightning-button
+    label="Generate Approved SOW Document"
+    title="Generate Statement of Work PDF"
+    onclick={handleGenerateSOWClick}
+    variant="brand"
+    disabled={isGenerating}
+  >
+  </lightning-button>
+  <div if:true={isGenerating}>
+    <lightning-spinner
+      alternative-text="Generating Approved SOW Document"
+    ></lightning-spinner>
+  </div>
+</template>

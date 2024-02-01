@@ -1,0 +1,11 @@
+<p>Hello Phunions,</p>
+
+<p>It's been 12 hours since the mockup for Invoice {!Order.Invoice_Number__c} was sent to the customer and we haven't received approval. Please follow up with {!Order.WOAccountLink__c} to avoid delays. 
+</p>
+
+<p style='color:red'><b>URGENT: This Invoice is marked as Critical. Delays in mockup approval will delay the order.</b></p>
+
+<p>{!Order.WONameLink__c}</p>
+
+<p>Thanks,</p>
+<p>Ralph the Rooster</p>

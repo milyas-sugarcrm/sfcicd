@@ -1,0 +1,145 @@
+<template>
+  <div class="slds-float_right btn-container">
+    <template if:true={showAddProductCard}>
+      <lightning-button
+        label={CREATE_NEW_PRODUCT_LABEL}
+        title={CREATE_NEW_PRODUCT_LABEL}
+        variant="brand"
+        onclick={handleCreateNewProduct}
+      ></lightning-button>
+      <template if:true={createNewSpinner}>
+        <lightning-spinner
+          alternative-text="Loading"
+          variant="brand"
+          size="small"
+        ></lightning-spinner>
+      </template>
+    </template>
+    <lightning-button
+      label={addProductBtnLabel}
+      title={addProductBtnLabel}
+      class="slds-m-left_x-small"
+      variant="brand"
+      onclick={handleAddProductView}
+    ></lightning-button>
+  </div>
+
+  <template if:true={showAddProductCard}>
+    <lightning-card title={ADD_PRODUCT_LABEL} icon-name="utility:add">
+      <div class="search-container slds-grid slds-gutters_x-small">
+        <lightning-input
+          label={SEARCH_PFA_PRODUCT_LABEL}
+          value={searchString}
+          title={SEARCH_PFA_PRODUCT_LABEL}
+          onchange={handleSearchChange}
+        ></lightning-input>
+        <template if:true={searchSpinner}>
+          <lightning-spinner
+            class="slds-align-bottom search-spinner"
+            alternative-text="Loading"
+            variant="brand"
+            size="small"
+          ></lightning-spinner>
+        </template>
+      </div>
+      <template if:true={isSearchItem}>
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+          <thead>
+            <tr>
+              <th>{PRODUCT_NAME_LABEL}</th>
+              <th>{PRODUCT_CATEGORY_LABEL}</th>
+              <th>{PRODUCT_BARCODE_LABEL}</th>
+              <th>{PRODUCT_MSRP_LABEL}</th>
+              <th>{ACTION_LABEL}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template for:each={searchResults} for:item="res">
+              <tr key={res.Id}>
+                <td>
+                  <a
+                    href="javascript:void(0);"
+                    data-itemid={res.Id}
+                    onclick={openRecordDetailView}
+                    >{res.Name}</a
+                  >
+                </td>
+                <td>{res.productCategory__c}</td>
+                <td>{res.Barcode__c}</td>
+                <td>
+                  <template if:true={res.MSRP__c}> $ </template>
+                  {res.MSRP__c}
+                </td>
+                <td>
+                  <a
+                    href="javascript:void(0);"
+                    data-itemid={res.Id}
+                    onclick={handleAddproduct}
+                    >{ADD_LABEL}</a
+                  >
+                </td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </template>
+    </lightning-card>
+  </template>
+
+  <lightning-card
+    title="Selected Campaign Products"
+    icon-name="standard:product"
+  >
+    <template if:true={selectedProductsSpinner}>
+      <lightning-spinner
+        alternative-text="Loading"
+        variant="brand"
+        size="small"
+      ></lightning-spinner>
+    </template>
+    <template if:true={isSelectedItem}>
+      <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+        <thead>
+          <tr>
+            <th>{PRODUCT_NAME_LABEL}</th>
+            <th>{PRODUCT_CATEGORY_LABEL}</th>
+            <th>{PRODUCT_BARCODE_LABEL}</th>
+            <th>{PRODUCT_MSRP_LABEL}</th>
+            <th>{ACTION_LABEL}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template for:each={lineitems} for:item="item">
+            <tr key={item.Id}>
+              <td>
+                <a
+                  href="javascript:void(0);"
+                  data-itemid={item.Product_ID__c}
+                  onclick={openRecordDetailView}
+                  >{item.Product_Name__c}</a
+                >
+              </td>
+              <td>{item.Product_Category__c}</td>
+              <td>{item.Product_Barcode__c}</td>
+              <td>
+                <template if:true={item.Product_MSRP__c}> $ </template>
+                {item.Product_MSRP__c}
+              </td>
+              <td>
+                <a
+                  href="javascript:void(0);"
+                  data-itemid={item.Id}
+                  onclick={handleRemoveAction}
+                  >{REMOVE_LABEL}</a
+                >
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </template>
+    <template if:false={isSelectedItem}>
+      <p class="no-item-msg">{NO_ITEM_MSG}</p>
+    </template>
+  </lightning-card>
+</template>

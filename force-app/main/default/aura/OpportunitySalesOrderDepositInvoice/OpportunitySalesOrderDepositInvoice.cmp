@@ -1,0 +1,116 @@
+<aura:component
+  controller="OppDepositInvoiceActionController"
+  implements="force:lightningQuickActionWithoutHeader,force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+  access="global"
+>
+  <aura:attribute name="recordId" type="Id" />
+
+  <aura:html tag="style">
+    .slds-modal__container{ height : auto; width: 70%; max-width: 70rem; }
+    .modal-body{ height : 475px !important; max-height: 475px !important; }
+    .customFooter{ display: inline !important; } .slds-carousel__content{
+    display:none; } .slds-carousel__indicators { display:none;} }
+  </aura:html>
+
+  <div class="slds-modal__content slds-p-around_x-small">
+    <table
+      class="slds-table slds-table_fixed-layout slds-no-row-hover slds-table_cell-buffer"
+    >
+      <tbody>
+        <tr
+          style="
+            background: #edf2f5;
+            font-family:
+              museo-sans,
+              Helvetica Neue,
+              Helvetica,
+              Roboto,
+              Arial,
+              sans-serif;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #2a383f;
+          "
+        >
+          <td>Deposit NOT Received</td>
+        </tr>
+        <tr>
+          <td>
+            <lightning:input
+              type="text"
+              aura:id="deposit_percent"
+              onfocusout="{!c.onDepositPercentChange}"
+              value="0"
+              label="Deposit Percent"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <lightning:input
+              type="text"
+              aura:id="deposit_amount"
+              value="0.00"
+              label="Deposit Amount"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <ui:inputDate
+              aura:id="date_recieved"
+              value=""
+              displayDatePicker="true"
+              label="Date Received"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <lightning:input
+              type="text"
+              aura:id="amount_recieved"
+              value=""
+              label="Amount Received"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <lightning:input
+              type="text"
+              aura:id="confirmation"
+              value=""
+              label="Confirmation #"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <lightning:input
+              aura:id="allow_credit_card"
+              checked="false"
+              type="checkbox"
+              label="Allow credit card"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td
+            style="
+              padding: 0.5rem 0.625rem 0.625rem;
+              text-align: right;
+              font-weight: 700;
+            "
+          >
+            <lightning:button
+              class="slds-button_brand"
+              onclick="{!c.previewInvoice}"
+              >View deposit invoice</lightning:button
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</aura:component>

@@ -1,0 +1,11 @@
+Hi {!Account.Name},
+<br></br><br></br>
+Our team has been notified that {!Estimate__c.Estimate_Number__c}  is not approved for the following reasons:<br></br><br></br>
+
+{!Estimate__c.Notes__c}<br></br><br></br>
+
+We will adjust the estimate as necessary and email it back for review. If you have any immediate questions please email your account rep at {!Opportunity.OwnerEmail}.
+<br></br><br></br>
+ 
+
+Thanks

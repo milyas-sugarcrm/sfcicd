@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>ORDER_NUMBER</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT_NAME</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY.NAME</field>
+    </columns>
+    <columns>
+        <field>Order.PRODUCTION__c</field>
+    </columns>
+    <columns>
+        <field>Order.Priority__c</field>
+    </columns>
+    <columns>
+        <field>Order.Client_Due_Date__c</field>
+    </columns>
+    <columns>
+        <field>ORDER_STATUS</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT_OWNER</field>
+    </columns>
+    <columns>
+        <field>Order.operation_location__c</field>
+    </columns>
+    <description>Daily report for easy Work Order audit.</description>
+    <filter>
+        <criteriaItems>
+            <column>Order.operation_location__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>SC</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ORDER_STATUS</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value
+      >99_-_Design Projects,01_-_Waiting_for_Client_Payment,02_-_Send_Mock_Up_to_Client_for_Approval,03_-_Proof_Sent_-_Waiting_for_Approval,04_-_Order_Blanks-Approved/Deposit,09_-_Complete</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Order.operation_location__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value />
+        </criteriaItems>
+        <criteriaItems>
+            <column>Order.operation_location__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value />
+        </criteriaItems>
+        <criteriaItems>
+            <column>Order.operation_location__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value />
+        </criteriaItems>
+    </filter>
+    <format>Tabular</format>
+    <name>Current CA Work Orders</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>OrderList</reportType>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>Order.PRODUCTION__c</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>ORDER_LAST_UPDATE</dateColumn>
+        <interval>INTERVAL_LAST120</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>false</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>PO Ready for TP Pickup</name>
+    <style>none</style>
+    <subject>PO Status Ready for TP Pickup Notification</subject>
+    <textOnly>Hello Operations Team:
+
+This is a friendly reminder that it’s been 24 hours since {!PurchaseOrder_LineItem__c.Name} moved into a Ready for Pickup Status. Please ensure a delivery is scheduled, and notify {!PurchaseOrder_LineItem__c.OwnerFullName} if there are any delays resulting from delivery interruptions.
+
+If {!PurchaseOrder_LineItem__c.Name} has been received at QC, please update the PO Status to Received at QC.
+
+Thanks a bunch,
+
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

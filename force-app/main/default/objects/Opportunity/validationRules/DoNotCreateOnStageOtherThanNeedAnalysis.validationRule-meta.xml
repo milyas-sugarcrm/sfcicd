@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DoNotCreateOnStageOtherThanNeedAnalysis</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ISNEW(),
+NOT(ISPICKVAL(StageName, &quot;Needs Analysis&quot;))
+)</errorConditionFormula>
+    <errorMessage
+  >You cannot select any stage except &apos;Needs Analysis&apos;</errorMessage>
+</ValidationRule>

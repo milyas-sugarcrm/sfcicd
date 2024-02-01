@@ -1,0 +1,14 @@
+.btn-container {
+  z-index: 1;
+  position: sticky;
+  margin: 10px;
+  display: inline-block;
+}
+
+.event-filter {
+  display: inline-block;
+}
+
+.no-event-msg {
+  margin: 20px;
+}

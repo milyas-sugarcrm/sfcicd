@@ -1,0 +1,1169 @@
+<apex:page controller="OppEstimatePreviewController">
+  <script type="text/javascript">
+    var previousOnload = window.onload;
+    window.onload = function () {
+      if (previousOnload) {
+        previousOnload();
+      }
+      if ("{!EstimateDetails.Client_Approval_Status__c}" == "Approved") {
+        document.getElementById("statusinfo").style.display = "grid";
+        document.getElementById("statusButtons").style.display = "none";
+      } else if (
+        "{!EstimateDetails.Client_Approval_Status__c}" == "Change Requested"
+      ) {
+        document.getElementById("statusinfo").style.display = "grid";
+        // document.getElementById('statusButtons').style.display= 'grid';
+      }
+    };
+    function setApproveStatus() {
+      CallApproveStatus();
+    }
+    function setChangeStatus() {
+      CallChangeStatus();
+    }
+  </script>
+  <apex:form>
+    <apex:actionFunction name="CallApproveStatus" action="{!setApprove}">
+    </apex:actionFunction>
+    <apex:actionFunction name="CallChangeStatus" action="{!setChange}">
+    </apex:actionFunction>
+  </apex:form>
+  <div
+    id="page"
+    style="
+      background: #f0f0f0;
+      overflow: auto;
+      margin: 0;
+      padding: 0;
+      box-sizing: inherit;
+    "
+  >
+    <div style="background: #f0f0f0; max-width: 1300px; margin: auto">
+      <div style="max-width: 100%; box-sizing: border-box; margin-left: auto">
+        <div
+          style="
+            float: left;
+            padding-left: 0.9375rem;
+            padding-right: 0.9375rem;
+            width: 100%;
+          "
+        >
+          <div id="ParentImage" style="position: relative; height: 150px">
+            <div
+              id="childImage"
+              style="position: absolute; left: 15px; top: 15px"
+            >
+              <apex:image width="40%" height="40%" url="{!$Resource.TPLogo}" />
+            </div>
+            <div
+              id="tableInfo"
+              style="position: absolute; left: 150px; top: 40px"
+            >
+              <apex:outputText
+                style="
+                  font-family: Helvetica, Roboto, Arial, sans-serif;
+                  font-size: 1.75rem;
+                  color: #000000;
+                "
+                value="Team Phun"
+              /><br />
+              <!-- <a style="color: gray;" href="{!OppLink}"> -->
+              <apex:outputText
+                style="font-size: 20px; color: #000000"
+                value="Estimate for {!Opportunity.name}"
+              /><br />
+              <!--  </a> -->
+            </div>
+            <apex:image
+              style="width: 100%; height: 100%"
+              url="{!$Resource.HeaderImage2}"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div style="padding: 0; width: 100%; box-sizing: border-box">
+        <div
+          style="padding-left: 0.9375rem; padding-right: 0.9375rem; width: 100%"
+        >
+          <div
+            style="
+              margin-top: 10px;
+              padding: 0;
+              width: 100%;
+              background: #fff;
+              display: inline-block;
+              display: inline-block;
+              border: 1px solid rgba(0, 0, 0, 0.1);
+            "
+          >
+            <div
+              style="
+                width: 50%;
+                float: left;
+                border-right: 1px solid #e8e9e8;
+                height: auto;
+                padding: 0;
+                display: block;
+              "
+            >
+              <div style="padding: 20px 5px 15px 30px; float: left; width: 50%">
+                <h4
+                  style="
+                    font-style: normal;
+                    line-height: 1.4;
+                    text-rendering: optimizeLegibility;
+                    font-size: 1rem;
+                    color: #000;
+                    text-transform: uppercase;
+                    margin-bottom: 0.5rem;
+                    font-weight: 400;
+                  "
+                >
+                  Shipping Address
+                </h4>
+                <br />
+                <apex:outputText
+                  value="{!ShippingAddressPreview}"
+                  escape="false"
+                  style="
+                    margin-top: 0;
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                </apex:outputText>
+              </div>
+
+              <div style="padding: 20px 20px 15px 0">
+                <h4
+                  style="
+                    font-style: normal;
+                    line-height: 1.4;
+                    text-rendering: optimizeLegibility;
+                    font-size: 1rem;
+                    color: #000;
+                    text-transform: uppercase;
+                    margin-bottom: 0.5rem;
+                    font-weight: 400;
+                  "
+                >
+                  Billing Address
+                </h4>
+                <br />
+                <apex:outputText
+                  value="{!BillingAddressPreview}"
+                  escape="false"
+                  style="
+                    margin-top: 0;
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                </apex:outputText>
+              </div>
+            </div>
+
+            <div style="padding: 30px">
+              <div
+                style="
+                  float: left;
+                  margin: 0;
+                  width: 16.66%;
+                  padding: 0 5px 0 30px;
+                "
+              >
+                <h4
+                  style="
+                    font-weight: 400;
+                    font-size: 1rem;
+                    margin-bottom: 0;
+                    color: #000;
+                    text-transform: uppercase;
+                  "
+                >
+                  Project Name
+                </h4>
+                <p
+                  style="
+                    margin-top: 0;
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  {!Opportunity.name}
+                </p>
+              </div>
+              <div
+                style="
+                  float: left;
+                  width: 16.66%;
+                  margin: 0;
+                  padding: 0 5px 0 0;
+                "
+              >
+                <h4
+                  style="
+                    font-weight: 400;
+                    font-size: 1rem;
+                    margin-bottom: 0;
+                    color: #000;
+                    text-transform: uppercase;
+                  "
+                >
+                  Estimate #
+                </h4>
+                <p
+                  style="
+                    margin-top: 0;
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  {!EstimateDetails.Name}
+                </p>
+              </div>
+              <div style="margin: 0; padding: 0 5px 0 0">
+                <h4
+                  style="
+                    font-weight: 400;
+                    font-size: 1rem;
+                    margin-bottom: 0;
+                    color: #000;
+                    text-transform: uppercase;
+                  "
+                >
+                  In Hands Date
+                </h4>
+                <br />
+                <apex:outputText
+                  style="
+                    margin-top: 0;
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-bottom: 0.5rem;
+                  "
+                  value="{0,date,MM'/'dd'/'yyyy}"
+                >
+                  <apex:param value="{!EstimateDetails.In_Hands_Date__c}" />
+                </apex:outputText>
+              </div>
+              <div
+                style="
+                  float: left;
+                  width: 16.66%;
+                  padding: 0 5px 0 0;
+                  padding: 0 5px 0 30px;
+                "
+              >
+                <h4
+                  style="
+                    font-weight: 400;
+                    font-size: 1rem;
+                    margin-bottom: 0;
+                    color: #000;
+                    text-transform: uppercase;
+                  "
+                >
+                  Terms
+                </h4>
+                <p
+                  style="
+                    margin-top: 0;
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  {!EstimateDetails.Terms__c}
+                </p>
+              </div>
+              <div style="padding: 0 5px 0 0; float: left">
+                <h4
+                  style="
+                    font-weight: 400;
+                    font-size: 1rem;
+                    margin-bottom: 0;
+                    color: #000;
+                    text-transform: uppercase;
+                  "
+                >
+                  Customer PO
+                </h4>
+                <p
+                  style="
+                    margin-top: 0;
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  {!EstimateDetails.Customer_PO__c}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <apex:repeat value="{!LineItemsList}" var="lineItem">
+        <apex:repeat value="{!lineItem}" var="item">
+          <div
+            style="
+              padding-top: 10px;
+              max-width: 100%;
+              box-sizing: border-box;
+              padding: 15px;
+            "
+          >
+            <div
+              style="
+                padding-left: 0.9375rem;
+                padding-right: 0.9375rem;
+                width: 100%;
+                background: #fff;
+                display: inline-block;
+                border: 1px solid rgba(0, 0, 0, 0.1);
+              "
+            >
+              <h3
+                style="
+                  line-height: 1.4;
+                  font-size: 1.3rem;
+                  font-weight: 400;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                {!item.name}
+              </h3>
+              <p
+                style="
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                {!item.description}
+              </p>
+              <div
+                style="
+                  float: left;
+                  margin-top: 5px;
+                  margin-bottom: 15px !important;
+                  padding-right: 0;
+                  text-align: center;
+                  border-radius: 3px;
+                  border: 1px solid #f2f0f0;
+                  width: 25%;
+                "
+              >
+                <apex:outputPanel
+                  rendered="{!if(!item.imageExits, false ,true)}"
+                >
+                  <a href="{!item.activeImagePreviewLink}" target="_blank">
+                    <img style="width: 85%" src="{!item.activeImage}" />
+                  </a>
+                  <p
+                    style="
+                      font-size: 0.8rem;
+                      text-align: center;
+                      color: #55656d;
+                    "
+                  >
+                    Product image for reference only. See your artwork below.
+                  </p>
+                  <a
+                    style="color: #2199e8; cursor: pointer"
+                    href="{!item.activeImagePreviewLink}"
+                    target="_blank"
+                  >
+                    Click to enlarge</a
+                  >
+                </apex:outputPanel>
+                <apex:outputPanel
+                  rendered="{!if(!item.imageExits, true ,false)}"
+                >
+                  <img
+                    style="width: 85%"
+                    src="{!$Resource.No_Image_Available}"
+                  />
+                </apex:outputPanel>
+              </div>
+
+              <div
+                style="padding-left: 20px; padding: 0; width: 74%; float: right"
+              >
+                <table style="text-align: left; margin-top: 10px; width: 100%">
+                  <tbody>
+                    <tr>
+                      <th
+                        style="
+                          font-size: 1rem;
+                          padding-top: 5px;
+                          vertical-align: top;
+                          font-size: 0.8rem;
+                          color: #000;
+                          font-weight: 700;
+                          padding: 0;
+                        "
+                        width="50%"
+                      >
+                        ITEM
+                      </th>
+                      <th
+                        style="
+                          font-size: 1rem;
+                          text-align: right !important;
+                          padding-top: 5px;
+                          vertical-align: top;
+                          font-size: 0.8rem;
+                          color: #000;
+                          font-weight: 700;
+                          padding: 0;
+                        "
+                        width="20%"
+                      >
+                        QTY
+                      </th>
+                      <th
+                        style="
+                          font-size: 1rem;
+                          text-align: right !important;
+                          padding-top: 5px;
+                          vertical-align: top;
+                          font-size: 0.8rem;
+                          color: #000;
+                          font-weight: 700;
+                          padding: 0;
+                        "
+                        width="16.5%"
+                      >
+                        PRICE
+                      </th>
+                      <th
+                        style="
+                          font-size: 1rem;
+                          text-align: right !important;
+                          padding-top: 5px;
+                          vertical-align: top;
+                          font-size: 0.8rem;
+                          color: #000;
+                          font-weight: 700;
+                          padding: 0;
+                        "
+                      >
+                        AMOUNT
+                      </th>
+                    </tr>
+                  </tbody>
+                  <tbody>
+                    <apex:repeat
+                      value="{!item.lineItemPricings}"
+                      var="pricings"
+                    >
+                      <tr>
+                        <td
+                          style="
+                            font-size: 1rem;
+                            color: #55656d;
+                            padding: 5px 0 0 0;
+                            background: #fff;
+                          "
+                          width="50%"
+                        >
+                          Size: {!pricings.Size__c} - Color:
+                          {!pricings.Color__c}
+                        </td>
+                        <td
+                          style="
+                            font-size: 1rem;
+                            text-align: right !important;
+                            color: #55656d;
+                            padding: 5px 0 0 0;
+                            background: #fff;
+                          "
+                          width="20%"
+                        >
+                          <apex:outputText value="{0, number, ###,##0.##}">
+                            <apex:param
+                              value="{!pricings.Estimated_Quantity__c}"
+                            />
+                          </apex:outputText>
+                        </td>
+                        <td
+                          style="
+                            font-size: 1rem;
+                            text-align: right !important;
+                            color: #55656d;
+                            padding: 5px 0 0 0;
+                            background: #fff;
+                          "
+                          width="16.5%"
+                        >
+                          <apex:outputText value="{0, number, ###,##0.##}">
+                            <apex:param value="{!pricings.Retail_Price__c}" />
+                          </apex:outputText>
+                        </td>
+                        <td
+                          style="
+                            font-size: 1rem;
+                            text-align: right !important;
+                            color: #55656d;
+                            padding: 5px 0 0 0;
+                            background: #fff;
+                          "
+                        >
+                          <apex:outputText value="{0, number, ###,##0.##}">
+                            <apex:param value="{!pricings.Total__c}" />
+                          </apex:outputText>
+                        </td>
+                      </tr>
+                    </apex:repeat>
+
+                    <tr>
+                      <td
+                        style="
+                          font-size: 0.8rem;
+                          padding-top: 5px;
+                          font-weight: 700;
+                          color: #000;
+                        "
+                        width="50%"
+                      >
+                        TOTAL UNITS
+                      </td>
+                      <td
+                        style="
+                          font-size: 1rem;
+                          padding: 5px 0 0 0;
+                          color: #55656d;
+                          background: #fff;
+                          text-align: right !important;
+                        "
+                        width="20%"
+                      >
+                        <apex:outputText value="{0, number, ###,##0.##}">
+                          <apex:param value="{!item.lineItemQuantity}" />
+                        </apex:outputText>
+                      </td>
+                      <td
+                        style="
+                          font-size: 1rem;
+                          padding: 5px 0 0 0;
+                          color: #55656d;
+                          background: #fff;
+                          text-align: right !important;
+                        "
+                        width="16.5%"
+                      ></td>
+                      <td
+                        style="
+                          font-size: 1rem;
+                          padding: 5px 0 0 0;
+                          color: #55656d;
+                          background: #fff;
+                          text-align: right !important;
+                        "
+                      ></td>
+                    </tr>
+                    <tr>
+                      <td
+                        style="padding: 5px 0 0 0; color: #55656d"
+                        colspan="4"
+                      >
+                        <hr />
+                      </td>
+                    </tr>
+                    <apex:repeat
+                      value="{!item.lineItemExtraCharges}"
+                      var="runcharges"
+                    >
+                      <tr>
+                        <td
+                          style="
+                            color: #55656d;
+                            padding: 5px 0 0 0;
+                            background: #fff;
+                            font-size: 1rem;
+                          "
+                          width="50%"
+                        >
+                          {!runcharges.Title__c}
+                        </td>
+                        <td
+                          style="
+                            color: #55656d;
+                            padding: 5px 0 0 0;
+                            background: #fff;
+                            font-size: 1rem;
+                            text-align: right !important;
+                          "
+                          width="20%"
+                        >
+                          <apex:outputText value="{0, number, ###,##0.##}">
+                            <apex:param value="{!runcharges.Quantity__c}" />
+                          </apex:outputText>
+                        </td>
+                        <td
+                          style="
+                            color: #55656d;
+                            padding: 5px 0 0 0;
+                            background: #fff;
+                            font-size: 1rem;
+                            text-align: right !important;
+                          "
+                          width="16.5%"
+                        >
+                          <apex:outputText value="{0, number, ###,##0.##}">
+                            <apex:param value="{!runcharges.Retail_Price__c}" />
+                          </apex:outputText>
+                        </td>
+                        <td
+                          style="
+                            color: #55656d;
+                            padding: 5px 0 0 0;
+                            background: #fff;
+                            font-size: 1rem;
+                            text-align: right !important;
+                          "
+                        >
+                          <apex:outputText value="{0, number, ###,##0.##}">
+                            <apex:param value="{!runcharges.Total__c}" />
+                          </apex:outputText>
+                        </td>
+                      </tr>
+                    </apex:repeat>
+
+                    <tr>
+                      <th
+                        style="
+                          font-size: 1rem;
+                          padding: 0;
+                          color: #000;
+                          text-transform: uppercase;
+                          font-weight: 700;
+                          vertical-align: top;
+                          padding-top: 5px;
+                        "
+                        width="50%"
+                      >
+                        TOTAL
+                      </th>
+                      <td
+                        style="
+                          color: #55656d;
+                          padding: 5px 0 0 0;
+                          background: #fff;
+                        "
+                        width="20%"
+                      ></td>
+                      <td
+                        style="
+                          color: #55656d;
+                          padding: 5px 0 0 0;
+                          background: #fff;
+                        "
+                        width="16.5%"
+                      ></td>
+                      <th
+                        style="
+                          font-size: 1rem;
+                          text-align: right !important;
+                          padding: 0;
+                          color: #000;
+                          text-transform: uppercase;
+                          font-weight: 700;
+                          vertical-align: top;
+                          padding-top: 5px;
+                        "
+                      >
+                        <apex:outputText value="{0, number, ###,##0.##}">
+                          <apex:param
+                            value="{!item.lineItemTotalPricingAmount}"
+                          />
+                        </apex:outputText>
+                      </th>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <apex:repeat value="{!item.artworkDetails}" var="artworkDetails">
+                <apex:repeat
+                  value="{!artworkDetails.artworkList}"
+                  var="artwork"
+                >
+                  <div style="width: 100%; float: left; background: #f2f0f0">
+                    <h4
+                      style="
+                        margin-bottom: 0;
+                        font-weight: 400;
+                        line-height: 1.4;
+                        font-size: 1.3rem;
+                      "
+                    >
+                      Artwork Details
+                    </h4>
+                  </div>
+
+                  <div
+                    style="padding: 0; width: 66.66667%; float: left; margin: 0"
+                  >
+                    <table
+                      style="
+                        text-align: left;
+                        margin-top: 10px;
+                        width: 100%;
+                        margin-bottom: 1rem;
+                        border-radius: 0;
+                      "
+                    >
+                      <tbody>
+                        <tr>
+                          <th
+                            style="
+                              padding: 0;
+                              font-size: 0.8rem;
+                              color: #000;
+                              text-transform: uppercase;
+                              font-weight: 700;
+                              vertical-align: top;
+                              padding-top: 5px;
+                            "
+                            width="40%"
+                          >
+                            Design Name
+                          </th>
+                          <td
+                            style="
+                              color: #55656d;
+                              padding: 5px 0 0 0;
+                              font-size: 1rem;
+                            "
+                            width="60%"
+                          >
+                            {!artwork.logo_Name__c}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th
+                            style="
+                              padding: 0;
+                              font-size: 0.8rem;
+                              color: #000;
+                              text-transform: uppercase;
+                              font-weight: 700;
+                              vertical-align: top;
+                              padding-top: 5px;
+                            "
+                            width="40%"
+                          >
+                            Imprint Type
+                          </th>
+                          <td
+                            style="
+                              color: #55656d;
+                              padding: 5px 0 0 0;
+                              font-size: 1rem;
+                            "
+                            width="60%"
+                          >
+                            {!artwork.Imprint_Type__c}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th
+                            style="
+                              padding: 0;
+                              font-size: 0.8rem;
+                              color: #000;
+                              text-transform: uppercase;
+                              font-weight: 700;
+                              vertical-align: top;
+                              padding-top: 5px;
+                            "
+                            width="40%"
+                          >
+                            Design Location
+                          </th>
+                          <td
+                            style="
+                              color: #55656d;
+                              padding: 5px 0 0 0;
+                              font-size: 1rem;
+                            "
+                            width="60%"
+                          >
+                            {!artwork.Title__c}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th
+                            style="
+                              padding: 0;
+                              font-size: 0.8rem;
+                              color: #000;
+                              text-transform: uppercase;
+                              font-weight: 700;
+                              vertical-align: top;
+                              padding-top: 5px;
+                            "
+                            width="40%"
+                          >
+                            Design Size
+                          </th>
+                          <td
+                            style="
+                              color: #55656d;
+                              padding: 5px 0 0 0;
+                              font-size: 1rem;
+                            "
+                            width="60%"
+                          >
+                            {!artwork.Logo_Size__c}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th
+                            style="
+                              padding: 0;
+                              font-size: 0.8rem;
+                              color: #000;
+                              text-transform: uppercase;
+                              font-weight: 700;
+                              vertical-align: top;
+                              padding-top: 5px;
+                            "
+                            width="40%"
+                          >
+                            Design Color
+                          </th>
+                          <td
+                            style="
+                              color: #55656d;
+                              padding: 5px 0 0 0;
+                              font-size: 1rem;
+                            "
+                            width="60%"
+                          >
+                            {!artwork.Logo_Color__c}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div
+                    style="
+                      width: 33.33333%;
+                      margin: 5px 0 5px 0;
+                      text-align: center;
+                      float: left !important;
+                    "
+                  >
+                    <apex:outputPanel
+                      rendered="{!if(!artworkDetails.artworkImageExist, false ,true)}"
+                    >
+                      <apex:outputPanel
+                        rendered="{!if(!artworkDetails.artworkImageSupportExtension, false ,true)}"
+                      >
+                        <a href="{!artwork.Proof_Required__c}" target="_blank">
+                          <img
+                            style="width: 270px; height: 145px"
+                            src="{!artwork.Document_ID__c}"
+                          />
+                        </a>
+                        <br />
+                        <span
+                          ><a
+                            style="color: #2199e8"
+                            href="{!artwork.Proof_Required__c}"
+                            target="_blank"
+                            >Click to enlarge</a
+                          ></span
+                        >
+                      </apex:outputPanel>
+                      <apex:outputPanel
+                        rendered="{!if(!artworkDetails.artworkImageSupportExtension, true ,false)}"
+                      >
+                        <img
+                          style="width: 270px; height: 145px"
+                          src="{!$Resource.noImageSupport}"
+                        />
+                      </apex:outputPanel>
+                    </apex:outputPanel>
+                    <apex:outputPanel
+                      rendered="{!if(!artworkDetails.artworkImageExist, true ,false)}"
+                    >
+                      <img
+                        style="width: 270px; height: 145px"
+                        src="{!$Resource.No_Image_Available}"
+                      />
+                    </apex:outputPanel>
+                  </div> </apex:repeat
+              ></apex:repeat>
+            </div>
+          </div>
+        </apex:repeat>
+      </apex:repeat>
+
+      <div style="padding: 10px; max-width: 100%; margin-bottom: 150px">
+        <div
+          style="
+            float: right;
+            width: 50%;
+            margin-bottom: 10px;
+            display: inline-grid;
+          "
+        >
+          <table
+            style="
+              text-align: left;
+              width: 100%;
+              background: #808384;
+              margin-bottom: 20px;
+            "
+          >
+            <tbody>
+              <tr>
+                <th
+                  style="
+                    padding-top: 20px;
+                    padding-left: 20px;
+                    border: none !important;
+                    font-size: 1rem;
+                    color: #fff;
+                    text-transform: uppercase;
+                    font-weight: 400;
+                    background: #808384;
+                  "
+                  width="50%"
+                >
+                  Subtotal
+                </th>
+                <td
+                  style="
+                    font-size: 1rem;
+                    color: #fff;
+                    padding: 0 30px;
+                    background: #808384;
+                    padding-top: 20px;
+                    text-align: right !important;
+                  "
+                >
+                  <apex:outputText value="{0, number, $###,##0.##}">
+                    <apex:param value="{!PageTotal}" />
+                  </apex:outputText>
+                </td>
+              </tr>
+              <tr>
+                <th
+                  style="
+                    border: none !important;
+                    padding-left: 20px;
+                    font-size: 1rem;
+                    color: #fff;
+                    text-transform: uppercase;
+                    font-weight: 400;
+                    background: #808384;
+                  "
+                  width="50%"
+                >
+                  Tax - Exempt:
+                </th>
+                <td
+                  style="
+                    font-size: 1rem;
+                    color: #fff;
+                    padding: 0 30px;
+                    background: #808384;
+                    text-align: right !important;
+                  "
+                >
+                  <apex:outputText value="{0, number, $###,##0.##}">
+                    <apex:param value="{!Tax}" />
+                  </apex:outputText>
+                </td>
+              </tr>
+              <tr>
+                <th width="75%"></th>
+                <td style="color: #fff; padding: 0 30px; background: #808384">
+                  <hr />
+                </td>
+              </tr>
+              <tr>
+                <th
+                  style="
+                    padding-bottom: 15px;
+                    border: none !important;
+                    padding-left: 20px;
+                    font-size: 1rem;
+                    color: #fff;
+                    text-transform: uppercase;
+                    font-weight: 400;
+                    background: #808384;
+                  "
+                  width="50%"
+                >
+                  Total
+                </th>
+                <td
+                  style="
+                    font-size: 1rem;
+                    color: #fff;
+                    padding: 0 30px;
+                    background: #808384;
+                    text-align: right !important;
+                  "
+                >
+                  <apex:outputText value="{0, number, $###,##0.##}">
+                    <apex:param value="{!TotalPlusTax}" />
+                  </apex:outputText>
+                </td>
+              </tr>
+              <tr></tr>
+            </tbody>
+          </table>
+          <div
+            id="statusinfo"
+            style="
+              margin-bottom: 10px;
+              text-align: right;
+              color: #55656d;
+              font-size: 1.2rem;
+              line-height: 1.15rem;
+              display: none;
+            "
+          >
+            <p>
+              By approving you agree with
+              <a href="https://www.teamphun.com/terms-conditions"
+                >Terms and Conditions</a
+              >
+              and the
+              <a href="https://www.teamphun.com/privacy-policy"
+                >Privacy Policy</a
+              >.
+            </p>
+            {!EstimateDetails.Client_Approval_Status__c} by
+            {!EstimateDetails.Approved_By__c} on
+            {!EstimateDetails.Estimate_Number__c}
+          </div>
+          <div
+            id="statusButtons"
+            style="margin-bottom: 35px; text-align: right"
+          >
+            <div
+              id="statusinfo"
+              style="
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+                text-align: right;
+                color: #55656d;
+                font-size: 1.2rem;
+                line-height: 1.15rem;
+              "
+            >
+              <p>
+                By approving you agree with
+                <a href="https://www.teamphun.com/terms-conditions"
+                  >Terms and Conditions</a
+                >
+                and the
+                <a href="https://www.teamphun.com/privacy-policy"
+                  >Privacy Policy</a
+                >.
+              </p>
+            </div>
+            <a
+              onclick="setChangeStatus();"
+              style="
+                cursor: pointer;
+                text-decoration: none;
+                padding: 20px;
+                font-size: 1.25rem;
+                color: #fff;
+                margin-left: 20px;
+                background: #c8295e;
+              "
+              target="_blank"
+            >
+              Request Change
+              <apex:param name="change" value="true" assignTo="{!change}" />
+              <apex:param name="approve" value="false" assignTo="{!approve}" />
+            </a>
+            <a
+              onclick="setApproveStatus();"
+              style="
+                cursor: pointer;
+                text-decoration: none;
+                padding: 20px;
+                font-size: 1.25rem;
+                color: #fff;
+                margin-left: 20px;
+                background: #5ab444;
+              "
+            >
+              Approve Estimate
+              <apex:param name="approve" value="true" assignTo="{!approve}" />
+              <apex:param name="change" value="false" assignTo="{!change}" />
+            </a>
+          </div>
+        </div>
+
+        <div
+          style="
+            padding-left: 30px;
+            width: 47%;
+            float: left !important;
+            margin-bottom: 150px;
+          "
+        >
+          <div style="width: 100%">
+            <h3 style="font-size: 1.3rem; font-weight: 400">
+              Questions about this estimate?
+            </h3>
+            <p
+              style="
+                color: #55656d;
+                font-size: 1rem;
+                line-height: 1.15rem;
+                margin-bottom: 0.5rem;
+              "
+            >
+              {!Opportunity.Owner.Name}
+              <br />
+              <a style="color: #55656d" href="mailto:sean@teamphun.com"
+                >{!Opportunity.Owner.Email}</a
+              >
+              <br />
+            </p>
+            <p
+              style="
+                color: #55656d;
+                font-size: 1rem;
+                line-height: 1.15rem;
+                margin-bottom: 0.5rem;
+              "
+            >
+              <b>TEAM PHUN</b><br /> <span>5026 Cass St #B</span><br />
+              <span>San Diego, CA 92109</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</apex:page>

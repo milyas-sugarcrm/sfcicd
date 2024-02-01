@@ -1,0 +1,3 @@
+Hello, <br/><br/>
+
+Invoice {!Order.Invoice_Number__c}/Work Order {!Order.OrderNumber} is shipping to Team Phun. Please prepare for Quality Assurance.

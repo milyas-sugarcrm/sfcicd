@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>UTF-8</encodingKey>
+    <name>Approved Email</name>
+    <style>none</style>
+    <subject>Team Phun Estimate Approved!</subject>
+    <textOnly>Hi {!Account.Name}, 
+Thank you for your approval of {!Estimate__c.Estimate_Number__c}! Our team has been notified and we will proceed with invoicing. If you have any immediate questions please email your account rep at {!Opportunity.OwnerEmail}
+
+
+Thanks</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

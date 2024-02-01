@@ -1,0 +1,504 @@
+<apex:page
+  standardController="PurchaseOrder_LineItem__c"
+  extensions="PurchaseOrderPreviewController"
+>
+  <body style="background-color: #f0f0f0">
+    <script type="text/javascript">
+      var previousOnload = window.onload;
+      window.onload = function () {
+        if (previousOnload) {
+          previousOnload();
+        }
+        if ("{!ChangeStatus}" == "checked") {
+          document.getElementById("approveDiv").style.background = "#a9a9a9";
+          document.getElementById("changeDiv").style.background = "#c8295f";
+          document.getElementById("send").style.background = "#c8295f";
+          document.getElementById("approve").checked = false;
+          document.getElementById("change").checked = true;
+        } else {
+          document.getElementById("changeDiv").style.background = "#a9a9a9";
+          document.getElementById("approveDiv").style.background = "#5ab443";
+          document.getElementById("send").style.background = "#5ab443";
+          document.getElementById("change").checked = false;
+          document.getElementById("approve").checked = true;
+        }
+      };
+
+      function setChangeCheck() {
+        if (document.getElementById("change").checked == true) {
+          document.getElementById("approveDiv").style.background = "#a9a9a9";
+          document.getElementById("changeDiv").style.background = "#c8295f";
+          document.getElementById("send").style.background = "#c8295f";
+          document.getElementById("approve").checked = false;
+        }
+      }
+
+      function setApproveCheck() {
+        if (document.getElementById("approve").checked == true) {
+          document.getElementById("changeDiv").style.background = "#a9a9a9";
+          document.getElementById("approveDiv").style.background = "#5ab443";
+          document.getElementById("send").style.background = "#5ab443";
+          document.getElementById("change").checked = false;
+        }
+      }
+      function confirmation() {
+        var userName = document.getElementById("approved_by").value;
+        if (userName == "") {
+          alert("Enter your name first!");
+        } else {
+          document.getElementById("thanks").style.display = "grid";
+          document.getElementById("info").style.display = "none";
+          if (document.getElementById("approve").checked == true) {
+            //alert("HELLO i am in confirmation");
+            ChangeOrderStatus("Approved");
+          } else {
+            //alert("HELLO i am in confirmation");
+            ChangeOrderStatus("Change Requested");
+          }
+        }
+      }
+    </script>
+    <apex:slds />
+    <apex:form id="signin">
+      <apex:actionFunction
+        name="ChangeOrderStatus"
+        action="{!approveRejectOrder}"
+        oncomplete=""
+      >
+        <apex:param name="myStatus" value="" />
+      </apex:actionFunction>
+
+      <div
+        style="
+          background: #f0f0f0;
+          max-width: 1300px;
+          margin: auto;
+          font-size: 0.8rem;
+          line-height: 1.15rem;
+          box-sizing: inherit;
+        "
+      >
+        <div
+          style="
+            max-width: 100%;
+            box-sizing: border-box;
+            padding: 0 10px !important;
+          "
+        >
+          <div
+            style="
+              float: left;
+              padding-left: 0.9375rem;
+              padding-right: 0.9375rem;
+              width: 100%;
+              margin: 0;
+              padding: 0;
+            "
+          >
+            <div id="ParentImage" style="position: relative; height: 150px">
+              <div
+                id="childImage"
+                style="position: absolute; left: 15px; top: 15px"
+              >
+                <apex:image
+                  width="40%"
+                  height="40%"
+                  url="https://files.commonsku.com/medium/2b8192b7-af36-4476-bd9a-b124fd03870b"
+                />
+              </div>
+              <div
+                id="tableInfo"
+                style="position: absolute; left: 150px; top: 40px"
+              >
+                <apex:outputText
+                  style="
+                    font-family: Helvetica, Roboto, Arial, sans-serif;
+                    font-size: 1.75rem;
+                    color: #ffffff;
+                  "
+                  value="Team Phun"
+                /><br /><br />
+                <a style="color: gray" href="{!OppLink}">
+                  <apex:outputText
+                    style="font-size: 20px; color: #9aa0a3"
+                    value="SALES ORDER for {!OpportunityName}"
+                  /><br />
+                </a>
+              </div>
+              <apex:image
+                style="width: 100%; height: 100%"
+                url="https://cdn1.commonsku.com/images/resku-header-1.jpg"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="
+            max-width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            margin-left: auto;
+            margin-right: auto;
+          "
+        >
+          <div
+            style="
+              width: 100%;
+              padding-left: 0.9375rem;
+              padding-right: 0.9375rem;
+              float: left;
+              margin: 0;
+              padding: 0;
+            "
+          >
+            <div
+              id="thanks"
+              class="w-padding"
+              style="
+                margin-top: 30px;
+                margin-bottom: 50px;
+                padding: 30px;
+                text-align: center;
+                display: none;
+              "
+            >
+              <apex:outputText
+                id="custom_thanks"
+                style="font-size: 1.3rem; margin-bottom: 0.5rem"
+              />
+              <p
+                style="
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                  color: #55656d;
+                  font-size: 1rem;
+                "
+              >
+                Your information has been submitted. Someone from our account
+                team will contact you shortly.
+              </p>
+            </div>
+            <div
+              id="info"
+              style="
+                width: 95.5%;
+                margin-top: 30px;
+                margin-bottom: 50px;
+                padding: 30px;
+                background: #fff;
+                display: inline-block;
+                border: 1px solid rgba(0, 0, 0, 0.1);
+              "
+            >
+              <p
+                style="
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                Important! Please read the following carefully.
+              </p>
+              <p
+                style="
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                By approving the order, you are acknowledging you have
+                thoroughly reviewed all of the following aspects of this order:
+              </p>
+              <table style="width: 100%; margin-bottom: 1rem; border-radius: 0">
+                <tbody>
+                  <tr style="line-height: 1.15rem">
+                    <td
+                      style="
+                        font-size: 1rem;
+                        border: none;
+                        color: #55656d;
+                        padding: 5px 0 0 0;
+                        background: #fff;
+                      "
+                      width="45%"
+                    >
+                      - Quantities
+                    </td>
+                    <td
+                      style="
+                        font-size: 1rem;
+                        border: none;
+                        color: #55656d;
+                        padding: 5px 0 0 0;
+                        background: #fff;
+                      "
+                      width="45%"
+                    >
+                      - Imprint Colors
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="
+                        font-size: 1rem;
+                        border: none;
+                        color: #55656d;
+                        padding: 5px 0 0 0;
+                        background: #fff;
+                      "
+                      width="45%"
+                    >
+                      - Size Breakdowns
+                    </td>
+                    <td
+                      style="
+                        font-size: 1rem;
+                        border: none;
+                        color: #55656d;
+                        padding: 5px 0 0 0;
+                        background: #fff;
+                      "
+                      width="45%"
+                    >
+                      - Decoration Methods
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="
+                        font-size: 1rem;
+                        border: none;
+                        color: #55656d;
+                        padding: 5px 0 0 0;
+                        background: #fff;
+                      "
+                      width="45%"
+                    >
+                      - Product Colors
+                    </td>
+                    <td
+                      style="
+                        font-size: 1rem;
+                        border: none;
+                        color: #55656d;
+                        padding: 5px 0 0 0;
+                        background: #fff;
+                      "
+                      width="45%"
+                    >
+                      - Artwork (including spelling)
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <p
+                style="
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                Please fill out the form below to put the order into production.
+              </p>
+
+              <input
+                type="hidden"
+                name="order_id"
+                value="622286d9-6eb8-4c17-b436-48ee692153f3"
+              />
+              <div
+                style="
+                  width: 50%;
+                  box-sizing: border-box;
+                  float: left;
+                  display: inline-block;
+                "
+              >
+                <p
+                  style="
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  Your Name:
+                </p>
+                <input
+                  style="
+                    width: 90%;
+                    padding: 0.5rem;
+                    border: 1px solid #cacaca;
+                    margin: 0 0 1rem;
+                    font-family: inherit;
+                    font-size: 1rem;
+                    color: #0a0a0a;
+                    background-color: #fefefe;
+                  "
+                  type="text"
+                  id="approved_by"
+                  name="approved_by"
+                  placeholder="Enter your full name"
+                />
+              </div>
+
+              <div
+                style="
+                  width: 50%;
+                  box-sizing: border-box;
+                  float: left;
+                  display: inline-block;
+                  margin: 0;
+                  padding: 0;
+                "
+              >
+                <p
+                  style="
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  Change Order Status to:
+                </p>
+                <label
+                  style="
+                    font-weight: 400;
+                    line-height: 1.8;
+                    margin-right: 30px;
+                    display: inline-block;
+                    position: relative;
+                    padding-left: 45px;
+                    margin-bottom: 15px;
+                    padding-top: 2px;
+                    cursor: pointer;
+                    font-size: 18px;
+                  "
+                >
+                  <span style="color: #a9a9a9; font-weight: 700">Approved</span>
+                  <div
+                    id="approveDiv"
+                    style="
+                      position: absolute;
+                      top: 2px;
+                      left: 0;
+                      height: 33px;
+                      width: 33px;
+                      border-radius: 50%;
+                    "
+                  >
+                    <input
+                      id="approve"
+                      style="
+                        opacity: 0;
+                        z-index: -1;
+                        margin-left: 10px;
+                        margin-top: 10px;
+                      "
+                      type="checkbox"
+                      name="approve"
+                      onClick="setApproveCheck()"
+                    />
+                  </div>
+                </label>
+                <label
+                  style="
+                    line-height: 1.8;
+                    margin-right: 30px;
+                    display: inline-block;
+                    position: relative;
+                    padding-left: 45px;
+                    margin-bottom: 15px;
+                    padding-top: 2px;
+                    cursor: pointer;
+                    font-size: 18px;
+                  "
+                >
+                  <span
+                    style="color: #a9a9a9; font-weight: 700; font-size: 18px"
+                    >Change Required</span
+                  >
+                  <div
+                    id="changeDiv"
+                    style="
+                      border-radius: 50%;
+                      position: absolute;
+                      top: 2px;
+                      left: 0;
+                      height: 33px;
+                      width: 33px;
+                    "
+                  >
+                    <input
+                      id="change"
+                      style="
+                        opacity: 0;
+                        z-index: -1;
+                        margin-left: 10px;
+                        margin-top: 10px;
+                      "
+                      type="checkbox"
+                      name="change"
+                      onClick="setChangeCheck()"
+                    />
+                  </div>
+                </label>
+              </div>
+              <div style="display: block; clear: both; margin: 0; padding: 0">
+                <p
+                  style="
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  Additional Notes:
+                </p>
+                <textarea
+                  style="
+                    height: auto;
+                    width: 100%;
+                    padding: 0.5rem;
+                    border: 1px solid #cacaca;
+                    margin: 0 0 1rem;
+                    font-family: inherit;
+                    font-size: 1rem;
+                    color: #0a0a0a;
+                    background-color: #fefefe;
+                    box-shadow: inset 0 1px 2px hsla(0, 0%, 4%, 0.1);
+                    border-radius: 0;
+                  "
+                  id="approved_notes"
+                  name="approved_notes"
+                  rows="7"
+                  placeholder="Enter any additional notes"
+                ></textarea>
+              </div>
+              <div style="width: 100%; text-align: center">
+                <button
+                  id="send"
+                  onclick="confirmation(); return false;"
+                  style="
+                    font-weight: 400;
+                    padding: 20px;
+                    font-size: 1.25rem;
+                    color: #fff;
+                    margin-left: 20px;
+                  "
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </apex:form>
+  </body>
+</apex:page>

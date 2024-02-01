@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Email reminder: 7 days passed after ordering</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Order Blanks 7 Days Reminder</name>
+    <style>none</style>
+    <subject>Order Blanks 7 days Reminder</subject>
+    <type>custom</type>
+    <uiType>SFX</uiType>
+</EmailTemplate>

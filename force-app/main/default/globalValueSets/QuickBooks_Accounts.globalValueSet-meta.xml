@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Team Phun</fullName>
+        <default>false</default>
+        <label>Team Phun</label>
+    </customValue>
+    <customValue>
+        <fullName>Phun for All</fullName>
+        <default>false</default>
+        <label>Phun for All</label>
+    </customValue>
+    <customValue>
+        <fullName>TP Supply Co.</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>TP Supply Co.</label>
+    </customValue>
+    <description>List of quickbooks accounts</description>
+    <masterLabel>QuickBooks Accounts</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

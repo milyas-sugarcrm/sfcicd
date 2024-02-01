@@ -1,0 +1,69 @@
+<template>
+  <lightning-card title="Product Images">
+    <!-- Button for Image Selection Update -->
+    <template if:true={stage}>
+      <lightning-button
+        label="Update"
+        title="Update"
+        class="slds-m-left_x-small"
+        onclick={updateImageHandler}
+        slot="actions"
+      ></lightning-button>
+    </template>
+    <template if:false={stage}>
+      <lightning-button
+        disabled="true"
+        label="Update"
+        title="Update"
+        class="slds-m-left_x-small"
+        onclick={updateImageHandler}
+        slot="actions"
+      ></lightning-button>
+    </template>
+    <!-- Displayed All Images related to OppLineItem -->
+    <div class="outerDivImage slds-scrollable">
+      <template for:each={contentDocs} for:item="contentDoc">
+        <template if:true={contentDoc.value}>
+          <div
+            class="innerDivImage highlight_default"
+            data-id={contentDoc.key}
+            key={contentDoc.key}
+            onclick={imageSelectionHandler}
+          >
+            <lightning-icon
+              icon-name="utility:success"
+              alternative-text="Success!"
+              title="success variant small"
+              class="iconPosition"
+              size="x-small"
+            >
+            </lightning-icon>
+            <lightning-carousel-image
+              src={contentDoc.key}
+              header=""
+              description=""
+              alternative-text="Product Images"
+            >
+            </lightning-carousel-image>
+          </div>
+        </template>
+        <template if:false={contentDoc.value}>
+          <div
+            class="innerDivImage"
+            data-id={contentDoc.key}
+            key={contentDoc.key}
+            onclick={imageSelectionHandler}
+          >
+            <lightning-carousel-image
+              src={contentDoc.key}
+              header=""
+              description=""
+              alternative-text="Product Images"
+            >
+            </lightning-carousel-image>
+          </div>
+        </template>
+      </template>
+    </div>
+  </lightning-card>
+</template>

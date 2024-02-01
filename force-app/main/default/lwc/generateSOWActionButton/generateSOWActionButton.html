@@ -1,0 +1,13 @@
+<template>
+  <lightning-quick-action-panel header="Generating SOW">
+    <div class="slds-p-around_large slds-align_absolute-center">
+      SOW Generation in Progress!
+    </div>
+  </lightning-quick-action-panel>
+
+  <lightning-spinner
+    if:true={generatingSOW}
+    alternative-text="Generating SOW"
+    variant="brand"
+  ></lightning-spinner>
+</template>

@@ -1,0 +1,586 @@
+<apex:page
+  standardController="Order"
+  extensions="OpportunityDepositInvoiceController"
+  showHeader="false"
+  applyBodyTag="false"
+  renderAs="pdf"
+  applyHtmlTag="false"
+>
+  <div
+    style="
+      background: #f0f0f0;
+      overflow: auto;
+      margin: 0;
+      padding: 0;
+      box-sizing: inherit;
+    "
+  >
+    <div style="background: #f0f0f0; max-width: 1300px; margin: auto">
+      <div style="max-width: 100%; box-sizing: border-box; margin-left: auto">
+        <div
+          style="
+            float: left;
+            padding-left: 0.9375rem;
+            padding-right: 0.9375rem;
+            width: 100%;
+          "
+        >
+          <div id="ParentImage" style="position: relative; height: 150px">
+            <div
+              id="childImage"
+              style="position: absolute; left: 15px; top: 15px"
+            >
+              <apex:image width="40%" height="40%" url="{!$Resource.TPLogo}" />
+            </div>
+            <div
+              id="tableInfo"
+              style="position: absolute; left: 150px; top: 40px"
+            >
+              <apex:outputText
+                style="
+                  font-family: Helvetica, Roboto, Arial, sans-serif;
+                  font-size: 1.75rem;
+                  color: #ffffff;
+                "
+                value="Team Phun"
+              /><br />
+              <apex:outputText
+                style="font-size: 20px; color: #9aa0a3"
+                value="DEPOSIT INVOICE for {!Opportunity.name}"
+              /><br />
+            </div>
+            <apex:image
+              style="width: 100%; height: 100%"
+              url="{!$Resource.HeaderImage}"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div style="max-width: 100%; box-sizing: border-box; margin-left: auto">
+        <div
+          style="
+            background: #fff;
+            margin-top: 10px;
+            display: inline-block;
+            display: inline-block;
+            float: left;
+            padding-left: 0.9375rem;
+            padding-right: 0.9375rem;
+            width: 100%;
+          "
+        >
+          <div
+            style="
+              float: left;
+              width: 50%;
+              border-right: 1px solid #e8e9e8;
+              height: auto;
+              padding: 0;
+              display: inline-grid;
+            "
+          >
+            <div style="float: left; width: 50%">
+              <h4
+                style="
+                  font-style: normal;
+                  line-height: 1.4;
+                  text-rendering: optimizeLegibility;
+                  font-size: 1rem;
+                  color: #000;
+                  text-transform: uppercase;
+                  font-weight: 400;
+                "
+              >
+                Shipping Address
+              </h4>
+              <apex:outputText
+                value="{!ShippingAddress}"
+                escape="false"
+                style="margin-top: 0; color: #55656d; font-size: 1rem"
+              >
+              </apex:outputText>
+            </div>
+            <div>
+              <h4
+                style="
+                  font-style: normal;
+                  line-height: 1.4;
+                  text-rendering: optimizeLegibility;
+                  font-size: 1rem;
+                  color: #000;
+                  text-transform: uppercase;
+                  font-weight: 400;
+                "
+              >
+                Billing Address
+              </h4>
+              <apex:outputText
+                value="{!BillingAddress}"
+                escape="false"
+                style="
+                  margin-top: 0;
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                "
+              >
+              </apex:outputText>
+            </div>
+          </div>
+
+          <div style="padding: 0; width: 49%; float: right">
+            <div
+              style="
+                float: left;
+                margin: 0;
+                width: 25.5%;
+                padding: 0 5px 0 30px;
+              "
+            >
+              <h4
+                style="
+                  font-weight: 400;
+                  font-size: 1rem;
+                  margin-bottom: 0;
+                  color: #000;
+                  text-transform: uppercase;
+                "
+              >
+                DEPOSIT DUE ({!DepositDetails.Deposit_Percent__c}%):
+              </h4>
+              <p
+                style="
+                  margin-top: 0px;
+                  font-size: 2.4rem;
+                  margin-bottom: 20px;
+                  line-height: normal;
+                  color: #55656d;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                ${!DepositDetails.Deposit_Amount__c}
+              </p>
+            </div>
+            <div style="padding: 0 5px 0 50px; float: left">
+              <h4
+                style="
+                  font-weight: 400;
+                  font-size: 1rem;
+                  margin-bottom: 0;
+                  color: #000;
+                  text-transform: uppercase;
+                "
+              >
+                PROJECT NAME
+              </h4>
+              <p
+                style="
+                  margin-top: 0;
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                {!Opportunity.Name}
+              </p>
+            </div>
+            <div style="float: left; width: 24.5%; padding: 0 5px 0 30px">
+              <h4
+                style="
+                  font-weight: 400;
+                  font-size: 1rem;
+                  margin-bottom: 0;
+                  color: #000;
+                  text-transform: uppercase;
+                "
+              >
+                Date
+              </h4>
+              <br />
+              <apex:outputText
+                style="
+                  margin-top: 0;
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+                value="{0,date,MM'/'dd'/'yyyy}"
+              >
+                <apex:param value="{!SalesOrderDetails.EffectiveDate}" />
+              </apex:outputText>
+            </div>
+            <div style="float: left; width: 24.5%; padding: 0 5px 0 50px">
+              <h4
+                style="
+                  font-weight: 400;
+                  font-size: 1rem;
+                  margin-bottom: 0;
+                  color: #000;
+                  text-transform: uppercase;
+                "
+              >
+                DEPOSIT INVOICE #
+              </h4>
+              <p
+                style="
+                  margin-top: 0;
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                {!SalesOrderDetails.Invoice_Number__c}
+              </p>
+            </div>
+            <div style="float: left; width: 24.5%; padding: 0 5px 0 30px">
+              <h4
+                style="
+                  font-weight: 400;
+                  font-size: 1rem;
+                  margin-bottom: 0;
+                  color: #000;
+                  text-transform: uppercase;
+                "
+              >
+                Terms
+              </h4>
+              <p
+                style="
+                  margin-top: 0;
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                {!SalesOrderDetails.Invoice_Terms__c}
+              </p>
+            </div>
+            <div style="float: left; width: 24.5%; padding: 0 5px 0 50px">
+              <h4
+                style="
+                  font-weight: 400;
+                  font-size: 1rem;
+                  margin-bottom: 0;
+                  color: #000;
+                  text-transform: uppercase;
+                "
+              >
+                Customer PO
+              </h4>
+              <p
+                style="
+                  margin-top: 0;
+                  color: #55656d;
+                  font-size: 1rem;
+                  line-height: 1.15rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                {!SalesOrderDetails.PoNumber}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="max-width: 100%; box-sizing: border-box; padding: 16px">
+        <div
+          style="
+            width: 100% !important;
+            padding: 25px 30px;
+            background: #fff;
+            display: inline-block;
+          "
+        >
+          <h3
+            style="
+              width: 100%;
+              line-height: 1.4;
+              font-size: 1.3rem;
+              font-weight: 400;
+              margin-bottom: 0.5rem;
+            "
+          >
+            Summary
+          </h3>
+
+          <table
+            style="
+              width: 100%;
+              border-spacing: 8px;
+              text-align: left;
+              margin-top: 280px;
+              width: 100%;
+              margin-bottom: 1rem;
+              border-radius: 0;
+            "
+          >
+            <body>
+              <tr
+                style="
+                  font-family: sans-serif;
+                  padding: 0;
+                  font-size: 0.8rem;
+                  color: #000;
+                  text-transform: uppercase;
+                  font-weight: 700;
+                  vertical-align: top;
+                  padding-top: 5px;
+                "
+              >
+                <th style="width: 60%">ITEM</th>
+                <th style="text-align: left; width: 16.6%">QTY</th>
+                <th style="text-align: left; width: 16.6%">PRICE</th>
+                <th style="text-align: right; width: 16.6%">AMOUNT</th>
+              </tr>
+              <apex:repeat value="{!LineItemsList}" var="lineItem">
+                <apex:repeat value="{!lineItem}" var="item">
+                  <apex:repeat value="{!item.lineItemPricings}" var="pricing">
+                    <tr
+                      style="
+                        font-family: sans-serif;
+                        border: none;
+                        color: #55656d;
+                        padding: 5px 0 0 0;
+                        background: #fff;
+                        font-size: 1rem;
+                      "
+                    >
+                      <td
+                        style="color: #55656d; white-space: initial"
+                        width="50%"
+                      >
+                        {!pricing.Size__c}
+                      </td>
+                      <td
+                        style="color: #55656d; text-align: right !important"
+                        width="20%"
+                      >
+                        {!pricing.Estimated_Quantity__c}
+                      </td>
+                      <td
+                        style="color: #55656d; text-align: right !important"
+                        width="16.5%"
+                      >
+                        ${!pricing.Retail_Price__c}
+                      </td>
+                      <td style="color: #55656d; text-align: right !important">
+                        ${!pricing.Total__c}
+                      </td>
+                    </tr>
+                  </apex:repeat>
+                  <apex:repeat
+                    value="{!item.lineItemExtraCharges}"
+                    var="extracharges"
+                  >
+                    <tr
+                      style="
+                        font-family: sans-serif;
+                        border: none;
+                        color: #55656d;
+                        padding: 5px 0 0 0;
+                        background: #fff;
+                        font-size: 1rem;
+                      "
+                    >
+                      <td
+                        style="color: #55656d; white-space: initial"
+                        width="60%"
+                      >
+                        {!extracharges.Title__c}
+                      </td>
+                      <td
+                        style="color: #55656d; text-align: left"
+                        width="16.6%"
+                      >
+                        {!extracharges.Quantity__c}
+                      </td>
+                      <td
+                        style="color: #55656d; text-align: left"
+                        width="16.6%"
+                      >
+                        ${!extracharges.Net_Cost__c}
+                      </td>
+                      <td
+                        style="color: #55656d; text-align: left"
+                        width="16.6%"
+                      >
+                        ${!extracharges.Total__c}
+                      </td>
+                    </tr>
+                  </apex:repeat>
+                  <tr
+                    style="
+                      font-family: sans-serif;
+                      border: none;
+                      color: #55656d;
+                      padding: 5px 0 0 0;
+                      background: #fff;
+                      font-size: 1rem;
+                    "
+                  >
+                    <td colspan="4"><hr /></td>
+                  </tr>
+                </apex:repeat>
+              </apex:repeat>
+            </body>
+          </table>
+        </div>
+      </div>
+
+      <div style="padding: 10px; max-width: 100%; margin-bottom: 150px">
+        <div
+          style="
+            float: right;
+            width: 50%;
+            margin-bottom: 10px;
+            display: inline-grid;
+          "
+        >
+          <table
+            style="
+              text-align: left;
+              width: 100%;
+              background: #808384;
+              margin-bottom: 20px;
+            "
+          >
+            <tbody>
+              <tr>
+                <th
+                  style="
+                    padding-top: 20px;
+                    padding-left: 20px;
+                    border: none !important;
+                    font-size: 1rem;
+                    color: #fff;
+                    text-transform: uppercase;
+                    font-weight: 400;
+                    background: #808384;
+                  "
+                  width="50%"
+                >
+                  Subtotal
+                </th>
+                <td
+                  style="
+                    font-size: 1rem;
+                    color: #fff;
+                    padding: 0 30px;
+                    background: #808384;
+                    padding-top: 20px;
+                    text-align: right !important;
+                  "
+                >
+                  ${!SubTotal}
+                </td>
+              </tr>
+              <tr>
+                <th
+                  style="
+                    border: none !important;
+                    padding-left: 20px;
+                    font-size: 1rem;
+                    color: #fff;
+                    text-transform: uppercase;
+                    font-weight: 400;
+                    background: #808384;
+                  "
+                  width="50%"
+                >
+                  TAX - NORTH CHARLESTON:
+                </th>
+                <td
+                  style="
+                    font-size: 1rem;
+                    color: #fff;
+                    padding: 0 30px;
+                    background: #808384;
+                    text-align: right !important;
+                  "
+                >
+                  ${!SalesOrderDetails.Invoice_Tax__c}
+                </td>
+              </tr>
+              <tr>
+                <th width="75%"></th>
+                <td style="color: #fff; padding: 0 30px; background: #808384">
+                  <hr />
+                </td>
+              </tr>
+              <tr>
+                <th
+                  style="
+                    border: none !important;
+                    padding-left: 20px;
+                    font-size: 1rem;
+                    color: #fff;
+                    text-transform: uppercase;
+                    font-weight: 400;
+                    background: #808384;
+                  "
+                  width="50%"
+                >
+                  Total
+                </th>
+                <td
+                  id=""
+                  style="
+                    font-size: 1rem;
+                    color: #fff;
+                    padding: 0 30px;
+                    background: #808384;
+                    text-align: right !important;
+                  "
+                >
+                  ${!TotalPlusTax}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="width: 47%; margin-bottom: 150px; float: left">
+          <div style="width: 100%">
+            <h3 style="font-size: 1.3rem; font-weight: 400">
+              Questions about this invoice?
+            </h3>
+            <p
+              style="
+                color: #55656d;
+                font-size: 1rem;
+                line-height: 1.15rem;
+                margin-bottom: 0.5rem;
+              "
+            >
+              {!ownerName}
+              <br />
+              <a style="color: #55656d" href="mailto:sean@teamphun.com"
+                >{!ownerEmail}</a
+              >
+              <br />
+            </p>
+            <p
+              style="
+                color: #55656d;
+                font-size: 1rem;
+                line-height: 1.15rem;
+                margin-bottom: 0.5rem;
+              "
+            >
+              <b>Team Phun LLC</b><br /> <span>(858) 598-5563 x1</span><br />
+              <span>683 Turquoise St.</span> <br />
+              <span>La Jolla, California 92037</span><br />
+              <span>United States</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</apex:page>

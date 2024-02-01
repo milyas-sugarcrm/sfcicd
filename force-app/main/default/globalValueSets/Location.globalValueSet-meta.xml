@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Front Center</fullName>
+        <default>false</default>
+        <label>Front Center</label>
+    </customValue>
+    <customValue>
+        <fullName>Front Left Chest</fullName>
+        <default>false</default>
+        <label>Front Left Chest</label>
+    </customValue>
+    <customValue>
+        <fullName>Front Right Chest</fullName>
+        <default>false</default>
+        <label>Front Right Chest</label>
+    </customValue>
+    <customValue>
+        <fullName>Back Center</fullName>
+        <default>false</default>
+        <label>Back Center</label>
+    </customValue>
+    <customValue>
+        <fullName>Left Shoulder</fullName>
+        <default>false</default>
+        <label>Left Shoulder</label>
+    </customValue>
+    <customValue>
+        <fullName>Right Shoulder</fullName>
+        <default>false</default>
+        <label>Right Shoulder</label>
+    </customValue>
+    <customValue>
+        <fullName>Other</fullName>
+        <default>false</default>
+        <label>Other</label>
+    </customValue>
+    <customValue>
+        <fullName>1</fullName>
+        <default>false</default>
+        <label>1</label>
+    </customValue>
+    <customValue>
+        <fullName>2</fullName>
+        <default>false</default>
+        <label>2</label>
+    </customValue>
+    <customValue>
+        <fullName>Full Wrap</fullName>
+        <default>false</default>
+        <label>Full Wrap</label>
+    </customValue>
+    <customValue>
+        <fullName>Offset Left Panel</fullName>
+        <default>false</default>
+        <label>Offset Left Panel</label>
+    </customValue>
+    <customValue>
+        <fullName>Offset Right Panel</fullName>
+        <default>false</default>
+        <label>Offset Right Panel</label>
+    </customValue>
+    <customValue>
+        <fullName>Right Side Panel (1&quot; x 1&quot; Patch Only)</fullName>
+        <default>false</default>
+        <label>Right Side Panel (1&quot; x 1&quot; Patch Only)</label>
+    </customValue>
+    <customValue>
+        <fullName>Left Side Panel (1&quot; x 1&quot; Patch Only)</fullName>
+        <default>false</default>
+        <label>Left Side Panel (1&quot; x 1&quot; Patch Only)</label>
+    </customValue>
+    <customValue>
+        <fullName>Right Back Panel (1&quot; x 1&quot; Patch Only)</fullName>
+        <default>false</default>
+        <label>Right Back Panel (1&quot; x 1&quot; Patch Only)</label>
+    </customValue>
+    <customValue>
+        <fullName>Left Back Panel (1&quot; x 1&quot; Patch Only)</fullName>
+        <default>false</default>
+        <label>Left Back Panel (1&quot; x 1&quot; Patch Only)</label>
+    </customValue>
+    <masterLabel>Location</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

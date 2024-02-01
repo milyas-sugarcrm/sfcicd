@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Send Mockup To Client For Approval Notification</name>
+    <style>none</style>
+    <subject>Work Order {!Order.OrderNumber} - Mockup Request</subject>
+    <textOnly>Art Team:
+
+Work Order {!Order.OrderNumber} is ready for a mockup to be sent to the client for approval. Please notify the sales rep if there are any questions with the artwork or missing work order details.
+
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

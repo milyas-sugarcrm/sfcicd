@@ -1,0 +1,171 @@
+<apex:page
+  standardController="PurchaseOrder_LineItem__c"
+  extensions="PurchaseOrderPackingSlipController"
+>
+  <body
+    style="
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      font-family:
+        Helvetica Neue,
+        Helvetica,
+        Roboto,
+        Arial,
+        sans-serif;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #0a0a0a;
+      background: #fefefe;
+    "
+  >
+    <div style="background: 0 0; margin: 0 auto; width: 740px">
+      <div
+        style="
+          height: 225px;
+          margin: auto;
+          padding: 0;
+          background: #f0f0f0;
+          font-size: 0.8rem;
+          line-height: 1.15rem;
+          max-width: 1300px;
+        "
+      >
+        <div
+          style="
+            margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 100%;
+          "
+        >
+          <div
+            style="
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+              float: left;
+              width: 100%;
+            "
+          >
+            <div
+              style="
+                margin: 0;
+                padding: 25px 30px;
+                background: #fff;
+                border: 1px solid #e6e6e6;
+                box-sizing: border-box;
+                display: inline-block;
+                width: 100%;
+              "
+            >
+              <div
+                style="
+                  width: 25%;
+                  margin: auto;
+                  padding-left: 0.9375rem;
+                  padding-right: 0.9375rem;
+                  box-sizing: border-box;
+                  float: left;
+                "
+              >
+                <img src="{!$Resource.TPLogo}" style="width: 100%" />
+              </div>
+              <div
+                style="
+                  float: left;
+                  padding-left: 0.9375rem;
+                  padding-right: 0.9375rem;
+                  width: 45%;
+                "
+              >
+                <h4
+                  style="
+                    margin: 0;
+                    padding: 0;
+                    color: inherit;
+                    font-family:
+                      Helvetica Neue,
+                      Helvetica,
+                      Roboto,
+                      Arial,
+                      sans-serif;
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 1.5625rem;
+                    line-height: 1.4;
+                    margin-bottom: 0;
+                    margin-top: 0;
+                    text-rendering: optimizeLegibility;
+                  "
+                >
+                  Shipping To:
+                </h4>
+                <br /><br />
+                <p
+                  style="
+                    margin: 0;
+                    padding: 0;
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  {!Address}
+                </p>
+              </div>
+              <div
+                style="
+                  margin: auto;
+                  box-sizing: border-box;
+                  float: right;
+                  width: 25%;
+                  padding-left: 0.9375rem;
+                  padding-right: 0.9375rem;
+                "
+              >
+                <h6
+                  style="
+                    margin: 0;
+                    font-size: 1rem;
+                    padding: 0;
+                    color: inherit;
+                    font-family:
+                      Helvetica Neue,
+                      Helvetica,
+                      Roboto,
+                      Arial,
+                      sans-serif;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 1.4;
+                    margin-bottom: 0.5rem;
+                    margin-top: 8px;
+                    text-rendering: optimizeLegibility;
+                  "
+                >
+                  PO:
+                </h6>
+                <p
+                  style="
+                    margin: 0;
+                    padding: 0;
+                    color: #55656d;
+                    font-size: 1rem;
+                    line-height: 1.15rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  {!PurchaseOrderNumber}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</apex:page>

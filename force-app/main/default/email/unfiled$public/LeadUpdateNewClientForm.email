@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Client Form Submission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        h2 {
+            color: #0070c9;
+        }
+        .Lead-details {
+            margin-top: 15px;
+        }
+        .Lead-details p {
+            margin: 10px 0;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            background-color: #0070c9;
+            color: #fff;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Lead Update Notification</h2>
+        <p>Hello Lesley,</p>
+        <p>A Lead has been updated after the 'New Client Form' submission with the following details:</p>
+
+        <div class="Lead-details">
+            <p><strong>Organization Name:</strong> {!organizationName}</p>
+            <p><strong>Signor Name:</strong> {!signorName}</p>
+            <p><strong>Signor Title:</strong> {!signorTitle}</p>
+            <p><strong>Signor Email:</strong> {!signorEmail}</p>
+            <p><strong>Lead Email:</strong> {!Email}</p>
+        </div>
+
+        <div class="button-container">
+            <a href={!URL} class="button" style="color: #fff; font-weight: bold;">Click to View Lead</a>
+        </div>
+    </div>
+</body>
+</html>

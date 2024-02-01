@@ -1,0 +1,489 @@
+<apex:page
+  standardController="PurchaseOrder_LineItem__c"
+  extensions="PurchaseOrderPackingSlipController"
+>
+  <div
+    style="
+      margin: auto;
+      padding: 0;
+      left: 0;
+      right: 0;
+      background: #f0f0f0;
+      font-size: 0.8rem;
+      line-height: 1.15rem;
+      max-width: 900px;
+    "
+  >
+    <div
+      style="
+        margin: 0;
+        padding: 10px;
+        box-sizing: border-box;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
+      "
+    >
+      <div
+        class="columns large-12"
+        style="
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          float: left;
+          width: 100%;
+        "
+      >
+        <div
+          class="topbar"
+          style="
+            margin: 0;
+            padding: 0;
+            display: inline-block;
+            font-family:
+              Helvetica Neue,
+              Helvetica,
+              Roboto,
+              Arial,
+              sans-serif !important;
+            min-height: 195px;
+            width: 100%;
+            background: url({!$Resource.HeaderImage});
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+          "
+        >
+          <div
+            class="darken"
+            style="margin: 0; padding: 0; display: inline-block; width: 100%"
+          >
+            <div
+              class="columns com-logo"
+              style="
+                margin: 0;
+                padding: 25px 0px 25px 30px;
+                box-sizing: border-box;
+                float: left;
+                border-radius: 5px;
+                margin-right: 20px;
+                max-width: 170px;
+                overflow: hidden;
+              "
+            >
+              <img
+                src="{!$Resource.TPLogo}"
+                class="logo"
+                style="max-width: 100%; border-radius: 3px"
+              />
+            </div>
+            <div
+              class="large-7 columns float-left order-info"
+              style="
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                float: left !important;
+                width: 58.33333%;
+              "
+            >
+              <div
+                class="order-info-table"
+                style="
+                  margin: 0;
+                  padding: 0;
+                  display: table;
+                  height: 195px;
+                  overflow: visible;
+                "
+              >
+                <div
+                  class="order-info-cell"
+                  style="
+                    margin: 0;
+                    padding: 0;
+                    display: table-cell;
+                    vertical-align: middle;
+                    word-break: break-word;
+                  "
+                >
+                  <h2
+                    style="
+                      margin: 0;
+                      padding: 0;
+                      color: #000000;
+                      font-family:
+                        Helvetica Neue,
+                        Helvetica,
+                        Roboto,
+                        Arial,
+                        sans-serif;
+                      font-style: normal;
+                      font-weight: 400;
+                      line-height: 2rem;
+                      margin-bottom: 0.5rem;
+                      margin-top: 0;
+                      text-rendering: optimizeLegibility;
+                      font-size: 2rem;
+                    "
+                  >
+                    Packing Slip
+                  </h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      style="
+        padding: 10px;
+        box-sizing: border-box;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
+      "
+    >
+      <div
+        style="
+          margin-top: 20px;
+          margin-bottom: 10px;
+          padding: 0;
+          box-sizing: border-box;
+          float: left;
+          width: 100%;
+        "
+      >
+        <div
+          style="
+            margin: 0;
+            padding: 25px 30px;
+            background: #fff;
+            border: 1px solid #e6e6e6;
+            box-sizing: border-box;
+            display: inline-block;
+            width: 100%;
+          "
+        >
+          <div
+            style="
+              width: 50%;
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+              float: left;
+              padding-left: 0;
+            "
+          >
+            <h4
+              style="
+                margin: 0;
+                padding: 0;
+                color: #000;
+                font-family:
+                  Helvetica Neue,
+                  Helvetica,
+                  Roboto,
+                  Arial,
+                  sans-serif;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 1.4;
+                margin-bottom: 0;
+                margin-top: 0;
+                text-rendering: optimizeLegibility;
+                font-size: 1rem;
+                text-transform: uppercase;
+              "
+            >
+              Shipping Address
+            </h4>
+            <p
+              style="
+                margin: 0;
+                padding: 0;
+                color: #55656d;
+                font-size: 1rem;
+                line-height: 1.15rem;
+                margin-bottom: 0.5rem;
+              "
+            >
+              {!Address}
+            </p>
+          </div>
+          <div
+            style="
+              width: 50%;
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+              float: left;
+              padding-left: 0;
+            "
+          >
+            <h4
+              style="
+                margin: 0;
+                padding: 0;
+                color: #000;
+                font-family:
+                  Helvetica Neue,
+                  Helvetica,
+                  Roboto,
+                  Arial,
+                  sans-serif;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 1.4;
+                margin-bottom: 0;
+                margin-top: 0;
+                text-rendering: optimizeLegibility;
+                font-size: 1rem;
+                text-transform: uppercase;
+              "
+            >
+              Project
+            </h4>
+            <p
+              style="
+                margin: 0;
+                padding: 0;
+                color: #55656d;
+                font-size: 1rem;
+                line-height: 1.15rem;
+                margin-bottom: 0.5rem;
+              "
+            >
+              {!OpportunityName}
+            </p>
+          </div>
+          <div
+            style="
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+              float: left !important;
+              padding-left: 0;
+            "
+          >
+            <h4
+              style="
+                margin: 0;
+                padding: 0;
+                color: #000;
+                font-family:
+                  Helvetica Neue,
+                  Helvetica,
+                  Roboto,
+                  Arial,
+                  sans-serif;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 1.4;
+                margin-bottom: 0;
+                margin-top: 0;
+                text-rendering: optimizeLegibility;
+                font-size: 1rem;
+                text-transform: uppercase;
+              "
+            >
+              PO
+            </h4>
+            <p
+              style="
+                margin: 0;
+                padding: 0;
+                color: #55656d;
+                font-size: 1rem;
+                line-height: 1.15rem;
+                margin-bottom: 0.5rem;
+              "
+            >
+              {!PurchaseOrderNumber}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <apex:repeat value="{!ListOfPurchaseOrderLineItem}" var="productLineItem">
+      <div
+        style="
+          padding: 10px;
+          box-sizing: border-box;
+          margin-left: auto;
+          margin-right: auto;
+          max-width: 100%;
+        "
+      >
+        <div
+          style="
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 0;
+            box-sizing: border-box;
+            float: left;
+            width: 100%;
+          "
+        >
+          <div
+            style="
+              margin: 0;
+              padding: 25px 30px;
+              background: #fff;
+              border: 1px solid #e6e6e6;
+              box-sizing: border-box;
+              display: inline-block;
+              width: 100%;
+            "
+          >
+            <div
+              class="columns large-12 pad-none"
+              style="
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                float: left;
+                width: 100%;
+              "
+            >
+              <h3
+                style="
+                  margin: 0;
+                  padding: 0;
+                  color: inherit;
+                  font-family:
+                    Helvetica Neue,
+                    Helvetica,
+                    Roboto,
+                    Arial,
+                    sans-serif;
+                  font-style: normal;
+                  font-weight: 400;
+                  line-height: 1.4;
+                  margin-bottom: 0.5rem;
+                  margin-top: 0;
+                  text-rendering: optimizeLegibility;
+                  font-size: 1.3rem;
+                "
+              >
+                {!productLineItem.productLineItemName}
+              </h3>
+              <table
+                style="
+                  border-radius: 0;
+                  width: 100%;
+                  border-collapse: inherit;
+                  border-spacing: 0;
+                  margin-top: 10px;
+                  text-align: left;
+                "
+              >
+                <tbody>
+                  <tr>
+                    <th
+                      width="66.66%"
+                      style="
+                        margin: 0;
+                        padding: 0;
+                        color: #000;
+                        font-size: 0.8rem;
+                        font-weight: bold;
+                        padding-top: 5px;
+                        text-transform: uppercase;
+                        vertical-align: top;
+                      "
+                    >
+                      Description
+                    </th>
+                    <th
+                      width="33.3%"
+                      style="
+                        margin: 0;
+                        padding: 0;
+                        color: #000;
+                        font-size: 0.8rem;
+                        font-weight: bold;
+                        padding-top: 5px;
+                        text-transform: uppercase;
+                        vertical-align: top;
+                        text-align: right !important;
+                      "
+                    >
+                      QTY
+                    </th>
+                  </tr>
+                  <apex:repeat
+                    value="{!productLineItem.productDetails}"
+                    var="pricingRecord"
+                  >
+                    <tr>
+                      <td
+                        width="66.66%"
+                        style="
+                          color: #55656d;
+                          font-size: 1rem;
+                          margin: 0;
+                          padding: 0;
+                        "
+                      >
+                        Color: {!pricingRecord.color} - Size:
+                        {!pricingRecord.size}
+                      </td>
+                      <td
+                        width="33.33%"
+                        style="
+                          color: #55656d;
+                          font-size: 1rem;
+                          margin: 0;
+                          padding: 0;
+                          text-align: right !important;
+                        "
+                      >
+                        <apex:outputText value="{0, number, ###,##0.##}">
+                          <apex:param value="{!pricingRecord.quantity}" />
+                        </apex:outputText>
+                      </td>
+                    </tr>
+                  </apex:repeat>
+                  <tr>
+                    <th
+                      width="66.66%"
+                      style="
+                        margin: 0;
+                        padding: 0;
+                        color: #000;
+                        font-size: 0.8rem;
+                        font-weight: bold;
+                        padding-top: 5px;
+                        text-transform: uppercase;
+                        vertical-align: top;
+                      "
+                    >
+                      Total Shipped
+                    </th>
+                    <td
+                      width="33.33%"
+                      style="
+                        color: #55656d;
+                        font-size: 1rem;
+                        margin: 0;
+                        padding: 0;
+                        text-align: right !important;
+                      "
+                    >
+                      <apex:outputText value="{0, number, ###,##0.##}">
+                        <apex:param value="{!QuantityValue}" />
+                      </apex:outputText>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </apex:repeat>
+  </div>
+</apex:page>

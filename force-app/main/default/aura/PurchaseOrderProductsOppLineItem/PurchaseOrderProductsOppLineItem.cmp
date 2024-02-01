@@ -1,0 +1,572 @@
+<aura:component
+  controller="OppLineItemNavController"
+  implements="force:lightningQuickActionWithoutHeader,force:appHostable,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+  access="global"
+>
+  <aura:attribute name="Users" type="List" />
+  <aura:attribute name="shippingPopup" type="boolean" default="false" />
+  <aura:attribute name="emailPopup" type="boolean" default="false" />
+  <aura:attribute name="selectedValue" type="String" default="default" />
+  <aura:attribute name="purchaseOrderDetails" type="String[]" />
+  <aura:attribute name="opportunityName" type="String" default="" />
+  <aura:attribute name="purchaseOrderId" type="Id" />
+  <aura:attribute name="deletePopup" type="Boolean" default="false" />
+  <aura:attribute name="deleteProductPopup" type="Boolean" default="false" />
+  <aura:attribute name="recordToDelete" type="Id" />
+  <aura:handler event="c:RefreshPurchaseOrderProducts" action="{!c.refresh}" />
+  <aura:handler event="force:refreshView" action="{!c.doInit}" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:registerEvent
+    name="RefreshWorkOrderTabs"
+    type="c:RefreshWorkOrderTabs"
+  />
+
+  <aura:attribute name="Spinner" type="Boolean" default="false" />
+
+  <aura:if isTrue="{!v.Spinner}">
+    <lightning:spinner variant="brand" size="large" />
+  </aura:if>
+
+  <aura:html tag="style">
+    .slds-carousel__content{ display:none; } .slds-carousel__indicators {
+    display:none;} }
+  </aura:html>
+
+  <table
+    style="width: 100%"
+    class="slds-table slds-table_cell-buffer slds-is-selected"
+  >
+    <thead>
+      <tr class="slds-line-height_reset">
+        <!-- <th  scope="col"  style="width: 15%;">
+                    <div class="slds-truncate" title="Product Image"></div>
+                </th> -->
+        <th scope="col" style="width: 10%">
+          <div
+            style="color: #2a383f; font-weight: 700"
+            class="slds-truncate"
+            title="Name/SKUs"
+          >
+            Name/SKUs
+          </div>
+        </th>
+        <th scope="col" style="width: 10%">
+          <div
+            style="color: #2a383f; font-weight: 700"
+            class="slds-truncate"
+            title="PO #"
+          >
+            PO #
+          </div>
+        </th>
+        <!--
+                <th  scope="col"  style="width: 15%;">
+                    <div style="color: #2a383f; font-weight: 700;" class="slds-truncate" title="Product Name">Product Name</div>
+                </th>   -->
+        <th scope="col" style="width: 10%">
+          <div
+            style="color: #2a383f; font-weight: 700"
+            class="slds-truncate"
+            title="PO Details"
+          >
+            PO Details
+          </div>
+        </th>
+        <th scope="col" style="width: 15%">
+          <div
+            style="color: #2a383f; font-weight: 700"
+            class="slds-truncate"
+            title="Status"
+          >
+            Status
+          </div>
+        </th>
+        <th scope="col" style="width: 15%">
+          <div
+            style="color: #2a383f; font-weight: 700"
+            class="slds-truncate"
+            title="Production Rep"
+          >
+            Production Rep
+          </div>
+        </th>
+        <th scope="col" style="width: 10%">
+          <div class="color: #2a383f; slds-truncate" title="Buttons"></div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <aura:iteration
+        items="{!v.purchaseOrderDetails}"
+        var="purchaseOrder"
+        indexVar="key"
+      >
+        <tr>
+          <!-- <td style="width: 0%; max-width: 15%">
+                        <div class="slds-truncate" >
+                           <lightning:carousel disableAutoScroll="true">
+                                <lightning:carouselImage  src="{!$Label.c.ContentVersionImage+purchaseOrder.imageContentVersionId}"   class="slds-p-top_none"
+                                                         header = "" description = ""   alternativeText = "No Image"    style="width:180px; height:180px"></lightning:carouselImage>
+                            </lightning:carousel> 
+                            <img style="width: 100%; height: 100%" src="https://teamphun.commonsku.com/files/15928/large/906249ff1e5f6e7e9e9c879a7e754f09.png"/> -->
+
+          <!-- <aura:if isTrue="{!purchaseOrder.imageVersionId != null }">
+                                <lightning:carousel disableAutoScroll="true" >
+                                    <a  onclick="{!c.purchaseOrderPreviewPage}" data-value = "{!purchaseOrder.poLineItemId}" >
+                                        <lightning:carouselImage  src="{!$Label.c.ContentVersionImage+purchaseOrder.imageVersionId}"   class="slds-p-top_none"
+                                                                 header = "" description = ""  alternativeText = "Artwork Image" style="width:30%; height:40%">
+                                        </lightning:carouselImage>
+                                    </a>
+                                   </lightning:carousel>
+                                   <aura:set attribute="else">
+                                       <a  onclick="{!c.purchaseOrderPreviewPage}" data-value = "{!purchaseOrder.poLineItemId}" >
+                                       <img src="{!$Resource.No_Image_Available}"  style="width:100%; height:100%"/>
+                                       </a>
+                                   </aura:set>
+                                </aura:if> 
+
+                        </div> 
+                        
+                    </td> -->
+          <td
+            style="
+              white-space: initial;
+              width: 15%;
+              padding-top: 19px;
+              word-break: initial;
+              max-width: 15%;
+            "
+          >
+            <p style="width: 75%">{!purchaseOrder.productName}</p>
+            <aura:iteration items="{!purchaseOrder.SKU}" var="sku">
+              <div class="slds-truncate">{!sku}</div>
+              <br />
+            </aura:iteration>
+          </td>
+          <td style="width: 10%; max-width: 10%">
+            <div style="color: #2687df" class="slds-truncate">
+              <a href="{!purchaseOrder.poId}" target="_blank"
+                >{!purchaseOrder.poNumber}
+              </a>
+            </div>
+          </td>
+          <!--
+                    <td style="width: 15%; max-width:15%;" >
+                        <div  style="color: #2a383f;" class="slds-col slds-size_1-of-2" >
+                            <p class="slds-truncate" >{!purchaseOrder.productName}</p>
+                        </div>
+                    </td>
+                    -->
+          <td style="width: 10%; max-width: 10%">
+            <div class="slds-truncate">
+              <a
+                href="{!purchaseOrder.supplierUrl}"
+                style="font-size: 100%; color: #2687df"
+                >{!purchaseOrder.supplier} </a
+              ><br />
+              <a
+                onclick="{!c.openShippingPage}"
+                data-value="{!purchaseOrder.poLineItemId}"
+                style="font-size: 80%; color: #2687df"
+                >Shipping Label</a
+              >
+              <a
+                onclick="{!c.openPackingSlipPage}"
+                data-value="{!purchaseOrder.poLineItemId}"
+                style="font-size: 80%; color: #2687df"
+                >|Packing Slip</a
+              ><br />
+              <span style="color: #2a383f; font-weight: 400"
+                >IN HANDS DATE: {!purchaseOrder.inHandsDate}</span
+              >
+            </div>
+          </td>
+          <td style="width: 15%; max-width: 15%">
+            <div class="slds-truncate">
+              <input
+                type="text"
+                value="{!purchaseOrder.Status}"
+                disabled="true"
+                class="slds-input"
+              /><br />
+              <!--
+                            <lightning:select aura:id = "picklist" name="{!purchaseOrder.poNumber}" onchange = "{!c.statusChangedOfPurchaseOrderPicklist}" value = "{!purchaseOrder.Status}">
+                                
+                                <option value="problem">Problem</option>
+                                <option value="Follow Up">Follow Up</option>
+                                <option value="Created">Created</option>
+                                <option value="Submitted">Submitted</option>
+                                <option value="Confirmed">Confirmed</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="Ready For Billing">Ready For Billing</option>
+                                <option value="Closed">Closed</option>
+                                <option value="Billed">Billed</option>
+								
+                                <option value="Follow Up">Open</option>
+                                <option value="Created">Sent</option>
+                                <option value="Submitted">In Progress</option>
+                                <option value="Confirmed">Ready for TP Pickup</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="Ready For Billing">Received at QC</option>
+                                <option value="Closed">Ready to Ship/Pickup</option>
+                                <option value="Billed">Billed</option>
+                            </lightning:select> 
+-->
+              <input
+                style="margin-top: 10px"
+                type="text"
+                value="{!purchaseOrder.proofStatus}"
+                disabled="true"
+                class="slds-input"
+              />
+            </div>
+          </td>
+          <td style="width: 15%; max-width: 15%">
+            <div class="slds-truncate">
+              <lightning:select
+                name="{!purchaseOrder.poLineItemId}"
+                aura:id="mySelect"
+                onchange="{!c.onChange}"
+              >
+                <aura:if isTrue="{! purchaseOrder.productionRep == null }">
+                  <option value="----Select a User----">
+                    ----Select a User----
+                  </option>
+                  <aura:set attribute="else">
+                    <option value="{!purchaseOrder.productionRep}">
+                      {!purchaseOrder.productionRep}
+                    </option>
+                  </aura:set>
+                </aura:if>
+
+                <aura:iteration items="{!v.Users}" var="user">
+                  <option value="{!user.id}">{!user.Name}</option>
+                </aura:iteration>
+              </lightning:select>
+            </div>
+          </td>
+          <td style="width: 10%; max-width: 15%">
+            <div onmouseleave="{!c.closeDropdownAction}">
+              <button
+                onclick="{!c.openDropdown}"
+                name="{!key}"
+                style="font-size: smaller; line-height: 2; width: 100%"
+                class="slds-button slds-button_brand"
+              >
+                Mark as..
+              </button>
+
+              <div
+                id="{!purchaseOrder.poLineItemId}"
+                class="slds-dropdown"
+                style="
+                  margin-right: 35%;
+                  margin-top: 0px;
+                  width: 110%;
+                  display: None;
+                "
+              >
+                <ul class="slds-dropdown__list" role="menu">
+                  <li class="slds-dropdown__item slds-is-selected">
+                    <a id="createInvoice">
+                      <span
+                        style="
+                          font-size: smaller;
+                          color: #2687df;
+                          width: 100px !important;
+                          float: left;
+                        "
+                        data-value2="fax"
+                        data-value="{!purchaseOrder.poNumber}"
+                        onclick="{!c.markAsDropdown}"
+                      >
+                        Submitted By Fax
+                      </span>
+                    </a>
+                  </li>
+                  <li
+                    class="slds-dropdown__item slds-is-selected"
+                    data-value2="ftp"
+                    data-value="{!purchaseOrder.poNumber}"
+                    onclick="{!c.markAsDropdown}"
+                  >
+                    <a id="regenrateAllPos">
+                      <span
+                        style="
+                          font-size: smaller;
+                          color: #2687df;
+                          width: 100px !important;
+                          float: left;
+                        "
+                      >
+                        Submitted By FTP
+                      </span>
+                    </a>
+                  </li>
+                  <li
+                    class="slds-dropdown__item slds-is-selected"
+                    data-value2="Supplier site"
+                    data-value="{!purchaseOrder.poNumber}"
+                    onclick="{!c.markAsDropdown}"
+                  >
+                    <a id="previewProof">
+                      <span
+                        style="
+                          font-size: smaller;
+                          color: #2687df;
+                          width: 100px !important;
+                          float: left;
+                        "
+                      >
+                        Submitted on Supplier Site
+                      </span>
+                    </a>
+                  </li>
+                  <li
+                    class="slds-dropdown__item slds-is-selected"
+                    data-value2="submitted"
+                    data-value="{!purchaseOrder.poNumber}"
+                    onclick="{!c.markAsDropdown}"
+                  >
+                    <a id="emailProof">
+                      <span
+                        style="
+                          font-size: smaller;
+                          color: #2687df;
+                          width: 100px !important;
+                          float: left;
+                        "
+                      >
+                        Otherwise Submitted
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <br />
+            <button
+              onclick="{!c.openNotes}"
+              data-value="{!purchaseOrder.poLineItemId}"
+              style="
+                font-size: smaller;
+                line-height: 2;
+                margin-bottom: 5px;
+                width: 100%;
+              "
+              class="slds-button slds-button_brand"
+            >
+              Notes
+            </button>
+            <br />
+            <button
+              data-value="{!purchaseOrder.poLineItemId}"
+              onclick="{!c.openDeletePopup}"
+              style="
+                font-size: smaller;
+                line-height: 2;
+                margin-bottom: 5px;
+                width: 100%;
+              "
+              class="slds-button slds-button_destructive"
+            >
+              Delete</button
+            ><br />
+            <button
+              onclick="{!c.openEmailPopup}"
+              data-value="{!purchaseOrder.poLineItemId}"
+              recordId="{!purchaseOrder.poLineItemId}"
+              style="
+                font-size: smaller;
+                line-height: 2;
+                margin-bottom: 5px;
+                width: 100%;
+              "
+              class="slds-button slds-button_brand"
+            >
+              Send PO
+            </button>
+            <br />
+          </td>
+        </tr>
+      </aura:iteration>
+    </tbody>
+  </table>
+
+  <aura:if isTrue="{!v.deletePopup}">
+    <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+    <div
+      role="dialog"
+      tabindex="-1"
+      aria-labelledby="header99"
+      class="slds-modal slds-fade-in-open"
+    >
+      <div
+        class="slds-modal__container"
+        style="height: 110% !important"
+        role="document"
+        tabindex="0"
+      >
+        <div class="slds-modal__header">
+          <h2
+            id="modal-heading-01"
+            class="slds-text-heading_medium slds-hyphenate"
+          >
+            Delete Purchase Order
+          </h2>
+          <button
+            class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+            title="Close"
+            onclick="{!c.closeDeletePopup}"
+          >
+            <lightning:icon
+              class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+              iconName="utility:close"
+              size="small"
+            />
+            <span class="slds-assistive-text">Close this window</span>
+          </button>
+        </div>
+        <aura:if isTrue="{! v.Error != null}">
+          <div class="slds-modal__content slds-p-around_medium">
+            <p style="color: red">{!v.Error}</p>
+          </div>
+        </aura:if>
+
+        <div class="slds-modal__content slds-p-around--medium">
+          <form class="slds-form--stacked">
+            <div class="slds">
+              <div class="slds-grid slds-wrap">
+                <div class="slds-col--padded">
+                  <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                      Are you sure you want to delete this Purchase Order?
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="slds-modal__footer">
+          <lightning:button
+            class="slds-button slds-button--neutral"
+            onclick="{!c.closeDeletePopup}"
+            >Cancel</lightning:button
+          >
+          <lightning:button
+            class="slds-button slds-button--brand customb"
+            onclick="{!c.deletePurchaseOrderLineItem}"
+            >Delete</lightning:button
+          >
+        </div>
+      </div>
+    </div>
+    <div class="slds-backdrop slds-backdrop--open"></div>
+  </aura:if>
+
+  <aura:if isTrue="{!v.shippingPopup}">
+    <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+    <div
+      role="dialog"
+      tabindex="-1"
+      aria-labelledby="header99"
+      class="slds-modal slds-fade-in-open"
+    >
+      <div
+        class="slds-modal__container"
+        style="
+          height: auto !important;
+          width: 100% !important;
+          max-width: 80rem;
+        "
+        role="document"
+        tabindex="0"
+      >
+        <div class="slds-modal__header">
+          <h2
+            style="text-align: left; font-size: 1.9375rem"
+            id="modal-heading-01"
+            class="slds-text-heading_medium slds-hyphenate"
+          >
+            Notes
+          </h2>
+
+          <button
+            class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+            title="Close"
+            onclick="{!c.closeShippingPopup}"
+          >
+            <lightning:icon
+              class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+              iconName="utility:close"
+              size="small"
+            />
+            <span class="slds-assistive-text">Close this window</span>
+          </button>
+        </div>
+        <div class="slds-modal__content slds-p-around--large">
+          <!--<c:PurchaseOrderRegenerate recordId="0001" />-->
+          <c:PurchaseOrderNotesOppLineItem
+            recordId="{!v.purchaseOrderId}"
+            opportunityName="{!v.opportunityName}"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="slds-backdrop slds-backdrop--open"></div>
+  </aura:if>
+
+  <!-- Send PO Popup -->
+
+  <aura:if isTrue="{!v.emailPopup}">
+    <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+
+    <div
+      role="dialog"
+      tabindex="-1"
+      aria-labelledby="header99"
+      class="slds-modal slds-fade-in-open"
+    >
+      <div
+        class="slds-modal__container"
+        style="width: 100% !important; max-width: 60rem"
+        role="document"
+        tabindex="0"
+      >
+        <div class="slds-modal__header">
+          <h2
+            style="text-align: center; font-size: 1.9375rem"
+            id="modal-heading-01"
+            class="slds-text-heading_medium slds-hyphenate"
+          >
+            Send Purchase Order
+          </h2>
+
+          <button
+            class="slds-button slds-modal__close closeIcon slds-button--icon-bare slds-button--icon-inverse"
+            title="Close"
+            onclick="{!c.closeEmailPopup}"
+          >
+            <lightning:icon
+              class="crosscss slds-button__icon slds-button--icon--inverse slds-button__icon--large"
+              iconName="utility:close"
+              size="small"
+            />
+            <span class="slds-assistive-text">Close this window</span>
+          </button>
+        </div>
+        <div class="slds-modal__content slds-p-around--large">
+          <!--<c:PurchaseOrderRegenerate recordId="0001" />-->
+          <c:SendPurchaseOrder
+            recordId="{!v.purchaseOrderId}"
+            emailPopup="{!v.emailPopup}"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="slds-backdrop slds-backdrop--open"></div>
+  </aura:if>
+</aura:component>

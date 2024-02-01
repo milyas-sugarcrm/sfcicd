@@ -1,0 +1,3 @@
+({
+  fetchSearchResultAndParseData: function (component) {}
+});

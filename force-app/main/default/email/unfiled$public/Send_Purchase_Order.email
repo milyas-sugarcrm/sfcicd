@@ -1,0 +1,7 @@
+</!DOCTYPE html>
+<html>
+<head>
+</head>
+<p>Dear {!Vendor},</p><p>Please note Team Phun is an AIM Distributor.</p><p>Please review the attached Purchase Order {!PONumber} for accuracy. If any of the terms of this Purchase Order seem to be in error, please notify us immediately. If we have not received a confirmation of the PO - {!PONumber} within 24 hours, the PO - {!PONumber} is considered to be confirmed.</p><p>Please direct any questions to <a href=mailto:info@teamphun.com>info@teamphun.com</a> for immediate attention.</p><p>Thank you</p><p>Team Phun</p>
+</body>
+</html>

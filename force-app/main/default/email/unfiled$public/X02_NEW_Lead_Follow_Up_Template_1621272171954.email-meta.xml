@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description
+  >This is the second email to a new lead, to follow up with them on identifying who we should speak with at their organization about selling branded apparel, merchandise, signs and displays, or digital services.</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>02.NEW Lead Follow Up Template</name>
+    <relatedEntityType>Contact</relatedEntityType>
+    <style>none</style>
+    <subject>{{{Recipient.Company}}}</subject>
+    <type>custom</type>
+    <uiType>SFX</uiType>
+</EmailTemplate>

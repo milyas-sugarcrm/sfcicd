@@ -1,0 +1,12 @@
+/* SowGeneratorComponentStyle.css */
+.THIS .slds-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+}
+
+.THIS .slds-spinner_container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Work Order is moved to 8.2 On Shelf to ship to client</name>
+    <style>none</style>
+    <subject
+  >Work Order {!Order.OrderNumber} - 8.2 On Shelf to Ship to Client</subject>
+    <textOnly>Hello Phunions,
+
+{!Order.OrderNumber} for {!Order.WOAccountLink__c} has been QC&apos;d and is ready to ship to the client. Please coordinate with the client and add any Thank You items to the boxes as needed.
+
+{!Order.WONameLink__c}
+
+Thanks,
+
+Ralph the Rooster</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

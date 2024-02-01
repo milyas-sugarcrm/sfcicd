@@ -1,0 +1,7 @@
+<p>Hello Phunions,</p>
+
+<p>Work Order {!Order.WONameLink__c} for {!Order.WOAccountLink__c} is due in 5 business days. Please review as a team as needed to make sure all line items are on schedule and shipping information is accurate.</p>
+
+
+<p>Thanks,</p>
+<p>Ralph the Rooster</p>

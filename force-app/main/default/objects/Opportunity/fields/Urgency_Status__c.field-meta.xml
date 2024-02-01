@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Urgency_Status__c</fullName>
+    <externalId>false</externalId>
+    <formula
+  >IF( ISPICKVAL(Priority__c,&apos;Rush&apos;), IMAGE(&quot;/resource/UrgencyStatus/RUSH.jpg&quot;, &apos;Rush&apos;, 35, 100),
+
+IF(ISPICKVAL(Priority__c,&apos;Firm&apos;), IMAGE(&quot;/resource/UrgencyStatus/FIRM.jpg&quot;, &apos;Firm&apos;, 35, 100),
+
+&apos;&apos;
+))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Urgency Status</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
